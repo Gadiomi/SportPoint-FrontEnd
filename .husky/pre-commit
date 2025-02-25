@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if [ -f "package-lock.json" ]; then
+  echo "❌ Detected package-lock.json! Please use Yarn instead of npm."
+  exit 1
+fi
+
+yarn lint-staged
