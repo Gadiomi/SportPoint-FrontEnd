@@ -11,6 +11,7 @@ export default defineConfig({
       theme: '/src/theme',
       hooks: '/src/hooks',
       pages: '/src/pages',
+      constants: '/src/constants',
     },
   },
   build: {
