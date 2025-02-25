@@ -1,24 +1,24 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-BACKUP_DIR="./backups"
-mkdir -p "$BACKUP_DIR"
+# BACKUP_DIR="./backups"
+# mkdir -p "$BACKUP_DIR"
 
-BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-COMMIT_ID=$(git rev-parse --short HEAD)
+# BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+# COMMIT_ID=$(git rev-parse --short HEAD)
 
-TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+# TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 
-BACKUP_FILE="$BACKUP_DIR/${BRANCH_NAME}_${COMMIT_ID}_${TIMESTAMP}.zip"
+# BACKUP_FILE="$BACKUP_DIR/${BRANCH_NAME}_${COMMIT_ID}_${TIMESTAMP}.zip"
 
 if [ -f "package-lock.json" ]; then
   echo "❌ Detected package-lock.json! Please use Yarn instead of npm."
   exit 1
 fi
 
-echo "📦 Creating project backup..."
-zip -r "$BACKUP_FILE" . -x "node_modules/*" "backups/*" ".git/*"
+# echo "📦 Creating project backup..."
+# zip -r "$BACKUP_FILE" . -x "node_modules/*" "backups/*" ".git/*"
 
-echo "✅ Backup saved at: $BACKUP_FILE"
+# echo "✅ Backup saved at: $BACKUP_FILE"
 
 yarn lint-staged
