@@ -1,11 +1,7 @@
-import css from "./AccountPage.module.css"
-
+import css from './AccountPage.module.css';
 
 const AccountPage = () => {
-  return (
-    <div className={css.section}>
-    </div>
-  );
+  return <div className={css.section}></div>;
 };
 
 export default AccountPage;
