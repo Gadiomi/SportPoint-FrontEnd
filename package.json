@@ -13,10 +13,14 @@
   "dependencies": {
     "@hookform/resolvers": "^4.1.2",
     "@reduxjs/toolkit": "^2.6.0",
+    "i18next": "^24.2.2",
+    "i18next-browser-languagedetector": "^8.0.4",
+    "i18next-http-backend": "^3.0.2",
     "modern-normalize": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-i18next": "^15.4.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.2.0",
     "styled-components": "^6.1.15"
