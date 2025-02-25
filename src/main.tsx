@@ -1,14 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+
 import './index.css';
 import 'modern-normalize';
 import App from './components/App';
-import { BrowserRouter } from 'react-router-dom';
+import { ManageThemeProvider } from 'theme';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <ManageThemeProvider>
+        <App />
+      </ManageThemeProvider>
     </BrowserRouter>
   </StrictMode>,
 );
