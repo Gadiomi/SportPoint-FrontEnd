@@ -6,6 +6,7 @@ import './index.css';
 import 'modern-normalize';
 import App from './components/App';
 import { ManageThemeProvider } from 'theme';
+import './i18n/i18n';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
