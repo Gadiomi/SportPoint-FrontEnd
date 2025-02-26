@@ -21,4 +21,6 @@ fi
 
 # echo "✅ Backup saved at: $BACKUP_FILE"
 
-yarn lint-staged
+# yarn lint-staged
+npx lint-staged
+
