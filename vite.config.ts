@@ -12,6 +12,7 @@ export default defineConfig({
       hooks: '/src/hooks',
       pages: '/src/pages',
       constants: '/src/constants',
+      i18n: '/src/i18n',
     },
   },
   build: {
