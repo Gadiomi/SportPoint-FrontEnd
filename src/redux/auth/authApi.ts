@@ -12,20 +12,23 @@ export const authApi = createApi({
         url: 'users/signup',
         method: 'POST',
         data: userData,
-        }),
-        providesTags: ( { email }: { email: string }) => [{ type: 'Auth', id: email }],
-    
+      }),
+      providesTags: ({ email }: { email: string }) => [
+        { type: 'Auth', id: email },
+      ],
     }),
     login: builder.mutation({
       query: (userData: { email: string; password: string }) => ({
         url: 'users/signin',
         method: 'POST',
         data: userData,
-        }),
-        providesTags: ({ email }: { email: string }) => [{ type: 'Auth', id: email }],
+      }),
+      providesTags: ({ email }: { email: string }) => [
+        { type: 'Auth', id: email },
+      ],
     }),
-    }),
-    tagTypes: ['Auth'],
+  }),
+  tagTypes: ['Auth'],
 });
 
 export const { useRegisterMutation, useLoginMutation } = authApi;
