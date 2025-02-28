@@ -1,9 +1,15 @@
-import { FC } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { FC, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogInFormSchema } from 'constants/validationSchemas/auth';
-// import css from './LogInPage.module.css';
-import { LogInForm, PageTitle, SubmitButton } from './styles';
+import { useTranslation } from 'react-i18next';
+import {
+  ErrorMessage,
+  LogInForm,
+  PageTitle,
+  PasswordBlock,
+  SubmitButton,
+} from './styles';
 
 type logInFormInputs = {
   email: string;
@@ -11,6 +17,8 @@ type logInFormInputs = {
 };
 
 const LogInPage: FC = () => {
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
@@ -21,10 +29,16 @@ const LogInPage: FC = () => {
     defaultValues: { email: '', password: '' },
   });
 
+  const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
+
   const onSubmitForm: SubmitHandler<logInFormInputs> = data => {
     // singInRequest(data);
     console.log('data -> ', data);
     reset(); // ! Temp
+  };
+
+  const toggleVisibilityPassword = () => {
+    setIsVisiblePassword(prev => !prev);
   };
 
   return (
@@ -40,19 +54,25 @@ const LogInPage: FC = () => {
             {...register('email', { required: true })}
             autoComplete="example@i.ua"
           />
+          <ErrorMessage>{errors?.email?.message}</ErrorMessage>
         </label>
         <label>
           Пароль
-          <input
-            className=""
-            type="password"
-            // type={isVisiblePassword ? 'text' : 'password'}
-            placeholder="Введіть пароль"
-            {...register('password', { required: true })}
-            autoComplete="current-password"
-          />
+          <PasswordBlock>
+            <input
+              className=""
+              type={isVisiblePassword ? 'text' : 'password'}
+              placeholder="Введіть пароль"
+              {...register('password', { required: true })}
+              autoComplete="current-password"
+            />
+            <div onClick={toggleVisibilityPassword}>
+              {isVisiblePassword ? 'O' : 'I'}
+            </div>
+          </PasswordBlock>
+          <ErrorMessage>{errors?.password?.message}</ErrorMessage>
         </label>
-        <SubmitButton type="submit">Увійти</SubmitButton>
+        <SubmitButton type="submit">{t('login')}</SubmitButton>
       </LogInForm>
     </div>
   );
