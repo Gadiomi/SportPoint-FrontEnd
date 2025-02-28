@@ -17,6 +17,11 @@ export const LogInForm = styled.form`
   align-items: center;
   flex-direction: column;
   gap: 16px;
+
+  & label {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const SubmitButton = styled.button<IButtonProps>`
@@ -51,5 +56,23 @@ export const SubmitButton = styled.button<IButtonProps>`
     border: 1px solid #ccc;
     background-color: #f0f0f0;
     cursor: not-allowed;
+  }
+`;
+
+export const ErrorMessage = styled.span`
+  height: 16px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: rgba(220, 12, 49, 1);
+`;
+
+export const PasswordBlock = styled.div`
+  position: relative;
+  & div {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
   }
 `;
