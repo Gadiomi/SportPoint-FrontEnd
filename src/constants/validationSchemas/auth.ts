@@ -1,4 +1,4 @@
-import { REGEXP } from 'pages/LogInPage/regexp';
+import { REGEXP } from '@/pages/LogInPage/regexp';
 import * as yup from 'yup';
 
 export const LogInFormSchema = yup.object({

@@ -1,5 +1,3 @@
-import { ThemeState } from './constants';
-
 type colorsMap = {
   mainColor: string;
   mainText: string;

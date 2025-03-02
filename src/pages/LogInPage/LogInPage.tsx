@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LogInFormSchema } from 'constants/validationSchemas/auth';
+import { LogInFormSchema } from '@/constants/validationSchemas/auth';
 import { useTranslation } from 'react-i18next';
 import {
   ErrorMessage,
@@ -33,7 +33,6 @@ const LogInPage: FC = () => {
 
   const onSubmitForm: SubmitHandler<logInFormInputs> = data => {
     // singInRequest(data);
-    console.log('data -> ', data);
     reset(); // ! Temp
   };
 

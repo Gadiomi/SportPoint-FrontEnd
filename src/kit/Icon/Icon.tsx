@@ -29,3 +29,5 @@ export const Icon = React.memo(
     );
   },
 );
+
+Icon.displayName = 'Icon';

@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import 'modern-normalize';
 import App from './components/App';
-import { ManageThemeProvider } from 'theme';
+import { ManageThemeProvider } from '@/theme';
 import './i18n/i18n';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';

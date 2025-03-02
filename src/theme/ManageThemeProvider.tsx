@@ -3,10 +3,10 @@ import { ThemeProvider } from 'styled-components';
 
 import { darkTheme } from './darkTheme';
 import { lightTheme } from './lightTheme';
-import { useLocalStorage } from 'hooks/useLocalStorage';
+import { useLocalStorage } from '@/hooks';
 import { ThemeState } from './constants';
 import { ThemeContextType } from './types';
-import { LocalStorageKey } from 'constants';
+import { LocalStorageKey } from '@/constants';
 
 interface Props {
   children: React.ReactNode;
