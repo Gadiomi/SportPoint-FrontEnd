@@ -13,6 +13,7 @@ export default defineConfig({
       pages: '/src/pages',
       constants: '/src/constants',
       i18n: '/src/i18n',
+      kit: '/src/kit',
     },
   },
   build: {

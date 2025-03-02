@@ -23,7 +23,8 @@
       "@store/*": ["src/store/*"],
       "@theme/*": ["src/theme/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@i18n/*": ["src/i18n/*"]
+      "@i18n/*": ["src/i18n/*"],
+      "@kit/*": ["src/kit/*"]
     }
   },
   "include": ["src"],
