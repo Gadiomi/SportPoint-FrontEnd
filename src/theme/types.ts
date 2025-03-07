@@ -39,12 +39,17 @@ type mediaRulesMap = {
   ) => string;
 };
 
+type transitionsMap = {
+  base: string;
+};
+
 type themeType = {
   pxs: pxsMap;
   fonts: fontsMap;
   color: colorsMap;
   breakpoints: breakpointsMap;
   mediaRules: mediaRulesMap;
+  transitions: transitionsMap;
 };
 
 interface ThemeContextType {
@@ -60,4 +65,5 @@ export type {
   pxsMap,
   themeType,
   ThemeContextType,
+  transitionsMap,
 };

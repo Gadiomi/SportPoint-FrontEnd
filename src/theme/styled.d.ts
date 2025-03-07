@@ -6,6 +6,7 @@ import {
   pxsMap,
   breakpointsMap,
   mediaRulesMap,
+  transitionsMap,
 } from './types';
 
 declare module 'styled-components' {
@@ -15,5 +16,6 @@ declare module 'styled-components' {
     color: colorsMap;
     breakpoints: breakpointsMap;
     mediaRules: mediaRulesMap;
+    transitions: transitionsMap;
   }
 }

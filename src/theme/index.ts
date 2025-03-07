@@ -8,4 +8,5 @@ export type {
   mediaRulesMap,
   pxsMap,
   themeType,
+  transitionsMap,
 } from './types';
