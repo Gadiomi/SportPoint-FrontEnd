@@ -1,10 +1,25 @@
 type colorsMap = {
-  mainColor: string;
-  mainText: string;
+  background: string;
+  mainOrange: string;
+  mainWhite: string;
+  mainBlue: string;
+  inputBar: string;
+  darkGray: string;
+  secWhite: string;
+  white: string;
+  writing: string;
+  success: string;
+  error: string;
+  disabled: string;
 };
 
 type fontsMap = {
-  mainTypography: string;
+  [key: string]: {
+    fontFamily: string;
+    fontWeight: string;
+    fontSize: string;
+    lineHeight?: string;
+  };
 };
 
 type pxsMap = {
