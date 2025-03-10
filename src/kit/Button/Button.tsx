@@ -44,14 +44,14 @@ const ButtonStyled = styled.button<{
   appearance: ButtonAppearance;
 }>(({ theme, appearance }) => {
   const backgroundColor = {
-    [ButtonAppearance.PRIMARY]: 'rgba(237, 119, 47, 1)',
+    [ButtonAppearance.PRIMARY]: theme.color.mainOrange,
     [ButtonAppearance.UNDERLINED]: 'transparent',
-    [ButtonAppearance.SECONDARY]: 'rgba(28, 27, 32, 1)',
+    [ButtonAppearance.SECONDARY]: theme.color.background,
   };
   const color = {
-    [ButtonAppearance.PRIMARY]: 'rgba(248, 247, 244, 1)',
-    [ButtonAppearance.UNDERLINED]: 'rgba(237, 119, 47, 1)',
-    [ButtonAppearance.SECONDARY]: 'rgba(248, 247, 244, 1)',
+    [ButtonAppearance.PRIMARY]: theme.color.mainWhite,
+    [ButtonAppearance.UNDERLINED]: theme.color.mainOrange,
+    [ButtonAppearance.SECONDARY]: theme.color.mainWhite,
   };
 
   const textDecoration = {
@@ -63,19 +63,19 @@ const ButtonStyled = styled.button<{
   const border = {
     [ButtonAppearance.PRIMARY]: '1px solid transparent',
     [ButtonAppearance.UNDERLINED]: '1px solid transparent',
-    [ButtonAppearance.SECONDARY]: '1px solid rgba(73, 73, 73, 1)',
+    [ButtonAppearance.SECONDARY]: `1px solid ${theme.color.darkGray}`,
   };
 
   const colorHover = {
-    [ButtonAppearance.PRIMARY]: 'rgba(248, 247, 244, 1)',
+    [ButtonAppearance.PRIMARY]: theme.color.mainWhite,
     [ButtonAppearance.UNDERLINED]: 'rgba(189, 81, 14, 1)',
-    [ButtonAppearance.SECONDARY]: 'rgba(248, 247, 244, 1)',
+    [ButtonAppearance.SECONDARY]: theme.color.mainWhite,
   };
 
   const backgroundHover = {
     [ButtonAppearance.PRIMARY]: 'rgba(189, 81, 14, 1)',
     [ButtonAppearance.UNDERLINED]: 'transparent',
-    [ButtonAppearance.SECONDARY]: 'rgba(237, 119, 47, 1)',
+    [ButtonAppearance.SECONDARY]: theme.color.mainOrange,
   };
 
   const borderHover = {
@@ -108,8 +108,8 @@ const ButtonStyled = styled.button<{
 
     ['&:disabled']: {
       cursor: 'auto',
-      backgroundColor: 'rgba(183, 183, 185, 1)',
-      color: 'rgba(28, 27, 32, 1)',
+      backgroundColor: theme.color.disabled,
+      color: theme.color.background,
     },
   };
 });

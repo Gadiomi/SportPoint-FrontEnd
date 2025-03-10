@@ -10,6 +10,7 @@ const colorsLight = {
   writing: '#C78719',
   success: '#7EA511',
   error: '#C74719',
+  disabled: '#b7b7b9',
 };
 
 const colorsDark = {
@@ -24,6 +25,7 @@ const colorsDark = {
   writing: '#C78719',
   success: '#7EA511',
   error: '#C74719',
+  disabled: '#b7b7b9',
 };
 
 export { colorsLight, colorsDark };

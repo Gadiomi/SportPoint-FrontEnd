@@ -10,6 +10,7 @@ type colorsMap = {
   writing: string;
   success: string;
   error: string;
+  disabled: string;
 };
 
 type fontsMap = {
