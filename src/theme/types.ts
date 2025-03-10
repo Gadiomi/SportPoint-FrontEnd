@@ -4,7 +4,12 @@ type colorsMap = {
 };
 
 type fontsMap = {
-  mainTypography: string;
+  [key: string]: {
+    fontFamily: string;
+    fontWeight: string;
+    fontSize: string;
+    lineHeight?: string;
+  };
 };
 
 type pxsMap = {
