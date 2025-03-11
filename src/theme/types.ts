@@ -56,6 +56,10 @@ type mediaRulesMap = {
 
 type transitionsMap = {
   base: string;
+  hover: string;
+  focus: string;
+  active: string;
+  rotate: string;
 };
 
 type themeType = {
