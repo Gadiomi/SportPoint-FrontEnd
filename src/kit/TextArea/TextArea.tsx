@@ -31,15 +31,12 @@ export function TextArea({
   );
 }
 const TextAreaContainer = styled.div(({ theme }) => ({
-  marginTop: '30px',
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
-  width: '296px',
-  height: '125px',
   background: theme.color.background,
   border: `1px solid ${theme.color.secWhite}`,
-  borderRadius: '6px',
+  borderRadius: theme.pxs.x1_5,
   padding: theme.pxs.x2,
 
   [theme.mediaRules.up(768)]: {},
@@ -60,14 +57,14 @@ const StyledTextArea = styled.textarea(({ theme }) => ({
     color: theme.color.secWhite,
   },
   '::-webkit-scrollbar': {
-    width: '6px',
+    width: theme.pxs.x1_5,
   },
   '::-webkit-scrollbar-track': {
     background: 'transparent',
   },
   '::-webkit-scrollbar-thumb': {
     background: theme.color.secWhite,
-    borderRadius: '4px',
+    borderRadius: theme.pxs.x1,
   },
   '::-webkit-scrollbar-thumb:hover': {
     background: theme.color.white,
