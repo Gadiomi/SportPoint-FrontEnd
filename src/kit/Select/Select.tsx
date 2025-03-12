@@ -1,6 +1,5 @@
 import React from 'react';
 import Select, { ActionMeta, StylesConfig } from 'react-select';
-import styled from 'styled-components';
 import { useTheme } from 'styled-components';
 
 interface OptionType {
