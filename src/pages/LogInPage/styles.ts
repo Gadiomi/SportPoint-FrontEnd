@@ -71,8 +71,8 @@ export const PasswordBlock = styled.div`
   position: relative;
   & div {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 11px;
+    right: 6px;
     cursor: pointer;
   }
 `;
