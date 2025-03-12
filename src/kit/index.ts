@@ -20,3 +20,4 @@ export {
   LineHeights,
   FontFamily,
 } from './Typography/constants';
+export { Input } from './Input/Input';
