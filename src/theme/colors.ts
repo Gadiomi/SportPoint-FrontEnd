@@ -1,5 +1,5 @@
 const colorsLight = {
-  background: '#F8F7F4',
+  background: '#1C1B20',
   mainOrange: '#ED772F',
   mainWhite: '#F8F7F4',
   mainBlue: '#294487',
