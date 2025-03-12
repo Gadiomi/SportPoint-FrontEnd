@@ -70,16 +70,22 @@ import { TabType } from './constants';
 import styled from 'styled-components';
 import { Tabs } from '@/kit';
 
+const TabsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const TabsHeader = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-bottom: 12px;
+  margin-bottom: ${({ theme }) => `${theme.pxs.x3}px`};
 `;
 
 const TabsContent = styled.div`
-  padding: 12px 12px 20px 12px;
-  font-size: 12px;
-  color: #b7b7b9;
+  padding: ${({ theme }) =>
+    `${theme.pxs.x3}px ${theme.pxs.x3}px ${theme.pxs.x5}px ${theme.pxs.x3}px`};
+  ${({ theme }) => theme.fonts.lightManrope};
+  color: ${({ theme }) => theme.color.secWhite};
 `;
 
 function renderTabs(
@@ -98,9 +104,9 @@ function renderTabs(
 function renderContent(activeTab: number) {
   return activeTab === 0 ? (
     <div>Content for Tab 1</div>
-  ) : (
+  ) : activeTab === 1 ? (
     <div>Content for Tab 2</div>
-  ): (
+  ) : (
     <div>Content for Tab 3</div>
   );
 }
