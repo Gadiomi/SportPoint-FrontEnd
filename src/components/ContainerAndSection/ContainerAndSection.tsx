@@ -19,21 +19,16 @@ export const Section: React.FC<SectionProps> = ({ children, padding }) => {
 
 const StyledContainer = styled.div<{ maxWidth?: string }>(
   ({ theme, maxWidth }) => {
-    const defaultWidths = {
-      base: '375px',
-      md: '768px',
-      lg: '1024px',
-    };
     return {
       width: '100%',
-      maxWidth: maxWidth || defaultWidths.base,
+      maxWidth: maxWidth || theme.breakpoints.mobile,
       margin: '0 auto',
       background: theme.color.background,
       [theme.mediaRules.up(768)]: {
-        maxWidth: maxWidth || defaultWidths.md,
+        maxWidth: maxWidth || theme.breakpoints.tablet,
       },
       [theme.mediaRules.up(1440)]: {
-        maxWidth: maxWidth || defaultWidths.lg,
+        maxWidth: maxWidth || theme.breakpoints.desktop,
       },
     };
   },
