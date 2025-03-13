@@ -1,0 +1,1 @@
+export { InputWithoutMultiselect } from './InputWithoutMultiselect';
