@@ -3,17 +3,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogInFormSchema } from '@/constants/validationSchemas/auth';
 import { useTranslation } from 'react-i18next';
-import {
-  ErrorMessage,
-  LogInForm,
-  PageTitle,
-  PasswordBlock,
-  SubmitButton,
-} from './styles';
+import { ErrorMessage, LogInForm, PageTitle, PasswordBlock } from './styles';
 import { Button, Icon, IconName } from '@/kit';
 
 import axios from 'axios';
-import Loader from './Loader';
+import { Loader } from '@/kit/Loader';
 // import { ToolTip } from '@/kit/tooltip';
 
 type logInFormInputs = {
@@ -42,7 +36,7 @@ const LogInPage: FC = () => {
   });
 
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
-  // --- *** ---
+  // --- * TEMP!!! for testing! ** ---
   const BASE_URL = 'https://sportpoint-backend.onrender.com/';
 
   const axiosPublic = axios.create({
@@ -71,7 +65,7 @@ const LogInPage: FC = () => {
       //   setIsAuth(true);
       reset();
       // setLoginError(false);
-      // router.push('/prices');
+      // router.push('/home');
     } else {
       // setLoginError(true);
       console.log('SignUp Error!');
@@ -142,7 +136,6 @@ const LogInPage: FC = () => {
               autoComplete="confirm-password"
             />
             <div onClick={toggleVisibilityPassword}>
-              {/* {isVisiblePassword ? 'O' : 'I'} */}
               <Icon
                 name={
                   isVisiblePassword ? IconName.EYE_OPEN : IconName.EYE_CLOSE
