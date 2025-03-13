@@ -10,9 +10,10 @@ import {
   PasswordBlock,
   SubmitButton,
 } from './styles';
-import { Icon, IconName } from '@/kit';
+import { Button, Icon, IconName } from '@/kit';
 
 import axios from 'axios';
+import Loader from './Loader';
 // import { ToolTip } from '@/kit/tooltip';
 
 type logInFormInputs = {
@@ -153,7 +154,16 @@ const LogInPage: FC = () => {
           <ErrorMessage>{errors?.password?.message}</ErrorMessage>
         </label>
 
-        <SubmitButton type="submit">{t('signup')}</SubmitButton>
+        {/* <SubmitButton type="submit">{t('signup')}</SubmitButton> */}
+        <Button
+          title={t('signup')}
+          type={'submit'}
+          testId={'b_signup'}
+          appendChild={
+            <Loader size={'16px'} stroke={'#f0f0f0'} strokeWidth={'1'} />
+          }
+          textStyle={{ ['marginRight']: '8px' }}
+        />
       </LogInForm>
       {/* <ToolTip /> */}
     </div>
