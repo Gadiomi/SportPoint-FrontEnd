@@ -8,7 +8,7 @@ interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
   appearance?: RadioAppearance;
 }
 
-export const customRadioButton: React.FC<RadioProps> = ({
+export const СustomRadioButton: React.FC<RadioProps> = ({
   label,
   appearance = RadioAppearance.DEFAULT,
   ...props
