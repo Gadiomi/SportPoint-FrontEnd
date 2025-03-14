@@ -19,16 +19,17 @@ export const Section: React.FC<SectionProps> = ({ children, padding }) => {
 
 const StyledContainer = styled.div<{ maxWidth?: string }>(
   ({ theme, maxWidth }) => {
+    const defaultWidths = { base: '375px', md: '768px', lg: '1024px' };
     return {
       width: '100%',
-      maxWidth: maxWidth || theme.breakpoints.mobile,
+      maxWidth: maxWidth || defaultWidths.base,
       margin: '0 auto',
       background: theme.color.background,
-      [theme.mediaRules.up(768)]: {
-        maxWidth: maxWidth || theme.breakpoints.tablet,
+      [theme.mediaRules.up(theme.breakpoints.tablet)]: {
+        maxWidth: maxWidth || defaultWidths.md,
       },
-      [theme.mediaRules.up(1440)]: {
-        maxWidth: maxWidth || theme.breakpoints.desktop,
+      [theme.mediaRules.up(theme.breakpoints.desktop)]: {
+        maxWidth: maxWidth || defaultWidths.lg,
       },
     };
   },
@@ -38,10 +39,10 @@ const StyledSection = styled.div<{ padding?: string }>(
   ({ theme, padding }) => ({
     width: '100%',
     padding: padding || theme.pxs.x2,
-    [theme.mediaRules.up(768)]: {
+    [theme.mediaRules.up(theme.breakpoints.tablet)]: {
       padding: padding || theme.pxs.x4,
     },
-    [theme.mediaRules.up(1440)]: {
+    [theme.mediaRules.up(theme.breakpoints.desktop)]: {
       padding: padding || theme.pxs.x6,
     },
   }),
