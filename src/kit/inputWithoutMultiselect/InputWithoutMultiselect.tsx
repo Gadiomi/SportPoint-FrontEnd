@@ -1,44 +1,37 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
-interface InputProps {
-  label: string;
-}
+export const FileUpload: React.FC = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-export const InputWithoutMultiselect: React.FC<InputProps> = ({ label }) => {
-  // Локальний стан для зберігання значення введеного в input
-  const [inputValue, setInputValue] = useState<string>('');
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
 
-  // Обробник зміни значення input
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      console.log('Selected file:', event.target.files[0]);
+    }
   };
 
   return (
-    <div>
-      <label>{label}</label>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleChange}
-        placeholder="Enter text"
-      />
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <div className="relative">
+        <button
+          onClick={handleClick}
+          className="w-20 h-20 border-2 border-orange-500 rounded-full flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition"
+        >
+          +
+        </button>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+          multiple={false}
+        />
+      </div>
     </div>
   );
 };
 
-export default InputWithoutMultiselect;
-
-// src/App.tsx
-// import React from "react";
-// import Input from "./components/Input";
-
-// const App: React.FC = () => {
-//   return (
-//     <div>
-//       <h1>Input Component Example without Redux</h1>
-//       <Input label="Your Input" />
-//     </div>
-//   );
-// };
-
-// export default App;
+export default FileUpload;

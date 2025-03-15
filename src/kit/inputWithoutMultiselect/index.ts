@@ -1,1 +1,1 @@
-export { InputWithoutMultiselect } from './InputWithoutMultiselect';
+export { FileUpload } from './InputWithoutMultiselect';
