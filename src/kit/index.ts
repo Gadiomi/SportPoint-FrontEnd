@@ -1,5 +1,5 @@
 export { Icon, IconName } from './Icon';
-export { Button } from './Button/Button';
+export { Button, ButtonAppearance } from './Button';
 export { Modal } from './Modal/Modal';
 export {
   Title,

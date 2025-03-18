@@ -1,5 +1,21 @@
 {
   "welcome": "Welcome",
   "login": "Login",
-  "signup": "Register user"
+  "signup": "Sign Up",
+  "login_page": {
+    "title": "Create an Account",
+    "description": "Select your role to get started",
+    "tabs": { "admin": "Administrator", "coach": "Coach", "client": "Client" },
+    "already_have": "Already have an account?",
+    "button_title": "Log In",
+    "form": {
+      "email": "Email",
+      "password": "Password",
+      "submit_button": "Log In"
+    },
+    "forgott_pass": "Forgot password?",
+    "forgott_button": "Recover",
+    "signup_google": "Sign Up with Google",
+    "signup_facebook": "Sign Up with Facebook"
+  }
 }
