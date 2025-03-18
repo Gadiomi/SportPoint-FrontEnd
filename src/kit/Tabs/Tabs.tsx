@@ -7,9 +7,18 @@ interface TabsProps {
     activeTab: number,
   ) => React.ReactNode;
   renderContent: (activeTab: number) => React.ReactNode;
+  tabsWrapperStyles?: React.CSSProperties;
+  tabsHeaderStyles?: React.CSSProperties;
+  tabsContentStyles?: React.CSSProperties;
 }
 
-export function Tabs({ renderTabs, renderContent }: TabsProps) {
+export function Tabs({
+  renderTabs,
+  renderContent,
+  tabsWrapperStyles,
+  tabsContentStyles,
+  tabsHeaderStyles,
+}: TabsProps) {
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabClick = (index: number) => {
@@ -17,9 +26,13 @@ export function Tabs({ renderTabs, renderContent }: TabsProps) {
   };
 
   return (
-    <TabsContainer>
-      <TabsHeader>{renderTabs(handleTabClick, activeTab)}</TabsHeader>
-      <TabsContent>{renderContent(activeTab)}</TabsContent>
+    <TabsContainer style={tabsWrapperStyles}>
+      <TabsHeader style={tabsHeaderStyles}>
+        {renderTabs(handleTabClick, activeTab)}
+      </TabsHeader>
+      <TabsContent style={tabsContentStyles}>
+        {renderContent(activeTab)}
+      </TabsContent>
     </TabsContainer>
   );
 }

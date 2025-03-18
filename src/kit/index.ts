@@ -21,3 +21,5 @@ export {
   FontFamily,
 } from './Typography/constants';
 export { Input } from './Input/Input';
+export { Loader } from './Loader';
+export { Tabs } from './Tabs';
