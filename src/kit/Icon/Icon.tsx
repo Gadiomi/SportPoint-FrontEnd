@@ -20,7 +20,16 @@ export const Icon = React.memo(
     const iconLink = `/assets/svg/symbol-defs.svg#${name}`;
 
     return (
-      <svg height={size || height} width={size || width} color={color}>
+      <svg
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        height={size || height}
+        width={size || width}
+        color={color}
+      >
         {React.createElement('use', {
           href: iconLink,
           xlinkHref: iconLink,

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   testId: string;
   value: string;
-  errorMessage: string | null;
+  errorMessage?: string;
   label?: string;
   appendChild?: React.ReactNode;
   containerStyles?: React.CSSProperties;
@@ -146,7 +146,7 @@ const PlaceholderLabel = styled.label<{
     position: 'absolute',
     top: $isFocused || $hasValue ? '0' : '50%',
     left: theme.pxs.x2,
-    backgroundColor: 'white',
+    backgroundColor: theme.color.background,
     transform: 'translateY(-50%)',
     transition: `top ${theme.transitions.base}`,
     pointerEvents: 'none',

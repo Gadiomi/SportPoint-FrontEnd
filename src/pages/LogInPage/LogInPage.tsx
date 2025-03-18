@@ -1,19 +1,20 @@
-import { FC, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import React, { FC, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LogInFormSchema } from '@/constants/validationSchemas/auth';
-import { useTranslation } from 'react-i18next';
-import { ErrorMessage, LogInForm, PageTitle, PasswordBlock } from './styles';
-import { Button, Icon, IconName } from '@/kit';
+
+import { Button, Icon, IconName, Input, Loader, ButtonAppearance } from '@/kit';
 
 import axios from 'axios';
-import { Loader } from '@/kit/Loader';
-// import { ToolTip } from '@/kit/tooltip';
+
+import { Container, Section } from '@/components/ContainerAndSection';
+import { useTheme } from '@/hooks';
 
 type logInFormInputs = {
   email: string;
   password: string;
-  confirm_password: string;
 };
 
 type TsignUpData = {
@@ -22,17 +23,26 @@ type TsignUpData = {
   role: string;
 };
 
+enum Roles {
+  ADMIN = 'admin',
+  COACH = 'coach',
+  CLIENT = 'client',
+}
+
 const LogInPage: FC = () => {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const [currentRole, setCurrentRole] = React.useState(Roles.CLIENT);
 
   const {
-    register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { isValid, isSubmitting },
+    control,
   } = useForm<logInFormInputs>({
     resolver: yupResolver(LogInFormSchema),
-    defaultValues: { email: '', password: '', confirm_password: '' },
+    defaultValues: { email: '', password: '' },
+    mode: 'onChange',
   });
 
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
@@ -90,77 +100,177 @@ const LogInPage: FC = () => {
   };
 
   return (
-    <div className="">
-      <PageTitle>Створити акаунт</PageTitle>
-      <LogInForm onSubmit={handleSubmit(onSubmitForm)}>
-        <label>
-          Email
-          <input
-            className=""
-            placeholder="Email"
-            autoFocus
-            {...register('email', { required: true })}
-            autoComplete="example@i.ua"
+    <Section>
+      <Container maxWidth="320px">
+        <Image src="/assets/images/logo@1.png" />
+        <TextWrapper>
+          <Title>{t('login_page.title')}</Title>
+          <Text>{t('login_page.description')}</Text>
+        </TextWrapper>
+        <TabsWrapper>
+          {Object.values(Roles).map(role => (
+            <Button
+              key={role}
+              title={t(`login_page.tabs.${role}`)}
+              testId={role}
+              onClick={() => {
+                setCurrentRole(role);
+              }}
+              {...(currentRole !== role
+                ? { style: { backgroundColor: theme.color.inputBar } }
+                : {})}
+            />
+          ))}
+        </TabsWrapper>
+        <Form onSubmit={handleSubmit(onSubmitForm)}>
+          <Controller
+            name={'email'}
+            control={control}
+            render={({ field, fieldState }) => {
+              console.log('fieldState', fieldState);
+              return (
+                <Input
+                  {...field}
+                  label={t('login_page.form.email')}
+                  testId="login_page.form.email"
+                  errorMessage={fieldState.error?.message}
+                  containerStyles={{ marginBottom: theme.pxs.x2 }}
+                />
+              );
+            }}
           />
-          <ErrorMessage>{errors?.email?.message}</ErrorMessage>
-        </label>
-        <label>
-          Пароль
-          <PasswordBlock>
-            <input
-              className=""
-              type={isVisiblePassword ? 'text' : 'password'}
-              placeholder="Пароль"
-              {...register('password', { required: true })}
-              autoComplete="current-password"
+          <Controller
+            name={'password'}
+            control={control}
+            render={({ field, fieldState }) => {
+              return (
+                <Input
+                  {...field}
+                  label={t('login_page.form.password')}
+                  testId="login_page.form.password"
+                  errorMessage={fieldState.error?.message}
+                  containerStyles={{ marginBottom: theme.pxs.x9 }}
+                  type={isVisiblePassword ? 'text' : 'password'}
+                  appendChild={
+                    <div
+                      onClick={toggleVisibilityPassword}
+                      style={{ paddingRight: theme.pxs.x1 }}
+                    >
+                      {isVisiblePassword ? (
+                        <Icon color="currentColor" name={IconName.EYE_CLOSE} />
+                      ) : (
+                        <Icon color="currentColor" name={IconName.EYE_OPEN} />
+                      )}
+                    </div>
+                  }
+                />
+              );
+            }}
+          />
+          <CallToActionWrapper style={{ marginBottom: theme.pxs.x12 }}>
+            <Text>{t('login_page.forgott_pass')}</Text>
+            <Button
+              testId="login_page.forgott_button"
+              title={t('login_page.forgott_button')}
+              appearance={ButtonAppearance.UNDERLINED}
             />
-            <div onClick={toggleVisibilityPassword}>
-              <Icon
-                name={
-                  isVisiblePassword ? IconName.EYE_OPEN : IconName.EYE_CLOSE
-                }
-                color={'rgba(18,20,23,0.1)'}
-              />
-            </div>
-          </PasswordBlock>
-          <ErrorMessage>{errors?.password?.message}</ErrorMessage>
-        </label>
-        <label>
-          Підтвердити пароль
-          <PasswordBlock>
-            <input
-              className=""
-              type={isVisiblePassword ? 'text' : 'password'}
-              placeholder="Підтвердити пароль"
-              {...register('confirm_password', { required: true })}
-              autoComplete="confirm-password"
-            />
-            <div onClick={toggleVisibilityPassword}>
-              <Icon
-                name={
-                  isVisiblePassword ? IconName.EYE_OPEN : IconName.EYE_CLOSE
-                }
-                color={'rgba(18,20,23,0.1)'}
-              />
-            </div>
-          </PasswordBlock>
-          <ErrorMessage>{errors?.password?.message}</ErrorMessage>
-        </label>
-
-        {/* <SubmitButton type="submit">{t('signup')}</SubmitButton> */}
+          </CallToActionWrapper>
+          <Button
+            testId="login_page.form.submit_button"
+            title={t('login_page.form.submit_button')}
+            type="submit"
+            style={{ width: '100%' }}
+            disabled={!isValid}
+            appendChild={
+              isSubmitting && (
+                <Loader size={'16px'} stroke={'#f0f0f0'} strokeWidth={'1'} />
+              )
+            }
+          />
+        </Form>
         <Button
-          title={t('signup')}
-          type={'submit'}
-          testId={'b_signup'}
+          testId="login_page.signup_google"
+          title={t('login_page.signup_google')}
+          appearance={ButtonAppearance.SECONDARY}
+          style={{
+            width: '100%',
+            borderColor: theme.color.mainOrange,
+            marginBottom: theme.pxs.x2,
+          }}
           appendChild={
-            <Loader size={'16px'} stroke={'#f0f0f0'} strokeWidth={'1'} />
+            <img
+              style={{ width: 24, height: 24, marginLeft: theme.pxs.x2 }}
+              src="/assets/images/icon_google.png"
+            />
           }
-          textStyle={{ ['marginRight']: '8px' }}
         />
-      </LogInForm>
-      {/* <ToolTip /> */}
-    </div>
+        <Button
+          testId="login_page.signup_facebook"
+          title={t('login_page.signup_facebook')}
+          appearance={ButtonAppearance.SECONDARY}
+          style={{
+            width: '100%',
+            borderColor: theme.color.mainOrange,
+            marginBottom: theme.pxs.x6,
+          }}
+          appendChild={
+            <img
+              style={{ width: 24, height: 24, marginLeft: theme.pxs.x2 }}
+              src="/assets/images/icon_facebook.png"
+            />
+          }
+        />
+        <CallToActionWrapper>
+          <Text>{t('login_page.already_have')}</Text>
+          <Button
+            testId="login_page.already_have"
+            title={t('login_page.button_title')}
+            appearance={ButtonAppearance.UNDERLINED}
+          />
+        </CallToActionWrapper>
+      </Container>
+    </Section>
   );
 };
 
 export default LogInPage;
+
+const Image = styled.img(({ theme }) => ({
+  margin: 'auto',
+  marginBottom: theme.pxs.x5,
+}));
+
+const TextWrapper = styled.div(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.pxs.x2,
+  marginBottom: theme.pxs.x3,
+}));
+
+const Title = styled.h2(({ theme }) => ({
+  ...theme.fonts.secondTitle,
+  color: theme.color.mainWhite,
+}));
+
+const Text = styled.p(({ theme }) => ({
+  ...theme.fonts.lightManrope,
+
+  color: theme.color.secWhite,
+}));
+
+const TabsWrapper = styled.div(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr 1fr',
+  gap: theme.pxs.x1_5,
+  marginBottom: theme.pxs.x4,
+}));
+
+const CallToActionWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+const Form = styled.form(({ theme }) => ({
+  marginBottom: theme.pxs.x6,
+}));

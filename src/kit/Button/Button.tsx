@@ -38,7 +38,6 @@ export function Button({
   );
 }
 
-// TODO: use theme parameters for the component instead of example values
 const ButtonStyled = styled.button<{
   disabled?: boolean;
   appearance: ButtonAppearance;
@@ -61,9 +60,9 @@ const ButtonStyled = styled.button<{
   };
 
   const border = {
-    [ButtonAppearance.PRIMARY]: '1px solid transparent',
-    [ButtonAppearance.UNDERLINED]: '1px solid transparent',
-    [ButtonAppearance.SECONDARY]: `1px solid ${theme.color.darkGray}`,
+    [ButtonAppearance.PRIMARY]: '0.5px solid transparent',
+    [ButtonAppearance.UNDERLINED]: '0.5px solid transparent',
+    [ButtonAppearance.SECONDARY]: `0.5px solid ${theme.color.darkGray}`,
   };
 
   const colorHover = {
@@ -79,9 +78,9 @@ const ButtonStyled = styled.button<{
   };
 
   const borderHover = {
-    [ButtonAppearance.PRIMARY]: '1px solid transparent',
-    [ButtonAppearance.UNDERLINED]: '1px solid transparent',
-    [ButtonAppearance.SECONDARY]: '1px solid transparent',
+    [ButtonAppearance.PRIMARY]: '0.5px solid transparent',
+    [ButtonAppearance.UNDERLINED]: '0.5px solid transparent',
+    [ButtonAppearance.SECONDARY]: '0.5px solid transparent',
   };
 
   const transitionElements = ['background-color', 'color'];

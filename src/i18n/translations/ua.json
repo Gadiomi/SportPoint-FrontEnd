@@ -1,5 +1,21 @@
 {
   "welcome": "Ласкаво просимо",
   "login": "Увійти",
-  "signup": "Зареєструватись"
+  "signup": "Зареєструватись",
+  "login_page": {
+    "title": "Створити акаунт",
+    "description": "Виберіть свою роль, щоб розпочати",
+    "tabs": { "admin": "Адміністратор", "coach": "Тренер", "client": "Клієнт" },
+    "already_have": "Вже маєте акаунт?",
+    "button_title": "Увійти",
+    "form": {
+      "email": "Email",
+      "password": "Пароль",
+      "submit_button": "Увійти"
+    },
+    "forgott_pass": "Забули пароль?",
+    "forgott_button": "Відновити",
+    "signup_google": "Зареєструватись через Google",
+    "signup_facebook": "Зареєструватись через Facebook"
+  }
 }
