@@ -4,17 +4,35 @@ import styled from 'styled-components';
 interface ContainerProps {
   children: React.ReactNode;
   maxWidth?: string;
+  styles?: React.CSSProperties;
 }
 interface SectionProps {
   children: React.ReactNode;
   padding?: string;
+  styles?: React.CSSProperties;
 }
 
-export const Container: React.FC<ContainerProps> = ({ children, maxWidth }) => {
-  return <StyledContainer maxWidth={maxWidth}>{children}</StyledContainer>;
+export const Container: React.FC<ContainerProps> = ({
+  children,
+  maxWidth,
+  styles,
+}) => {
+  return (
+    <StyledContainer style={styles} maxWidth={maxWidth}>
+      {children}
+    </StyledContainer>
+  );
 };
-export const Section: React.FC<SectionProps> = ({ children, padding }) => {
-  return <StyledSection padding={padding}>{children}</StyledSection>;
+export const Section: React.FC<SectionProps> = ({
+  children,
+  padding,
+  styles,
+}) => {
+  return (
+    <StyledSection style={styles} padding={padding}>
+      {children}
+    </StyledSection>
+  );
 };
 
 const StyledContainer = styled.div<{ maxWidth?: string }>(
@@ -24,7 +42,6 @@ const StyledContainer = styled.div<{ maxWidth?: string }>(
       width: '100%',
       maxWidth: maxWidth || defaultWidths.base,
       margin: '0 auto',
-      background: theme.color.background,
       [theme.mediaRules.up(theme.breakpoints.tablet)]: {
         maxWidth: maxWidth || defaultWidths.md,
       },
@@ -39,6 +56,8 @@ const StyledSection = styled.div<{ padding?: string }>(
   ({ theme, padding }) => ({
     width: '100%',
     padding: padding || theme.pxs.x2,
+    background: theme.color.background,
+
     [theme.mediaRules.up(theme.breakpoints.tablet)]: {
       padding: padding || theme.pxs.x4,
     },
