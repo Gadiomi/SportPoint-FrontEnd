@@ -64,7 +64,7 @@ img {
 }
 
 svg {
-    fill: none;
+
     stroke: var(--main);
 }
 

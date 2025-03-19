@@ -1,10 +1,12 @@
+import { Section } from '@/components/ContainerAndSection';
 import css from './HomePage.module.css';
+import { Logo } from '@/components/Logo/Logo';
 
 const HomePage = () => {
   return (
-    <div className={css.section}>
-      <h1>Home</h1>
-    </div>
+    <Section>
+      <Logo />
+    </Section>
   );
 };
 

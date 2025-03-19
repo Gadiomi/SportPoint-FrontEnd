@@ -1,42 +1,35 @@
 import React from 'react';
 import { IconName } from './constants';
-
+import styled from 'styled-components';
 export interface IconProps {
   name: IconName;
-  color?: string;
+
   width?: string;
   height?: string;
   size?: string | number;
+  styles?: React.CSSProperties;
 }
 
 export const Icon = React.memo(
-  ({
-    name,
-    color = 'black',
-    height = '30px',
-    width = '30px',
-    size,
-  }: IconProps) => {
+  ({ name, height = '24px', width = '24px', size, styles }: IconProps) => {
     const iconLink = `/assets/svg/symbol-defs.svg#${name}`;
 
     return (
-      <svg
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        height={size || height}
-        width={size || width}
-        color={color}
-      >
+      <StyledIcon style={styles} height={size || height} width={size || width}>
         {React.createElement('use', {
           href: iconLink,
           xlinkHref: iconLink,
         })}
-      </svg>
+      </StyledIcon>
     );
   },
 );
+
+const StyledIcon = styled.svg(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fill: theme.color.white,
+}));
 
 Icon.displayName = 'Icon';

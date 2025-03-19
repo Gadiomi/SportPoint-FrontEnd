@@ -42,6 +42,11 @@ const StyledContainer = styled.div<{ maxWidth?: string }>(
       width: '100%',
       maxWidth: maxWidth || defaultWidths.base,
       margin: '0 auto',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: theme.color.white,
       [theme.mediaRules.up(theme.breakpoints.tablet)]: {
         maxWidth: maxWidth || defaultWidths.md,
       },
@@ -54,8 +59,9 @@ const StyledContainer = styled.div<{ maxWidth?: string }>(
 
 const StyledSection = styled.div<{ padding?: string }>(
   ({ theme, padding }) => ({
-    width: '100%',
-    padding: padding || theme.pxs.x2,
+    width: '100vw',
+    margin: '0 auto',
+    padding: padding || `${theme.pxs.x0}px ${theme.pxs.x3}px`,
     background: theme.color.background,
 
     [theme.mediaRules.up(theme.breakpoints.tablet)]: {
