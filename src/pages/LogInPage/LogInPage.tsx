@@ -157,9 +157,15 @@ const LogInPage: FC = () => {
                       style={{ paddingRight: theme.pxs.x1 }}
                     >
                       {isVisiblePassword ? (
-                        <Icon color="currentColor" name={IconName.EYE_CLOSE} />
+                        <Icon
+                          styles={{ color: 'currentColor' }}
+                          name={IconName.EYE_CLOSE}
+                        />
                       ) : (
-                        <Icon color="currentColor" name={IconName.EYE_OPEN} />
+                        <Icon
+                          styles={{ color: 'currentColor' }}
+                          name={IconName.EYE_OPEN}
+                        />
                       )}
                     </div>
                   }
