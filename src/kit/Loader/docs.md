@@ -13,9 +13,15 @@ import { Loader } from './Loader';
 
 function App() {
   return (
-    <div>
-      <Loader size="50px" stroke="blue" strokeWidth="3" />
-    </div>
+    <Button
+      title={t('signup')}
+      type={'submit'}
+      testId={'b_signup'}
+      appendChild={
+        <Loader size={'16px'} stroke={'#f0f0f0'} strokeWidth={'1'} />
+      }
+      textStyle={{ ['marginRight']: '8px' }}
+    />
   );
 }
 ```

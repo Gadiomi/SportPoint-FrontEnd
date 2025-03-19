@@ -1,8 +1,6 @@
-import css from './RegisterPage.module.css';
-
 const RegisterPage = () => {
   return (
-    <div className={css.section}>
+    <div className="">
       <h1>Register Page</h1>
     </div>
   );
