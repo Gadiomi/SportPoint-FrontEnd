@@ -17,5 +17,8 @@
     "forgott_button": "Recover",
     "signup_google": "Sign Up with Google",
     "signup_facebook": "Sign Up with Facebook"
+  },
+  "details_page": {
+    "edit_button": "Edit"
   }
 }

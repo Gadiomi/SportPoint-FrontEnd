@@ -18,9 +18,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/details" element={<Details />} />
         <Route element={<PrivateRoute />}>
           <Route path="/account" element={<Account />} />
-          <Route path="/details" element={<Details />} />
           <Route path="/favorites" element={<Favorites />} />
         </Route>
       </Routes>
