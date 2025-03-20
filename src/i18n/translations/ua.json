@@ -5,7 +5,7 @@
   "login_page": {
     "title": "Створити акаунт",
     "description": "Виберіть свою роль, щоб розпочати",
-    "tabs": { "admin": "Адміністратор", "coach": "Тренер", "client": "Клієнт" },
+    "tabs": { "adminClub": "Адміністратор", "coach": "Тренер", "costumer": "Клієнт" },
     "already_have": "Вже маєте акаунт?",
     "button_title": "Увійти",
     "form": {

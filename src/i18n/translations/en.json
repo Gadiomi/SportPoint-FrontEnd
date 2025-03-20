@@ -5,7 +5,7 @@
   "login_page": {
     "title": "Create an Account",
     "description": "Select your role to get started",
-    "tabs": { "admin": "Administrator", "coach": "Coach", "client": "Client" },
+    "tabs": { "adminClub": "Administrator", "coach": "Coach", "costumer": "Client" },
     "already_have": "Already have an account?",
     "button_title": "Log In",
     "form": {

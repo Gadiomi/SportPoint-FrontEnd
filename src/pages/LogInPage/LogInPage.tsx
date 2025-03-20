@@ -24,15 +24,15 @@ type TsignUpData = {
 };
 
 enum Roles {
-  ADMIN = 'admin',
+  ADMIN_CLUB = 'adminClub',
   COACH = 'coach',
-  CLIENT = 'client',
+  COSTUMER = 'costumer',
 }
 
 const LogInPage: FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
-  const [currentRole, setCurrentRole] = React.useState(Roles.CLIENT);
+  const [currentRole, setCurrentRole] = React.useState(Roles.COSTUMER);
 
   const {
     handleSubmit,
@@ -127,7 +127,6 @@ const LogInPage: FC = () => {
             name={'email'}
             control={control}
             render={({ field, fieldState }) => {
-              console.log('fieldState', fieldState);
               return (
                 <Input
                   {...field}
@@ -135,6 +134,7 @@ const LogInPage: FC = () => {
                   testId="login_page.form.email"
                   errorMessage={fieldState.error?.message}
                   containerStyles={{ marginBottom: theme.pxs.x2 }}
+                  autoFocus
                 />
               );
             }}
