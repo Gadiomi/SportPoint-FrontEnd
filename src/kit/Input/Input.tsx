@@ -28,6 +28,7 @@ export function Input({
   errorTextStyles,
   disabled,
   invalid,
+  name,
   ...rest
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
@@ -45,8 +46,8 @@ export function Input({
         style={inputStyles}
         data-test-id={testId}
         type={type}
-        id="fname"
-        name="fname"
+        id={name}
+        name={name}
         autoComplete="off"
         value={value}
         onFocus={e => {

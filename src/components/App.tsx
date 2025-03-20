@@ -21,7 +21,6 @@ function App() {
         <Route path="/favorites" element={<Favorites />} /> //Temp!!!
         <Route element={<PrivateRoute />}>
           <Route path="/account" element={<Account />} />
-          <Route path="/details" element={<Details />} />
           <Route path="/favorites" element={<Favorites />} />
         </Route>
       </Routes>
