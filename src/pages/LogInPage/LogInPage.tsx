@@ -11,6 +11,7 @@ import axios from 'axios';
 
 import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
+import { Roles } from '@/constants';
 
 type logInFormInputs = {
   email: string;
@@ -23,16 +24,11 @@ type TsignUpData = {
   role: string;
 };
 
-enum Roles {
-  ADMIN_CLUB = 'adminClub',
-  COACH = 'coach',
-  COSTUMER = 'costumer',
-}
-
 const LogInPage: FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const [currentRole, setCurrentRole] = React.useState(Roles.COSTUMER);
+  const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
 
   const {
     handleSubmit,
@@ -45,7 +41,6 @@ const LogInPage: FC = () => {
     mode: 'onChange',
   });
 
-  const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
   // --- * TEMP!!! for testing! ** ---
   const BASE_URL = 'https://sportpoint-backend.onrender.com/';
 
@@ -102,7 +97,11 @@ const LogInPage: FC = () => {
   return (
     <Section>
       <Container maxWidth="320px">
-        <Image src="/assets/images/logo@1.png" />
+        <Image
+          srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
+          src="/public/assets/images/logo@1.png"
+          alt="Logo"
+        />
         <TextWrapper>
           <Title>{t('login_page.title')}</Title>
           <Text>{t('login_page.description')}</Text>
@@ -253,6 +252,7 @@ export default LogInPage;
 const Image = styled.img(({ theme }) => ({
   margin: 'auto',
   marginBottom: theme.pxs.x5,
+  marginTop: theme.pxs.x2,
 }));
 
 const TextWrapper = styled.div(({ theme }) => ({
@@ -288,4 +288,5 @@ const CallToActionWrapper = styled.div({
 
 const Form = styled.form(({ theme }) => ({
   marginBottom: theme.pxs.x6,
+  width: '100%',
 }));
