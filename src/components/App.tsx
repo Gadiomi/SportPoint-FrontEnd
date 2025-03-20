@@ -19,10 +19,10 @@ function App() {
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/details" element={<Details />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/account" element={<Account />} />
-          <Route path="/favorites" element={<Favorites />} />
-        </Route>
+        {/* <Route element={<PrivateRoute />}> */}
+        <Route path="/account" element={<Account />} />
+        <Route path="/favorites" element={<Favorites />} />
+        {/* </Route> */}
       </Routes>
       <ToastProvider />
     </Suspense>
