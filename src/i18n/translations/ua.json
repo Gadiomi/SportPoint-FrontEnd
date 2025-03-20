@@ -17,5 +17,8 @@
     "forgott_button": "Відновити",
     "signup_google": "Зареєструватись через Google",
     "signup_facebook": "Зареєструватись через Facebook"
+  },
+  "details_page": {
+    "edit_button": "Редагувати"
   }
 }
