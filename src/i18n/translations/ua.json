@@ -20,5 +20,11 @@
   },
   "details_page": {
     "edit_button": "Редагувати"
+  },
+  "account_page": {
+    "general": "ЗАГАЛЬНЕ",
+    "change-password": "ЗМІНИТИ ПАРОЛЬ",
+    "my-reviews": "МОЇ ВІДГУКИ",
+    "favorites": "ОБРАНІ"
   }
 }

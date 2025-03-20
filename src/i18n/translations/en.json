@@ -20,5 +20,11 @@
   },
   "details_page": {
     "edit_button": "Edit"
+  },
+  "account_page": {
+    "general": "GENERAL",
+    "change-password": "CHANGE PASSWORD",
+    "my-reviews": "MY REVIEWS",
+    "favorites": "FAVORITES"
   }
 }
