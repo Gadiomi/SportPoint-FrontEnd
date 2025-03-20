@@ -149,7 +149,10 @@ const LogInPage: FC = () => {
                   label={t('login_page.form.password')}
                   testId="login_page.form.password"
                   errorMessage={fieldState.error?.message}
-                  containerStyles={{ marginBottom: theme.pxs.x9 }}
+                  containerStyles={{
+                    marginBottom: theme.pxs.x9,
+                    alignItems: 'center',
+                  }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
                     <div
@@ -158,12 +161,18 @@ const LogInPage: FC = () => {
                     >
                       {isVisiblePassword ? (
                         <Icon
-                          styles={{ color: 'currentColor' }}
+                          styles={{
+                            color: 'currentColor',
+                            fill: 'transparent',
+                          }}
                           name={IconName.EYE_CLOSE}
                         />
                       ) : (
                         <Icon
-                          styles={{ color: 'currentColor' }}
+                          styles={{
+                            color: 'currentColor',
+                            fill: 'transparent',
+                          }}
                           name={IconName.EYE_OPEN}
                         />
                       )}
