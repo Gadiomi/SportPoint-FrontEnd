@@ -1,10 +1,10 @@
-import CoachPage from './CoachPage/CoachPage';
+import { Outlet } from 'react-router-dom';
 import css from './DetailsPage.module.css';
 
 const DetailsPage = () => {
   return (
     <div className={css.section}>
-      <CoachPage />
+      <Outlet />
     </div>
   );
 };
