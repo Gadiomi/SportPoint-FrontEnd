@@ -10,11 +10,12 @@ import ContactsCard from '../components/ContactsCard/ContactsCard';
 
 import { StyledProfileCard, StyledHr, StyledButton } from './styles';
 
-const CoachPage: FC = () => {
+const AdminClubPage: FC = () => {
   const { t } = useTranslation();
 
   const countReview = 385;
-  const experience = 23;
+  const couch = 23;
+  // в БД масив, необхвдно взяти довжину
   const rating = 4.9;
 
   return (
@@ -23,10 +24,12 @@ const CoachPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
-            firstLastName="Максим Бондаренко"
+            firstLastName="Sport life"
             avatar="path/to/image.jpg"
+            address="Київ, Хрещатик, 26Л"
           />
         </StyledProfileCard>
+
         <StyledHr />
         <StyledButton
           testId="details_page.edit_button"
@@ -44,15 +47,10 @@ const CoachPage: FC = () => {
           />
         </StyledButton>
         <ReviewCard
-          iconNames={[
-            IconName.LIKE,
-            IconName.LIGHTNING_FILLED,
-            IconName.STAR_DEFAULT,
-          ]}
-          counts={[countReview, experience, rating]}
-          labels={['Відгуки', 'Досвід', 'Рейтинг']}
+          iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
+          counts={[countReview, couch, rating]}
+          labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
-        <StyledHr />
         <ContactsCard />
         <StyledHr />
       </Container>
@@ -60,4 +58,4 @@ const CoachPage: FC = () => {
   );
 };
 
-export default CoachPage;
+export default AdminClubPage;

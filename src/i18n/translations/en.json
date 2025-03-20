@@ -19,7 +19,8 @@
     "signup_facebook": "Sign Up with Facebook"
   },
   "details_page": {
-    "edit_button": "Edit"
+    "edit_button": "Edit profile",
+    "contacts_text": "CONTACTS"
   },
   "account_page": {
     "general": "GENERAL",

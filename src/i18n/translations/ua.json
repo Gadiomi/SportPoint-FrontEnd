@@ -19,7 +19,8 @@
     "signup_facebook": "Зареєструватись через Facebook"
   },
   "details_page": {
-    "edit_button": "Редагувати"
+    "edit_button": "Редагувати профіль",
+    "contacts_text": "КОНТАКТИ"
   },
   "account_page": {
     "general": "ЗАГАЛЬНЕ",
