@@ -1,10 +1,18 @@
-import css from './FavoritesPage.module.css';
+import { Container, Section } from '@/components/ContainerAndSection';
+import { LogoBox } from './styles';
 
 const FavoritesPage = () => {
   return (
-    <div className={css.section}>
-      <h1>Favorites Page</h1>
-    </div>
+    <Section>
+      <Container maxWidth="320px">
+        <LogoBox>
+          <img src="/assets/images/logo@1.png" alt="logo" />
+        </LogoBox>
+        <div className="">
+          <h1>Favorites Page</h1>
+        </div>
+      </Container>
+    </Section>
   );
 };
 

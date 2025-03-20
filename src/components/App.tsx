@@ -18,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/favorites" element={<Favorites />} /> //Temp!!!
         <Route element={<PrivateRoute />}>
           <Route path="/account" element={<Account />} />
           <Route path="/details" element={<Details />} />
