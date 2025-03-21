@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Button } from '@/kit';
 
 export const StyledProfileCard = styled.div`
-  margin-bottom: 16px;
+  margin-bottom: ${({ theme }) => `${theme.pxs.x4}px`};
 `;
 
 export const StyledHr = styled.hr`

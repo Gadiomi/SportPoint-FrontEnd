@@ -20,7 +20,11 @@
   },
   "details_page": {
     "edit_button": "Редагувати профіль",
-    "contacts_text": "КОНТАКТИ"
+    "contacts_text": "КОНТАКТИ",
+    "price": "ПРАЙС",
+    "gallery": "ГАЛЕРЕЯ",
+    "working_hours": "ГРАФІК РОБОТИ",
+    "location": "РОЗТАШУВАННЯ"
   },
   "account_page": {
     "general": "ЗАГАЛЬНЕ",
