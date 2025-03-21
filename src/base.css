@@ -66,6 +66,7 @@ img {
 svg {
 
     stroke: var(--main);
+    fill: none;
 }
 
 button {

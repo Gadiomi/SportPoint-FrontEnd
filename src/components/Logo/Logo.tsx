@@ -22,6 +22,7 @@ export const Logo: React.FC = () => {
         styles={{
           position: 'absolute',
           right: '0',
+          fill: 'white',
         }}
       />
     </Container>

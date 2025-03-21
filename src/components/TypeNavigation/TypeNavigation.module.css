@@ -1,0 +1,12 @@
+.titleBox {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.linkList {
+  margin-top: 42px;
+}
+.imgCard {
+  border-radius: 7px;
+}
