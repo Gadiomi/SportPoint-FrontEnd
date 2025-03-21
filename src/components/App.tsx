@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './PrivateRoutes';
 import { ToastProvider } from '@/hooks/Toasts/ToastProvider';
 import { PublicRouteName } from '@/routes';
+import AccountLayout from '@/pages/AccountPage/AccountLayout';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -27,8 +28,13 @@ function App() {
           <Route path="adminClub" element={<AdminClub />} />
         </Route>
         {/* <Route element={<PrivateRoute />}> */}
-        <Route path="/account" element={<Account />} />
-        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/account" element={<AccountLayout />}>
+          <Route index element={<Account />} />
+          {/* <Route path="general" element={<General />} /> */}
+          <Route path="favorites" element={<Favorites />} />
+          {/* <Route path="change-password" element={<ChangePassword />} />
+          <Route path="my-reviews" element={<MyReviews />} /> */}
+        </Route>
         {/* </Route> */}
       </Routes>
       <ToastProvider />
