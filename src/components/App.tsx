@@ -26,10 +26,10 @@ function App() {
           <Route path="coach" element={<Coach />} />
           <Route path="adminClub" element={<AdminClub />} />
         </Route>
-        <Route element={<PrivateRoute />}>
-          <Route path="/account" element={<Account />} />
-          <Route path="/favorites" element={<Favorites />} />
-        </Route>
+        {/* <Route element={<PrivateRoute />}> */}
+        <Route path="/account" element={<Account />} />
+        <Route path="/favorites" element={<Favorites />} />
+        {/* </Route> */}
       </Routes>
       <ToastProvider />
     </Suspense>

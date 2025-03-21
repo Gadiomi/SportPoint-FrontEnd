@@ -2,37 +2,27 @@ import React, { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import Cookies from 'js-cookie';
 import { yupResolver } from '@hookform/resolvers/yup';
+
 import { LogInFormSchema } from '@/constants/validationSchemas/auth';
 
 import { Button, Icon, IconName, Input, Loader, ButtonAppearance } from '@/kit';
-
-import axios from 'axios';
-
 import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
+import { CookiesKey, Roles } from '@/constants';
+import { useLoginMutation } from '@/redux/auth/authApi';
 
 type logInFormInputs = {
   email: string;
   password: string;
 };
 
-type TsignUpData = {
-  email: string;
-  password: string;
-  role: string;
-};
-
-enum Roles {
-  ADMIN = 'admin',
-  COACH = 'coach',
-  CLIENT = 'client',
-}
-
 const LogInPage: FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
-  const [currentRole, setCurrentRole] = React.useState(Roles.CLIENT);
+  const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
+  const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
 
   const {
     handleSubmit,
@@ -44,55 +34,32 @@ const LogInPage: FC = () => {
     defaultValues: { email: '', password: '' },
     mode: 'onChange',
   });
+  const [login, { isLoading }] = useLoginMutation();
 
-  const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
-  // --- * TEMP!!! for testing! ** ---
-  const BASE_URL = 'https://sportpoint-backend.onrender.com/';
-
-  const axiosPublic = axios.create({
-    baseURL: BASE_URL,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    withCredentials: true,
-  });
-
-  const ENDPOINTS = { SIGN_UP: 'auth/signup' };
-
-  const singUp = async (logInData: TsignUpData) => {
+  const onSubmitForm: SubmitHandler<logInFormInputs> = async data => {
     try {
-      const result = await axiosPublic.post(ENDPOINTS.SIGN_UP, logInData);
-      return result.status;
-    } catch (error) {
-      return { message: error };
-    }
-  };
+      const response: any = await login({
+        email: data.email,
+        password: data.password,
+      }).unwrap();
 
-  const singInRequest = async (data: TsignUpData) => {
-    const result = await singUp(data);
-    console.log('result -> ', result);
-    if (result === 201) {
-      //   setIsAuth(true);
+      if (response.token && response.refreshToken) {
+        Cookies.set(CookiesKey.TOKEN, response.token, {
+          expires: 7,
+          secure: true,
+          sameSite: 'Strict',
+        });
+        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+          expires: 7,
+          secure: true,
+          sameSite: 'Strict',
+        });
+      }
+      console.log('Login Success:', response);
       reset();
-      // setLoginError(false);
-      // router.push('/home');
-    } else {
-      // setLoginError(true);
-      console.log('SignUp Error!');
+    } catch (err) {
+      console.error('Login failed:', err);
     }
-  };
-  // --- / *** ---
-
-  const onSubmitForm: SubmitHandler<logInFormInputs> = data => {
-    const signUpData = {
-      email: data.email,
-      password: data.password,
-      role: 'customer',
-    };
-    singInRequest(signUpData);
-    console.log('data -> ', data);
-    console.log('signUpData -> ', signUpData);
-    // reset(); // ! Temp;
   };
 
   const toggleVisibilityPassword = () => {
@@ -102,7 +69,11 @@ const LogInPage: FC = () => {
   return (
     <Section>
       <Container maxWidth="320px">
-        <Image src="/assets/images/logo@1.png" />
+        <Image
+          srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
+          src="/public/assets/images/logo@1.png"
+          alt="Logo"
+        />
         <TextWrapper>
           <Title>{t('login_page.title')}</Title>
           <Text>{t('login_page.description')}</Text>
@@ -127,7 +98,6 @@ const LogInPage: FC = () => {
             name={'email'}
             control={control}
             render={({ field, fieldState }) => {
-              console.log('fieldState', fieldState);
               return (
                 <Input
                   {...field}
@@ -135,6 +105,7 @@ const LogInPage: FC = () => {
                   testId="login_page.form.email"
                   errorMessage={fieldState.error?.message}
                   containerStyles={{ marginBottom: theme.pxs.x2 }}
+                  autoFocus
                 />
               );
             }}
@@ -149,7 +120,10 @@ const LogInPage: FC = () => {
                   label={t('login_page.form.password')}
                   testId="login_page.form.password"
                   errorMessage={fieldState.error?.message}
-                  containerStyles={{ marginBottom: theme.pxs.x9 }}
+                  containerStyles={{
+                    marginBottom: theme.pxs.x9,
+                    alignItems: 'center',
+                  }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
                     <div
@@ -158,12 +132,18 @@ const LogInPage: FC = () => {
                     >
                       {isVisiblePassword ? (
                         <Icon
-                          styles={{ color: 'currentColor' }}
+                          styles={{
+                            color: 'currentColor',
+                            fill: 'transparent',
+                          }}
                           name={IconName.EYE_CLOSE}
                         />
                       ) : (
                         <Icon
-                          styles={{ color: 'currentColor' }}
+                          styles={{
+                            color: 'currentColor',
+                            fill: 'transparent',
+                          }}
                           name={IconName.EYE_OPEN}
                         />
                       )}
@@ -186,11 +166,11 @@ const LogInPage: FC = () => {
             title={t('login_page.form.submit_button')}
             type="submit"
             style={{ width: '100%' }}
-            disabled={!isValid}
+            disabled={!isValid || isLoading}
             appendChild={
-              isSubmitting && (
+              isSubmitting || isLoading ? (
                 <Loader size={'16px'} stroke={'#f0f0f0'} strokeWidth={'1'} />
-              )
+              ) : null
             }
           />
         </Form>
@@ -244,6 +224,7 @@ export default LogInPage;
 const Image = styled.img(({ theme }) => ({
   margin: 'auto',
   marginBottom: theme.pxs.x5,
+  marginTop: theme.pxs.x2,
 }));
 
 const TextWrapper = styled.div(({ theme }) => ({
@@ -279,4 +260,5 @@ const CallToActionWrapper = styled.div({
 
 const Form = styled.form(({ theme }) => ({
   marginBottom: theme.pxs.x6,
+  width: '100%',
 }));
