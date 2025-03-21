@@ -43,4 +43,5 @@ export enum IconName {
   HELP = 'icon-help',
   SMILEY_HAPPY = 'icon-smiley-happy',
   X = 'icon-x',
+  ID = 'icon-password',
 }

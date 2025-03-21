@@ -1,16 +1,23 @@
 import React from 'react';
+import { StyledProfileCard, Avatar, Name, Address } from './styles';
 
 interface ProfileCardProps {
   firstLastName: string;
   avatar: string;
+  address?: string;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ firstLastName, avatar }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({
+  firstLastName,
+  avatar,
+  address,
+}) => {
   return (
-    <div>
-      <img src={avatar} alt={`${firstLastName}`} />
-      <h3>{firstLastName}</h3>
-    </div>
+    <StyledProfileCard>
+      <Avatar src={avatar} alt={firstLastName} />
+      <Name>{firstLastName}</Name>
+      <Address>{address}</Address>
+    </StyledProfileCard>
   );
 };
 
