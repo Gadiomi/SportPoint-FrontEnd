@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container } from '../ContainerAndSection';
 import { Icon, IconName, Light, Title } from '@/kit';
-import css from './TypeNavigation.module.css';
 import { useTheme } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { LinkItem, LinkList, StyledLink } from './styles';
+import { TitleBox } from '@/kit/TitleBox';
 
 export const TypeNavigation: React.FC = () => {
   const theme = useTheme();
@@ -12,50 +12,43 @@ export const TypeNavigation: React.FC = () => {
       styles={{
         alignItems: 'flex-start',
         padding: '10.5px 0px',
+        paddingBottom: '122px',
       }}
     >
-      <div className={css.titleBox}>
-        <Icon
-          name={IconName.ARROW_RIGHT}
-          size={theme.pxs.x8}
-          styles={{
-            color: theme.color.mainOrange,
-          }}
-        />
-        <Title>БУДЬ СПОРТИВНИМ</Title>
-      </div>
+      <TitleBox
+        iconStyles={{
+          color: theme.color.mainOrange,
+        }}
+        title="БУДЬ СПОРТИВНИМ"
+        boxStyle={{ marginBottom: theme.pxs.x2 }}
+      />
+
       <Light>
         Відкрийте для себе найкращі спортивні клуби та професійних тренерів у
         вашому регіоні.
       </Light>
-      <ul className={css.linkList}>
-        <li>
-          <Link to="/trainers">
-            <img
-              src="/public/assets/images/homePage/trainer@1.jpg"
-              alt="Тренери"
-              width="296"
-              height="152"
-              className={css.imgCard}
-            />
+      <LinkList>
+        <LinkItem>
+          <StyledLink
+            to="/trainers"
+            $bgImage1x="/assets/images/homePage/trainer@1.jpg"
+            $bgImage2x="/assets/images/homePage/trainer@2.jpg"
+          >
             <Title>ТРЕНЕРИ</Title>
             <Icon name={IconName.ARROW_RIGHT} size={theme.pxs.x6} />
-          </Link>
-        </li>
-        <li>
-          <Link to="/clubs">
-            <img
-              src="/public/assets/images/homePage/gym@1.jpg"
-              alt="Спортклуби"
-              width="296"
-              height="152"
-              className={css.imgCard}
-            />
+          </StyledLink>
+        </LinkItem>
+        <LinkItem>
+          <StyledLink
+            to="/clubs"
+            $bgImage1x="/assets/images/homePage/gym@1.jpg"
+            $bgImage2x="/assets/images/homePage/gym@2.jpg"
+          >
             <Title>СПОРТКЛУБИ</Title>
             <Icon name={IconName.ARROW_RIGHT} size={theme.pxs.x6} />
-          </Link>
-        </li>
-      </ul>
+          </StyledLink>
+        </LinkItem>
+      </LinkList>
     </Container>
   );
 };

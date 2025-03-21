@@ -15,16 +15,18 @@ const AdminClub = lazy(
 );
 const Favorites = lazy(() => import('../pages/FavoritesPage/FavoritesPage'));
 const Account = lazy(() => import('../pages/AccountPage/AccountPage'));
-const TrainersPage = lazy(() => import('../pages/TrainersPage/TrainersPage'));
-const ClubsPage = lazy(() => import('../pages/ClubsPage/ClubsPage'));
+const TrainersPage = lazy(
+  () => import('../pages/HomePage/TrainersPage/TrainersPage'),
+);
+const ClubsPage = lazy(() => import('../pages/HomePage/ClubsPage/ClubsPage'));
 
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="trainers" element={<TrainersPage />} />
-        <Route path="clubs" element={<ClubsPage />} />
+        <Route path="/trainers" element={<TrainersPage />} />
+        <Route path="/clubs" element={<ClubsPage />} />
 
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
