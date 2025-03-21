@@ -67,7 +67,7 @@ export const axiosBaseQuery = () => {
   }: {
     url: string;
     method: string;
-    data: any;
+    data?: any;
   }) => {
     return axiosInstance({ url, method, data })
       .then(response => ({ data: response.data }))
