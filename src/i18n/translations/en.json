@@ -5,7 +5,7 @@
   "login_page": {
     "title": "Create an Account",
     "description": "Select your role to get started",
-    "tabs": { "adminClub": "Administrator", "coach": "Coach", "costumer": "Client" },
+    "tabs": { "adminClub": "Administrator", "coach": "Coach", "customer": "Client" },
     "already_have": "Already have an account?",
     "button_title": "Log In",
     "form": {
@@ -19,6 +19,17 @@
     "signup_facebook": "Sign Up with Facebook"
   },
   "details_page": {
-    "edit_button": "Edit"
+    "edit_button": "Edit profile",
+    "contacts_text": "CONTACTS",
+    "price": "PRICE",
+    "gallery": "GALLERY",
+    "working_hours": "WORKING HOURS",
+    "location": "LOCATION"
+  },
+  "account_page": {
+    "general": "GENERAL",
+    "change-password": "CHANGE PASSWORD",
+    "my-reviews": "MY REVIEWS",
+    "favorites": "FAVORITES"
   }
 }

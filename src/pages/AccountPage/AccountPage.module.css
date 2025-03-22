@@ -1,0 +1,17 @@
+.accountCont {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.accountBtn {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.accountBtn p {
+  flex-grow: 1;
+  text-align: center;
+}
