@@ -20,7 +20,11 @@
   },
   "details_page": {
     "edit_button": "Edit profile",
-    "contacts_text": "CONTACTS"
+    "contacts_text": "CONTACTS",
+    "price": "PRICE",
+    "gallery": "GALLERY",
+    "working_hours": "WORKING HOURS",
+    "location": "LOCATION"
   },
   "account_page": {
     "general": "GENERAL",

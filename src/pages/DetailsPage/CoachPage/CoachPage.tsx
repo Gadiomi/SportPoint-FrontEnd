@@ -7,6 +7,8 @@ import { ButtonAppearance, ButtonTypogr, Icon, IconName } from '@/kit';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import ContactsCard from '../components/ContactsCard/ContactsCard';
+import PriceCard from '../components/PriceCard/PriceCard';
+import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 
 import { StyledProfileCard, StyledHr, StyledButton } from './styles';
 
@@ -16,6 +18,21 @@ const CoachPage: FC = () => {
   const countReview = 385;
   const experience = 23;
   const rating = 4.9;
+
+  const prices = [
+    { name: 'Індивідуальні заняття', amount: '1350' },
+    { name: 'Групові заняття', amount: '350' },
+  ];
+
+  const schedules = [
+    { days: 'Понеділок', hours: '07:00-22:00' },
+    { days: 'Вівторок', hours: '07:00-22:00' },
+    { days: 'Середа', hours: '07:00-22:00' },
+    { days: 'Четер', hours: '07:00-22:00' },
+    { days: 'П’ятниця', hours: '07:00-22:00' },
+    { days: 'Субота', hours: '07:00-22:00' },
+    { days: 'Неділя', hours: '07:00-22:00' },
+  ];
 
   return (
     <Section>
@@ -54,6 +71,10 @@ const CoachPage: FC = () => {
         />
         <StyledHr />
         <ContactsCard />
+        <StyledHr />
+        <PriceCard prices={prices} />
+        <StyledHr />
+        <WorkingHoursCard schedules={schedules} />
         <StyledHr />
       </Container>
     </Section>

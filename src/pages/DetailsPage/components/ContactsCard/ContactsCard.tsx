@@ -27,7 +27,7 @@ const ContactsCard: React.FC = () => {
       <ImgContainer>
         <img
           style={{ width: 32, height: 32 }}
-          src="/assets/images/icon_facebook.png"
+          src="/assets/images/icon_instagram.png"
           alt="Facebook Icon"
         />
         <img
@@ -37,7 +37,7 @@ const ContactsCard: React.FC = () => {
         />
         <img
           style={{ width: 32, height: 32 }}
-          src="/assets/images/icon_facebook.png"
+          src="/assets/images/icon_messenger.png"
           alt="Facebook Icon"
         />
       </ImgContainer>
