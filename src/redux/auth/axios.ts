@@ -1,6 +1,6 @@
 import { CookiesKey } from '@/constants';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
   baseURL: 'https://sportpoint-backend.onrender.com',

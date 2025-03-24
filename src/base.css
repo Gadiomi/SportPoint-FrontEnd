@@ -62,7 +62,9 @@ img {
     max-width: 100%;
     height: auto;
 }
-
+div{
+    width: 100%;
+}
 svg {
 
     stroke: var(--main);

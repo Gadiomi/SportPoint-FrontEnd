@@ -1,26 +1,35 @@
 import React from 'react';
 import { FooterContainer, FooterLink, FooterLinks, FooterText } from './styles';
-
-import { useTheme } from 'styled-components';
-import { TitleBox } from '@/kit/TitleBox';
+import { Light, Small } from '@/kit';
 
 export const Footer: React.FC = () => {
-  const theme = useTheme();
   return (
     <FooterContainer>
-      <TitleBox
-        iconStyles={{
-          color: theme.color.mainOrange,
-        }}
-        title="КОНТАКТИ"
-        boxStyle={{ marginBottom: theme.pxs.x6 }}
-      />
       <FooterLinks>
-        <FooterLink href="/about">About</FooterLink>
-        <FooterLink href="/contact">Contact</FooterLink>
-        <FooterLink href="/privacy">Privacy</FooterLink>
+        <FooterLink href="/">
+          <Small>Політика конфіденційності</Small>
+        </FooterLink>
+        <FooterLink href="/">
+          <Small>Політика використання cookie</Small>
+        </FooterLink>
+        <FooterLink href="/">
+          <Small>Змінити налаштування cookie</Small>
+        </FooterLink>
+        <FooterLink href="/">
+          <Small>Структура веб-сайту</Small>
+        </FooterLink>
       </FooterLinks>
-      <FooterText>&copy; 2025 SportPoint</FooterText>
+      <Light
+        style={{
+          color: '#f3f3e7',
+          letterSpacing: '-0.01em',
+          width: '100%',
+          textAlign: 'center',
+          padding: '10px 0px',
+        }}
+      >
+        &copy; 2025 SportPoint
+      </Light>
     </FooterContainer>
   );
 };

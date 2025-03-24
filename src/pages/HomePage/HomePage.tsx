@@ -1,16 +1,14 @@
 import { Section } from '@/components/ContainerAndSection';
-
 import { Logo } from '@/components/Logo/Logo';
 import { TypeNavigation } from '@/components/TypeNavigation/TypeNavigation';
-
-import { Footer } from '@/components/Footer/Footer';
+import { Contacts } from '@/components/Footer/Contacts';
 
 const HomePage = () => {
   return (
     <Section>
       <Logo />
       <TypeNavigation />
-      <Footer />
+      <Contacts />
     </Section>
   );
 };

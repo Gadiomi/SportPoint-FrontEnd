@@ -14,7 +14,7 @@ const Title: React.FC<TypographyProps> = ({ children, style, className }) => {
       className={className}
       style={{
         fontSize: FontSizes.XX_LARGE,
-        fontWeight: FontWeights.EXTRA_BOLD,
+        fontWeight: FontWeights.BOLD,
         fontFamily: FontFamily,
         lineHeight: LineHeights.LARGE,
         ...style,
