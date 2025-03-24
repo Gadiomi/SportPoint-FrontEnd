@@ -1,31 +1,15 @@
+import ReviewHeader from '@/kit/ReviewItem/ReviewHeader';
+import ReviewItem from '@/kit/ReviewItem/ReviewItem';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import { Card, CardContent } from "@/components/reviewsPage/cards";
 // import { Button } from "@/components/reviewsPage/button";
 import EditReviewPage from './EditReviewPage';
 import { Container, Section } from '@/components/ContainerAndSection';
-import {
-  ReviewHeader,
-  Header,
-  ReviewCard,
-  Avatar,
-  Name,
-  Stars,
-  Comment,
-  Footer,
-  Feedback,
-  Date,
-  ButtonGroup,
-  FeedbackButton,
-  ActionButton,
-  DeleteButton,
-  UserInfo,
-} from './styles';
-import { IconName } from '@/kit';
-import { Icon } from '@/kit';
-import { colorsLight, colorsDark } from '@/theme/colors';
 import styled, { ThemeConsumer, useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '@/kit';
+import { IconName } from '@/kit';
 
 interface Review {
   id: number;
@@ -54,8 +38,8 @@ const initialReviews = [
     rating: 4,
     reviews: [
       { id: 1, rating: 5 },
-      { id: 2, rating: 4 },
-      { id: 3, rating: 3 },
+      { id: 2, rating: 5 },
+      { id: 3, rating: 6 },
       { id: 4, rating: 5 },
     ],
     comment:
@@ -64,23 +48,7 @@ const initialReviews = [
     likes: 0,
     dislikes: 0,
   },
-  {
-    id: 2,
-    name: 'Анна М.',
-    avatar: '/assets/images/avatar.png',
-    rating: 3,
-    reviews: [
-      { id: 1, rating: 5 },
-      { id: 2, rating: 4 },
-      { id: 3, rating: 3 },
-      { id: 4, rating: 5 },
-    ],
-    comment:
-      'Відмінний тренер! 👋 Дуже уважний до деталей, допомагає правильно виконувати вправи та мотивує не здаватися. Завдяки його порадам я бачу реальні результати вже через кілька тижнів! Рекомендую всім, хто хоче ефективні тренування та підтримку. 💪',
-    date: getCurrentDate(), // Використовуємо функцію тут!
-    likes: 0,
-    dislikes: 0,
-  },
+
   // Можно добавить больше отзывов
 ];
 
@@ -183,70 +151,16 @@ const ReviewsPage = () => {
           )
         ) : (
           <>
-            <ReviewHeader>
-              <Header>
-                <Icon
-                  name={IconName.MASSAGE_TYPING}
-                  styles={{ fill: 'none' }}
-                />
-                МОЇ ВІДГУКИ
-              </Header>
-              <Icon name={IconName.ARROW_LEFT} styles={{ fill: 'none' }} />
-            </ReviewHeader>
-
+            <ReviewHeader />
             {reviews.map(review => (
-              <ReviewCard key={review.id}>
-                <UserInfo>
-                  <Avatar src={review.avatar} />
-                  <Name>{review.name}</Name>
-                  <Stars>
-                    {[...Array(5)].map((_, index) => (
-                      <Icon
-                        name={IconName.STAR_DEFAULT}
-                        styles={{
-                          fill:
-                            index < review.rating
-                              ? colorsLight.mainOrange
-                              : colorsLight.secWhite,
-                        }}
-                      />
-                    ))}
-                  </Stars>
-                </UserInfo>
-
-                <Comment>{review.comment}</Comment>
-                <Footer>
-                  <Feedback>
-                    <Text>Чи корисний цей коментар? </Text>
-                    <FeedbackButton
-                      onClick={() => handleFeedback(review.id, 'like')}
-                    >
-                      <Text> Так ({review.likes})</Text>
-                    </FeedbackButton>{' '}
-                    <FeedbackButton
-                      onClick={() => handleFeedback(review.id, 'dislike')}
-                    >
-                      <Text>Ні ({review.dislikes})</Text>
-                    </FeedbackButton>
-                  </Feedback>
-                  <Text>
-                    <Date>{review.date}</Date>
-                  </Text>
-                </Footer>
-                <ButtonGroup>
-                  <DeleteButton onClick={() => handleDeleteReview(review.id)}>
-                    Видалити
-                  </DeleteButton>
-                  <ActionButton onClick={() => handleEdit(review)}>
-                    <Icon
-                      name={IconName.EDIT_CONTAINED}
-                      styles={{ fill: 'none' }}
-                      size={16}
-                    />{' '}
-                    Редагувати
-                  </ActionButton>
-                </ButtonGroup>
-              </ReviewCard>
+              <ReviewItem
+                key={review.id}
+                review={review}
+                onLike={handleFeedback}
+                onDislike={handleFeedback}
+                onDelete={handleDeleteReview}
+                onEdit={handleEdit}
+              />
             ))}
           </>
         )}
@@ -256,9 +170,3 @@ const ReviewsPage = () => {
 };
 
 export default ReviewsPage;
-
-const Text = styled.p(({ theme }) => ({
-  ...theme.fonts.lightManrope,
-
-  color: theme.color.secWhite,
-}));

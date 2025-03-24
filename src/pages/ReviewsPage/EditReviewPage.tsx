@@ -20,7 +20,6 @@ import {
   ReviewSummary,
   ReviewRating,
   ReviewCount,
-  ContainerEdit,
 } from './styles';
 // import { Button } from '@/kit';
 
@@ -31,36 +30,17 @@ interface EditReviewPageProps {
     name: string;
     avatar: string;
     comment: string;
-    rating: number;
     reviews: { id: number; rating: number }[];
   };
   onCancel: () => void;
 }
-
-type ButtonProps = {
-  title?: string;
-  testId?: string;
-  onClick: () => void;
-  children: React.ReactNode;
-};
-
-const Button: React.FC<ButtonProps> = ({
-  title,
-  testId,
-  onClick,
-  children,
-}) => (
-  <button title={title} data-testid={testId} onClick={onClick}>
-    {children}
-  </button>
-);
 
 const EditReviewPage: React.FC<EditReviewPageProps> = ({
   review,
   onCancel,
 }) => {
   const [comment, setComment] = useState(review?.comment || '');
-  const [rating, setRating] = useState(review?.rating || 0);
+  // const [rating, setRating] = useState(review?.rating || 0);
 
   const [ratings, setRatings] = useState({
     attitude: 0,
@@ -85,7 +65,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   };
 
   const handleSave = () => {
-    console.log('Збережено:', { comment, rating });
+    console.log('Збережено:', { comment, averageRating });
     onCancel(); // Повернутись назад
   };
 
@@ -95,7 +75,6 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
         <Icon name={IconName.ARROW_RIGHT} styles={{ fill: 'none' }} />{' '}
         РЕДАГУВАТИ ВІДГУ
       </HeaderEdit>
-      <ContainerEdit />
       <UserInfoEdit>
         <Avatar src={review.avatar} alt={review.name} />
         <div>
