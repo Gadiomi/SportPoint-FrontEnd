@@ -2,10 +2,19 @@
   "welcome": "Ласкаво просимо",
   "login": "Увійти",
   "signup": "Зареєструватись",
+  "chosen": "ОБРАНІ",
+  "coachs": "Тренери",
+  "clubs": "Клуби",
+  "more_details": "Детальніше",
+  "show_more": "Побачити більше",
   "login_page": {
     "title": "Створити акаунт",
     "description": "Виберіть свою роль, щоб розпочати",
-    "tabs": { "adminClub": "Адміністратор", "coach": "Тренер", "customer": "Клієнт" },
+    "tabs": {
+      "adminClub": "Адміністратор",
+      "coach": "Тренер",
+      "customer": "Клієнт"
+    },
     "already_have": "Вже маєте акаунт?",
     "button_title": "Увійти",
     "form": {

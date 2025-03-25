@@ -15,23 +15,19 @@ export const ToggleWrapper = styled.div`
   width: 100%;
 `;
 
-export const NameBlock = styled.div`
+export const ListWrapper = styled.div`
   display: flex;
-  justify-content: start;
-`;
+  flex-direction: column;
 
-export const ConditionsBlock = styled.div`
-  display: flex;
-  justify-content: start;
-`;
+  & ul {
+    margin-bottom: 16px;
+  }
 
-export const SpecializationBlock = styled.div`
-  display: flex;
-  justify-content: start;
-  gap: 4px;
-  & span {
-    padding: 4px 10px;
-    border: 1px solid #294487;
-    border-radius: 10px;
+  & > p {
+    align-self: flex-end;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: ${({ theme }) => theme.color.secWhite};
   }
 `;
