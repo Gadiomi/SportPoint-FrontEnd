@@ -19,6 +19,7 @@ const TrainersPage = lazy(
   () => import('../pages/HomePage/TrainersPage/TrainersPage'),
 );
 const ClubsPage = lazy(() => import('../pages/HomePage/ClubsPage/ClubsPage'));
+const Reviews = lazy(() => import('../pages/ReviewsPage/ReviewsPage'));
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="favorites" element={<Favorites />} />
           {/* <Route path="change-password" element={<ChangePassword />} />
           <Route path="my-reviews" element={<MyReviews />} /> */}
+          <Route path="/reviews" element={<Reviews />} />
         </Route>
         {/* </Route> */}
       </Routes>
