@@ -8,6 +8,7 @@ import {
   PriceContainer,
   PriceDiv,
   PriceName,
+  PriceAmountContainer,
   PriceAmount,
   RatePerHour,
 } from './styles';
@@ -41,8 +42,10 @@ const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
         {prices.map(price => (
           <PriceDiv key={price.name}>
             <PriceName>{price.name}</PriceName>
-            <PriceAmount>{price.amount}</PriceAmount>
-            <RatePerHour>грн/год</RatePerHour>
+            <PriceAmountContainer>
+              <PriceAmount>{price.amount}</PriceAmount>
+              <RatePerHour>грн/год</RatePerHour>
+            </PriceAmountContainer>
           </PriceDiv>
         ))}
       </PriceContainer>
