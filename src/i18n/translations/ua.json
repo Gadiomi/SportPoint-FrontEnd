@@ -24,7 +24,11 @@
     "price": "ПРАЙС",
     "gallery": "ГАЛЕРЕЯ",
     "working_hours": "ГРАФІК РОБОТИ",
-    "location": "РОЗТАШУВАННЯ"
+    "location": "РОЗТАШУВАННЯ",
+    "works_in": "ПРАЦЮЄ В",
+    "more_details": "Детальніше",
+    "see_more": "Побачити більше",
+    "reviews": "ВІДГУКИ"
   },
   "account_page": {
     "general": "ЗАГАЛЬНЕ",

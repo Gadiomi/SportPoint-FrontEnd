@@ -10,13 +10,14 @@ export const StyledReviewCard = styled.div`
   background: ${({ theme }) => theme.color.inputBar};
   padding: ${({ theme }) => `${theme.pxs.x3_5}px ${theme.pxs.x8}px`};
   gap: ${({ theme }) => `${theme.pxs.x8}px`};
+  border-radius: ${({ theme }) => `${theme.pxs.x1_5}px`};
 `;
 
 export const IconWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: ${({ theme }) => `${theme.pxs.x0_5}px`};
+  width: auto;
 
   span {
     font-size: 14px;

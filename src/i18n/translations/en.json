@@ -24,7 +24,11 @@
     "price": "PRICE",
     "gallery": "GALLERY",
     "working_hours": "WORKING HOURS",
-    "location": "LOCATION"
+    "location": "LOCATION",
+    "works_in": "WORKS IN",
+    "more_details": "More details",
+    "see_more": "See more",
+    "reviews": "REVIEWS"
   },
   "account_page": {
     "general": "GENERAL",
