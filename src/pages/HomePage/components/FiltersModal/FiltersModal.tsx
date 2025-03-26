@@ -1,4 +1,12 @@
-import { About, Button, ButtonAppearance, Icon, IconName, Medium } from '@/kit';
+import {
+  About,
+  Button,
+  ButtonAppearance,
+  Icon,
+  IconName,
+  Input,
+  Medium,
+} from '@/kit';
 import React, { useState } from 'react';
 import {
   Backdrop,
@@ -14,6 +22,8 @@ import { CustomSelect } from '@/kit/Select';
 
 import { CustomFilterCheckbox } from '../CustomFilterCheckbox/CustomFilterCheckbox';
 import StyledHr from '@/components/StyledHr/StyledHr';
+import { SortBy } from './SortBy/SortBy';
+import SortPrice from './SortPrice/SortPrice';
 
 interface PropsFiltersModal {
   isFiltersModalOpen: boolean;
@@ -24,15 +34,21 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
   isFiltersModalOpen,
   setIsFiltersModalOpen,
 }) => {
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+  const [priceRange, setPriceRange] = useState<{
+    from: number | null;
+    to: number | null;
+  }>({
+    from: null,
+    to: null,
+  });
   const theme = useTheme();
 
   if (!isFiltersModalOpen) return null;
   const handleClose = () => {
     setIsFiltersModalOpen(false);
   };
-  const handleFilterChange = (filter: string) => {
-    setSelectedFilter(prev => (prev === filter ? null : filter)); // Якщо фільтр вже вибраний, то скидаємо вибір
+  const handlePriceChange = (from: number | null, to: number | null) => {
+    setPriceRange({ from, to });
   };
   return (
     <Backdrop onClick={handleClose}>
@@ -69,32 +85,24 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             placeholder="Київ"
             padding="6px"
           />
-          <StyleStyledHr style={{ marginTop: '32px' }} />
+          <StyledHr
+            style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
+          />
           <About style={{ marginBottom: theme.pxs.x4 }}>Впорядкувати за</About>
-          <CustomFilterCheckbox
-            checked={selectedFilter === 'new'}
-            onChange={() => handleFilterChange('new')}
-            label="Нові"
-          />
-          <CustomFilterCheckbox
-            checked={selectedFilter === 'priceAsc'}
-            onChange={() => handleFilterChange('priceAsc')}
-            label="Ціна за зростанням"
-          />
-          <CustomFilterCheckbox
-            checked={selectedFilter === 'popular'}
-            onChange={() => handleFilterChange('popular')}
-            label="Популярні"
-          />
-          <CustomFilterCheckbox
-            checked={selectedFilter === 'priceDesc'}
-            onChange={() => handleFilterChange('priceDesc')}
-            label="Ціна за спаданням"
+          <SortBy />
+          <StyledHr
+            style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
 
-          <StyleStyledHr style={{ marginTop: '32px' }} />
           <About style={{ marginBottom: theme.pxs.x4 }}>Ціна</About>
-          <StyleStyledHr style={{ marginTop: '32px' }} />
+          <SortPrice
+            priceRange={priceRange}
+            onFilterChange={handlePriceChange}
+          />
+
+          <StyledHr
+            style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
+          />
           <About style={{ marginBottom: theme.pxs.x4 }}>Класифікація</About>
         </ModalContent>
         <ModalFooter>

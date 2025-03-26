@@ -30,6 +30,7 @@ export const CheckboxWrapper = styled.div(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
+  width: 'auto',
 }));
 export const CheckboxInput = styled.input({
   display: 'none',
@@ -43,6 +44,7 @@ export const CheckboxLabel = styled.label<{ checked: boolean }>(
     fontSize: '14px',
     fontWeight: '400',
     userSelect: 'none',
+    textAlign: 'center',
     border: `1px solid ${theme.color.mainBlue}`,
     transition: 'background-color 0.3s ease, color 0.3s ease',
     backgroundColor: checked ? theme.color.mainBlue : theme.color.background,
