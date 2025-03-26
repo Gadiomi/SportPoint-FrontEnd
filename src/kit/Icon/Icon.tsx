@@ -3,7 +3,6 @@ import { IconName } from './constants';
 import styled from 'styled-components';
 export interface IconProps {
   name: IconName;
-
   width?: string;
   height?: string;
   size?: string | number;
@@ -29,7 +28,8 @@ const StyledIcon = styled.svg(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fill: theme.color.white,
+  color: theme.color.white,
+  stroke: theme.color.white,
 }));
 
 Icon.displayName = 'Icon';

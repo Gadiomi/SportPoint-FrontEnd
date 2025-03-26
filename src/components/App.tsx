@@ -15,12 +15,20 @@ const AdminClub = lazy(
 );
 const Favorites = lazy(() => import('../pages/FavoritesPage/FavoritesPage'));
 const Account = lazy(() => import('../pages/AccountPage/AccountPage'));
+const TrainersPage = lazy(
+  () => import('../pages/HomePage/TrainersPage/TrainersPage'),
+);
+const ClubsPage = lazy(() => import('../pages/HomePage/ClubsPage/ClubsPage'));
+const Reviews = lazy(() => import('../pages/ReviewsPage/ReviewsPage'));
 
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/trainers" element={<TrainersPage />} />
+        <Route path="/clubs" element={<ClubsPage />} />
+
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/details" element={<Details />}>
@@ -36,6 +44,7 @@ function App() {
           <Route path="favorites" element={<Favorites />} /> // TEMP!!
           {/* <Route path="change-password" element={<ChangePassword />} />
           <Route path="my-reviews" element={<MyReviews />} /> */}
+          <Route path="/reviews" element={<Reviews />} />
         </Route>
         {/* </Route> */}
       </Routes>

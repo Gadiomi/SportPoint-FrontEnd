@@ -11,6 +11,9 @@ import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import LocationCard from '../components/LocationCard/LocationCard';
+import ReviewDetailsBlock from '../components/ReviewDetailsCard/ReviewDetailsCard';
+import HrButton from '../components/StyledHrButton/StyledHrButton';
+import { Contacts } from '../../../components/Footer/Contacts';
 
 import { StyledProfileCard, StyledHr, StyledButton } from './styles';
 
@@ -80,6 +83,9 @@ const AdminClubPage: FC = () => {
         <StyledHr />
         <LocationCard />
         <StyledHr />
+        <ReviewDetailsBlock />
+        <HrButton />
+        <Contacts />
       </Container>
     </Section>
   );
