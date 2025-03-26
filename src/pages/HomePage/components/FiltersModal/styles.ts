@@ -1,4 +1,4 @@
-import { StyledHr } from '@/pages/DetailsPage/CoachPage/styles';
+import StyledHr from '@/components/StyledHr/StyledHr';
 import styled from 'styled-components';
 
 export const Backdrop = styled.div(({ theme }) => ({

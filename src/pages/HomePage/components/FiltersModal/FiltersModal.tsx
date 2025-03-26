@@ -11,8 +11,9 @@ import {
 } from './styles';
 import { useTheme } from 'styled-components';
 import { CustomSelect } from '@/kit/Select';
-import { StyledHr } from '@/pages/DetailsPage/CoachPage/styles';
+
 import { CustomFilterCheckbox } from '../CustomFilterCheckbox/CustomFilterCheckbox';
+import StyledHr from '@/components/StyledHr/StyledHr';
 
 interface PropsFiltersModal {
   isFiltersModalOpen: boolean;
