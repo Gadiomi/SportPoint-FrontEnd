@@ -9,7 +9,7 @@ import {
 
 interface ReviewCardProps {
   iconNames: IconName[];
-  counts: number[];
+  counts: (number | string)[];
   labels: string[];
 }
 

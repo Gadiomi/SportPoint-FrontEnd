@@ -1,18 +1,16 @@
-// import axios from 'axios';
-import {
-  FC,
-  // useState, useEffect
-} from 'react';
+import axios from 'axios';
+import { FC, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
-import { ButtonAppearance, ButtonTypogr, Icon, IconName } from '@/kit';
+import { IconName } from '@/kit';
 
+import EditButton from '../components/EditButton/EditButton';
 import StyledHr from '../../../components/StyledHr/StyledHr';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
-import ContactsCard from '../components/ContactsCard/ContactsCard';
+import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
@@ -20,122 +18,128 @@ import ReviewDetailsBlock from '../components/ReviewDetailsCard/ReviewDetailsCar
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
 
-import { StyledProfileCard, StyledButton } from './styles';
+import { StyledProfileCard } from './styles';
+
+interface ScheduleItem {
+  days: string;
+  hours: string;
+}
+
+interface SocialLink {
+  name: string;
+  url: string;
+}
+
+interface PriceItem {
+  _id: string;
+  name: string;
+  amount: string;
+  description?: string;
+}
+
+interface Coach {
+  _id: string;
+  userId: string;
+  firstLastName: string;
+  avatar: string;
+  images: string[];
+  certificates: string[];
+  description: {
+    address: string;
+    short_desc: string;
+    abilities: string;
+    social_links: SocialLink[];
+    price: PriceItem[];
+    schedule: ScheduleItem[];
+    experience: string;
+  };
+  countReview: number;
+  rating: number;
+  equipment: string;
+
+  phone: string;
+  email: string;
+  club: string[];
+  coach: string[];
+  favorite: object[];
+  role: string;
+}
 
 const CoachPage: FC = () => {
-  const { t } = useTranslation();
+  const { id } = useParams<{ id?: string }>();
 
-  const countReview = 385;
-  const experience = 23;
-  const rating = 4.9;
+  const [coachData, setCoachData] = useState<Coach | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const prices = [
-    { name: 'Індивідуальні заняття', amount: '1350' },
-    { name: 'Групові заняття', amount: '350' },
-  ];
+  useEffect(() => {
+    if (id) {
+      const url = `https://sportpoint-backend.onrender.com/cards/${id}`;
+      console.log('Запит до API:', url);
+      axios
+        .get(url)
+        .then(response => {
+          setCoachData(response.data.data.data);
+          console.log('DATA', response.data.data.data);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          console.error(err);
+          setError('Помилка при отриманні даних');
+          setIsLoading(false);
+        });
+    } else {
+      setError('ID не знайдено');
+      setIsLoading(false);
+    }
+  }, [id]);
 
-  const schedules = [
-    { days: 'Понеділок', hours: '07:00-22:00' },
-    { days: 'Вівторок', hours: '07:00-22:00' },
-    { days: 'Середа', hours: '07:00-22:00' },
-    { days: 'Четер', hours: '07:00-22:00' },
-    { days: 'П’ятниця', hours: '07:00-22:00' },
-    { days: 'Субота', hours: '07:00-22:00' },
-    { days: 'Неділя', hours: '07:00-22:00' },
-  ];
+  if (isLoading) {
+    return <div>Завантаження...</div>;
+  }
 
-  // const [coachData, setCoachData] = useState<any>(null);
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [error, setError] = useState<string | null>(null);
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-  // useEffect(() => {
+  const {
+    firstLastName,
+    avatar,
+    countReview,
+    rating,
+    // phone,
+    // email,
+  } = coachData || {};
 
-  //   axios
-  //     .get('https://sportpoint-backend.onrender.com/cards')
-  //     .then(response => {
-  //       console.log('DATA:', response.data);
-  //       console.log('DATA-2:', response.data.data);
-  //       setCoachData(response.data.data);
-  //       setIsLoading(false);
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //       setError('Помилка при отриманні даних');
-  //       setIsLoading(false);
-  //     });
-  // }, []);
-
-  // if (isLoading) {
-  //   return <div>Завантаження...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>{error}</div>;
-  // }
-
-  // const {
-  //   firstLastName,
-  //   avatar,
-  //   countReview,
-  //   rating,
-  //   price,
-  //   schedule,
-  //   experience,
-  // } = coachData || {};
+  const { social_links, price, schedule, experience } =
+    coachData?.description || {};
 
   return (
     <Section>
       <Container>
         <Logo />
         <StyledProfileCard>
-          {/* <ProfileCard firstLastName={firstLastName} avatar={avatar} /> */}
-          <ProfileCard
-            firstLastName="Максим Бондаренко"
-            avatar="path/to/image.jpg"
-          />
+          <ProfileCard firstLastName={firstLastName} avatar={avatar} />
         </StyledProfileCard>
         <StyledHr />
-        <StyledButton
-          testId="details_page.edit_button"
-          title={t('details_page.edit_button')}
-          appearance={ButtonAppearance.PRIMARY}
-          appendChild={
-            <Icon
-              styles={{
-                color: 'currentColor',
-                fill: 'transparent',
-              }}
-              name={IconName.ARROW_CORNER}
-            />
-          }
-        >
-          <ButtonTypogr>{t('details_page.edit_button')}</ButtonTypogr>
-
-          <Icon
-            name={IconName.ARROW_CORNER}
-            styles={{
-              position: 'absolute',
-              right: '12px',
-            }}
-          />
-        </StyledButton>
+        <EditButton
+        // id={id}
+        />
         <ReviewCard
           iconNames={[
             IconName.LIKE,
             IconName.LIGHTNING_FILLED,
             IconName.STAR_DEFAULT,
           ]}
-          counts={[countReview, experience, rating]}
+          counts={[countReview ?? 0, experience ?? '0', rating ?? 0]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
         <StyledHr />
-        <ContactsCard />
+        <SocialLinks socialLinks={social_links || []} />
         <StyledHr />
-        <PriceCard prices={prices} />
-        {/* <PriceCard prices={[price]} /> */}
+        <PriceCard prices={price || []} />
         <StyledHr />
-        <WorkingHoursCard schedules={schedules} />
-        {/* <WorkingHoursCard schedules={[schedule]} /> */}
+        <WorkingHoursCard schedules={schedule || []} />
         <StyledHr />
         <WorksInCard
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
