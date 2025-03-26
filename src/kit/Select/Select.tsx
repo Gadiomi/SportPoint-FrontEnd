@@ -17,6 +17,7 @@ interface CustomSelectProps {
   styles?: StylesConfig<OptionType, false>;
   placeholder?: string;
   isSearchable?: boolean;
+  padding?: string;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -26,6 +27,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   styles = {},
   placeholder = '',
   isSearchable = true,
+  padding,
 }) => {
   const theme = useTheme();
 
@@ -38,14 +40,23 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       border: `1px solid ${theme.color.secWhite}`,
       color: theme.color.white,
       borderRadius: state.menuIsOpen ? '6px 6px 0 0' : '6px',
-      padding: theme.pxs.x2,
+      padding: padding || theme.pxs.x2,
+
       '&:hover': {
         border: `1px solid ${theme.color.secWhite}`,
       },
     }),
+    valueContainer: base => ({
+      ...base,
+      padding: '0px 8px',
+    }),
     input: base => ({
       ...base,
       color: theme.color.mainWhite,
+    }),
+    indicatorsContainer: base => ({
+      ...base,
+      width: 'auto',
     }),
     dropdownIndicator: (base, state) => ({
       ...base,
@@ -57,6 +68,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         ? 'rotate(180deg)'
         : 'rotate(0deg)',
       padding: theme.pxs.x0,
+
       '& svg': {
         width: theme.pxs.x6,
         height: theme.pxs.x6,

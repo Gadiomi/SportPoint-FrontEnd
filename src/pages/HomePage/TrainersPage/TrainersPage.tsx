@@ -1,8 +1,14 @@
+import { Section } from '@/components/ContainerAndSection';
+import { Contacts } from '@/components/Footer/Contacts';
+import { Logo } from '@/components/Logo/Logo';
+
 const TrainersPage = () => {
   return (
-    <div>
-      <h1>TrainersPage </h1>
-    </div>
+    <Section>
+      <Logo />
+
+      <Contacts />
+    </Section>
   );
 };
 
