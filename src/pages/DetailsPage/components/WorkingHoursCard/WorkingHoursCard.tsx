@@ -1,41 +1,26 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Icon, IconName } from '@/kit';
+import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledWorkingHoursCard,
-  IconContainer,
-  Title,
   WorkingHoursContainer,
   WorkingHoursDiv,
   WorkingHoursDays,
   WorkingHoursHours,
 } from './styles';
 
-interface Schedule {
+interface ScheduleItem {
   days: string;
   hours: string;
 }
 
 interface WorkingHoursCardProps {
-  schedules: Schedule[];
+  schedules: ScheduleItem[];
 }
 
 const WorkingHoursCard: React.FC<WorkingHoursCardProps> = ({ schedules }) => {
-  const { t } = useTranslation();
   return (
     <StyledWorkingHoursCard>
-      <IconContainer>
-        <Icon
-          name={IconName.ARROW_RIGHT}
-          styles={{
-            left: '12px',
-            fill: 'none',
-            width: '32px',
-            height: '32px',
-          }}
-        />
-        <Title>{t('details_page.working_hours')}</Title>
-      </IconContainer>
+      <TitleContainer titleKey="details_page.working_hours" />
       <WorkingHoursContainer>
         {schedules.map(schedule => (
           <WorkingHoursDiv key={schedule.days}>

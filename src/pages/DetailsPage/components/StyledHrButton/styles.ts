@@ -7,6 +7,8 @@ export const StyledHrButton = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  margin-top: 76px;
+  margin-bottom: 80px;
 `;
 
 export const StyledHr = styled.hr`

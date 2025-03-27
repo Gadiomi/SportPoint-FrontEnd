@@ -1,17 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Icon, IconName, ButtonAppearance, ButtonTypogr } from '@/kit';
+import { IconName, ButtonAppearance, ButtonTypogr } from '@/kit';
+import TitleContainer from '../TitleContainer/TitleContainer';
+import StyledLink from '../StyledLink/StyledLink';
+
 import {
   StyledWorksInCard,
   WorksInContainer,
   IconContainer,
-  Title,
   WorksInWrapper,
   IconTextWrapper,
   IconWrapper,
   StyledIcon,
   StyledButton,
-  StyledLink,
 } from './styles';
 
 interface WorksInCardProps {
@@ -27,49 +28,34 @@ const WorksInCard: React.FC<WorksInCardProps> = ({
   return (
     <StyledWorksInCard>
       <WorksInContainer>
-        <IconContainer>
-          <Icon
-            name={IconName.ARROW_RIGHT}
-            styles={{
-              left: '12px',
-              fill: 'none',
-              width: '32px',
-              height: '32px',
-            }}
-          />
-          <Title>{t('details_page.works_in')}</Title>
-        </IconContainer>
+        <TitleContainer titleKey="details_page.works_in" />
         <WorksInWrapper>
           <h3>Sport Life</h3>
           <p>Спортивний клуб</p>
           <IconTextWrapper>
-            {iconNames.map((iconName, index) => (
-              <IconWrapper key={iconName}>
-                <IconContainer>
-                  <StyledIcon
-                    name={iconName}
-                    styles={{
-                      color: 'currentColor',
-                      // fill: 'none',
-                      // fill: 'transparent',
-                      // stroke: 'transparent',
-                    }}
-                  />
-                  <span>{labels[index]}</span>
-                </IconContainer>
-              </IconWrapper>
-            ))}
+            {iconNames.map((iconName, index) => {
+              const iconStyles = index === 1 ? { fill: '#F8F7F4' } : {};
+
+              return (
+                <IconWrapper key={iconName}>
+                  <IconContainer>
+                    <StyledIcon name={iconName} styles={iconStyles} />
+                    <span>{labels[index]}</span>
+                  </IconContainer>
+                </IconWrapper>
+              );
+            })}
           </IconTextWrapper>
+          <StyledButton
+            testId="details_page.edit_button"
+            title={t('details_page.more_details')}
+            appearance={ButtonAppearance.PRIMARY}
+          >
+            <ButtonTypogr>{t('details_page.more_details')}</ButtonTypogr>
+          </StyledButton>
         </WorksInWrapper>
-        <StyledButton
-          testId="details_page.edit_button"
-          title={t('details_page.more_details')}
-          appearance={ButtonAppearance.PRIMARY}
-        >
-          <ButtonTypogr>{t('details_page.more_details')}</ButtonTypogr>
-        </StyledButton>
       </WorksInContainer>
-      <StyledLink href="#">{t('details_page.see_more')}</StyledLink>
+      <StyledLink />
     </StyledWorksInCard>
   );
 };
