@@ -2,8 +2,8 @@ import React from 'react';
 import { StyledProfileCard, Avatar, Name, Address } from './styles';
 
 interface ProfileCardProps {
-  firstLastName: string;
-  avatar: string;
+  firstLastName: string | undefined;
+  avatar: string | undefined;
   address?: string;
 }
 

@@ -15,6 +15,7 @@ export const Avatar = styled.img`
   height: 134px;
   border-radius: 50%;
   margin-bottom: 12px;
+  object-fit: cover;
 `;
 
 export const Name = styled.h3`
