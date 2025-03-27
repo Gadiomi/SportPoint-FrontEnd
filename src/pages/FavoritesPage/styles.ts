@@ -6,7 +6,6 @@ export const FavoritesPageWrapper = styled.div`
   justify-content: center;
   width: 100%;
   gap: 24px;
-  padding: 0 12px;
 `;
 
 export const ToggleWrapper = styled.div`

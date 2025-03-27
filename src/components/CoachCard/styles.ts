@@ -5,7 +5,7 @@ export const CoachCardWrapper = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 296px;
+  width: 100%;
   height: auto;
   padding: 9px;
   margin-bottom: 16px;

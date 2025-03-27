@@ -75,18 +75,17 @@ const FavoritesPage = () => {
 
   return (
     <Section>
-      <Container maxWidth="320px">
+      {/* <Container maxWidth="320px"> */}
+      <Container>
         <FavoritesPageWrapper>
           <Logo />
           <Button
-            // testId="login_page.form.submit_button"
-            // title={t('login_page.form.submit_button')}
             testId="ОБРАНІ"
             title={t('chosen')}
             type="submit"
             style={{
               justifyContent: 'flex-start',
-              width: '296px',
+              width: '100%',
               position: 'relative',
               height: '40px',
               paddingLeft: '40px',

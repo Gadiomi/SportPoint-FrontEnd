@@ -5,8 +5,8 @@ export const ClubCardWrapper = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 296px;
-  height: 136px;
+  width: 100%;
+  height: auto;
   padding: 9px;
   margin-bottom: 16px;
   background-color: ${({ theme }) => theme.color.inputBar};
