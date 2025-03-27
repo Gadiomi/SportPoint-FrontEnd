@@ -54,7 +54,7 @@ const ClubsPage = () => {
 
   return (
     <Section>
-      <Logo containerStyles={{ zIndex: 1000 }} />
+      <Logo />
       <ClubsList items={items} />
       <Contacts />
     </Section>
