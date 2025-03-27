@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '../ContainerAndSection';
+import { Container } from '../../../../components/ContainerAndSection';
 import { Icon, IconName, Light, Title } from '@/kit';
 import { useTheme } from 'styled-components';
 import { LinkItem, LinkList, StyledLink } from './styles';

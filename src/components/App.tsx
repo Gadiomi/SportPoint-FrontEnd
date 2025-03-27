@@ -42,7 +42,7 @@ function App() {
           <Route path="favorites" element={<Favorites />} />
           {/* <Route path="change-password" element={<ChangePassword />} />
           <Route path="my-reviews" element={<MyReviews />} /> */}
-          <Route path="/reviews" element={<Reviews />} />
+          <Route path="reviews" element={<Reviews />} />
         </Route>
         {/* </Route> */}
       </Routes>

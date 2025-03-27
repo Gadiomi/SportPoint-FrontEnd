@@ -2,18 +2,22 @@ import React from 'react';
 import { Container } from '../ContainerAndSection';
 import { Icon, IconName } from '@/kit';
 
-export const Logo: React.FC = () => {
+interface LogoProps {
+  containerStyles?: React.CSSProperties;
+}
+export const Logo: React.FC<LogoProps> = ({ containerStyles }) => {
   return (
     <Container
       styles={{
         flexDirection: 'row',
         position: 'relative',
         padding: '10.5px 0px',
+        ...containerStyles,
       }}
     >
       <img
-        srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
-        src="/public/assets/images/logo@1.png"
+        srcSet="/assets/images/logo@1.png 1x, /assets/images/logo@2.png 2x"
+        src="/assets/images/logo@1.png"
         alt="Logo"
       />
 
