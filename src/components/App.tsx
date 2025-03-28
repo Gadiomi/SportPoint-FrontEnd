@@ -28,22 +28,23 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/trainers" element={<TrainersPage />} />
         <Route path="/clubs" element={<ClubsPage />} />
-
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/details" element={<Details />}>
           <Route path="coach" element={<Coach />} />
           <Route path="adminClub" element={<AdminClub />} />
         </Route>
+        {/* // TEMP!! */}
+        <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
         {/* <Route element={<PrivateRoute />}> */}
-        <Route path="/account" element={<AccountLayout />}>
-          <Route index element={<Account />} />
-          {/* <Route path="general" element={<General />} /> */}
-          <Route path="favorites" element={<Favorites />} />
-          {/* <Route path="change-password" element={<ChangePassword />} />
+        {/* <Route path="/account" element={<AccountLayout />}>
+          <Route index element={<Account />} /> */}
+        {/* <Route path="general" element={<General />} /> */}
+        <Route path="favorites" element={<Favorites />} />
+        {/* <Route path="change-password" element={<ChangePassword />} />
           <Route path="my-reviews" element={<MyReviews />} /> */}
-          <Route path="reviews" element={<Reviews />} />
-        </Route>
+        <Route path="/reviews" element={<Reviews />} />
+        {/* </Route> */}
         {/* </Route> */}
       </Routes>
       <ToastProvider />
