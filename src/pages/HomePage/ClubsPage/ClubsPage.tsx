@@ -50,6 +50,96 @@ const ClubsPage = () => {
       name: 'Elite Training Club',
       number: 8765432,
     },
+    {
+      id: 1,
+      name: 'FitLife Gym',
+      number: 456789,
+    },
+    {
+      id: 2,
+      name: 'PowerHouse Fitness',
+      number: 567890,
+    },
+    {
+      id: 3,
+      name: 'Elite Training Club',
+      number: 8765432,
+    },
+    {
+      id: 4,
+      name: 'FitLife Gym',
+      number: 456789,
+    },
+    {
+      id: 5,
+      name: 'PowerHouse Fitness',
+      number: 567890,
+    },
+    {
+      id: 6,
+      name: 'Elite Training Club',
+      number: 8765432,
+    },
+    {
+      id: 7,
+      name: 'FitLife Gym',
+      number: 456789,
+    },
+    {
+      id: 8,
+      name: 'PowerHouse Fitness',
+      number: 567890,
+    },
+    {
+      id: 9,
+      name: 'Elite Training Club',
+      number: 8765432,
+    },
+    {
+      id: 1,
+      name: 'FitLife Gym',
+      number: 456789,
+    },
+    {
+      id: 2,
+      name: 'PowerHouse Fitness',
+      number: 567890,
+    },
+    {
+      id: 3,
+      name: 'Elite Training Club',
+      number: 8765432,
+    },
+    {
+      id: 4,
+      name: 'FitLife Gym',
+      number: 456789,
+    },
+    {
+      id: 5,
+      name: 'PowerHouse Fitness',
+      number: 567890,
+    },
+    {
+      id: 6,
+      name: 'Elite Training Club',
+      number: 8765432,
+    },
+    {
+      id: 7,
+      name: 'FitLife Gym',
+      number: 456789,
+    },
+    {
+      id: 8,
+      name: 'PowerHouse Fitness',
+      number: 567890,
+    },
+    {
+      id: 9,
+      name: 'Elite Training Club',
+      number: 8765432,
+    },
   ];
 
   return (
