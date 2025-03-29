@@ -41,14 +41,11 @@ function App() {
         {/* <Route element={<PrivateRoute />}> */}
         <Route path="/profile" element={<AccountLayout />}>
           <Route index element={<Account />} />
-          <Route path={PublicRouteName.GENERAL} element={<General />} />
-          <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
-          <Route
-            path={PublicRouteName.CHANGEPASSWORD}
-            element={<ChangePassword />}
-          />
-
-          <Route path={PublicRouteName.REVIEWS} element={<Reviews />} />
+          {/* <Route path="general" element={<General />} /> */}
+          <Route path="favorites" element={<Favorites />} />
+          {/* <Route path="change-password" element={<ChangePassword />} />
+          <Route path="my-reviews" element={<MyReviews />} /> */}
+          <Route path="reviews" element={<Reviews />} />
         </Route>
         {/* </Route> */}
       </Routes>
