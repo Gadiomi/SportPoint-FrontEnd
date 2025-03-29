@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { CustomFilterCheckbox } from '../../CustomFilterCheckbox/CustomFilterCheckbox';
-import styled from 'styled-components';
+import { WrapperFilterCheckbox } from './styles';
 
 export const SortBy: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const handleFilterChange = (filter: string) => {
-    setSelectedFilter(prev => (prev === filter ? null : filter)); // Якщо фільтр вже вибраний, то скидаємо вибір
+    setSelectedFilter(prev => (prev === filter ? null : filter));
   };
   return (
     <WrapperFilterCheckbox>
@@ -32,8 +32,3 @@ export const SortBy: React.FC = () => {
     </WrapperFilterCheckbox>
   );
 };
-const WrapperFilterCheckbox = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-}));
