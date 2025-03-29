@@ -14,18 +14,20 @@ const AccountPage: FC = () => {
   const [login, { data: userData, isLoading, isError, error }] =
     useLoginMutation();
   const [user, setUser] = useState<any>(null);
-  const email = Cookies.get('userEmail');
-  console.log('Email from cookies:', email);
+
+  const email = localStorage.getItem('userEmail');
+  console.log('User email:', email);
 
   useEffect(() => {
     if (userData) {
       console.log('Data after registration:', userData);
-      setUser(userData); // зберігаємо дані користувача
+      setUser(userData);
     }
   }, [userData]);
 
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error?.message}</div>;
+  // if (isError)
+  //   return <div>Error: {error?.data?.message || 'Something went wrong'}</div>;
   return (
     <div>
       <div className={css.accountName}>
@@ -36,8 +38,7 @@ const AccountPage: FC = () => {
           }
         />
         <h3>
-          {user?.firstLastName ||
-            (user?.email ? user?.email.split('@')[0] : 'No Name')}
+          {user?.firstLastName || (email ? email.split('@')[0] : 'No Name')}
         </h3>
       </div>
       <div className={css.accountCont}>
