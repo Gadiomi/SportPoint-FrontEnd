@@ -8,7 +8,7 @@ export const userApi = createApi({
   endpoints: builder => ({
     getUserProfile: builder.query({
       query: () => ({
-        url: 'user/profile',
+        url: '/profile',
         method: 'GET',
       }),
       providesTags: ['UserProfile'],
@@ -16,8 +16,8 @@ export const userApi = createApi({
 
     updateUserProfile: builder.mutation({
       query: userData => ({
-        url: 'user/profile',
-        method: 'PUT',
+        url: '/profile',
+        method: 'PATCH',
         data: userData,
       }),
       invalidatesTags: ['UserProfile'], // Оновлення даних після зміни профілю

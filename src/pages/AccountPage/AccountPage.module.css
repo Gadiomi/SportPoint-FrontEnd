@@ -44,3 +44,7 @@
   gap: 8px;
   justify-content: space-around;
 }
+.generalTypeSp {
+  padding-top: 32px;
+  font-weight: 400;
+}
