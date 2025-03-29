@@ -34,6 +34,8 @@ const RegisterPage = () => {
           secure: true,
           sameSite: 'Strict',
         });
+        localStorage.setItem('userEmail', response.email);
+        console.log('Registered email:', response.email);
       }
       reset();
     } catch (err) {

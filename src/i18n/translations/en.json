@@ -43,6 +43,9 @@
     "general": "GENERAL",
     "change-password": "CHANGE PASSWORD",
     "reviews": "MY REVIEWS",
-    "favorites": "FAVORITES"
+    "favorites": "FAVORITES",
+    "back": "Back",
+    "save": "Save",
+    "change-profile-photo": "Change profile photo"
   }
 }
