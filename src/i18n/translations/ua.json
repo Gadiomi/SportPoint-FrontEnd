@@ -43,6 +43,8 @@
     "general": "ЗАГАЛЬНЕ",
     "change-password": "ЗМІНИТИ ПАРОЛЬ",
     "reviews": "МОЇ ВІДГУКИ",
-    "favorites": "ОБРАНІ"
+    "favorites": "ОБРАНІ",
+    "back": "Назад",
+    "save": "Зберегти"
   }
 }

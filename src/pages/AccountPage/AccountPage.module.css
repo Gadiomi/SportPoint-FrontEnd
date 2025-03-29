@@ -30,3 +30,17 @@
     font-weight: 700;
   }
 }
+.generalCont {
+  width: 100%;
+}
+.generalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.generalBtns {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+}
