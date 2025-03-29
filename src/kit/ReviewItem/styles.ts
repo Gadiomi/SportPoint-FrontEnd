@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const ReviewHeaderContainer = styled.div`
-  width: 100%;
   height: 40px;
   display: flex;
   background: #ff7f00;
@@ -12,7 +11,6 @@ export const ReviewHeaderContainer = styled.div`
 `;
 
 export const Header = styled.div`
- width: 100%;
   display: flex;
   color: rgba(248, 247, 244, 1);
   font-family:Manrope
@@ -124,7 +122,6 @@ export const ContainerEdit = styled.div`
   &::after {
     content: '';
     display: block;
-    width: 100%;
     height: 2px;
     background-color: white; /* Колір лінії */
     position: absolute;
@@ -151,7 +148,6 @@ export const HeaderEdit = styled.h2`
 `;
 
 export const UserInfoEdit = styled.div`
-  width: 100%;
   background: ${({ theme }) => theme.color.inputBar};
   box-shadow: 1px 1px 10px rgba(43, 54, 149, 0.9);
   display: flex;
@@ -176,7 +172,6 @@ export const ReviewRating = styled.div`
 export const ReviewCount = styled.div``;
 
 export const RatingSection = styled.div`
-  width: 100%;
   text-align: left;
   padding: 20px 0;
   p {
@@ -191,16 +186,17 @@ export const Starsedit = styled.div`
 
 export const StarIcon = styled(Star)<{ filled: boolean }>`
   cursor: pointer;
-  color: ${({ filled }) => (filled ? '#ED772F' : '#494949')};
-  transition: color 0.2s;
+  // color: ${({ filled }) => (filled ? '#ED772F' : '#494949')};
+  // transition: color 0.2s;
 
-  &:hover {
-    color: ${({ theme }) => theme.color.mainOrange};
-  }
+  // &:hover {
+  //   color: ${({ theme }) => theme.color.mainOrange};
+  // }
 `;
 
 export const TextArea = styled.textarea`
   width: 100%;
+  min-height: 170px;
   background: ${({ theme }) => theme.color.background};
   color: white;
   border: 1px solid ${({ theme }) => theme.color.secWhite};
@@ -208,17 +204,13 @@ export const TextArea = styled.textarea`
   padding: 12px 16px;
 `;
 
-export const ButtonGroupEdit = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 10px;
-`;
-
 export const CancelButton = styled.button`
   color: #b7b7b9;
   padding: 5px 31px;
   &:hover {
+    color: ${({ theme }) => theme.color.white};
+  }
+  &:focus {
     color: ${({ theme }) => theme.color.white};
   }
 `;
@@ -229,10 +221,57 @@ export const SaveButton = styled.button`
   border-radius: 6px;
   padding: 7px 23.5px;
   &:hover {
-    background: ${({ theme }) => theme.color.mainOrange};
-    border: ${({ theme }) => theme.color.mainOrange};
-  }
+     background: #bd510e;
   &:focus {
     background: #bd510e;
   }
+`;
+
+// -------********ReviewStata-------------
+
+export const ContainerStats = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 32px;
+`;
+
+export const Title = styled.h2`
+  font-size: 18px;
+  width: 100%;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: left;
+  text-align: left;
+  align-items: center;
+  gap: 5px;
+`;
+
+export const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+`;
+
+export const BarContainer = styled.div`
+  flex: 1;
+  background: ${({ theme }) => theme.color.darkGray};
+  width: 176px;
+  height: 8px;
+  border-radius: 2px;
+  overflow: hidden;
+`;
+
+export const Bar = styled.div<{ width: number }>`
+  background: ${({ theme }) => theme.color.mainOrange};
+  height: 100%;
+  width: ${props => `${props.width}px`};
+`;
+
+export const RatingSummary = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 20px;
+  font-weight: bold;
 `;

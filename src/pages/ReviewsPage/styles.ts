@@ -124,7 +124,6 @@ export const ContainerEdit = styled.div`
   &::after {
     content: '';
     display: block;
-    width: 100%;
     height: 2px;
     background-color: white; /* Колір лінії */
     position: absolute;
@@ -201,6 +200,7 @@ export const StarIcon = styled(Star)<{ filled: boolean }>`
 
 export const TextArea = styled.textarea`
   width: 100%;
+  min-height: 170px;
   background: ${({ theme }) => theme.color.background};
   color: white;
   border: 1px solid ${({ theme }) => theme.color.secWhite};
@@ -210,7 +210,6 @@ export const TextArea = styled.textarea`
 
 export const ButtonGroupEdit = styled.div`
   display: flex;
-  justify-content: space-between;
   gap: 8px;
   margin-top: 10px;
 `;
