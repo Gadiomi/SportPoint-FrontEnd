@@ -57,7 +57,7 @@ const LogInPage: FC = () => {
         });
       }
 
-      nav('/account');
+      nav('/profile');
       console.log('Login Success:', response);
       reset();
     } catch (err) {

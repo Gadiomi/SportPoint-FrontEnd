@@ -42,7 +42,7 @@
   "account_page": {
     "general": "GENERAL",
     "change-password": "CHANGE PASSWORD",
-    "my-reviews": "MY REVIEWS",
+    "reviews": "MY REVIEWS",
     "favorites": "FAVORITES"
   }
 }

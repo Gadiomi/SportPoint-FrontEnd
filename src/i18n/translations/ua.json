@@ -42,7 +42,7 @@
   "account_page": {
     "general": "ЗАГАЛЬНЕ",
     "change-password": "ЗМІНИТИ ПАРОЛЬ",
-    "my-reviews": "МОЇ ВІДГУКИ",
+    "reviews": "МОЇ ВІДГУКИ",
     "favorites": "ОБРАНІ"
   }
 }
