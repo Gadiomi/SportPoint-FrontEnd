@@ -1,4 +1,7 @@
 export enum PublicRouteName {
   LOGIN = '/login',
-  FAVORITS = '/favorites',
+  FAVORITS = 'favorites',
+  GENERAL = 'general',
+  CHANGEPASSWORD = 'change-password',
+  REVIEWS = 'reviews',
 }
