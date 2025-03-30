@@ -8,10 +8,13 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import css from './AccountPage.module.css';
 import { useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '@/redux/auth/authApi';
+import Cookies from 'js-cookie';
+import { CookiesKey } from '@/constants';
 
 interface UserProfileFormData {
   avatar: string | File;
-  firstName?: string;
+  firstLastName?: string;
   lastName: string;
   phone?: string;
   email: string;
@@ -22,7 +25,10 @@ interface UserProfileFormData {
 const General: FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data: userData, isLoading } = useGetUserProfileQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const { data: userData, isLoading } = useGetUserProfileQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const [user, setUser] = useState<any>(null);
 
   const email = localStorage.getItem('userEmail');
@@ -30,62 +36,45 @@ const General: FC = () => {
   const [updateUserProfile, { isLoading: isUpdating }] =
     useUpdateUserProfileMutation();
 
-  const { register, handleSubmit, setValue, watch } =
-    useForm<UserProfileFormData>();
+  const { register, handleSubmit, setValue, watch, reset } =
+    useForm<UserProfileFormData>({
+      defaultValues: JSON.parse(localStorage.getItem('userProfile') || '{}'),
+    });
 
-  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
+    userData?.userProfile?.avatar || null,
+  );
   const [avatar, setAvatar] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (userData?.userProfile) {
+      reset(userData.userProfile);
+      setSelectedAvatar(userData.userProfile.avatar || null);
+      localStorage.setItem('userProfile', JSON.stringify(userData.userProfile));
+    }
+  }, [userData, reset]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setAvatar(file);
       setSelectedAvatar(URL.createObjectURL(file));
-      setValue('avatar', file);
     }
   };
-
-  useEffect(() => {
-    if (userData?.userProfile) {
-      Object.entries(userData.userProfile).forEach(([key, value]) => {
-        if (typeof value === 'string') {
-          setValue(key as keyof UserProfileFormData, value); // Тепер тип value правильний
-        }
-      });
-    }
-  }, [userData, setValue]);
-
-  useEffect(() => {
-    const storedEmail = localStorage.getItem('userEmail');
-    if (storedEmail) {
-      console.log('User email:', storedEmail);
-      setValue('email', storedEmail);
-    }
-  }, [setValue]);
-
-  // const onSubmit = async (formData: UserProfileFormData) => {
-  //   try {
-  //     console.log('Submitting data:', formData);
-  //     const response = await updateUserProfile({
-  //       ...formData,
-  //       role: 'customer',
-  //     }).unwrap();
-  //     console.log('Profile updated:', response);
-  //   } catch (error) {
-  //     console.error('Update failed:', error);
-  //   }
-  // };
 
   const onSubmit = async (formData: UserProfileFormData) => {
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('firstName', formData.firstName || '');
-      formDataToSend.append('lastName', formData.lastName || '');
+      formDataToSend.append('firstLastName', formData.firstLastName || '');
+      formDataToSend.append('lastName', formData.lastName);
+      formDataToSend.append('phone', formData.phone || '');
       formDataToSend.append('email', formData.email);
-      if (formData.phone) formDataToSend.append('phone', formData.phone);
-      if (formData.age) formDataToSend.append('age', formData.age);
-      if (formData.sport) formDataToSend.append('sport', formData.sport);
-      if (avatar) formDataToSend.append('avatar', avatar); // Додаємо файл
+      formDataToSend.append('age', formData.age || '');
+      formDataToSend.append('sport', formData.sport || '');
+
+      if (avatar) {
+        formDataToSend.append('avatar', avatar); // Додаємо файл аватара
+      }
 
       const response = await updateUserProfile(formDataToSend).unwrap();
       console.log('Profile updated:', response);
@@ -93,6 +82,48 @@ const General: FC = () => {
       console.error('Update failed:', error);
     }
   };
+
+  // const handleLogout = () => {
+  //   // Видалити токени з куків
+  //   Cookies.remove(CookiesKey.TOKEN);
+  //   Cookies.remove(CookiesKey.REFRESH_TOKEN);
+
+  //   // Видалити email з локального сховища
+  //   localStorage.removeItem('userEmail');
+
+  //   // Перенаправити на сторінку логіну
+  //   navigate('/login');
+  // };
+
+  // useEffect(() => {
+  //   const storedEmail = localStorage.getItem('userEmail');
+  //   if (storedEmail) {
+  //     console.log('User email:', storedEmail);
+  //     setValue('email', storedEmail);
+  //   }
+  // }, [setValue]);
+
+  // const onSubmit = async (formData: UserProfileFormData) => {
+  //   try {
+  //     const updatedData = {
+  //       ...formData,
+  //       avatar: avatar ? URL.createObjectURL(avatar) : selectedAvatar,
+  //     };
+
+  //     const response = await updateUserProfile(updatedData).unwrap();
+  //     console.log('Profile updated:', response);
+  //   } catch (error) {
+  //     console.error('Update failed:', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const storedProfile = localStorage.getItem('userProfile');
+  //   if (storedProfile) {
+  //     const parsedProfile = JSON.parse(storedProfile);
+  //     reset(parsedProfile); // Оновлення всіх полів одночасно
+  //   }
+  // }, [reset]);
 
   if (isLoading) return <div>Loading profile...</div>;
   return (
@@ -102,7 +133,7 @@ const General: FC = () => {
         title={t(`account_page.general`)}
         appearance={ButtonAppearance.PRIMARY}
         testId="general"
-        className={css.accountBtn}
+        className={css.generalToAccBtn}
         appendChild={
           <Icon
             styles={{
@@ -161,9 +192,9 @@ const General: FC = () => {
           <Input
             testId="firstName"
             label="First Name"
-            value={watch('firstName') || ''}
-            {...register('firstName')}
-            onChange={e => setValue('firstName', e.target.value)}
+            value={watch('firstLastName') || ''}
+            {...register('firstLastName')}
+            onChange={e => setValue('firstLastName', e.target.value)}
           />
           <Input
             testId="lastName"
@@ -226,6 +257,13 @@ const General: FC = () => {
           ></Button>
         </div>
       </form>
+      {/* <Button
+        type="button"
+        title={t(`account_page.logout`)}
+        appearance={ButtonAppearance.SECONDARY}
+        testId="logout"
+        onClick={handleLogout}
+      ></Button> */}
     </div>
   );
 };

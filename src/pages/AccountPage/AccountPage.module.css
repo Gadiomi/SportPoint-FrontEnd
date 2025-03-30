@@ -7,14 +7,12 @@
 .accountBtn {
   width: 100%;
   height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  & p {
+    flex-grow: 1;
+    text-align: center;
+  }
 }
-.accountBtn p {
-  flex-grow: 1;
-  text-align: center;
-}
+
 .accountName {
   display: flex;
   flex-direction: column;
@@ -47,4 +45,30 @@
 .generalTypeSp {
   padding-top: 32px;
   font-weight: 400;
+}
+.generalToAccBtn {
+  width: 100%;
+  height: 40px;
+  margin-top: 8px;
+  margin-bottom: 32px;
+  & p {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+.accountName .refreshBtn {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0px 32px;
+  height: 32px;
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.accountName img {
+  object-fit: cover;
+}
+.accountName h3 {
+  paddding-top: 8px;
 }

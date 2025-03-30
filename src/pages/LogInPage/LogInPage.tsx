@@ -43,6 +43,7 @@ const LogInPage: FC = () => {
         email: data.email,
         password: data.password,
       });
+      localStorage.setItem('userEmail', data.email);
 
       if (response.token && response.refreshToken) {
         Cookies.set(CookiesKey.TOKEN, response.token, {

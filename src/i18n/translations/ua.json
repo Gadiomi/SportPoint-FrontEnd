@@ -46,6 +46,7 @@
     "favorites": "ОБРАНІ",
     "back": "Назад",
     "save": "Зберегти",
-    "change-profile-photo": "Змінити фото профілю"
+    "change-profile-photo": "Змінити фото профілю",
+    "logout": "Вийти"
   }
 }

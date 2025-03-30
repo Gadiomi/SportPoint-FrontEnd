@@ -46,6 +46,7 @@
     "favorites": "FAVORITES",
     "back": "Back",
     "save": "Save",
-    "change-profile-photo": "Change profile photo"
+    "change-profile-photo": "Change profile photo",
+    "logout": "Log out"
   }
 }
