@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import ReviewHeader from '@/kit/ReviewItem/ReviewHeader';
 import ReviewItem from '@/kit/ReviewItem/ReviewItem';
 import ReviewStats from '@/kit/ReviewItem/ReviewStats';
 import EditReviewPage from './EditReviewPage';
-import { Container, Section } from '@/components/ContainerAndSection';
+import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
@@ -97,11 +97,13 @@ interface Review extends UserData, ReviewData {} // об'єднуємо
 // ];
 
 const ReviewsPage = () => {
-  const [reviewsState, setReviewsState] = useState([]);
+  const { id } = useParams<{ id: string }>();
+  // const [reviewsState, setReviewsState] = useState([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isCreatingReview, setIsCreatingReview] = useState(false);
   const [currentReview, setCurrentReview] = useState<Review | null>(null);
 
   const { t } = useTranslation();
@@ -117,40 +119,55 @@ const ReviewsPage = () => {
 
   // Функція отримання даних про користувачів
   const fetchUserData = async (): Promise<UserData[]> => {
-    const response = await axios.get(
-      'https://sportpoint-backend.onrender.com/cards?role=customer',
-    );
-    return response.data.map((user: any) => ({
-      id: user._id,
-      name: user.firstLastName,
-      avatar: user.avatar,
-    }));
+    try {
+      const response = await axios.get(
+        `https://sportpoint-backend.onrender.com/cards`,
+      );
+      return response.data.map((user: any) => ({
+        id: user._id,
+        name: user.firstLastName || 'Анонімний користувач',
+        avatar: user.avatar || '/assets/images/default-avatar.png',
+      }));
+    } catch (error) {
+      console.error('Помилка при отриманні користувачів:', error);
+      return [];
+    }
   };
 
   // Функція отримання даних про відгуки
   const fetchReviewData = async (): Promise<ReviewData[]> => {
-    const response = await axios.get(
-      `http://sportpoint-backend.onrender.com/cards/67cb064cb731dc6d28584704`,
-    );
-    return response.data.map((review: any) => {
-      const ratings = review.userComments.ratings;
-      const averageRating =
-        (ratings.clientService +
-          ratings.serviceQuality +
-          ratings.priceQuality +
-          ratings.location +
-          ratings.cleanliness) /
-        5;
-      return {
-        id: review.userId, // Це має відповідати `id` з user API
-        comment: review.userComments.comment,
-        date: new Date(review.userData.data.createdAt).toLocaleDateString(),
-        rating: Math.round(averageRating),
-        // rating: review.userComments.ratings.overall, // або інша логіка розрахунку рейтингу
-        likes: 0,
-        dislikes: 0,
-      };
-    });
+    try {
+      const response = await axios.get(
+        `https://sportpoint-backend.onrender.com/cards/$67cb064cb731dc6d28584704`,
+      );
+
+      console.log('Отримані дані:', response.data); // Логування даних
+
+      return response.data.map((review: any) => {
+        console.log('Оброблюваний review:', review);
+        console.log('Оброблюваний review:', review); // Логування кожного окремого об'єкта
+        const ratings = review.userComments.ratings;
+        const averageRating =
+          (ratings.clientService +
+            ratings.serviceQuality +
+            ratings.priceQuality +
+            ratings.location +
+            ratings.cleanliness) /
+          5;
+        return {
+          id: review.userId, // Це має відповідати `id` з user API
+          comment: review.userComments.comment || '',
+          date: new Date(review.userData?.data?.createdAt).toLocaleDateString(),
+          rating: Math.round(averageRating),
+          // rating: review.userComments.ratings.overall, // або інша логіка розрахунку рейтингу
+          likes: 0,
+          dislikes: 0,
+        };
+      });
+    } catch (error) {
+      console.error('Помилка при отриманні відгуків:', error);
+      return [];
+    }
   };
 
   // Завантаження та об'єднання даних
@@ -184,8 +201,10 @@ const ReviewsPage = () => {
   };
 
   useEffect(() => {
-    fetchReviews();
-  }, []);
+    if (id) {
+      fetchReviews();
+    }
+  }, [id]);
 
   // Функція для Так/Ні
   // const handleFeedback = (id: number, type: 'like' | 'dislike') => {
@@ -265,6 +284,10 @@ const ReviewsPage = () => {
     setIsEditing(true);
   };
 
+  const handleCreateReview = () => {
+    setIsCreatingReview(true); // Увімкнути режим створення відгуку
+  };
+
   //   return (
   //     <Section>
   //       <Container>
@@ -309,7 +332,7 @@ const ReviewsPage = () => {
         )
       ) : (
         <>
-          <ReviewHeader />
+          {!isCreatingReview && <ReviewHeader />}
           <ReviewStats
             reviews={[{ ratings: { 5: 10, 4: 80, 3: 150, 2: 30, 1: 10 } }]}
           />

@@ -146,7 +146,9 @@ export const Label = styled.span`
 export const HeaderEdit = styled.h2`
   display: flex;
   font-size: 18px;
-  gap: 3px;
+  gap: 4px;
+  margin-bottom: 16px;
+  margin-top: 16px;
 `;
 
 export const UserInfoEdit = styled.div`
@@ -155,6 +157,7 @@ export const UserInfoEdit = styled.div`
   box-shadow: 1px 1px 10px rgba(43, 54, 149, 0.9);
   display: flex;
   padding: 18px 10px;
+  margim-top: 16px;
   gap: 10px;
 `;
 
@@ -184,6 +187,7 @@ export const RatingSection = styled.div`
 `;
 
 export const Starsedit = styled.div`
+  max-width: 152px;
   display: flex;
   gap: 5px;
 `;

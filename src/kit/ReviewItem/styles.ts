@@ -233,17 +233,18 @@ export const ContainerStats = styled.div`
   display: flex;
   align-items: center;
   gap: 32px;
+  margin-bottom: 24px;
 `;
 
 export const Title = styled.h2`
   font-size: 18px;
-  width: 100%;
   margin-bottom: 16px;
+  margin-top: 16px;
   display: flex;
   justify-content: left;
   text-align: left;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 `;
 
 export const Row = styled.div`
@@ -254,7 +255,6 @@ export const Row = styled.div`
 `;
 
 export const BarContainer = styled.div`
-  flex: 1;
   background: ${({ theme }) => theme.color.darkGray};
   width: 176px;
   height: 8px;
@@ -265,7 +265,7 @@ export const BarContainer = styled.div`
 export const Bar = styled.div<{ width: number }>`
   background: ${({ theme }) => theme.color.mainOrange};
   height: 100%;
-  width: ${props => `${props.width}px`};
+  width: ${props => props.width}%};
 `;
 
 export const RatingSummary = styled.div`

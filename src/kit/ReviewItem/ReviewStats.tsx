@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ReviewHeader from '@/kit/ReviewItem/ReviewHeader';
 import EditReviewPage from '@/pages/ReviewsPage/EditReviewPage';
 import { formattingReviews } from '@/kit/ReviewItem/formattingReviews';
-import { Container } from '@/components/ContainerAndSection';
 import { Icon } from '@/kit';
 import { IconName } from '@/kit';
 import {
@@ -48,6 +47,8 @@ const ReviewStats: React.FC<ReviewStatsProps> = ({ reviews }) => {
   }
 
   const percentages = formattingReviews(reviews); // Отримуємо розподіл у відсотках
+  console.log('розподіл у відсотках', percentages);
+
   const totalReviews = reviews.reduce(
     (sum, review) =>
       sum +
@@ -63,7 +64,10 @@ const ReviewStats: React.FC<ReviewStatsProps> = ({ reviews }) => {
       ),
     0,
   );
+
+  console.log(totalScore);
   const averageRating = totalReviews > 0 ? totalScore / totalReviews : 0;
+  console.log(averageRating);
 
   //   const totalStars = reviews.reduce((sum, review) => {
   //   return sum + Object.entries(review.ratings).reduce(
@@ -85,14 +89,6 @@ const ReviewStats: React.FC<ReviewStatsProps> = ({ reviews }) => {
 
   return (
     <div>
-      <div onClick={() => setIsEditing(true)}>
-        <ReviewHeader
-          title="Залишити відгук"
-          leftIcon={null}
-          rightIcon={IconName.ARROW_CORNER}
-        />
-      </div>
-
       <Title>
         <Icon name={IconName.ARROW_RIGHT} />
         ВІДГУКИ
@@ -140,6 +136,13 @@ const ReviewStats: React.FC<ReviewStatsProps> = ({ reviews }) => {
           <p>{totalReviews} відгуки</p>
         </div>
       </ContainerStats>
+      <div onClick={() => setIsEditing(true)}>
+        <ReviewHeader
+          title="Залишити відгук"
+          leftIcon={null}
+          rightIcon={IconName.ARROW_CORNER}
+        />
+      </div>
     </div>
   );
 };

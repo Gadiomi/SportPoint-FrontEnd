@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Section } from '@/components/ContainerAndSection';
 import { IconName } from '@/kit';
 import { Icon } from '@/kit';
 import styled from 'styled-components';
