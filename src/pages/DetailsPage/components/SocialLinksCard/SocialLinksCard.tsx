@@ -22,7 +22,7 @@ const SocialLinks: React.FC<{ socialLinks: SocialLink[] }> = ({
   }
   return (
     <StyledSocialLinksCard>
-      <TitleContainer titleKey="details_page.contacts_text" />{' '}
+      <TitleContainer titleKey="details_page.contacts_text" />
       <ImgContainer>
         {socialLinks.map(link => {
           const iconSrc = socialIconsMap[link.name.toLowerCase()];

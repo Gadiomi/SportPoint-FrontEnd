@@ -1,4 +1,7 @@
 import React from 'react';
+import { useTheme } from 'styled-components';
+import { fonts } from '@/theme/fonts';
+
 import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledPriceCard,
@@ -24,6 +27,7 @@ interface PriceCardProps {
 }
 
 const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
+  const theme = useTheme();
   if (!prices || prices.length === 0) {
     return <div>Ціни не доступні</div>;
   }
@@ -39,12 +43,24 @@ const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
           return (
             <PriceDiv key={price._id || index}>
               <PriceNameContainer>
-                <PriceName>{price.name || 'Не вказано'}</PriceName>
-                <PriceDescription>{price.description || ''}</PriceDescription>
+                <PriceName style={fonts.priceName}>
+                  {price.name || 'Не вказано'}
+                </PriceName>
+                <PriceDescription
+                  style={{ ...fonts.priceName, color: theme.color.secWhite }}
+                >
+                  {price.description || ''}
+                </PriceDescription>
               </PriceNameContainer>
               <PriceAmountContainer>
-                <PriceAmount>{price.amount || '-'}</PriceAmount>
-                <RatePerHour>грн/год</RatePerHour>
+                <PriceAmount style={fonts.priceAmount}>
+                  {price.amount || '-'}
+                </PriceAmount>
+                <RatePerHour
+                  style={{ ...fonts.priceAmount, color: theme.color.secWhite }}
+                >
+                  грн/год
+                </RatePerHour>
               </PriceAmountContainer>
             </PriceDiv>
           );

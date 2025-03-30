@@ -36,4 +36,35 @@ export const fonts: fontsMap = {
   smallText: createFontStyle("'Manrope', sans-serif", '500', '10px', '10px'),
   aboutText: createFontStyle("'Manrope', sans-serif", '400', '16px', '22px'),
   popUp: createFontStyle("'Manrope', sans-serif", '400', '12px', '14px'),
+
+  // Стилі додані тимчасово для сторінки DETEILS!!!
+  // НЕ ВИКОРИСТОВУВАТИ НА ІНШИХ СТОРІНКАХ
+
+  nameDetails: createFontStyle("'Manrope', sans-serif", '700', '18px', '15px'),
+
+  editButton: createFontStyle("'Manrope', sans-serif", '500', '16px', '22px'),
+
+  spanDetails: createFontStyle("'Manrope', sans-serif", '500', '16px', '16px'),
+
+  addressDetails: createFontStyle(
+    "'Manrope', sans-serif",
+    '500',
+    '16px',
+    '15px',
+  ),
+
+  priceName: createFontStyle("'Manrope', sans-serif", '400', '16px', '24px'),
+
+  priceAmount: createFontStyle("'Manrope', sans-serif", '400', '16px', '15px'),
+
+  descriptionWorkIn: createFontStyle(
+    "'Manrope', sans-serif",
+    '400',
+    '12px',
+    '21px',
+  ),
+
+  spanWorkIn: createFontStyle("'Manrope', sans-serif", '300', '12px', '21px'),
+
+  // Як тільки на макеті стилі змінять, одразу видалю
 };
