@@ -3,18 +3,18 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  padding-bottom: 74px;
+  padding-top: 6px;
 }
 .accountBtn {
   width: 100%;
   height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  & p {
+    flex-grow: 1;
+    text-align: center;
+  }
 }
-.accountBtn p {
-  flex-grow: 1;
-  text-align: center;
-}
+
 .accountName {
   display: flex;
   flex-direction: column;
@@ -32,6 +32,7 @@
 }
 .generalCont {
   width: 100%;
+  padding-bottom: 85px;
 }
 .generalForm {
   display: flex;
@@ -42,9 +43,95 @@
 .generalBtns {
   display: flex;
   gap: 8px;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding-top: 53px;
+  font-size: 14px;
 }
 .generalTypeSp {
   padding-top: 32px;
   font-weight: 400;
+}
+.generalToAccBtn {
+  width: 100%;
+  height: 40px;
+  margin-top: 8px;
+  margin-bottom: 32px;
+  & p {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+.accountName {
+  padding-top: 13px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #b7b7b9;
+}
+.accountName .refreshBtn {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0px 32px;
+  height: 32px;
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.accountName img {
+  object-fit: cover;
+}
+.accountName h3 {
+  paddding-top: 8px;
+}
+.accountDeleteCont {
+  padding-bottom: 94px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  & h4 {
+    color: #b7b7b9;
+    font-size: 12px;
+    font-weight: 300;
+  }
+}
+.accountDeleteCont .accountDelete {
+  color: #b7b7b9;
+}
+.generalBtns .generalBtnBack {
+  width: 145px;
+  height: 36px;
+  border: 0.5px solid #ed772f;
+}
+.generalBtns .generalBtnSave {
+  width: 143px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.changePasswCont {
+  padding-top: 8px;
+}
+.formContPassw form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 56px;
+  padding-bottom: 78px;
+}
+.formContPassw h4 {
+  font-weight: 400;
+  color: #b7b7b9;
+}
+.restoreCont {
+  display: flex;
+  padding-top: 32px;
+  justify-content: center;
+  align-items: center;
+  & h5 {
+    font-size: 12px;
+    font-weight: 300;
+    color: #b7b7b9;
+  }
 }

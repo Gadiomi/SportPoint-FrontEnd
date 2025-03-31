@@ -43,6 +43,8 @@ const LogInPage: FC = () => {
         email: data.email,
         password: data.password,
       });
+      localStorage.setItem('userEmail', data.email);
+
       if (response.data.token && response.data.refreshToken) {
         Cookies.set(CookiesKey.TOKEN, response.data.token, {
           expires: 7,
@@ -56,7 +58,7 @@ const LogInPage: FC = () => {
         });
       }
 
-      nav('/account');
+      nav('/profile');
       console.log('Login Success:', response);
       reset();
     } catch (err) {
