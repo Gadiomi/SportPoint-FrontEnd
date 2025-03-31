@@ -49,6 +49,9 @@
     "change-profile-photo": "Change profile photo",
     "logout": "Log out",
     "zone": "Dander zone",
-    "delete": "Delete account"
+    "delete": "Delete account",
+    "password-current": "Enter current password",
+    "password-new": "Enter new password",
+    "password-confirm": "Confirm new password"
   }
 }
