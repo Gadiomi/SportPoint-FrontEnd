@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  padding-bottom: 74px;
+  padding-top: 6px;
 }
 .accountBtn {
   width: 100%;
@@ -30,6 +32,7 @@
 }
 .generalCont {
   width: 100%;
+  padding-bottom: 85px;
 }
 .generalForm {
   display: flex;
@@ -40,7 +43,9 @@
 .generalBtns {
   display: flex;
   gap: 8px;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding-top: 53px;
+  font-size: 14px;
 }
 .generalTypeSp {
   padding-top: 32px;
@@ -55,6 +60,11 @@
     flex-grow: 1;
     text-align: center;
   }
+}
+.accountName {
+  padding-top: 13px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #b7b7b9;
 }
 .accountName .refreshBtn {
   font-size: 14px;
@@ -71,4 +81,32 @@
 }
 .accountName h3 {
   paddding-top: 8px;
+}
+.accountDeleteCont {
+  padding-bottom: 94px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  & h4 {
+    color: #b7b7b9;
+    font-size: 12px;
+    font-weight: 300;
+  }
+}
+.accountDeleteCont .accountDelete {
+  color: #b7b7b9;
+}
+.generalBtns .generalBtnBack {
+  width: 145px;
+  height: 36px;
+  border: 0.5px solid #ed772f;
+}
+.generalBtns .generalBtnSave {
+  width: 143px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }

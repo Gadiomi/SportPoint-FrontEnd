@@ -252,12 +252,23 @@ const General: FC = () => {
             appearance={ButtonAppearance.SECONDARY}
             testId="back"
             onClick={() => navigate('/profile')}
+            className={css.generalBtnBack}
           ></Button>
           <Button
             type="submit"
             title={t(`account_page.save`)}
             appearance={ButtonAppearance.SECONDARY}
             testId="save"
+            className={css.generalBtnSave}
+            prependChild={
+              <Icon
+                styles={{
+                  color: 'currentColor',
+                  fill: 'transparent',
+                }}
+                name={IconName.CHECK_CONTAINED}
+              />
+            }
           ></Button>
         </div>
       </form>

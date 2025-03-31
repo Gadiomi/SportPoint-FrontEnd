@@ -47,6 +47,8 @@
     "back": "Back",
     "save": "Save",
     "change-profile-photo": "Change profile photo",
-    "logout": "Log out"
+    "logout": "Log out",
+    "zone": "Dander zone",
+    "delete": "Delete account"
   }
 }

@@ -147,6 +147,15 @@ const AccountPage: FC = () => {
           }
         />
       </div>
+      <div className={css.accountDeleteCont}>
+        <h4>{t(`account_page.zone`)}</h4>
+        <Button
+          title={t(`account_page.delete`)}
+          appearance={ButtonAppearance.UNDERLINED}
+          testId="delete"
+          className={css.accountDelete}
+        ></Button>
+      </div>
     </div>
   );
 };
