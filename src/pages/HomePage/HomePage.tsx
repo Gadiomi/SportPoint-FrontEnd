@@ -1,6 +1,6 @@
 import { Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
-import { TypeNavigation } from '@/components/TypeNavigation/TypeNavigation';
+import { TypeNavigation } from '@/pages/HomePage/components/TypeNavigation/TypeNavigation';
 import { Contacts } from '@/components/Footer/Contacts';
 
 const HomePage = () => {

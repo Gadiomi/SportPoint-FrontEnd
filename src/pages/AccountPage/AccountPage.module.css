@@ -15,3 +15,36 @@
   flex-grow: 1;
   text-align: center;
 }
+.accountName {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & img {
+    width: 134px;
+    height: 134px;
+    border-radius: 50%;
+  }
+  & h3 {
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+.generalCont {
+  width: 100%;
+}
+.generalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.generalBtns {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+}
+.generalTypeSp {
+  padding-top: 32px;
+  font-weight: 400;
+}

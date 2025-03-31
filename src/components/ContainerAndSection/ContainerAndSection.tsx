@@ -59,7 +59,7 @@ const StyledContainer = styled.div<{ maxWidth?: string }>(
 
 const StyledSection = styled.div<{ padding?: string }>(
   ({ theme, padding }) => ({
-    width: '100vw',
+    width: '100%',
     margin: '0 auto',
     padding: padding || `${theme.pxs.x0}px ${theme.pxs.x3}px`,
     background: theme.color.background,

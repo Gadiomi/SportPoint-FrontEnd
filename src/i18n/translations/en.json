@@ -2,10 +2,19 @@
   "welcome": "Welcome",
   "login": "Login",
   "signup": "Sign Up",
+  "chosen": "CHOSEN",
+  "coachs": "Coachs",
+  "clubs": "Clubs",
+  "more_details": "More details",
+  "show_more": "Show more",
   "login_page": {
     "title": "Create an Account",
     "description": "Select your role to get started",
-    "tabs": { "adminClub": "Administrator", "coach": "Coach", "customer": "Client" },
+    "tabs": {
+      "adminClub": "Administrator",
+      "coach": "Coach",
+      "customer": "Client"
+    },
     "already_have": "Already have an account?",
     "button_title": "Log In",
     "form": {
@@ -36,7 +45,10 @@
   "account_page": {
     "general": "GENERAL",
     "change-password": "CHANGE PASSWORD",
-    "my-reviews": "MY REVIEWS",
-    "favorites": "FAVORITES"
+    "reviews": "MY REVIEWS",
+    "favorites": "FAVORITES",
+    "back": "Back",
+    "save": "Save",
+    "change-profile-photo": "Change profile photo"
   }
 }

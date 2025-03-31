@@ -12,6 +12,7 @@ import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
 import { CookiesKey, Roles } from '@/constants';
 import { useLoginMutation } from '@/redux/auth/authApi';
+import { useNavigate } from 'react-router-dom';
 
 type logInFormInputs = {
   email: string;
@@ -23,7 +24,7 @@ const LogInPage: FC = () => {
   const { theme } = useTheme();
   const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
-
+  const nav = useNavigate();
   const {
     handleSubmit,
     reset,
@@ -41,20 +42,21 @@ const LogInPage: FC = () => {
       const response: any = await login({
         email: data.email,
         password: data.password,
-      }).unwrap();
-
-      if (response.token && response.refreshToken) {
-        Cookies.set(CookiesKey.TOKEN, response.token, {
+      });
+      if (response.data.token && response.data.refreshToken) {
+        Cookies.set(CookiesKey.TOKEN, response.data.token, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',
         });
-        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+        Cookies.set(CookiesKey.REFRESH_TOKEN, response.data.refreshToken, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',
         });
       }
+
+      nav('/account');
       console.log('Login Success:', response);
       reset();
     } catch (err) {
@@ -128,7 +130,7 @@ const LogInPage: FC = () => {
                   appendChild={
                     <div
                       onClick={toggleVisibilityPassword}
-                      style={{ paddingRight: theme.pxs.x1 }}
+                      style={{ paddingRight: theme.pxs.x1, width: 'auto' }}
                     >
                       {isVisiblePassword ? (
                         <Icon
@@ -175,6 +177,7 @@ const LogInPage: FC = () => {
           />
         </Form>
         <Button
+          type="submit"
           testId="login_page.signup_google"
           title={t('login_page.signup_google')}
           appearance={ButtonAppearance.SECONDARY}

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import '../../fonts.css';
 import { FontWeights, FontSizes, LineHeights, FontFamily } from './constants';
+import { useTheme } from 'styled-components';
 
 type TypographyProps = {
   children: ReactNode;
@@ -9,19 +10,21 @@ type TypographyProps = {
 };
 
 const Title: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
-    <h1
+    <h2
       className={className}
       style={{
         fontSize: FontSizes.XX_LARGE,
         fontWeight: FontWeights.BOLD,
         fontFamily: FontFamily,
         lineHeight: LineHeights.LARGE,
+        color: theme.color.white,
         ...style,
       }}
     >
       {children}
-    </h1>
+    </h2>
   );
 };
 
@@ -30,6 +33,7 @@ const Subtitle: React.FC<TypographyProps> = ({
   style,
   className,
 }) => {
+  const theme = useTheme();
   return (
     <h3
       className={className}
@@ -38,6 +42,7 @@ const Subtitle: React.FC<TypographyProps> = ({
         fontWeight: FontWeights.EXTRA_BOLD,
         fontFamily: FontFamily,
         lineHeight: LineHeights.MEDIUM,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -47,6 +52,7 @@ const Subtitle: React.FC<TypographyProps> = ({
 }; //  заголовки2
 
 const Name: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <h2
       className={className}
@@ -54,6 +60,7 @@ const Name: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontSize: FontSizes.X_LARGE,
         fontWeight: FontWeights.BOLD,
         fontFamily: FontFamily,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -63,6 +70,7 @@ const Name: React.FC<TypographyProps> = ({ children, style, className }) => {
 }; // імена
 
 const Main: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <p
       className={className}
@@ -71,6 +79,7 @@ const Main: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontWeight: FontWeights.BOLD,
         fontFamily: FontFamily,
         lineHeight: LineHeights.X_LARGE,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -80,6 +89,7 @@ const Main: React.FC<TypographyProps> = ({ children, style, className }) => {
 }; //  Main_Manrope_16B
 
 const Medium: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <p
       className={className}
@@ -88,6 +98,7 @@ const Medium: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontWeight: FontWeights.MEDIUM,
         fontFamily: FontFamily,
         lineHeight: LineHeights.X_LARGE,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -97,6 +108,7 @@ const Medium: React.FC<TypographyProps> = ({ children, style, className }) => {
 }; //  Second_Manrope_16Med
 
 const Light: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <p
       className={className}
@@ -105,6 +117,7 @@ const Light: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontWeight: FontWeights.LIGHT,
         fontFamily: FontFamily,
         lineHeight: LineHeights.MEDIUM,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -118,6 +131,7 @@ const ButtonTypogr: React.FC<TypographyProps> = ({
   style,
   className,
 }) => {
+  const theme = useTheme();
   return (
     <button
       className={className}
@@ -126,6 +140,7 @@ const ButtonTypogr: React.FC<TypographyProps> = ({
         fontWeight: FontWeights.REGULAR,
         fontFamily: FontFamily,
         lineHeight: LineHeights.BASE,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -135,6 +150,7 @@ const ButtonTypogr: React.FC<TypographyProps> = ({
 }; //  main_button
 
 const Card: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <p
       className={className}
@@ -143,6 +159,7 @@ const Card: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontWeight: FontWeights.REGULAR,
         fontFamily: FontFamily,
         lineHeight: LineHeights.LARGE,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -152,6 +169,7 @@ const Card: React.FC<TypographyProps> = ({ children, style, className }) => {
 }; //  опис в карточки
 
 const Small: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <p
       className={className}
@@ -160,6 +178,7 @@ const Small: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontWeight: FontWeights.MEDIUM,
         fontFamily: FontFamily,
         lineHeight: LineHeights.SMALL,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -169,6 +188,7 @@ const Small: React.FC<TypographyProps> = ({ children, style, className }) => {
 }; //  small_text
 
 const About: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <p
       className={className}
@@ -177,6 +197,7 @@ const About: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontWeight: FontWeights.REGULAR,
         fontFamily: FontFamily,
         lineHeight: LineHeights.X_LARGE,
+        color: theme.color.white,
         ...style,
       }}
     >
@@ -186,6 +207,7 @@ const About: React.FC<TypographyProps> = ({ children, style, className }) => {
 }; //  about_text
 
 const PopUp: React.FC<TypographyProps> = ({ children, style, className }) => {
+  const theme = useTheme();
   return (
     <p
       className={className}
@@ -194,6 +216,7 @@ const PopUp: React.FC<TypographyProps> = ({ children, style, className }) => {
         fontWeight: FontWeights.REGULAR,
         fontFamily: FontFamily,
         lineHeight: LineHeights.X_SMALL,
+        color: theme.color.white,
         ...style,
       }}
     >
