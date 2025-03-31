@@ -39,7 +39,7 @@ const CoachCard: FC<Props> = ({ coachData }) => {
           </NameBlock>
           <ConditionsBlock>
             <div>
-              <h2>{`${coachData.description.price[0].amount}грн`}</h2>
+              <h2>{`${coachData.description.price[0].amount || '-'} грн`}</h2>
               <span>{coachData.description.price[0].name}</span>
             </div>
             <Rating>

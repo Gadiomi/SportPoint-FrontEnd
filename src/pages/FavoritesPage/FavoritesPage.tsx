@@ -75,10 +75,10 @@ const FavoritesPage = () => {
 
   return (
     <Section>
-      {/* <Container maxWidth="320px"> */}
-      <Container>
+      {/* ??? */}
+      <Container maxWidth="375px">
         <FavoritesPageWrapper>
-          <Logo />
+          {/* <Logo /> */}
           <Button
             testId="ОБРАНІ"
             title={t('chosen')}

@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-interface IButtonProps {
-  width?: string;
-  height?: string;
-  fontSize?: string;
-}
-
 export const PageTitle = styled.h1`
   color: rgba(40, 41, 42, 0.65);
   margin-bottom: 24px;

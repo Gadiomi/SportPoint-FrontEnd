@@ -31,3 +31,13 @@ export interface IClubData {
   distance: string;
   workTime: string;
 }
+
+export interface RegisterFormData {
+  first_name: string;
+  second_name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  club_name: string;
+  phone: string;
+}

@@ -8,7 +8,7 @@
   "more_details": "Детальніше",
   "show_more": "Побачити більше",
   "login_page": {
-    "title": "Створити акаунт",
+    "title": "Увійти в акаунт",
     "description": "Виберіть свою роль, щоб розпочати",
     "tabs": {
       "adminClub": "Адміністратор",
@@ -44,5 +44,14 @@
     "change-password": "ЗМІНИТИ ПАРОЛЬ",
     "my-reviews": "МОЇ ВІДГУКИ",
     "favorites": "ОБРАНІ"
+  },
+  "register_page": {
+    "title": "Створити акаунт",
+    "confirm_password": "Підтвердити пароль",
+    "submit_button": "Зареєструватись",
+    "name": "Ім’я",
+    "second_name": "Прізвище",
+    "club_name": "Назва клубу",
+    "phone": "Номер телефону"
   }
 }

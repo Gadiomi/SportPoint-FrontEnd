@@ -8,7 +8,7 @@
   "more_details": "More details",
   "show_more": "Show more",
   "login_page": {
-    "title": "Create an Account",
+    "title": "Log in to account",
     "description": "Select your role to get started",
     "tabs": {
       "adminClub": "Administrator",
@@ -44,5 +44,14 @@
     "change-password": "CHANGE PASSWORD",
     "my-reviews": "MY REVIEWS",
     "favorites": "FAVORITES"
+  },
+  "register_page": {
+    "title": "Create an Account",
+    "confirm_password": "confirm password",
+    "submit_button": "Register",
+    "name": "First name",
+    "second_name": "Second name",
+    "club_name": "Club's name",
+    "phone": "Phone"
   }
 }

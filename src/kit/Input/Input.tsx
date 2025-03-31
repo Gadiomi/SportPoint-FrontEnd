@@ -38,7 +38,7 @@ export function Input({
       disabled={disabled}
       style={containerStyles}
       $isFocused={isFocused}
-      $hasValue={value.length > 0}
+      $hasValue={value.trim().length > 0}
       $invalid={invalid}
     >
       <InputField
@@ -155,10 +155,10 @@ const PlaceholderLabel = styled.label<{
 });
 
 const ErrorText = styled.span(({ theme }) => ({
-  color: 'inherit',
+  color: theme.color.error,
   position: 'absolute',
   bottom: '0',
   transform: 'translateY(50%)',
   left: theme.pxs.x2,
-  backgroundColor: 'white',
+  backgroundColor: theme.color.background,
 }));
