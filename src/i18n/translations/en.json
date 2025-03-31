@@ -42,8 +42,11 @@
   "account_page": {
     "general": "GENERAL",
     "change-password": "CHANGE PASSWORD",
-    "my-reviews": "MY REVIEWS",
-    "favorites": "FAVORITES"
+    "reviews": "MY REVIEWS",
+    "favorites": "FAVORITES",
+    "back": "Back",
+    "save": "Save",
+    "change-profile-photo": "Change profile photo"
   },
   "register_page": {
     "title": "Create an Account",

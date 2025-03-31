@@ -2,17 +2,16 @@ import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
+import { Logo } from '@/components/Logo/Logo';
+import { FontFamily } from '@/kit';
 
 const AccountLayout = () => {
   const { theme } = useTheme();
+
   return (
-    <Section>
+    <Section styles={{ fontFamily: `${FontFamily}` }}>
       <Container maxWidth="320px">
-        <StyledImage
-          srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
-          src="/public/assets/images/logo@1.png"
-          alt="Logo"
-        />
+        <Logo />
         <Outlet />
       </Container>
     </Section>
@@ -21,8 +20,8 @@ const AccountLayout = () => {
 
 export default AccountLayout;
 
-const StyledImage = styled.img(({ theme }) => ({
-  margin: 'auto',
-  marginBottom: theme.pxs.x5,
-  marginTop: theme.pxs.x2,
-}));
+// const StyledImage = styled.img(({ theme }) => ({
+//   margin: 'auto',
+//   marginBottom: theme.pxs.x5,
+//   marginTop: theme.pxs.x2,
+// }));

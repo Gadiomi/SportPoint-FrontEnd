@@ -43,14 +43,13 @@ const LogInPage: FC = () => {
         email: data.email,
         password: data.password,
       });
-
-      if (response.token && response.refreshToken) {
-        Cookies.set(CookiesKey.TOKEN, response.token, {
+      if (response.data.token && response.data.refreshToken) {
+        Cookies.set(CookiesKey.TOKEN, response.data.token, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',
         });
-        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+        Cookies.set(CookiesKey.REFRESH_TOKEN, response.data.refreshToken, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',

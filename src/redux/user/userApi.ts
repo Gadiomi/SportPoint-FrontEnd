@@ -4,19 +4,14 @@ import { axiosBaseQuery } from '../auth/axios';
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: axiosBaseQuery(),
+  tagTypes: ['UserProfile'],
   endpoints: builder => ({
     getUserProfile: builder.query({
       query: () => ({
         url: '/profile',
         method: 'GET',
       }),
-    }),
-
-    deleteUserProfile: builder.mutation({
-      query: () => ({
-        url: '/profile',
-        method: 'DELETE',
-      }),
+      providesTags: ['UserProfile'],
     }),
 
     updateUserProfile: builder.mutation({
@@ -25,21 +20,9 @@ export const userApi = createApi({
         method: 'PATCH',
         data: userData,
       }),
-    }),
-
-    createUserProfile: builder.mutation({
-      query: userData => ({
-        url: '/profile',
-        method: 'POST',
-        data: userData,
-      }),
+      invalidatesTags: ['UserProfile'], // Оновлення даних після зміни профілю
     }),
   }),
 });
 
-export const {
-  useGetUserProfileQuery,
-  useDeleteUserProfileMutation,
-  useUpdateUserProfileMutation,
-  useCreateUserProfileMutation,
-} = userApi;
+export const { useGetUserProfileQuery, useUpdateUserProfileMutation } = userApi;

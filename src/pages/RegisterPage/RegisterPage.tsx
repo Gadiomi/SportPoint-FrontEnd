@@ -68,17 +68,19 @@ const RegisterPage = () => {
     try {
       const response: any = await registerUser(registerData).unwrap();
 
-      if (response.token && response.refreshToken) {
-        Cookies.set(CookiesKey.TOKEN, response.token, {
+      if (response.data.token && response.data.refreshToken) {
+        Cookies.set(CookiesKey.TOKEN, response.data.token, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',
         });
-        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+        Cookies.set(CookiesKey.REFRESH_TOKEN, response.data.refreshToken, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',
         });
+        localStorage.setItem('userEmail', response.data.email);
+        console.log('Registered email:', response.data.email);
       }
       reset();
     } catch (err) {

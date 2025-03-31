@@ -42,8 +42,11 @@
   "account_page": {
     "general": "ЗАГАЛЬНЕ",
     "change-password": "ЗМІНИТИ ПАРОЛЬ",
-    "my-reviews": "МОЇ ВІДГУКИ",
-    "favorites": "ОБРАНІ"
+    "reviews": "МОЇ ВІДГУКИ",
+    "favorites": "ОБРАНІ",
+    "back": "Назад",
+    "save": "Зберегти",
+    "change-profile-photo": "Змінити фото профілю"
   },
   "register_page": {
     "title": "Створити акаунт",
