@@ -28,7 +28,7 @@ const ChangePassword: FC = () => {
 
   return (
     <>
-      <div>
+      <div className={css.changePasswCont}>
         <Button
           onClick={() => navigate('/profile')}
           title={t(`account_page.change-password`)}
@@ -55,79 +55,90 @@ const ChangePassword: FC = () => {
           }
         />
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <Input
-            testId="password"
-            value={watch('currentPassword') || ''}
-            label={t(`account_page.password-current`)}
-            type="password"
-            {...register('currentPassword', {
-              required: 'Current password is required',
-            })}
-          />
-          {errors.currentPassword && <p>{errors.currentPassword.message}</p>}
-        </div>
+      <div className={css.formContPassw}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h4>{t(`account_page.change-password-h`)}</h4>
+          <div>
+            <Input
+              testId="password"
+              value={watch('currentPassword') || ''}
+              label={t(`account_page.password-current`)}
+              type="password"
+              {...register('currentPassword', {
+                required: 'Current password is required',
+              })}
+            />
+            {errors.currentPassword && <p>{errors.currentPassword.message}</p>}
+          </div>
 
-        <div>
-          <Input
-            testId="password"
-            value={watch('newPassword') || ''}
-            label={t(`account_page.password-new`)}
-            type="password"
-            {...register('newPassword', {
-              required: 'New password is required',
-              minLength: {
-                value: 6,
-                message: 'Password must be at least 6 characters',
-              },
-            })}
-          />
-          {errors.newPassword && <p>{errors.newPassword.message}</p>}
-        </div>
+          <div>
+            <Input
+              testId="password"
+              value={watch('newPassword') || ''}
+              label={t(`account_page.password-new`)}
+              type="password"
+              {...register('newPassword', {
+                required: 'New password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters',
+                },
+              })}
+            />
+            {errors.newPassword && <p>{errors.newPassword.message}</p>}
+          </div>
 
-        <div>
-          <Input
-            testId="password"
-            value={watch('confirmPassword') || ''}
-            label={t(`account_page.password-confirm`)}
-            type="password"
-            {...register('confirmPassword', {
-              required: 'Please confirm your password',
-              validate: value =>
-                value === watch('newPassword') || 'Passwords do not match',
-            })}
-          />
-          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-        </div>
-
-        <div className={css.generalBtns}>
-          <Button
-            type="button"
-            title={t(`account_page.back`)}
-            appearance={ButtonAppearance.SECONDARY}
-            testId="back"
-            onClick={() => navigate('/profile')}
-            className={css.generalBtnBack}
-          ></Button>
-          <Button
-            type="submit"
-            title={t(`account_page.save`)}
-            appearance={ButtonAppearance.SECONDARY}
-            testId="save"
-            className={css.generalBtnSave}
-            prependChild={
-              <Icon
-                styles={{
-                  color: 'currentColor',
-                  fill: 'transparent',
-                }}
-                name={IconName.CHECK_CONTAINED}
-              />
-            }
-          ></Button>
-        </div>
-      </form>
+          <div>
+            <Input
+              testId="password"
+              value={watch('confirmPassword') || ''}
+              label={t(`account_page.password-confirm`)}
+              type="password"
+              {...register('confirmPassword', {
+                required: 'Please confirm your password',
+                validate: value =>
+                  value === watch('newPassword') || 'Passwords do not match',
+              })}
+            />
+            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+          </div>
+          <div className={css.restoreCont}>
+            <h5>{t(`account_page.forgot`)}</h5>
+            <Button
+              type="button"
+              title={t(`account_page.restore`)}
+              appearance={ButtonAppearance.UNDERLINED}
+              testId="restore"
+            ></Button>
+          </div>
+          <div className={css.generalBtns}>
+            <Button
+              type="button"
+              title={t(`account_page.back`)}
+              appearance={ButtonAppearance.SECONDARY}
+              testId="back"
+              onClick={() => navigate('/profile')}
+              className={css.generalBtnBack}
+            ></Button>
+            <Button
+              type="submit"
+              title={t(`account_page.save`)}
+              appearance={ButtonAppearance.SECONDARY}
+              testId="save"
+              className={css.generalBtnSave}
+              prependChild={
+                <Icon
+                  styles={{
+                    color: 'currentColor',
+                    fill: 'transparent',
+                  }}
+                  name={IconName.CHECK_CONTAINED}
+                />
+              }
+            ></Button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

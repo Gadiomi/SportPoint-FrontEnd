@@ -110,3 +110,28 @@
   justify-content: center;
   gap: 8px;
 }
+.changePasswCont {
+  padding-top: 8px;
+}
+.formContPassw form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 56px;
+  padding-bottom: 78px;
+}
+.formContPassw h4 {
+  font-weight: 400;
+  color: #b7b7b9;
+}
+.restoreCont {
+  display: flex;
+  padding-top: 32px;
+  justify-content: center;
+  align-items: center;
+  & h5 {
+    font-size: 12px;
+    font-weight: 300;
+    color: #b7b7b9;
+  }
+}

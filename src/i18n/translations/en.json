@@ -50,8 +50,11 @@
     "logout": "Log out",
     "zone": "Dander zone",
     "delete": "Delete account",
+    "change-password-h": "Change password",
     "password-current": "Enter current password",
     "password-new": "Enter new password",
-    "password-confirm": "Confirm new password"
+    "password-confirm": "Confirm new password",
+    "forgot": "Forgot password?",
+    "restore": "Restore"
   }
 }
