@@ -29,16 +29,17 @@ const General: FC = () => {
   const { data: userData, isLoading } = useGetUserProfileQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
-  const [user, setUser] = useState<any>(null);
 
   const email = localStorage.getItem('userEmail');
+  console.log('email:', email);
 
   const [updateUserProfile, { isLoading: isUpdating }] =
     useUpdateUserProfileMutation();
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UserProfileFormData>({
-      defaultValues: JSON.parse(localStorage.getItem('userProfile') || '{}'),
+      defaultValues: userData?.userProfile || {}, // Використовуємо дані з бекенду
+      shouldUnregister: false, // Не видаляємо значення після розмонтування
     });
 
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
@@ -95,13 +96,13 @@ const General: FC = () => {
   //   navigate('/login');
   // };
 
-  // useEffect(() => {
-  //   const storedEmail = localStorage.getItem('userEmail');
-  //   if (storedEmail) {
-  //     console.log('User email:', storedEmail);
-  //     setValue('email', storedEmail);
-  //   }
-  // }, [setValue]);
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('userEmail');
+    if (storedEmail) {
+      console.log('User email:', storedEmail);
+      setValue('email', storedEmail);
+    }
+  }, [setValue]);
 
   // const onSubmit = async (formData: UserProfileFormData) => {
   //   try {
@@ -161,7 +162,10 @@ const General: FC = () => {
           }
         />
         <h3>
-          {user?.firstLastName || (email ? email.split('@')[0] : 'No Name')}
+          {userData?.userProfile.firstLastName ||
+            (userData?.userProfile.description.email
+              ? userData?.userProfile.description.email.split('@')[0]
+              : 'No Name')}
         </h3>
         <Button
           onClick={() => document.getElementById('avatarInput')?.click()}
@@ -206,7 +210,7 @@ const General: FC = () => {
           <Input
             testId="email"
             label="Email"
-            value={watch('email') || ''}
+            value={userData?.userProfile.description.email || ''}
             {...register('email')}
             onChange={e => setValue('email', e.target.value)}
           />

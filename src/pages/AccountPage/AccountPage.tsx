@@ -10,13 +10,14 @@ import { useLoginMutation, useRegisterMutation } from '@/redux/auth';
 const AccountPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { data: userData } = useGetUserProfileQuery(undefined);
 
-  const [login, { data: userData, isLoading, isError, error }] =
-    useLoginMutation();
-  const [user, setUser] = useState<any>(null);
+  // const [login, { data: userData, isLoading, isError, error }] =
+  //   useLoginMutation();
+  // const [user, setUser] = useState<any>(null);
 
-  const email = localStorage.getItem('userEmail');
-  console.log('User email:', email);
+  // const email = localStorage.getItem('userEmail');
+  // console.log('User email:', email);
 
   // useEffect(() => {
   //   if (userData) {
@@ -33,12 +34,15 @@ const AccountPage: FC = () => {
       <div className={css.accountName}>
         <img
           src={
-            user?.avatar ||
+            userData?.userProfile?.avatar ||
             '/public/assets/images/png-transparent-neon-silver-pic-miscellaneous-cdr-angle-thumbnail.png'
           }
         />
         <h3>
-          {user?.firstLastName || (email ? email.split('@')[0] : 'No Name')}
+          {userData?.userProfile?.firstLastName ||
+            (userData?.userProfile.description.email
+              ? userData?.userProfile.description.email.split('@')[0]
+              : 'No Name')}
         </h3>
       </div>
       <div className={css.accountCont}>
