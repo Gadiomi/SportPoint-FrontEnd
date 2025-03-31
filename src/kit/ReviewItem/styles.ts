@@ -22,15 +22,14 @@ export const Header = styled.div`
 export const ReviewCard = styled.div`
   background-color: ${props => props.theme.inputBar};
   box-shadow: 1px 1px 8px rgba(43, 54, 149, 0.9);
-  font-family: Manrope;
+  // font-family: Manrope;
   color: white;
-  padding: 16px 12px;
+  padding: 12px 16px;
   margin: 10px 0;
-  border-radius: 10px;
+  border-radius: 6px;
 `;
 
 export const UserInfo = styled.div`
-  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -38,6 +37,8 @@ export const UserInfo = styled.div`
 
 export const Avatar = styled.img`
   border-radius: 50%;
+  width: 42px;
+  height: 32px;
 `;
 
 export const Name = styled.span`

@@ -40,6 +40,8 @@ export const UserInfo = styled.div`
 
 export const Avatar = styled.img`
   border-radius: 50%;
+  widht: 42px;
+  height: 32px;
 `;
 
 export const Name = styled.span`

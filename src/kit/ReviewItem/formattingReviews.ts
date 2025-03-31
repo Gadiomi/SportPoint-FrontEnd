@@ -5,8 +5,6 @@ export const formattingReviews = (reviews: any): any => {
   const fours: number[] = [];
   const fives: number[] = [];
 
-  console.log(formattingReviews);
-
   // Перевіряємо, чи є відгуки
   if (reviews !== null) {
     // Проходимо по кожному відгуку

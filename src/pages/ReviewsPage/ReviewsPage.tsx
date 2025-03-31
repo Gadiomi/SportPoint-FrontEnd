@@ -8,11 +8,6 @@ import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-// Тип для параметрів запиту
-// interface RequestParams {
-//   [key: string]: string | number | boolean;
-// }
-
 // Інтерфейси
 interface UserData {
   id: string;
@@ -31,71 +26,6 @@ interface ReviewData {
 
 interface Review extends UserData, ReviewData {} // об'єднуємо
 
-// Функція для конвертації API-відповіді у потрібний формат
-
-// Тип для відповіді сервера (змінюй залежно від структури API)
-// interface Review {
-//   id: number;
-//   name: string;
-//   avatar: string;
-//   date: string;
-//   comment: string;
-//   likes: number;
-//   dislikes: number;
-//   rating: number; // ✅ Додаємо "?" (може бути undefined)
-//   reviews: { id: number; rating: number }[]; // ✅ Додаємо для середнього рейтингу
-// }
-
-// // Створюємо екземпляр Axios із базовою URL-адресою API
-// export const review: AxiosInstance = axios.create({
-//   baseURL: 'sportpoint-backend.onrender.com/',
-// });
-
-// // Об'єкт для керування токеном аутентифікації
-// export const tokenControl = {
-//   set(token: string): void {
-//     review.defaults.headers.common.Authorization = `Bearer ${token}`;
-//   },
-//   unset(): void {
-//     review.defaults.headers.common.Authorization = '';
-//   },
-// };
-
-// // Функція для отримання даних з сервера
-// export async function get(params?: RequestParams): Promise<Review[]> {
-//   const { data } = await review.get<Review[]>('/review', { params });
-//   return data;
-// }
-
-// const getCurrentDate = (): string => {
-//   const now = new window.Date();
-//   return `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1)
-//     .toString()
-//     .padStart(2, '0')}.${now.getFullYear()}`;
-// };
-
-// const initialReviews = [
-//   {
-//     id: 1,
-//     name: 'Андрій М.',
-//     avatar: '/assets/images/avatar.png',
-//     rating: 4,
-//     reviews: [
-//       { id: 1, rating: 5 },
-//       { id: 2, rating: 5 },
-//       { id: 3, rating: 6 },
-//       { id: 4, rating: 5 },
-//     ],
-//     comment:
-//       'Відмінний тренер! 👋 Дуже уважний до деталей, допомагає правильно виконувати вправи та мотивує не здаватися. Завдяки його порадам я бачу реальні результати вже через кілька тижнів! Рекомендую всім, хто хоче ефективні тренування та підтримку. 💪',
-//     date: getCurrentDate(), // Використовуємо функцію тут!
-//     likes: 0,
-//     dislikes: 0,
-//   },
-
-//   // Можно добавить больше отзывов
-// ];
-
 const ReviewsPage = () => {
   const { id } = useParams<{ id: string }>();
   // const [reviewsState, setReviewsState] = useState([]);
@@ -109,89 +39,55 @@ const ReviewsPage = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
 
-  const ratings = {
-    5: 10,
-    4: 80,
-    3: 150,
-    2: 30,
-    1: 100,
-  };
-
-  // Функція отримання даних про користувачів
-  const fetchUserData = async (): Promise<UserData[]> => {
+  async function fetchData() {
     try {
       const response = await axios.get(
-        `https://sportpoint-backend.onrender.com/cards`,
+        'https://sportpoint-backend.onrender.com/cards/67cb064cb731dc6d28584704',
       );
-      return response.data.map((user: any) => ({
-        id: user._id,
-        name: user.firstLastName || 'Анонімний користувач',
-        avatar: user.avatar || '/assets/images/default-avatar.png',
-      }));
+      console.log('запит 31.03', response.data.data.userComments);
     } catch (error) {
-      console.error('Помилка при отриманні користувачів:', error);
-      return [];
+      console.error('Fetch error:', error);
     }
-  };
+  }
 
-  // Функція отримання даних про відгуки
-  const fetchReviewData = async (): Promise<ReviewData[]> => {
-    try {
-      const response = await axios.get(
-        `https://sportpoint-backend.onrender.com/cards/$67cb064cb731dc6d28584704`,
-      );
-
-      console.log('Отримані дані:', response.data); // Логування даних
-
-      return response.data.map((review: any) => {
-        console.log('Оброблюваний review:', review);
-        console.log('Оброблюваний review:', review); // Логування кожного окремого об'єкта
-        const ratings = review.userComments.ratings;
-        const averageRating =
-          (ratings.clientService +
-            ratings.serviceQuality +
-            ratings.priceQuality +
-            ratings.location +
-            ratings.cleanliness) /
-          5;
-        return {
-          id: review.userId, // Це має відповідати `id` з user API
-          comment: review.userComments.comment || '',
-          date: new Date(review.userData?.data?.createdAt).toLocaleDateString(),
-          rating: Math.round(averageRating),
-          // rating: review.userComments.ratings.overall, // або інша логіка розрахунку рейтингу
-          likes: 0,
-          dislikes: 0,
-        };
-      });
-    } catch (error) {
-      console.error('Помилка при отриманні відгуків:', error);
-      return [];
-    }
-  };
-
-  // Завантаження та об'єднання даних
   const fetchReviews = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
-      const [users, reviews] = await Promise.all([
-        fetchUserData(),
-        fetchReviewData(),
-      ]);
+      const response = await axios.get(
+        'https://sportpoint-backend.onrender.com/cards/67cb064cb731dc6d28584704',
+      );
 
-      // Об'єднуємо дані за ID користувача
-      const mergedReviews = reviews
-        .map(review => {
-          const user = users.find(user => user.id === review.id) ?? {
-            id: review.id,
-            name: 'Анонімний користувач',
-            avatar: '/assets/images/default-avatar.png',
-          };
-          return { ...user, ...review };
-        })
-        .filter((review): review is Review => review !== null);
+      console.log('Відповідь від сервера:', response); // Дивимось усю відповідь
+      console.log('Дані у відповіді:', response.data); // Перевіряємо, чи є `data`
 
-      setReviews(mergedReviews);
+      const data = response.data.data;
+      console.log('Розпарсені дані:', data);
+
+      const userComments = data.userComments;
+      console.log('Відгуки:', userComments);
+
+      const ratings = userComments.ratings;
+      const averageRating =
+        (ratings.clientService +
+          ratings.serviceQuality +
+          ratings.priceQuality +
+          ratings.location +
+          ratings.cleanliness) /
+        5;
+
+      const review: Review = {
+        id: userComments.userCommentId,
+        name: data.data.firstLastName,
+        avatar: data.data.avatar,
+        comment: userComments.comment,
+        date: new Date(userComments.createdAt).toLocaleDateString(),
+        rating: Math.round(averageRating),
+        likes: 0,
+        dislikes: 0,
+        // images: userComments.images,
+      };
+
+      setReviews([review]);
     } catch (err) {
       setError('Не вдалося завантажити відгуки');
       console.error(err);
@@ -199,6 +95,8 @@ const ReviewsPage = () => {
       setLoading(false);
     }
   };
+
+  fetchReviews();
 
   useEffect(() => {
     if (id) {

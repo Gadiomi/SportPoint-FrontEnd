@@ -90,7 +90,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `http://sportpoint-backend.onrender.com/cards/`,
+        `http://sportpoint-backend.onrender.com/cards`,
         {
           method: 'POST' || 'PUT', // або 'PUT', якщо редагування
           headers: {
@@ -122,7 +122,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
         {hasComment ? 'РЕДАГУВАТИ ВІДГУК' : 'НОВИЙ ВІДГУК'}
       </HeaderEdit>
       <UserInfoEdit>
-        <Avatar src={review.avatar} alt={review.name} />
+        <Avatar src={review.avatar} />
         <div>
           <Name>{review.name}</Name>
           {/* <Badge>Йога</Badge> */}
