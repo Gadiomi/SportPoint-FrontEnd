@@ -21,7 +21,7 @@ const TrainersPage = lazy(
   () => import('../pages/HomePage/TrainersPage/TrainersPage'),
 );
 const ClubsPage = lazy(() => import('../pages/HomePage/ClubsPage/ClubsPage'));
-const Reviews = lazy(() => import('../pages/ReviewsPage/ReviewsPage'));
+const MyReviews = lazy(() => import('../pages/ReviewsPage/ReviewsPage'));
 
 function App() {
   return (
@@ -41,6 +41,10 @@ function App() {
         {/* <Route element={<PrivateRoute />}> */}
         <Route path="/profile" element={<AccountLayout />}>
           <Route index element={<Account />} />
+          {/* <Route path="general" element={<General />} /> */}
+          <Route path="favorites" element={<Favorites />} />
+          {/* <Route path="change-password" element={<ChangePassword />} /> */}
+          <Route path="my-reviews" element={<MyReviews />} />
           <Route path={PublicRouteName.GENERAL} element={<General />} />
           <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
           <Route
