@@ -78,7 +78,7 @@ const FavoritesPage = () => {
       {/* <Container maxWidth="320px"> */}
       <Container>
         <FavoritesPageWrapper>
-          <Logo />
+          {/* <Logo /> */}
           <Button
             testId="ОБРАНІ"
             title={t('chosen')}
