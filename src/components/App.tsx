@@ -4,6 +4,8 @@ import PrivateRoute from './PrivateRoutes';
 import { ToastProvider } from '@/hooks/Toasts/ToastProvider';
 import { PublicRouteName } from '@/routes';
 import AccountLayout from '@/pages/AccountPage/AccountLayout';
+import General from '@/pages/AccountPage/General';
+import ChangePassword from '@/pages/AccountPage/ChangePassword';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -28,20 +30,28 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/trainers" element={<TrainersPage />} />
         <Route path="/clubs" element={<ClubsPage />} />
-
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/details" element={<Details />}>
           <Route path="coach" element={<Coach />} />
           <Route path="adminClub" element={<AdminClub />} />
         </Route>
+        {/* // TEMP!! */}
+        {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}
         {/* <Route element={<PrivateRoute />}> */}
-        <Route path="/account" element={<AccountLayout />}>
+        <Route path="/profile" element={<AccountLayout />}>
           <Route index element={<Account />} />
           {/* <Route path="general" element={<General />} /> */}
           <Route path="favorites" element={<Favorites />} />
           {/* <Route path="change-password" element={<ChangePassword />} /> */}
           <Route path="my-reviews" element={<MyReviews />} />
+          <Route path={PublicRouteName.GENERAL} element={<General />} />
+          <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
+          <Route
+            path={PublicRouteName.CHANGEPASSWORD}
+            element={<ChangePassword />}
+          />
+          <Route path={PublicRouteName.REVIEWS} element={<Reviews />} />
         </Route>
         {/* </Route> */}
       </Routes>

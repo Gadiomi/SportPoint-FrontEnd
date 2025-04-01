@@ -2,10 +2,19 @@
   "welcome": "Ласкаво просимо",
   "login": "Увійти",
   "signup": "Зареєструватись",
+  "chosen": "ОБРАНІ",
+  "coachs": "Тренери",
+  "clubs": "Клуби",
+  "more_details": "Детальніше",
+  "show_more": "Побачити більше",
   "login_page": {
     "title": "Створити акаунт",
     "description": "Виберіть свою роль, щоб розпочати",
-    "tabs": { "adminClub": "Адміністратор", "coach": "Тренер", "customer": "Клієнт" },
+    "tabs": {
+      "adminClub": "Адміністратор",
+      "coach": "Тренер",
+      "customer": "Клієнт"
+    },
     "already_have": "Вже маєте акаунт?",
     "button_title": "Увійти",
     "form": {
@@ -24,12 +33,28 @@
     "price": "ПРАЙС",
     "gallery": "ГАЛЕРЕЯ",
     "working_hours": "ГРАФІК РОБОТИ",
-    "location": "РОЗТАШУВАННЯ"
+    "location": "РОЗТАШУВАННЯ",
+    "works_in": "ПРАЦЮЄ В",
+    "more_details": "Детальніше",
+    "see_more": "Побачити більше",
+    "reviews": "ВІДГУКИ"
   },
   "account_page": {
     "general": "ЗАГАЛЬНЕ",
     "change-password": "ЗМІНИТИ ПАРОЛЬ",
-    "my-reviews": "МОЇ ВІДГУКИ",
-    "favorites": "ОБРАНІ"
+    "reviews": "МОЇ ВІДГУКИ",
+    "favorites": "ОБРАНІ",
+    "back": "Назад",
+    "save": "Зберегти",
+    "change-profile-photo": "Змінити фото профілю",
+    "logout": "Вийти",
+    "zone": "Небезпечна зона",
+    "delete": "Видалити обліковий запис",
+    "change-password-h": "Змінити пароль",
+    "password-current": "Введіть поточний пароль",
+    "password-new": "Введіть новий пароль",
+    "password-confirm": "Підтвердити новий пароль",
+    "forgot": "Забули пароль?",
+    "restore": "Відновити"
   }
 }

@@ -1,20 +1,22 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Icon, IconName } from '@/kit';
+import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledPriceCard,
-  IconContainer,
-  Title,
   PriceContainer,
   PriceDiv,
+  PriceNameContainer,
   PriceName,
+  PriceDescription,
+  PriceAmountContainer,
   PriceAmount,
   RatePerHour,
 } from './styles';
 
 interface Price {
+  _id: string;
   name: string;
   amount: string;
+  description?: string;
 }
 
 interface PriceCardProps {
@@ -22,29 +24,31 @@ interface PriceCardProps {
 }
 
 const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
-  const { t } = useTranslation();
+  if (!prices || prices.length === 0) {
+    return <div>Ціни не доступні</div>;
+  }
+
   return (
     <StyledPriceCard>
-      <IconContainer>
-        <Icon
-          name={IconName.ARROW_RIGHT}
-          styles={{
-            left: '12px',
-            fill: 'none',
-            width: '32px',
-            height: '32px',
-          }}
-        />
-        <Title>{t('details_page.price')}</Title>
-      </IconContainer>
+      <TitleContainer titleKey="details_page.price" />
       <PriceContainer>
-        {prices.map(price => (
-          <PriceDiv key={price.name}>
-            <PriceName>{price.name}</PriceName>
-            <PriceAmount>{price.amount}</PriceAmount>
-            <RatePerHour>грн/год</RatePerHour>
-          </PriceDiv>
-        ))}
+        {prices.map((price, index) => {
+          if (!price || !price.name || !price.amount) {
+            return null;
+          }
+          return (
+            <PriceDiv key={price._id || index}>
+              <PriceNameContainer>
+                <PriceName>{price.name || 'Не вказано'}</PriceName>
+                <PriceDescription>{price.description || ''}</PriceDescription>
+              </PriceNameContainer>
+              <PriceAmountContainer>
+                <PriceAmount>{price.amount || '-'}</PriceAmount>
+                <RatePerHour>грн/год</RatePerHour>
+              </PriceAmountContainer>
+            </PriceDiv>
+          );
+        })}
       </PriceContainer>
     </StyledPriceCard>
   );
