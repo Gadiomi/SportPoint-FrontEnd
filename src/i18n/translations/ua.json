@@ -8,7 +8,7 @@
   "more_details": "Детальніше",
   "show_more": "Побачити більше",
   "login_page": {
-    "title": "Створити акаунт",
+    "title": "Увійти в акаунт",
     "description": "Виберіть свою роль, щоб розпочати",
     "tabs": {
       "adminClub": "Адміністратор",
@@ -46,6 +46,16 @@
     "favorites": "ОБРАНІ",
     "back": "Назад",
     "save": "Зберегти",
+    "change-profile-photo": "Змінити фото профілю"
+  },
+  "register_page": {
+    "title": "Створити акаунт",
+    "confirm_password": "Підтвердити пароль",
+    "submit_button": "Зареєструватись",
+    "name": "Ім’я",
+    "second_name": "Прізвище",
+    "club_name": "Назва клубу",
+    "phone": "Номер телефону"
     "change-profile-photo": "Змінити фото профілю",
     "logout": "Вийти",
     "zone": "Небезпечна зона",
