@@ -1,15 +1,19 @@
 import React from 'react';
 import { IconName } from '@/kit';
+import { fonts } from '@/theme/fonts';
+import { useTheme } from 'styled-components';
 import {
   StyledReviewCard,
   IconWrapper,
   IconContainer,
   StyledIcon,
+  SpanLabel,
+  SpanCounts,
 } from './styles';
 
 interface ReviewCardProps {
   iconNames: IconName[];
-  counts: (number | string)[];
+  counts: (number | string | string[])[];
   labels: string[];
 }
 
@@ -18,11 +22,17 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
   counts,
   labels,
 }) => {
+  const theme = useTheme();
   return (
     <StyledReviewCard>
       {iconNames.map((iconName, index) => (
         <IconWrapper key={iconName}>
-          <span>{labels[index]}</span>
+          <SpanLabel
+            style={{ ...fonts.addressDetails, color: theme.color.secWhite }}
+          >
+            {labels[index]}
+          </SpanLabel>
+
           <IconContainer>
             <StyledIcon
               name={iconName}
@@ -30,7 +40,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
                 fill: 'none',
               }}
             />
-            <span>{counts[index]}</span>
+            <SpanCounts style={fonts.spanDetails}>{counts[index]}</SpanCounts>
           </IconContainer>
         </IconWrapper>
       ))}

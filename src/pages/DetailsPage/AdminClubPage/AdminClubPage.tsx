@@ -1,50 +1,140 @@
-import { FC } from 'react';
-// import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { FC, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { IconName } from '@/kit';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
-import { IconName } from '@/kit';
+
+import EditButton from '../components/EditButton/EditButton';
+import ButtonLink from '../components/ButtonLink/ButtonLink';
+import StyledHr from '../../../components/StyledHr/StyledHr';
 
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
-import ContactsCard from '../components/SocialLinksCard/SocialLinksCard';
+import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import LocationCard from '../components/LocationCard/LocationCard';
-import ReviewDetailsBlock from '../components/ReviewDetailsCard/ReviewDetailsCard';
-import EditButton from '../components/EditButton/EditButton';
+import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
+import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
 
-import { StyledProfileCard, StyledHr } from './styles';
+import { StyledProfileCard, ButtonContainer } from './styles';
+
+interface ScheduleItem {
+  days: string;
+  hours: string;
+}
+
+interface SocialLink {
+  name: string;
+  url: string;
+}
+
+interface PriceItem {
+  _id: string;
+  name: string;
+  amount: string;
+  description?: string;
+}
+
+interface AdminClub {
+  _id: string;
+  userId: string;
+  firstLastName: string;
+  avatar: string;
+  images: string[];
+  certificates: string[];
+  coach: string[];
+  description: {
+    address: string;
+    short_desc: string;
+    abilities: string;
+    social_links: SocialLink[];
+    price: PriceItem[];
+    schedule: ScheduleItem[];
+    experience: string;
+  };
+  countReview: number;
+  rating: number;
+  equipment: string;
+
+  phone: string;
+  email: string;
+  club: string[];
+
+  favorite: object[];
+  role: string;
+}
 
 const AdminClubPage: FC = () => {
-  // const { id } = useParams<{ id?: string }>();
+  const { id } = useParams<{ id?: string }>();
 
-  // if (!id) {
-  //   return <div>Невідомий користувач</div>;
-  // }
+  const [adminClubData, setAdminClubData] = useState<AdminClub | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const countReview = 385;
-  const couch = 23;
-  // в БД масив, необхвдно взяти довжину
-  const rating = 4.9;
+  useEffect(() => {
+    if (id) {
+      const url = `https://sportpoint-backend.onrender.com/cards/${id}`;
+      console.log('Запит до API:', url);
+      axios
+        .get(url)
+        .then(response => {
+          setAdminClubData(response.data.data.data);
+          console.log('DATA', response.data.data.data);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          console.error(err);
+          setError('Помилка при отриманні даних');
+          setIsLoading(false);
+        });
+    } else {
+      setError('ID не знайдено');
+      setIsLoading(false);
+    }
+  }, [id]);
 
-  const prices = [
-    { name: 'Безліміт 07:00-22:00', amount: '1350' },
-    { name: 'Ранковий 07:00-14:00', amount: '350' },
-    { name: 'Денний 12:00-17:00', amount: '450' },
-  ];
+  if (isLoading) {
+    return <div>Завантаження...</div>;
+  }
 
-  const schedules = [
-    { days: 'Понеділок', hours: '07:00-22:00' },
-    { days: 'Вівторок', hours: '07:00-22:00' },
-    { days: 'Середа', hours: '07:00-22:00' },
-    { days: 'Четер', hours: '07:00-22:00' },
-    { days: 'П’ятниця', hours: '07:00-22:00' },
-    { days: 'Субота', hours: '07:00-22:00' },
-    { days: 'Неділя', hours: '07:00-22:00' },
-  ];
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  const {
+    firstLastName,
+    avatar,
+    countReview,
+    rating,
+    // coach,
+    // phone,
+    // email,
+  } = adminClubData || {};
+
+  const { social_links, price, schedule, address } =
+    adminClubData?.description || {};
+
+  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
+
+  const coachTest = {
+    avatar:
+      'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
+    firstLastName: 'Оксана  Шевченко',
+    rating: 4.5,
+    equipment: ['Карате', 'Бокс'],
+    price: ['1000 грн'],
+  };
+
+  const clientService = 4.3;
+  const serviceQuality = 5;
+  const priceQuality = 2.1;
+  const location = 3;
+  const cleanliness = 3.7;
 
   return (
     <Section>
@@ -52,31 +142,70 @@ const AdminClubPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
-            firstLastName="Sport life"
-            avatar="path/to/image.jpg"
-            address="Київ, Хрещатик, 26Л"
+            address={address}
+            firstLastName={firstLastName}
+            avatar={avatar}
           />
         </StyledProfileCard>
-        <StyledHr />
         <EditButton
         // id={id}
         />
         <ReviewCard
           iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
-          counts={[countReview, couch, rating]}
+          counts={[
+            countReview ?? 0,
+            Array.isArray(coachTest) && coachTest.length > 0
+              ? coachTest.length
+              : 0,
+            roundedRating,
+          ]}
           labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
-        <ContactsCard />
+        <StyledHr />
+        <SocialLinks socialLinks={social_links || []} />
         <StyledHr />
         <GalleryCard />
         <StyledHr />
-        <PriceCard prices={prices} />
+        <PriceCard prices={price || []} />
         <StyledHr />
-        <WorkingHoursCard schedules={schedules} />
+        <WorkingHoursCard schedules={schedule || []} />
         <StyledHr />
         <LocationCard />
         <StyledHr />
-        <ReviewDetailsBlock />
+        <OurCoachCard
+          iconNames={[IconName.STAR_DEFAULT]}
+          rating={coachTest.rating}
+          counts={[countReview ?? 0]}
+          avatar={coachTest.avatar}
+          firstLastName={coachTest.firstLastName}
+          equipment={coachTest.equipment}
+          price={coachTest.price}
+        />
+        <ButtonContainer>
+          <ButtonLink
+          // onClick={onClick}
+          // disabled={disabled}
+          />
+        </ButtonContainer>
+        <StyledHr />
+        <ReviewDetailsCard
+          iconNames={[IconName.STAR_DEFAULT]}
+          rating={coachTest.rating}
+          counts={[countReview ?? 0]}
+          clientService={clientService}
+          serviceQuality={serviceQuality}
+          priceQuality={priceQuality}
+          location={location}
+          cleanliness={cleanliness}
+          avatar={coachTest.avatar}
+          firstLastName={coachTest.firstLastName}
+        />
+        <ButtonContainer>
+          <ButtonLink
+          // onClick={onClick}
+          // disabled={disabled}
+          />
+        </ButtonContainer>
         <HrButton />
         <Contacts />
       </Container>

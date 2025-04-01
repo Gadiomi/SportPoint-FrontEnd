@@ -27,7 +27,7 @@ export const IconWrapper = styled.div`
 export const IconContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: ${({ theme }) => `${theme.pxs.x0_5}px`};
 `;
 
@@ -35,3 +35,7 @@ export const StyledIcon = styled(Icon)`
   top: 10px;
   left: 10px;
 `;
+
+export const SpanLabel = styled.span``;
+
+export const SpanCounts = styled.span``;

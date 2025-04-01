@@ -1,12 +1,15 @@
 import React from 'react';
 import { Icon, IconName } from '@/kit';
-import { ButtonAppearance, ButtonTypogr } from '@/kit';
+import { ButtonAppearance } from '@/kit';
+import { fonts } from '@/theme/fonts';
+import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { StyledButton } from './styles';
 
 interface EditButtonProps {
   titleKey?: string;
+
   // id: string;
 }
 
@@ -15,6 +18,7 @@ const EditButton: React.FC<EditButtonProps> = () =>
   {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const handleClick = () => {
       console.log('Кнопку натиснуто!');
@@ -29,6 +33,7 @@ const EditButton: React.FC<EditButtonProps> = () =>
         title={t('details_page.edit_button')}
         appearance={ButtonAppearance.PRIMARY}
         onClick={handleClick}
+        textStyle={{ ...fonts.editButton, color: theme.color.white }}
         appendChild={
           <Icon
             styles={{
@@ -39,8 +44,6 @@ const EditButton: React.FC<EditButtonProps> = () =>
           />
         }
       >
-        <ButtonTypogr>{t('details_page.edit_button')}</ButtonTypogr>
-
         <Icon
           name={IconName.ARROW_CORNER}
           styles={{

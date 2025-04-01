@@ -8,17 +8,19 @@ import { IconName } from '@/kit';
 
 import EditButton from '../components/EditButton/EditButton';
 import StyledHr from '../../../components/StyledHr/StyledHr';
+
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
-import ReviewDetailsBlock from '../components/ReviewDetailsCard/ReviewDetailsCard';
+import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
+import ButtonLink from '../components/ButtonLink/ButtonLink';
 import { Contacts } from '../../../components/Footer/Contacts';
 
-import { StyledProfileCard } from './styles';
+import { StyledProfileCard, ButtonContainer } from './styles';
 
 interface ScheduleItem {
   days: string;
@@ -39,27 +41,27 @@ interface PriceItem {
 
 interface Coach {
   _id: string;
-  userId: string;
   firstLastName: string;
   avatar: string;
-  images: string[];
-  certificates: string[];
+  countReview: number;
+  rating: number;
+  club: string[];
   description: {
-    address: string;
-    short_desc: string;
-    abilities: string;
     social_links: SocialLink[];
     price: PriceItem[];
     schedule: ScheduleItem[];
     experience: string;
-  };
-  countReview: number;
-  rating: number;
-  equipment: string;
 
+    address: string;
+    short_desc: string;
+    abilities: string;
+  };
+  userId: string;
+  equipment: string;
+  certificates: string[];
   phone: string;
   email: string;
-  club: string[];
+  images: string[];
   coach: string[];
   favorite: object[];
   role: string;
@@ -69,6 +71,7 @@ const CoachPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
+  const [clubsName, setClubsName] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,6 +84,30 @@ const CoachPage: FC = () => {
         .then(response => {
           setCoachData(response.data.data.data);
           console.log('DATA', response.data.data.data);
+          const clubIds = response.data.data.data.club;
+          console.log('ID клубу:', clubIds);
+
+          if (clubIds.length === 0) {
+            setClubsName(['Клуб не знайдено']);
+          } else {
+            Promise.all(
+              clubIds.map((clubId: string) => {
+                const clubUrl = `https://sportpoint-backend.onrender.com/clubs/${clubId}`;
+                return axios.get(clubUrl);
+              }),
+            )
+              .then(clubResponses => {
+                const clubNames = clubResponses.map(
+                  clubResponse => clubResponse.data.name,
+                );
+                setClubsName(clubNames);
+              })
+              .catch(err => {
+                console.error('Помилка при отриманні клубів:', err);
+                setClubsName(['Клуб не знайдено']);
+              });
+          }
+
           setIsLoading(false);
         })
         .catch(err => {
@@ -114,6 +141,23 @@ const CoachPage: FC = () => {
   const { social_links, price, schedule, experience } =
     coachData?.description || {};
 
+  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
+
+  const coachTest = {
+    avatar:
+      'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
+    firstLastName: 'Оксана  Шевченко',
+    rating: 4.5,
+    equipment: ['Карате', 'Бокс'],
+    price: ['1000 грн'],
+  };
+
+  const clientService = 4.3;
+  const serviceQuality = 5;
+  const priceQuality = 2.1;
+  const location = 3;
+  const cleanliness = 3.7;
+
   return (
     <Section>
       <Container>
@@ -123,6 +167,7 @@ const CoachPage: FC = () => {
         </StyledProfileCard>
         <StyledHr />
         <EditButton
+
         // id={id}
         />
         <ReviewCard
@@ -131,7 +176,7 @@ const CoachPage: FC = () => {
             IconName.LIGHTNING_FILLED,
             IconName.STAR_DEFAULT,
           ]}
-          counts={[countReview ?? 0, experience ?? '0', rating ?? 0]}
+          counts={[countReview ?? 0, experience ?? '0', roundedRating]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
         <StyledHr />
@@ -142,11 +187,36 @@ const CoachPage: FC = () => {
         <WorkingHoursCard schedules={schedule || []} />
         <StyledHr />
         <WorksInCard
+          clubsName={clubsName[0] || 'Невідомий клуб'}
+          clubId={clubsName[0]}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
         />
+        <ButtonContainer>
+          <ButtonLink
+          // onClick={onClick}
+          // disabled={disabled}
+          />
+        </ButtonContainer>
         <StyledHr />
-        <ReviewDetailsBlock />
+        <ReviewDetailsCard
+          iconNames={[IconName.STAR_DEFAULT]}
+          rating={coachTest.rating}
+          counts={[countReview ?? 0]}
+          clientService={clientService}
+          serviceQuality={serviceQuality}
+          priceQuality={priceQuality}
+          location={location}
+          cleanliness={cleanliness}
+          avatar={coachTest.avatar}
+          firstLastName={coachTest.firstLastName}
+        />
+        <ButtonContainer>
+          <ButtonLink
+          // onClick={onClick}
+          // disabled={disabled}
+          />
+        </ButtonContainer>
         <HrButton />
         <Contacts />
       </Container>

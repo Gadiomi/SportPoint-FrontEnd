@@ -30,6 +30,14 @@ export const WorksInWrapper = styled.div`
   box-shadow: 0 0 10px rgba(43, 54, 149, 0.9);
 `;
 
+export const Name = styled.div`
+  width: 100%;
+`;
+
+export const Description = styled.div`
+  width: 100%;
+`;
+
 export const IconTextWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -45,6 +53,9 @@ export const IconWrapper = styled.div`
 export const StyledIcon = styled(Icon)`
   width: 24px;
   height: 24px;
+`;
+export const SpanWorkIn = styled.span`
+  width: 100%;
 `;
 
 export const StyledButton = styled(Button)`

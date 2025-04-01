@@ -18,9 +18,22 @@ export const Avatar = styled.img`
   object-fit: cover;
 `;
 
+export const AvatarNone = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 134px;
+  height: 134px;
+  border-radius: 50%;
+  margin-bottom: ${({ theme }) => `${theme.pxs.x3}px`};
+  background-color: ${({ theme }) => `${theme.color.mainOrange}`};
+  font-size: 64px;
+  color: ${({ theme }) => `${theme.color.mainWhite}`};
+  font-weight: bold;
+`;
+
 export const Name = styled.h3`
-  //   font-size: 20px;
-  //   margin: 10px 0;
+  margin-bottom: ${({ theme }) => `${theme.pxs.x2}px`};
 `;
 
 export const Address = styled.p`
