@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ReviewHeader from '@/kit/ReviewItem/ReviewHeader';
-import ReviewItem from '@/kit/ReviewItem/ReviewItem';
-import ReviewStats from '@/kit/ReviewItem/ReviewStats';
+import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
+import ReviewItem from '@/components/ReviewItem/ReviewItem';
+import ReviewStats from '@/components/ReviewItem/ReviewStats';
 import EditReviewPage from './EditReviewPage';
 import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
@@ -57,14 +57,14 @@ const ReviewsPage = () => {
         'https://sportpoint-backend.onrender.com/cards/67cb064cb731dc6d28584704',
       );
 
-      console.log('Відповідь від сервера:', response); // Дивимось усю відповідь
-      console.log('Дані у відповіді:', response.data); // Перевіряємо, чи є `data`
+      // console.log('Відповідь від сервера:', response); // Дивимось усю відповідь
+      // console.log('Дані у відповіді:', response.data); // Перевіряємо, чи є `data`
 
       const data = response.data.data;
-      console.log('Розпарсені дані:', data);
+      // console.log('Розпарсені дані:', data);
 
       const userComments = data.userComments;
-      console.log('Відгуки:', userComments);
+      // console.log('Відгуки:', userComments);
 
       const ratings = userComments.ratings;
       const averageRating =
@@ -186,39 +186,6 @@ const ReviewsPage = () => {
     setIsCreatingReview(true); // Увімкнути режим створення відгуку
   };
 
-  //   return (
-  //     <Section>
-  //       <Container>
-  //         {isEditing ? (
-  //           currentReview && (
-  //             <EditReviewPage
-  //               review={currentReview}
-  //               onCancel={() => setIsEditing(false)}
-  //             />
-  //           )
-  //         ) : (
-  //           <>
-  //               <ReviewHeader />
-  //               <ReviewStats ratings={ratings}/>
-  //               {reviews.map(review => (
-  //               <ReviewItem
-  //                 key={review.id}
-  //                 review={review}
-  //                 onLike={handleFeedback}
-  //                 onDislike={handleFeedback}
-  //                 onDelete={handleDeleteReview}
-  //                 onEdit={handleEdit}
-  //               />
-  //             ))}
-  //           </>
-  //         )}
-  //       </Container>
-  //     </Section>
-  //   );
-  // };
-
-  // export default ReviewsPage;
-
   return (
     <div>
       {isEditing ? (
@@ -232,7 +199,7 @@ const ReviewsPage = () => {
         <>
           {!isCreatingReview && <ReviewHeader />}
           <ReviewStats
-            reviews={[{ ratings: { 5: 10, 4: 80, 3: 150, 2: 30, 1: 10 } }]}
+          // reviews={[{ ratings: { 5: 10, 4: 80, 3: 150, 2: 30, 1: 10 } }]}
           />
           {loading ? (
             <p>Завантаження...</p>

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { IconName } from '@/kit';
 import { Icon } from '@/kit';
 import styled from 'styled-components';
+import { Avatar, Name } from '@/components/ReviewItem/styles';
 import {
   HeaderEdit,
   UserInfoEdit,
-  Avatar,
-  Name,
   RatingSection,
   Starsedit,
   StarIcon,
