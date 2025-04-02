@@ -21,6 +21,7 @@ import { RegisterFormData } from '@/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
 import { useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '@/redux/auth/authApi';
 
 const RegisterPage = () => {
   const {
@@ -56,33 +57,34 @@ const RegisterPage = () => {
       password: data.password,
       role: currentRole,
       ...(currentRole === Roles.COACH && {
-        name: data.first_name.trim(),
-        second_name: data.second_name.trim(),
+        firstName: data.first_name.trim(),
+        lastName: data.second_name.trim(),
       }),
       ...(currentRole === Roles.ADMIN_CLUB && {
-        name: data.club_name.trim(),
-        second_name: data.phone.trim(),
+        clubName: data.club_name.trim(),
+        phone: data.phone.trim(),
       }),
     };
     console.log('registerData -> ', registerData);
     try {
       const response: any = await registerUser(registerData).unwrap();
-
-      if (response.data.token && response.data.refreshToken) {
-        Cookies.set(CookiesKey.TOKEN, response.data.token, {
+      console.log(' - response ->', response);
+      if (response.token && response.refreshToken) {
+        Cookies.set(CookiesKey.TOKEN, response.token, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',
         });
-        Cookies.set(CookiesKey.REFRESH_TOKEN, response.data.refreshToken, {
+        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
           expires: 7,
           secure: true,
           sameSite: 'Strict',
         });
-        localStorage.setItem('userEmail', response.data.email);
-        console.log('Registered email:', response.data.email);
+        localStorage.setItem('userEmail', response.email);
+        console.log('Registered email:', response.email);
       }
       reset();
+      nav('/profile');
     } catch (err) {
       console.error('Registration failed:', err);
     }
@@ -91,6 +93,27 @@ const RegisterPage = () => {
   const toggleVisibilityPassword = () => {
     setIsVisiblePassword(prev => !prev);
   };
+
+  /* --- - --- */
+  // const [logoutUser] = useLogoutMutation();
+
+  // const handleLogout = async () => {
+  //   try {
+  //     const response: any = await logoutUser('').unwrap();
+  //     console.log(' - response ->', response);
+  //     // if (response) {
+  //     Cookies.remove(CookiesKey.TOKEN);
+  //     Cookies.remove(CookiesKey.REFRESH_TOKEN);
+  //     localStorage.removeItem('userEmail');
+  //     //  localStorage.removeItem('auth');
+  //     nav('/login');
+  //     // }
+  //     // console.log(' -- no response !!!', response);
+  //   } catch (err) {
+  //     console.error('Logout failed:', err);
+  //   }
+  // };
+  /* --- /- --- */
 
   return (
     <Section>
@@ -374,6 +397,17 @@ const RegisterPage = () => {
             onClick={() => nav('/login')}
           />
         </CallToActionWrapper>
+
+        {/* --- - --- */}
+        {/* <Button
+          type="button"
+          title={'Видалити акаунт'}
+          appearance={ButtonAppearance.SECONDARY}
+          testId="logout"
+          onClick={handleLogout}
+          style={{ marginBottom: '20px', marginTop: '20px', cursor: 'pointer' }}
+        ></Button> */}
+        {/* --- /- --- */}
       </Container>
     </Section>
   );
