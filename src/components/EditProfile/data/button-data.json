@@ -1,0 +1,7 @@
+[
+  { "name": "ЗАГАЛЬНЕ", "icon": "ACCOUNT", "route": "generals" },
+  { "name": "ЗМІНИТИ ПАРОЛЬ", "icon": "ID", "route": "change-password" },
+  { "name": "ГРАФІК", "icon": "EDIT_CONTAINED", "route": "schedule" },
+  { "name": "ПОСЛУГИ", "icon": "HELP", "route": "servers" },
+  { "name": "СТАТИСТИКА", "icon": "SMILEY_HAPPY", "route": "statistic" }
+]
