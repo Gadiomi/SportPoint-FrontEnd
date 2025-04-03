@@ -6,7 +6,7 @@ export const Container = styled.div`
   padding-top: 6px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
 `;
 
 export const AvatarName = styled.div`
@@ -20,7 +20,7 @@ export const AvatarName = styled.div`
 export const GeneralForm = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
   width: 100%;
 `;
 
@@ -64,4 +64,20 @@ export const SelectStyled = styled.select`
   &::-ms-expand {
     display: none;
   }
+`;
+
+export const InputsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+`;
+
+export const SectionTitle = styled.h4`
+  font-weight: 500;
+  font-size: 16px;
+`;
+
+export const HiddenInput = styled.input`
+  display: none;
 `;

@@ -11,6 +11,7 @@ import Selection from '../Selection/Selection';
 import { UserProfile } from '@/types/userProfile';
 import sports from '../../data/sports.json';
 import cities from '../../data/cities.json';
+import socials from '../../data/socials.json';
 import {
   GeneralBtns,
   Container,
@@ -18,9 +19,13 @@ import {
   AvatarName,
   SelectStyled,
   SelectedContainer,
+  InputsSection,
+  SectionTitle,
+  HiddenInput,
 } from './EditProfile.styled';
 import { Label } from '../Selection/Selection.styled';
 import { AccountName } from '../../EditProfiles.style';
+import SocialInput from '../SocialInput/SocialInput';
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
@@ -29,9 +34,18 @@ const EditGeneral: FC = () => {
     refetchOnMountOrArgChange: true,
   });
   const [selectedSports, setSelectedSports] = useState<string[]>([]);
+  const [selectedSocial, setSelectedSocial] = useState<
+    Array<{ name: string; url: string }>
+  >([]);
 
   const handleSelectionChange = (selectedItems: string[]) => {
     setSelectedSports(selectedItems);
+  };
+
+  const handleSocialChange = (
+    selectedItems: { name: string; url: string }[],
+  ) => {
+    setSelectedSocial(selectedItems);
   };
 
   const [updateUserProfile, { isLoading: isUpdating }] =
@@ -75,6 +89,7 @@ const EditGeneral: FC = () => {
       formDataToSend.append('email', formData.email);
       formDataToSend.append('age', formData.age || '');
       formDataToSend.append('sport', JSON.stringify(selectedSports));
+      formDataToSend.append('social_links', JSON.stringify(selectedSocial));
 
       if (avatar) {
         formDataToSend.append('avatar', avatar);
@@ -155,59 +170,15 @@ const EditGeneral: FC = () => {
             />
           }
         />
-        <input
+        <HiddenInput
           type="file"
           id="avatarInput"
-          style={{ display: 'none' }}
           accept="image/*"
           onChange={handleFileChange}
         />
       </AccountName>
       <form onSubmit={handleSubmit(onSubmit)}>
         <GeneralForm>
-          <Input
-            testId="firstName"
-            label="Імʼя"
-            value={watch('name') || ''}
-            {...register('name')}
-            onChange={e => setValue('name', e.target.value)}
-          />
-          <Input
-            testId="lastName"
-            label="Прізвище"
-            value={watch('last_name') || ''}
-            {...register('last_name')}
-            onChange={e => setValue('last_name', e.target.value)}
-          />
-          <Input
-            testId="email"
-            label="Email"
-            value={userData?.userProfile.description.email || ''}
-            {...register('email')}
-            onChange={e => setValue('email', e.target.value)}
-          />
-          <Input
-            testId="phone"
-            label="Номер телефону"
-            value={watch('phone') || ''}
-            {...register('phone')}
-            onChange={e => setValue('phone', e.target.value)}
-          />
-          <Input
-            testId="age"
-            label="Вік"
-            value={watch('age') || ''}
-            {...register('age')}
-            onChange={e => setValue('age', e.target.value)}
-          />
-          <Input
-            testId="experience"
-            label="Досвід"
-            value={watch('experience') || ''}
-            {...register('experience')}
-            onChange={e => setValue('experience', e.target.value)}
-          />
-
           <SelectedContainer>
             <Label htmlFor="city">Місто</Label>
             <SelectStyled id="city" name="city">
@@ -219,10 +190,64 @@ const EditGeneral: FC = () => {
               ))}
             </SelectStyled>
           </SelectedContainer>
+          <InputsSection>
+            <SectionTitle>Загальна інформація</SectionTitle>
+            <Input
+              testId="firstName"
+              label="Імʼя"
+              value={watch('name') || ''}
+              {...register('name')}
+              onChange={e => setValue('name', e.target.value)}
+            />
+            <Input
+              testId="lastName"
+              label="Прізвище"
+              value={watch('last_name') || ''}
+              {...register('last_name')}
+              onChange={e => setValue('last_name', e.target.value)}
+            />
+            <Input
+              testId="age"
+              label="Вік"
+              value={watch('age') || ''}
+              {...register('age')}
+              onChange={e => setValue('age', e.target.value)}
+            />
+            <Input
+              testId="experience"
+              label="Досвід"
+              value={watch('experience') || ''}
+              {...register('experience')}
+              onChange={e => setValue('experience', e.target.value)}
+            />
+          </InputsSection>
+          <InputsSection>
+            <SectionTitle>Контактна інформація</SectionTitle>
+            <Input
+              testId="email"
+              label="Email"
+              value={userData?.userProfile.description.email || ''}
+              {...register('email')}
+              onChange={e => setValue('email', e.target.value)}
+            />
+            <Input
+              testId="phone"
+              label="Номер телефону"
+              value={watch('phone') || ''}
+              {...register('phone')}
+              onChange={e => setValue('phone', e.target.value)}
+            />
+          </InputsSection>
+          <SocialInput
+            content={socials}
+            placeholder={'Обрати'}
+            labelName={'Соціальні мережі'}
+            onChange={handleSocialChange}
+          />
           <Selection
             content={sports}
-            placeholder={'Обрати ще'}
-            labelName={'Вид спорту'}
+            placeholder={'Обрати'}
+            labelName={'Ваші види спорту'}
             onChange={handleSelectionChange}
           />
         </GeneralForm>

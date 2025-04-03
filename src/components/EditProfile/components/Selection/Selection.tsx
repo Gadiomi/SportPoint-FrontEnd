@@ -50,7 +50,7 @@ const Selection: React.FC<SelectionProps> = ({
         id="sports-select"
         value=""
         onChange={handleSelectChange}
-        aria-label="Виберіть вид спорту"
+        aria-label={labelName}
       >
         <option value="">{placeholder}</option>
         {content.map(conte => (

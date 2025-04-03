@@ -1,4 +1,3 @@
-import { translate } from './../../../../i18n/utils/translate';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -12,7 +11,7 @@ export const Container = styled.div`
 
 export const Label = styled.label`
   display: block;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
 `;
 
@@ -33,10 +32,13 @@ export const SelectedItem = styled.span`
   font-size: 14px;
   color: #b7b7b9;
   cursor: pointer;
-  height: 32px;
+  text-transform: capitalize;
+
   &:hover {
     background-color: #0056b3;
   }
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const SelectStyled = styled.select`
@@ -50,6 +52,7 @@ export const SelectStyled = styled.select`
   font-size: 14px;
   color: #b7b7b9;
   height: 36px;
+  text-transform: capitalize;
 
   appearance: none;
   -webkit-appearance: none;
