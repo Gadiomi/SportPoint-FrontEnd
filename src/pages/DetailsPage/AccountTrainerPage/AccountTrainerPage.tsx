@@ -67,7 +67,7 @@ interface Coach {
   role: string;
 }
 
-const CoachPage: FC = () => {
+const AccountTrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
@@ -224,4 +224,4 @@ const CoachPage: FC = () => {
   );
 };
 
-export default CoachPage;
+export default AccountTrainerPage;
