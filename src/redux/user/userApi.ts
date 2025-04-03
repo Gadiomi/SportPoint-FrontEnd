@@ -20,9 +20,20 @@ export const userApi = createApi({
         method: 'PATCH',
         data: userData,
       }),
-      invalidatesTags: ['UserProfile'], // Оновлення даних після зміни профілю
+      invalidatesTags: ['UserProfile'],
+    }),
+    changePassword: builder.mutation({
+      query: ({ oldPassword, newPassword }) => ({
+        url: 'auth/change/password',
+        method: 'PUT',
+        data: { oldPassword, newPassword },
+      }),
     }),
   }),
 });
 
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation } = userApi;
+export const {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+  useChangePasswordMutation,
+} = userApi;
