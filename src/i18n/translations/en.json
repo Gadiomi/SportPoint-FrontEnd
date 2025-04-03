@@ -49,16 +49,6 @@
     "favorites": "FAVORITES",
     "back": "Back",
     "save": "Save",
-    "change-profile-photo": "Change profile photo"
-  },
-  "register_page": {
-    "title": "Create an Account",
-    "confirm_password": "confirm password",
-    "submit_button": "Register",
-    "name": "First name",
-    "second_name": "Second name",
-    "club_name": "Club's name",
-    "phone": "Phone"
     "change-profile-photo": "Change profile photo",
     "logout": "Log out",
     "zone": "Dander zone",
@@ -69,5 +59,14 @@
     "password-confirm": "Confirm new password",
     "forgot": "Forgot password?",
     "restore": "Restore"
+  },
+  "register_page": {
+    "title": "Create an Account",
+    "confirm_password": "confirm password",
+    "submit_button": "Register",
+    "name": "First name",
+    "second_name": "Second name",
+    "club_name": "Club's name",
+    "phone": "Phone"
   }
 }

@@ -38,7 +38,7 @@ export function Input({
       disabled={disabled}
       style={containerStyles}
       $isFocused={isFocused}
-      $hasValue={value.trim().length > 0}
+      $hasValue={value.length > 0}
       $invalid={invalid}
     >
       <InputField
