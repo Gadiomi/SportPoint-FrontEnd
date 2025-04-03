@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import css from './AccountPage.module.css';
 import { useForm } from 'react-hook-form';
+import { useChangePasswordMutation } from '@/redux/user/userApi';
 
 interface ChangePasswordFormData {
   currentPassword: string;
@@ -14,6 +15,7 @@ interface ChangePasswordFormData {
 const ChangePassword: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [changePassword, { isLoading, error }] = useChangePasswordMutation();
 
   const {
     register,
@@ -22,8 +24,17 @@ const ChangePassword: FC = () => {
     formState: { errors },
   } = useForm<ChangePasswordFormData>();
 
-  const onSubmit = (data: ChangePasswordFormData) => {
-    console.log('Submitting new password:', data);
+  const onSubmit = async (data: ChangePasswordFormData) => {
+    try {
+      await changePassword({
+        oldPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      }).unwrap();
+      alert('Пароль успішно змінено!');
+      navigate('/profile');
+    } catch (err) {
+      alert('Помилка зміни пароля: ');
+    }
   };
 
   return (
