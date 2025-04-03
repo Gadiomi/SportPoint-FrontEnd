@@ -17,6 +17,7 @@ type Props = {
 };
 
 export interface ICoachData {
+  _id: string;
   userId: string;
   firstLastName: string;
   avatar: string;

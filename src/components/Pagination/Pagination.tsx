@@ -8,20 +8,16 @@ import {
 import { Icon, IconName } from '@/kit';
 
 interface PaginationProps {
-  totalItems: number;
-  itemsPerPage: number;
   currentPage: number;
   onPageChange: (selectedPage: number) => void;
+  totalPages: number;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
-  totalItems,
-  itemsPerPage,
   currentPage,
   onPageChange,
+  totalPages,
 }) => {
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
   return (
     <PaginationContainer>
       <LeftButton
@@ -33,7 +29,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
       <StyledPaginate
         pageCount={totalPages}
-        forcePage={currentPage - 1}
+        forcePage={Math.min(currentPage - 1, totalPages - 1)}
         onPageChange={event => onPageChange(event.selected + 1)}
         containerClassName="pagination"
         activeClassName="active"

@@ -1,7 +1,5 @@
 import { Container } from '@/components/ContainerAndSection';
 import React, { useState } from 'react';
-
-import { useTheme } from 'styled-components';
 import { Filters } from '../Filters/Filters';
 import { StyledClubsList } from './styles';
 import { Pagination } from '@/components/Pagination/Pagination';
