@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
   baseURL: 'https://sportpoint-backend.onrender.com',
+  withCredentials: true,
 });
 
 const refreshAccessToken = async () => {

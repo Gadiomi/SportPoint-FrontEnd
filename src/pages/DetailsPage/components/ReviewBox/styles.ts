@@ -25,7 +25,7 @@ export const ReviewsBoxWrapper = styled.div`
   gap: ${({ theme }) => `${theme.pxs.x2}px`};
 `;
 
-export const ReviewsBoxBox = styled.div`
+export const ReviewsBoxItem = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -47,12 +47,6 @@ export const Avatar = styled.img`
 export const StyledIcon = styled(Icon)`
   top: ${({ theme }) => `${theme.pxs.x2_5}px`};
   left: ${({ theme }) => `${theme.pxs.x2_5}px`};
-`;
-
-export const Name = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
 `;
 
 export const StyledButton = styled(Button)`

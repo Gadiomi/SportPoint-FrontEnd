@@ -218,7 +218,9 @@ const AccountTrainerPage: FC = () => {
           cleanliness={cleanliness}
           avatar={coachTest.avatar}
           firstName={coachTest.firstName}
+          lastName={coachTest.lastName}
         />
+
         <ButtonContainer>
           <ButtonLink
           // onClick={onClick}

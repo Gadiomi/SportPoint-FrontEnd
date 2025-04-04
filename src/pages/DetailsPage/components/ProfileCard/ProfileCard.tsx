@@ -37,8 +37,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     <StyledProfileCard>
       {renderAvatar}
       <div style={{ display: 'flex', flexDirection: 'row', gap:'4px', justifyContent: 'center', marginBottom: `${theme.pxs.x2}px`}}>
-        <h2 style={fonts.nameDetails}>{firstName} </h2>
-        <h2 style={fonts.nameDetails}>{lastName} </h2>
+        <h3 style={fonts.nameDetails}>{firstName} </h3>
+        <h3 style={fonts.nameDetails}>{lastName} </h3>
       </div>
 
       <div style={{ ...fonts.addressDetails, color: theme.color.secWhite }}>

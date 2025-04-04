@@ -24,8 +24,8 @@ interface ReviewDetailsCardProps {
   location: number;
   cleanliness: number;
   avatar: string;
-
   firstName: string;
+  lastName: string;
   containerStyles?: React.CSSProperties;
   progressBarStyles?: React.CSSProperties;
 }
@@ -38,8 +38,8 @@ const ReviewDetailsCard: React.FC<ReviewDetailsCardProps> = ({
   priceQuality,
   cleanliness,
   avatar,
-
   firstName,
+  lastName,
 }) => {
   const totalSteps = 5;
 
@@ -139,6 +139,7 @@ const ReviewDetailsCard: React.FC<ReviewDetailsCardProps> = ({
       <ReviewsBox
         avatar={avatar}
         firstName={firstName}
+        lastName={lastName}
         iconNames={[IconName.STAR_FILL]}
         rating={rating}
       />

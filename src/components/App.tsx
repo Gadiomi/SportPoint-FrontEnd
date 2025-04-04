@@ -15,6 +15,8 @@ const Details = lazy(() => import('../pages/DetailsPage/DetailsPage'));
 const AccountTrainer = lazy(
   () => import('../pages/DetailsPage/AccountTrainerPage/AccountTrainerPage'),
 );
+
+const TrainerPage=lazy(()=> import ('../pages/DetailsPage/TrainerPage/TrainerPage'))
 const AccountAdminClub = lazy(
   () =>
     import('../pages/DetailsPage/AccountAdminClubPage/AccountAdminClubPage'),
@@ -42,6 +44,7 @@ function App() {
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/details" element={<Details />}>
+          <Route path='trainer/:id' element={<TrainerPage/>}/>
           <Route path="account-trainer/:id" element={<AccountTrainer />} />
           <Route path="club/:id" element={<Club/>} />
           <Route path="account-admin-club/:id" element={<AccountAdminClub />} />
