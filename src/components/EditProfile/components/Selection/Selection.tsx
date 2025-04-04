@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   SelectStyled,
@@ -12,6 +12,7 @@ interface SelectionProps {
   placeholder: string;
   labelName: string;
   onChange: (selectedItems: string[]) => void;
+  userData: string[];
 }
 
 const Selection: React.FC<SelectionProps> = ({
@@ -19,8 +20,37 @@ const Selection: React.FC<SelectionProps> = ({
   placeholder,
   labelName,
   onChange,
+  userData,
 }) => {
   const [selectedSports, setSelectedSports] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (Array.isArray(userData)) {
+      const parsedData = userData
+        .map(item => {
+          try {
+            const parsedItem = JSON.parse(item);
+            return Array.isArray(parsedItem) ? parsedItem : [parsedItem];
+          } catch (error) {
+            console.error('Помилка парсингу елемента:', error);
+            return [];
+          }
+        })
+        .flat()
+        .map(item => {
+          if (typeof item === 'string') {
+            try {
+              return JSON.parse(item);
+            } catch (error) {
+              return item;
+            }
+          }
+          return item;
+        })
+        .flat();
+      setSelectedSports(parsedData);
+    }
+  }, [userData]);
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = event.target.value;
@@ -30,8 +60,11 @@ const Selection: React.FC<SelectionProps> = ({
       onChange(newSelection);
     }
   };
+
   const handleRemove = (sport: string) => {
-    setSelectedSports(prev => prev.filter(item => item !== sport));
+    const updatedSelection = selectedSports.filter(item => item !== sport);
+    setSelectedSports(updatedSelection);
+    onChange(updatedSelection);
   };
 
   return (

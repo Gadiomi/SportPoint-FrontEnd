@@ -31,7 +31,7 @@ const General: FC = () => {
   });
 
   const email = localStorage.getItem('userEmail');
-  console.log('email:', email);
+  // console.log('email:', email);
 
   const [updateUserProfile, { isLoading: isUpdating }] =
     useUpdateUserProfileMutation();

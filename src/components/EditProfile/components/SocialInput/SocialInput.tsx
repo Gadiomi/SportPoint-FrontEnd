@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Label,
@@ -15,6 +15,7 @@ interface SocialInputProps {
   placeholder: string;
   labelName: string;
   onChange: (selectedItems: { name: string; url: string }[]) => void;
+  userData: { name: string; url: string }[]; // Expected format for userData
 }
 
 const SocialInput: React.FC<SocialInputProps> = ({
@@ -22,12 +23,18 @@ const SocialInput: React.FC<SocialInputProps> = ({
   placeholder,
   labelName,
   onChange,
+  userData,
 }) => {
   const [selectedSocials, setSelectedSocials] = useState<
     { name: string; url: string }[]
   >([]);
   const [currentSocial, setCurrentSocial] = useState('');
   const [currentUrl, setCurrentUrl] = useState('');
+
+  // Populate the selectedSocials state with userData on component mount
+  useEffect(() => {
+    setSelectedSocials(userData);
+  }, [userData]);
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentSocial(event.target.value);
