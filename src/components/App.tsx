@@ -38,7 +38,6 @@ function App() {
           <Route path="coach" element={<Coach />} />
           <Route path="adminClub" element={<AdminClub />} />
         </Route>
-        {/* // TEMP!! */}
         {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}
         {/* <Route element={<PrivateRoute />}> */}
         <Route path="/profile" element={<AccountLayout />}>
@@ -53,7 +52,6 @@ function App() {
             path={PublicRouteName.CHANGEPASSWORD}
             element={<ChangePassword />}
           />
-          {/* <Route path={PublicRouteName.REVIEWS} element={<Reviews />} /> */}
           <Route path="edit" element={<EditProfile />} />
           <Route path="generals" element={<EditGeneral />} />
         </Route>

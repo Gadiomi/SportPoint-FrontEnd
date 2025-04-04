@@ -9,7 +9,7 @@ const AccountLayout = () => {
   const { theme } = useTheme();
 
   return (
-    <Section styles={{ fontFamily: `${FontFamily}` }}>
+    <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
       <Container maxWidth="320px">
         <Logo />
         <Outlet />

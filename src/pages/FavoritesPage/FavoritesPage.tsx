@@ -15,6 +15,7 @@ import { FavoritesPageWrapper, ListWrapper, ToggleWrapper } from './styles';
 import CoachCard from '../../components/CoachCard/CoachCard';
 import ClubCard from './ClubCard/ClubCard';
 import { IClubData, ICoachData } from '../../types';
+import { useNavigate } from 'react-router-dom';
 
 // --- TEMP!!! ---
 const coachsData: ICoachData[] = [
@@ -61,6 +62,8 @@ const clubsData: IClubData[] = [
 const itemsPerPage = 2;
 
 const FavoritesPage = () => {
+  const navigate = useNavigate();
+
   const [isActive, setIsActive] = useState<boolean>(true);
   const [coachPageNumber, setCoachPageNumber] = useState<number>(0);
   const [clubPageNumber, setClubPageNumber] = useState<number>(0);
@@ -78,8 +81,8 @@ const FavoritesPage = () => {
       {/* ??? */}
       <Container maxWidth="375px">
         <FavoritesPageWrapper>
-          {/* <Logo /> */}
           <Button
+            onClick={() => navigate('/profile')}
             testId="ОБРАНІ"
             title={t('chosen')}
             type="submit"
