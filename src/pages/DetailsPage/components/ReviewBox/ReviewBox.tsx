@@ -8,23 +8,24 @@ import {
   StyledReviewsBox,
   ReviewsBoxContainer,
   ReviewsBoxWrapper,
-  ReviewsBoxBox,
+  ReviewsBoxItem,
   Avatar,
-  Name,
   StyledIcon,
   StyledButton,
 } from './styles';
 
 interface ReviewsBoxProps {
   avatar?: string;
-  firstLastName?: string;
+  firstName: string;
+  lastName?: string;
   iconNames: IconName[];
   rating: number;
 }
 
 const ReviewsBox: React.FC<ReviewsBoxProps> = ({
   avatar,
-  firstLastName,
+  firstName,
+  lastName,
   rating,
 }) => {
   const { t } = useTranslation();
@@ -49,11 +50,22 @@ const ReviewsBox: React.FC<ReviewsBoxProps> = ({
 
   return (
     <StyledReviewsBox>
-      <ReviewsBoxBox>
-        <Avatar src={avatar} alt={firstLastName} />
-        <Name style={fonts.secondManrope}>{firstLastName}</Name>
+      <ReviewsBoxItem>
+        <Avatar src={avatar} alt={firstName} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '4px',
+            justifyContent: 'flax-start',
+          }}
+        >
+          <h4 style={fonts.secondManrope}>{firstName}</h4>
+            <h4 style={fonts.secondManrope}>{lastName}</h4>
+        </div>
+
         {renderStars()}
-      </ReviewsBoxBox>
+      </ReviewsBoxItem>
       <ReviewsBoxContainer>
         <Card
           style={{
