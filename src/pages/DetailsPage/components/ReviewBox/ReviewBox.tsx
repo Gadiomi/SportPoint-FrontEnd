@@ -17,14 +17,15 @@ import {
 
 interface ReviewsBoxProps {
   avatar?: string;
-  firstLastName?: string;
+  firstName?: string;
   iconNames: IconName[];
   rating: number;
 }
 
 const ReviewsBox: React.FC<ReviewsBoxProps> = ({
   avatar,
-  firstLastName,
+
+  firstName,
   rating,
 }) => {
   const { t } = useTranslation();
@@ -50,8 +51,8 @@ const ReviewsBox: React.FC<ReviewsBoxProps> = ({
   return (
     <StyledReviewsBox>
       <ReviewsBoxBox>
-        <Avatar src={avatar} alt={firstLastName} />
-        <Name style={fonts.secondManrope}>{firstLastName}</Name>
+        <Avatar src={avatar} alt={firstName} />
+        <Name style={fonts.secondManrope}>{firstName}</Name>
         {renderStars()}
       </ReviewsBoxBox>
       <ReviewsBoxContainer>

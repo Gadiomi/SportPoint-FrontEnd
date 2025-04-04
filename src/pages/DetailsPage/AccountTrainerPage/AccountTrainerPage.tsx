@@ -41,7 +41,8 @@ interface PriceItem {
 
 interface Coach {
   _id: string;
-  firstLastName: string;
+  firstName: string;
+  lastName:string;
   avatar: string;
   countReview: number;
   rating: number;
@@ -130,7 +131,8 @@ const AccountTrainerPage: FC = () => {
   }
 
   const {
-    firstLastName,
+    firstName,
+    lastName,
     avatar,
     countReview,
     rating,
@@ -146,7 +148,9 @@ const AccountTrainerPage: FC = () => {
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
-    firstLastName: 'Оксана  Шевченко',
+
+    firstName: 'Оксана',
+    lastName: 'Шевченко',
     rating: 4.5,
     equipment: ['Карате', 'Бокс'],
     price: ['1000 грн'],
@@ -163,7 +167,11 @@ const AccountTrainerPage: FC = () => {
       <Container>
         <Logo />
         <StyledProfileCard>
-          <ProfileCard firstLastName={firstLastName} avatar={avatar} />
+          <ProfileCard
+            firstName={firstName}
+            lastName={lastName}
+            avatar={avatar}
+          />
         </StyledProfileCard>
         <StyledHr />
         <EditButton
@@ -209,7 +217,7 @@ const AccountTrainerPage: FC = () => {
           location={location}
           cleanliness={cleanliness}
           avatar={coachTest.avatar}
-          firstLastName={coachTest.firstLastName}
+          firstName={coachTest.firstName}
         />
         <ButtonContainer>
           <ButtonLink

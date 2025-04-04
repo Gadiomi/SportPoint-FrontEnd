@@ -5,7 +5,7 @@ import { IconName } from '@/kit';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 
-import EditButton from '../components/EditButton/EditButton';
+// import ButtonEdit from '../components/ButtonEdit/ButtonEdit';
 import ButtonLink from '../components/ButtonLink/ButtonLink';
 import StyledHr from '../../../components/StyledHr/StyledHr';
 
@@ -55,7 +55,7 @@ interface AdminClub {
     social_links: SocialLink[];
     price: PriceItem[];
     schedule: ScheduleItem[];
-    experience: string;
+    // experience: string;
   };
   countReview: number;
   rating: number;
@@ -69,10 +69,14 @@ interface AdminClub {
   role: string;
 }
 
-const AdminClubPage: FC = () => {
+const ClubPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
 
   const [adminClubData, setAdminClubData] = useState<AdminClub | null>(null);
+//   const [
+//     isLoggedIn,
+//     setIsLoggedIn
+//   ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -124,7 +128,7 @@ const AdminClubPage: FC = () => {
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
-    firstName: 'Оксана  ',
+    firstName: 'Оксана',
     lastName: 'Шевченко',
     rating: 4.5,
     equipment: ['Карате', 'Бокс'],
@@ -148,9 +152,10 @@ const AdminClubPage: FC = () => {
             avatar={avatar}
           />
         </StyledProfileCard>
-        <EditButton
+        <StyledHr />
+        {/* <ButtonEdit
         // id={id}
-        />
+        /> */}
         <ReviewCard
           iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
           counts={[
@@ -163,7 +168,11 @@ const AdminClubPage: FC = () => {
           labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
         <StyledHr />
-        <SocialLinks socialLinks={social_links || []} />
+        <SocialLinks
+          socialLinks={social_links || []}
+          //   isLoggedIn={isLoggedIn}
+          //   title="Введіть дані, і адміністратор з вами зв’яжеться"
+        />
         <StyledHr />
         <GalleryCard />
         <StyledHr />
@@ -215,4 +224,4 @@ const AdminClubPage: FC = () => {
   );
 };
 
-export default AdminClubPage;
+export default ClubPage;

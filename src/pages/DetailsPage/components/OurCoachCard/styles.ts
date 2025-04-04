@@ -12,12 +12,6 @@ export const Avatar = styled.img`
   margin-bottom: 10px;
   object-fit: cover;
 `;
-export const Name = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 4px;
-`;
 
 export const PriceRatingBox = styled.div`
   width: 100%;
@@ -28,13 +22,6 @@ export const PriceRatingBox = styled.div`
   text-align: center;
   margin-bottom: 8px;
   gap: 16px;
-`;
-
-export const Price = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  padding-bottom: 2px;
 `;
 
 export const Equipment = styled.div`
@@ -65,27 +52,6 @@ export const OurCoachBox = styled.div`
   text-align: center;
   margin: 0 auto;
   gap: 8px;
-`;
-
-export const InfoContainer = styled.div`
-  width: 100%;
-`;
-
-export const PriceBox = styled.div`
-  width: 100%;
-`;
-
-export const Text = styled.div`
-  width: 100%;
-  font-size: 10px;
-  font-weight: 500;
-  display: flex;
-  justify-content: flex-start;
-`;
-
-export const OurCoachContainer = styled.div`
-  width: 100%;
-  margin-bottom: ${({ theme }) => `${theme.pxs.x8}px`};
 `;
 
 export const OurCoachWrapper = styled.div`

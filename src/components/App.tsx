@@ -19,6 +19,11 @@ const AccountAdminClub = lazy(
   () =>
     import('../pages/DetailsPage/AccountAdminClubPage/AccountAdminClubPage'),
 );
+
+const Club = lazy(
+  () =>
+    import('../pages/DetailsPage/ClubPage/ClubPage'),
+);
 const Favorites = lazy(() => import('../pages/FavoritesPage/FavoritesPage'));
 const Account = lazy(() => import('../pages/AccountPage/AccountPage'));
 const TrainersPage = lazy(
@@ -38,6 +43,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/details" element={<Details />}>
           <Route path="account-trainer/:id" element={<AccountTrainer />} />
+          <Route path="club/:id" element={<Club/>} />
           <Route path="account-admin-club/:id" element={<AccountAdminClub />} />
         </Route>
         {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}
