@@ -3,7 +3,7 @@ import buttonContent from './data/button-data.json';
 import { AccountName, List, NameTitle } from './EditProfiles.style';
 import { Button, ButtonAppearance, IconName, Icon } from '@/kit';
 import { useNavigate } from 'react-router-dom';
-import { Container } from './components/EditGeneral/EditProfile.styled';
+import { Container } from './components/EditGeneral/EditGeneral.styled';
 
 const EditProfile = () => {
   const navigate = useNavigate();

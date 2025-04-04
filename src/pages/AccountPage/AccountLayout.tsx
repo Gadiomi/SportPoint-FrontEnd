@@ -4,17 +4,22 @@ import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
 import { Logo } from '@/components/Logo/Logo';
 import { FontFamily } from '@/kit';
+import ProfileProvider from '@/utils/ProfileProvider';
+import { useForm } from 'react-hook-form';
 
 const AccountLayout = () => {
   const { theme } = useTheme();
+  const methods = useForm();
 
   return (
-    <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
-      <Container maxWidth="320px">
-        <Logo />
-        <Outlet />
-      </Container>
-    </Section>
+    <ProfileProvider methods={methods}>
+      <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
+        <Container maxWidth="320px">
+          <Logo />
+          <Outlet />
+        </Container>
+      </Section>
+    </ProfileProvider>
   );
 };
 

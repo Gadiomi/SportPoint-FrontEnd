@@ -8,6 +8,7 @@ import General from '@/pages/AccountPage/General';
 import ChangePassword from '@/pages/AccountPage/ChangePassword';
 import EditProfile from './EditProfile/EditProfiles';
 import EditGeneral from './EditProfile/components/EditGeneral/EditGeneral';
+import ProfileProvider from '@/utils/ProfileProvider';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -18,16 +19,15 @@ const AccountTrainer = lazy(
   () => import('../pages/DetailsPage/AccountTrainerPage/AccountTrainerPage'),
 );
 
-const TrainerPage=lazy(()=> import ('../pages/DetailsPage/TrainerPage/TrainerPage'))
+const TrainerPage = lazy(
+  () => import('../pages/DetailsPage/TrainerPage/TrainerPage'),
+);
 const AccountAdminClub = lazy(
   () =>
     import('../pages/DetailsPage/AccountAdminClubPage/AccountAdminClubPage'),
 );
 
-const Club = lazy(
-  () =>
-    import('../pages/DetailsPage/ClubPage/ClubPage'),
-);
+const Club = lazy(() => import('../pages/DetailsPage/ClubPage/ClubPage'));
 const Favorites = lazy(() => import('../pages/FavoritesPage/FavoritesPage'));
 const Account = lazy(() => import('../pages/AccountPage/AccountPage'));
 const TrainersPage = lazy(
@@ -46,9 +46,9 @@ function App() {
         <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/details" element={<Details />}>
-          <Route path='trainer/:id' element={<TrainerPage/>}/>
+          <Route path="trainer/:id" element={<TrainerPage />} />
           <Route path="account-trainer/:id" element={<AccountTrainer />} />
-          <Route path="club/:id" element={<Club/>} />
+          <Route path="club/:id" element={<Club />} />
           <Route path="account-admin-club/:id" element={<AccountAdminClub />} />
         </Route>
         {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}

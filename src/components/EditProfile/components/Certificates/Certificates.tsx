@@ -1,6 +1,13 @@
-import { Button, ButtonAppearance } from '@/kit';
-import { HiddenInput } from '../EditGeneral/EditProfile.styled';
+import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
+import { HiddenInput } from '../EditGeneral/EditGeneral.styled';
 import React, { useEffect, useState } from 'react';
+import {
+  CertificatesIcon,
+  CertificatesItem,
+  CertificatesItemText,
+  Container,
+} from './Certificates.styled';
+import { SelectedItems } from '../Selection/Selection.styled';
 
 const Certificates = ({
   handleCertificatesChange,
@@ -9,11 +16,10 @@ const Certificates = ({
   handleCertificatesChange: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
-  certificates: string[]; // Масив URL або назв сертифікатів
+  certificates: string[];
 }) => {
   const [selectedCertificates, setSelectedCertificates] = useState<File[]>([]);
 
-  // Оновлюємо сертифікати при зміні `certificates`
   useEffect(() => {
     if (certificates.length) {
       setSelectedCertificates(certificates.map(name => new File([], name)));
@@ -25,12 +31,9 @@ const Certificates = ({
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setSelectedCertificates(prev => [
-        ...prev,
-        ...Array.from(event.target.files),
-      ]);
-    }
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    setSelectedCertificates(prev => [...prev, ...Array.from(files)]);
     handleCertificatesChange(event);
   };
 
@@ -41,15 +44,22 @@ const Certificates = ({
   };
 
   return (
-    <div>
+    <Container>
       {selectedCertificates.length > 0 && (
-        <div>
+        <SelectedItems>
           {selectedCertificates.map(file => (
-            <div key={file.name} onClick={() => handleRemove(file.name)}>
-              {file.name}
-            </div>
+            <CertificatesItem
+              key={file.name}
+              onClick={() => handleRemove(file.name)}
+            >
+              <CertificatesItemText> {file.name}</CertificatesItemText>
+
+              <CertificatesIcon>
+                <Icon size={24} name={IconName.LINK_ANGLED} />
+              </CertificatesIcon>
+            </CertificatesItem>
           ))}
-        </div>
+        </SelectedItems>
       )}
 
       <Button
@@ -57,7 +67,19 @@ const Certificates = ({
         onClick={handleClick}
         type="button"
         title="Додати сертифікати"
-        appearance={ButtonAppearance.SECONDARY}
+        style={{ padding: '8px 18px' }}
+        appearance={ButtonAppearance.PRIMARY}
+        prependChild={
+          <Icon
+            styles={{
+              color: 'currentColor',
+              fill: 'transparent',
+              marginRight: '8px',
+            }}
+            width="24px"
+            name={IconName.PAPERCLIP}
+          />
+        }
       />
 
       <HiddenInput
@@ -67,7 +89,7 @@ const Certificates = ({
         onChange={handleFileChange}
         accept="image/*"
       />
-    </div>
+    </Container>
   );
 };
 

@@ -24,6 +24,7 @@ export const SelectedItems = styled.div`
 `;
 
 export const SelectedItem = styled.span`
+  position: relative;
   border: 0.5px solid #b7b7b9;
   border-radius: 6px;
   padding: 6px 12px;
@@ -33,9 +34,12 @@ export const SelectedItem = styled.span`
   color: #b7b7b9;
   cursor: pointer;
   text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #ed772f;
+    color: black;
   }
   display: flex;
   justify-content: space-between;

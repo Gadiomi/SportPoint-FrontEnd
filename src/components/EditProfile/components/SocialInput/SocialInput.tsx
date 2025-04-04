@@ -31,7 +31,6 @@ const SocialInput: React.FC<SocialInputProps> = ({
   const [currentSocial, setCurrentSocial] = useState('');
   const [currentUrl, setCurrentUrl] = useState('');
 
-  // Populate the selectedSocials state with userData on component mount
   useEffect(() => {
     setSelectedSocials(userData);
   }, [userData]);

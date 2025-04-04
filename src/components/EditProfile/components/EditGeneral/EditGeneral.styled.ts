@@ -26,10 +26,10 @@ export const GeneralForm = styled.div`
 
 export const GeneralBtns = styled.div`
   display: flex;
-  gap: 8px;
-  justify-content: space-between;
+  gap: 16px;
   padding-top: 53px;
   font-size: 14px;
+  width: 100%;
 `;
 
 export const SelectedContainer = styled.div`

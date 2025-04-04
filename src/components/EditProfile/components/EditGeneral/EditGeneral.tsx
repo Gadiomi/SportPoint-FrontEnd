@@ -1,8 +1,5 @@
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
-import {
-  useGetUserProfileQuery,
-  useUpdateUserProfileMutation,
-} from '@/redux/user/userApi';
+import { useUpdateUserProfileMutation } from '@/redux/user/userApi';
 import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -22,29 +19,40 @@ import {
   InputsSection,
   SectionTitle,
   HiddenInput,
-} from './EditProfile.styled';
+} from './EditGeneral.styled';
 import { Label } from '../Selection/Selection.styled';
 import { AccountName } from '../../EditProfiles.style';
 import SocialInput from '../SocialInput/SocialInput';
 import Certificates from '../Certificates/Certificates';
+import { useAppSelector } from '@/hooks/hooks';
+import EditTextArea from '../EditTextArea/EditTextArea';
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data: userData, isLoading } = useGetUserProfileQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
+
+  const userProfile = useAppSelector(state => state.user.user);
+
   const [selectedSports, setSelectedSports] = useState<string[]>([]);
   const [selectedSocial, setSelectedSocial] = useState<
     Array<{ name: string; url: string }>
   >([]);
   const [selectedWorks, setSelectedWorks] = useState<string[]>([]);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [text, setText] = useState<string>(
+    userProfile?.description.short_desc || '',
+  );
+
   const handleSelectionChange = (selectedItems: string[]) => {
     setSelectedSports(selectedItems);
   };
   const handleWorkChange = (selectedItems: string[]) => {
     setSelectedWorks(selectedItems);
+  };
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setText(value);
+    setValue('description.short_desc', value, { shouldValidate: true }); // Sync with react-hook-form
   };
 
   const handleSocialChange = (
@@ -58,24 +66,24 @@ const EditGeneral: FC = () => {
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UserProfile>({
-      defaultValues: userData?.userProfile || {},
+      defaultValues: userProfile || {},
       shouldUnregister: false,
     });
 
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
-    userData?.userProfile?.avatar || null,
+    userProfile?.avatar || null,
   );
   const [avatar, setAvatar] = useState<File | null>(null);
   const [certificates, setCertificates] = useState<File[]>([]);
 
-  console.log(certificates);
   useEffect(() => {
-    if (userData?.userProfile) {
-      reset(userData.userProfile);
-      setSelectedAvatar(userData.userProfile.avatar || null);
-      localStorage.setItem('userProfile', JSON.stringify(userData.userProfile));
+    if (userProfile) {
+      reset(userProfile);
+      setSelectedAvatar(userProfile.avatar || null);
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
     }
-  }, [userData, reset]);
+    setSelectedCity(userProfile?.description?.address || null);
+  }, [userProfile, reset]);
 
   const handleCertificatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -115,7 +123,7 @@ const EditGeneral: FC = () => {
 
       const descriptionData = {
         address: selectedCity,
-        short_desc: formData.description.short_desc,
+        short_desc: text,
         abilities: formData.description.abilities,
         age: formData.description.age,
         schedule: formData.description.schedule,
@@ -127,6 +135,7 @@ const EditGeneral: FC = () => {
         email: formData.description.email,
       };
 
+      console.log(descriptionData.short_desc);
       formDataToSend.append('description', JSON.stringify(descriptionData));
 
       console.log(formDataToSend);
@@ -141,9 +150,7 @@ const EditGeneral: FC = () => {
     }
   };
 
-  if (isLoading) return <div>Loading profile...</div>;
-
-  console.log(userData?.userProfile.description.address);
+  // if (isLoading) return <div>Loading profile...</div>;
 
   return (
     <Container>
@@ -182,12 +189,11 @@ const EditGeneral: FC = () => {
             alt=""
           />
           <h3>
-            {userData?.userProfile.firsName || userData?.userProfile.lastName
-              ? userData?.userProfile.firsName ||
-                (userData?.userProfile.firsName &&
-                  userData?.userProfile.lastName)
-              : userData?.userProfile.description.email
-                ? userData?.userProfile.description.email.split('@')[0]
+            {userProfile?.firstName || userProfile?.lastName
+              ? userProfile?.firstName ||
+                (userProfile?.firstName && userProfile?.lastName)
+              : userProfile?.description.email
+                ? userProfile?.description.email.split('@')[0]
                 : 'No Name'}
           </h3>
         </AvatarName>
@@ -220,14 +226,12 @@ const EditGeneral: FC = () => {
             <SelectStyled
               id="description.address"
               name="description.address"
-              value={
-                selectedCity || userData?.userProfile.description.address || ''
-              }
+              value={selectedCity || userProfile?.description.address}
               onChange={e => setSelectedCity(e.target.value)}
             >
               <option value="" disabled>
                 {selectedCity ||
-                  userData?.userProfile.description.address ||
+                  userProfile?.description.address ||
                   'Оберіть місто'}
               </option>
               {cities.map((city, index) => (
@@ -242,16 +246,14 @@ const EditGeneral: FC = () => {
             <Input
               testId="firstName"
               label="Імʼя"
-              value={
-                userData?.userProfile.firstName || watch('firstName') || ''
-              }
+              value={userProfile?.firstName || watch('firstName') || ''}
               {...register('firstName')}
               onChange={e => setValue('firstName', e.target.value)}
             />
             <Input
               testId="lastName"
               label="Прізвище"
-              value={userData?.userProfile.lastName || watch('lastName') || ''}
+              value={userProfile?.lastName || watch('lastName') || ''}
               {...register('lastName')}
               onChange={e => setValue('lastName', e.target.value)}
             />
@@ -259,9 +261,7 @@ const EditGeneral: FC = () => {
               testId="age"
               label="Вік"
               value={
-                userData?.userProfile.description.age ||
-                watch('description.age') ||
-                ''
+                userProfile?.description.age || watch('description.age') || ''
               }
               {...register('description.age')}
               onChange={e => setValue('description.age', e.target.value)}
@@ -279,7 +279,7 @@ const EditGeneral: FC = () => {
             <Input
               testId="email"
               label="Email"
-              value={userData?.userProfile.description.email || ''}
+              value={userProfile?.description.email || ''}
               {...register('description.email')}
               onChange={e => setValue('description.email', e.target.value)}
             />
@@ -287,7 +287,7 @@ const EditGeneral: FC = () => {
               testId="phone"
               label="Номер телефону"
               value={
-                userData?.userProfile.description.phone ||
+                userProfile?.description.phone ||
                 watch('description.phone') ||
                 ''
               }
@@ -300,25 +300,31 @@ const EditGeneral: FC = () => {
             placeholder={'Обрати'}
             labelName={'Соціальні мережі'}
             onChange={handleSocialChange}
-            userData={userData?.userProfile.description.social_links || []}
+            userData={userProfile?.description.social_links || []}
           />
           <Selection
             content={sports}
             placeholder={'Обрати'}
             labelName={'Ваші види спорту'}
             onChange={handleSelectionChange}
-            userData={userData?.userProfile.sport || []}
+            userData={userProfile?.sport || []}
           />
           <Selection
-            content={['bestJym', 'logus']}
+            content={['67ed605dfadadff5e02fe39d', 'logus']}
             placeholder={'Обрати'}
             labelName={'Спортивні клуби, де ви працюєте'}
             onChange={handleWorkChange}
-            userData={userData?.userProfile.club || []}
+            userData={userProfile?.club || []}
           />
           <Certificates
             handleCertificatesChange={handleCertificatesChange}
-            certificates={userData?.userProfile.certificates || []}
+            certificates={userProfile?.certificates || []}
+          />
+          <EditTextArea
+            about={userProfile?.description.short_desc}
+            handleTextChange={handleTextChange}
+            text={text}
+            setText={setText}
           />
         </GeneralForm>
 
@@ -329,18 +335,34 @@ const EditGeneral: FC = () => {
             appearance={ButtonAppearance.SECONDARY}
             testId="back"
             onClick={() => navigate('/profile')}
+            style={{
+              width: '50%',
+              padding: '8px 18px',
+              fontWeight: 500,
+              fontSize: 16,
+              color: '#B7B7B9',
+            }}
           />
           <Button
             type="submit"
             title={t('account_page.save')}
             appearance={ButtonAppearance.SECONDARY}
             testId="save"
+            style={{
+              width: '50%',
+              padding: '8px 18px',
+              fontWeight: 500,
+              fontSize: 16,
+              color: '#B7B7B9',
+            }}
             prependChild={
               <Icon
                 styles={{
                   color: 'currentColor',
                   fill: 'transparent',
+                  marginRight: '8px',
                 }}
+                width="24"
                 name={IconName.CHECK_CONTAINED}
               />
             }

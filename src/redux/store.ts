@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authApi } from './auth/authApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userApi } from './user/userApi';
-import { userReducer } from './user/userSlice';
+import { userReducer } from './user/userProfileSlice';
 
 // Store
 export const store = configureStore({

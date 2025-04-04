@@ -16,7 +16,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<UserProfile>) {
+    setUserProfile: (state, action) => {
       state.user = action.payload;
     },
   },
@@ -24,17 +24,20 @@ export const userSlice = createSlice({
     builder.addMatcher(
       userApi.endpoints.getUserProfile.matchFulfilled,
       (state, action) => {
-        state.user = action.payload.user;
+        console.log(action.payload.userProfile);
+
+        state.user = action.payload.userProfile;
       },
     );
     builder.addMatcher(
       userApi.endpoints.updateUserProfile.matchFulfilled,
       (state, action) => {
-        state.user = action.payload.user;
+        state.user = action.payload.userProfile;
       },
     );
   },
 });
 
 export const userActions = userSlice.actions;
+export const { setUserProfile } = userSlice.actions;
 export const userReducer = userSlice.reducer;
