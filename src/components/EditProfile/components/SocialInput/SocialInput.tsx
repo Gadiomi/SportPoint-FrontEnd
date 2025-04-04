@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import {
   Container,
   Label,
@@ -9,6 +8,7 @@ import {
 import { IconName, Icon, Button, ButtonAppearance } from '@/kit';
 import { AddUrlContainer } from './SocialInput.styled';
 import { Input } from '@/kit';
+import React, { useState, useEffect } from 'react';
 
 interface SocialInputProps {
   content: string[];
@@ -62,21 +62,20 @@ const SocialInput: React.FC<SocialInputProps> = ({
     <Container>
       <Label>{labelName}</Label>
       <SelectedItems>
-        {selectedSocials.map(({ name, url }) => (
+        {selectedSocials.map(({ name }) => (
           <SelectedItem key={name}>
             {name}
-            <button type="button" onClick={() => handleRemove(name)}>
-              <a href={url} target="_blank" rel="noopener noreferrer">
-                <Icon size={24} name={IconName.LINK_ANGLED} />
-              </a>
-            </button>
+            <Icon size={24} name={IconName.LINK_ANGLED} />
           </SelectedItem>
         ))}
       </SelectedItems>
       <SelectStyled
+        id="socialSelect"
         value={currentSocial}
         onChange={handleSelectChange}
-        aria-label={labelName}
+        aria-label="social"
+        title="Виберіть соціальну мережу"
+        name="social"
       >
         <option value="">{placeholder}</option>
         {content.map(conte => (

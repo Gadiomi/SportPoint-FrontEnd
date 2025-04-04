@@ -21,7 +21,8 @@ export const CertificatesItem = styled.p`
   display: block;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #ed772f;
+    color: black;
   }
   display: flex;
   justify-content: space-between;
