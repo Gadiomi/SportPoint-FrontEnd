@@ -43,7 +43,7 @@ interface PriceItem {
 interface AdminClub {
   _id: string;
   userId: string;
-  firstLastName: string;
+  firstName: string;
   avatar: string;
   images: string[];
   certificates: string[];
@@ -107,7 +107,7 @@ const AdminClubPage: FC = () => {
   }
 
   const {
-    firstLastName,
+    firstName,
     avatar,
     countReview,
     rating,
@@ -124,7 +124,8 @@ const AdminClubPage: FC = () => {
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
-    firstLastName: 'Оксана  Шевченко',
+    firstName: 'Оксана  ',
+    lastName: 'Шевченко',
     rating: 4.5,
     equipment: ['Карате', 'Бокс'],
     price: ['1000 грн'],
@@ -143,7 +144,7 @@ const AdminClubPage: FC = () => {
         <StyledProfileCard>
           <ProfileCard
             address={address}
-            firstLastName={firstLastName}
+            firstName={firstName}
             avatar={avatar}
           />
         </StyledProfileCard>
@@ -177,7 +178,8 @@ const AdminClubPage: FC = () => {
           rating={coachTest.rating}
           counts={[countReview ?? 0]}
           avatar={coachTest.avatar}
-          firstLastName={coachTest.firstLastName}
+          firstName={coachTest.firstName}
+          lastName={coachTest.lastName}
           equipment={coachTest.equipment}
           price={coachTest.price}
         />
@@ -198,7 +200,7 @@ const AdminClubPage: FC = () => {
           location={location}
           cleanliness={cleanliness}
           avatar={coachTest.avatar}
-          firstLastName={coachTest.firstLastName}
+          firstName={coachTest.firstName}
         />
         <ButtonContainer>
           <ButtonLink

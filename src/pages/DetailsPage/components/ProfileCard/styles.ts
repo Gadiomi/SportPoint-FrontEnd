@@ -32,12 +32,5 @@ export const AvatarNone = styled.div`
   font-weight: bold;
 `;
 
-export const Name = styled.h3`
-  margin-bottom: ${({ theme }) => `${theme.pxs.x2}px`};
-`;
 
-export const Address = styled.p`
-  //   font-size: 14px;
-  //   color: #777;
-  //   margin-top: 10px;
-`;
+

@@ -1,23 +1,24 @@
 import axios from 'axios';
 import { FC, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { IconName } from '@/kit';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
-import { IconName } from '@/kit';
 
-import EditButton from '../components/EditButton/EditButton';
+// import ButtonEdit from '../components/ButtonEdit/ButtonEdit';
+import ButtonLink from '../components/ButtonLink/ButtonLink';
 import StyledHr from '../../../components/StyledHr/StyledHr';
 
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
+import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
-import WorksInCard from '../components/WorksInCard/WorksInCard';
+import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
-import ButtonLink from '../components/ButtonLink/ButtonLink';
+import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
 
 import { StyledProfileCard, ButtonContainer } from './styles';
@@ -39,39 +40,43 @@ interface PriceItem {
   description?: string;
 }
 
-interface Coach {
+interface AdminClub {
   _id: string;
-  firstLastName: string;
+  userId: string;
+  firstName: string;
   avatar: string;
-  countReview: number;
-  rating: number;
-  club: string[];
+  images: string[];
+  certificates: string[];
+  coach: string[];
   description: {
-    social_links: SocialLink[];
-    price: PriceItem[];
-    schedule: ScheduleItem[];
-    experience: string;
-
     address: string;
     short_desc: string;
     abilities: string;
+    social_links: SocialLink[];
+    price: PriceItem[];
+    schedule: ScheduleItem[];
+    // experience: string;
   };
-  userId: string;
+  countReview: number;
+  rating: number;
   equipment: string;
-  certificates: string[];
+
   phone: string;
   email: string;
-  images: string[];
-  coach: string[];
+  club: string[];
+
   favorite: object[];
   role: string;
 }
 
-const CoachPage: FC = () => {
+const ClubPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
 
-  const [coachData, setCoachData] = useState<Coach | null>(null);
-  const [clubsName, setClubsName] = useState<string[]>([]);
+  const [adminClubData, setAdminClubData] = useState<AdminClub | null>(null);
+//   const [
+//     isLoggedIn,
+//     setIsLoggedIn
+//   ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -82,32 +87,8 @@ const CoachPage: FC = () => {
       axios
         .get(url)
         .then(response => {
-          setCoachData(response.data.data.data);
+          setAdminClubData(response.data.data.data);
           console.log('DATA', response.data.data.data);
-          const clubIds = response.data.data.data.club;
-          console.log('ID клубу:', clubIds);
-
-          if (clubIds.length === 0) {
-            setClubsName(['Клуб не знайдено']);
-          } else {
-            Promise.all(
-              clubIds.map((clubId: string) => {
-                const clubUrl = `https://sportpoint-backend.onrender.com/clubs/${clubId}`;
-                return axios.get(clubUrl);
-              }),
-            )
-              .then(clubResponses => {
-                const clubNames = clubResponses.map(
-                  clubResponse => clubResponse.data.name,
-                );
-                setClubsName(clubNames);
-              })
-              .catch(err => {
-                console.error('Помилка при отриманні клубів:', err);
-                setClubsName(['Клуб не знайдено']);
-              });
-          }
-
           setIsLoading(false);
         })
         .catch(err => {
@@ -130,23 +111,25 @@ const CoachPage: FC = () => {
   }
 
   const {
-    firstLastName,
+    firstName,
     avatar,
     countReview,
     rating,
+    // coach,
     // phone,
     // email,
-  } = coachData || {};
+  } = adminClubData || {};
 
-  const { social_links, price, schedule, experience } =
-    coachData?.description || {};
+  const { social_links, price, schedule, address } =
+    adminClubData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
-    firstLastName: 'Оксана  Шевченко',
+    firstName: 'Оксана',
+    lastName: 'Шевченко',
     rating: 4.5,
     equipment: ['Карате', 'Бокс'],
     price: ['1000 грн'],
@@ -163,34 +146,51 @@ const CoachPage: FC = () => {
       <Container>
         <Logo />
         <StyledProfileCard>
-          <ProfileCard firstLastName={firstLastName} avatar={avatar} />
+          <ProfileCard
+            address={address}
+            firstName={firstName}
+            avatar={avatar}
+          />
         </StyledProfileCard>
         <StyledHr />
-        <EditButton
-
+        {/* <ButtonEdit
         // id={id}
-        />
+        /> */}
         <ReviewCard
-          iconNames={[
-            IconName.LIKE,
-            IconName.LIGHTNING_FILLED,
-            IconName.STAR_DEFAULT,
+          iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
+          counts={[
+            countReview ?? 0,
+            Array.isArray(coachTest) && coachTest.length > 0
+              ? coachTest.length
+              : 0,
+            roundedRating,
           ]}
-          counts={[countReview ?? 0, experience ?? '0', roundedRating]}
-          labels={['Відгуки', 'Досвід', 'Рейтинг']}
+          labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
         <StyledHr />
-        <SocialLinks socialLinks={social_links || []} />
+        <SocialLinks
+          socialLinks={social_links || []}
+          //   isLoggedIn={isLoggedIn}
+          //   title="Введіть дані, і адміністратор з вами зв’яжеться"
+        />
+        <StyledHr />
+        <GalleryCard />
         <StyledHr />
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
         <StyledHr />
-        <WorksInCard
-          clubsName={clubsName[0] || 'Невідомий клуб'}
-          clubId={clubsName[0]}
-          iconNames={[IconName.LOCATION, IconName.CLOCK]}
-          labels={['1,5 км', '24/7']}
+        <LocationCard />
+        <StyledHr />
+        <OurCoachCard
+          iconNames={[IconName.STAR_DEFAULT]}
+          rating={coachTest.rating}
+          counts={[countReview ?? 0]}
+          avatar={coachTest.avatar}
+          firstName={coachTest.firstName}
+          lastName={coachTest.lastName}
+          equipment={coachTest.equipment}
+          price={coachTest.price}
         />
         <ButtonContainer>
           <ButtonLink
@@ -209,7 +209,8 @@ const CoachPage: FC = () => {
           location={location}
           cleanliness={cleanliness}
           avatar={coachTest.avatar}
-          firstLastName={coachTest.firstLastName}
+          firstName={coachTest.firstName}
+          lastName={coachTest.lastName}
         />
         <ButtonContainer>
           <ButtonLink
@@ -224,4 +225,4 @@ const CoachPage: FC = () => {
   );
 };
 
-export default CoachPage;
+export default ClubPage;

@@ -1,6 +1,7 @@
 import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { IconName, ButtonAppearance, ButtonTypogr } from '@/kit';
+import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
 import { useTranslation } from 'react-i18next';
 import TitleContainer from '../TitleContainer/TitleContainer';
@@ -8,24 +9,19 @@ import RatingBox from '../RatingBox/RatingBox';
 
 import {
   StyledOurCoachCard,
-  OurCoachContainer,
   OurCoachWrapper,
   OurCoachBox,
   PriceRatingBox,
-  Text,
   StyledButton,
   Avatar,
-  Name,
   Equipment,
   EquipmentEl,
-  InfoContainer,
-  PriceBox,
-  Price,
 } from './styles';
 
 interface OurCoachCardProps {
   avatar?: string;
-  firstLastName?: string;
+  firstName: string;
+  lastName?: string;
   price: string[];
   equipment: string[];
   iconNames: IconName[];
@@ -35,7 +31,8 @@ interface OurCoachCardProps {
 
 const OurCoachCard: React.FC<OurCoachCardProps> = ({
   avatar,
-  firstLastName,
+  firstName,
+  lastName,
   equipment,
   price,
   rating,
@@ -52,21 +49,48 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
     // };
 
     const { t } = useTranslation();
-
+const theme = useTheme();
+  
     return (
       <StyledOurCoachCard>
-        <OurCoachContainer>
+        <div style={{ width: '100%', marginBottom: `${theme.pxs.x8}px` }}>
           <TitleContainer titleKey="details_page.our_coach" />
           <OurCoachWrapper>
             <OurCoachBox>
-              <Avatar src={avatar} alt={firstLastName} />
-              <InfoContainer>
-                <Name style={fonts.secondManrope}>{firstLastName}</Name>
+              <Avatar src={avatar} alt={firstName} />
+              <div style={{ width: '100%' }}>
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: `${theme.pxs.x1}px`,
+                    justifyContent: 'flex-start',
+                    marginBottom: `${theme.pxs.x0_5}px`,
+                  }}
+                >
+                  <h2 style={fonts.secondManrope}>{firstName}</h2>
+                  <h2 style={fonts.secondManrope}>{lastName}</h2>
+                </div>
+
                 <PriceRatingBox>
-                  <PriceBox>
-                    <Price style={fonts.mainManrope}> {price}</Price>
-                    <Text style={fonts.smallText}>60-хв заняття</Text>
-                  </PriceBox>
+                  <div style={{ width: '100%' }}>
+                    <div
+                      style={{
+                        ...fonts.mainManrope,
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        paddingBottom: `${theme.pxs.x0_5}px`,
+                      }}
+                    >
+                      {' '}
+                      {price}
+                    </div>
+                    <div style={{...fonts.smallText,  width: '100%',
+                        display: 'flex',
+                        justifyContent: 'flex-start',}}>60-хв заняття</div>
+                  </div>
                   <RatingBox
                     iconNames={[IconName.STAR_DEFAULT]}
                     rating={rating}
@@ -86,7 +110,7 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
                     <EquipmentEl key={index}>{item}</EquipmentEl>
                   ))}
                 </Equipment>
-              </InfoContainer>
+              </div>
             </OurCoachBox>
             <StyledButton
               testId="details_page.edit_button"
@@ -97,7 +121,7 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
               <ButtonTypogr>{t('details_page.more_details')}</ButtonTypogr>
             </StyledButton>
           </OurCoachWrapper>
-        </OurCoachContainer>
+        </div>
       </StyledOurCoachCard>
     );
   };
