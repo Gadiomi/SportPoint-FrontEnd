@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { StyledButton } from './styles';
 
-interface EditButtonProps {
+interface ButtonGetInTouchProps {
   titleKey?: string;
 
   // id: string;
 }
 
-const EditButton: React.FC<EditButtonProps> = () =>
+const ButtonGetInTouch: React.FC<ButtonGetInTouchProps> = () =>
   // { id }
   {
     const { t } = useTranslation();
@@ -29,8 +29,8 @@ const EditButton: React.FC<EditButtonProps> = () =>
 
     return (
       <StyledButton
-        testId="details_page.edit_button"
-        title={t('details_page.edit_button')}
+        testId="details_page.get_in_touch"
+        title={t('details_page.get_in_touch')}
         appearance={ButtonAppearance.PRIMARY}
         onClick={handleClick}
         textStyle={{ ...fonts.editButton, color: theme.color.white }}
@@ -43,9 +43,8 @@ const EditButton: React.FC<EditButtonProps> = () =>
             name={IconName.ARROW_CORNER}
           />
         }
-      >
-      </StyledButton>
+      ></StyledButton>
     );
   };
 
-export default EditButton;
+export default ButtonGetInTouch;

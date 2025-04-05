@@ -40,7 +40,10 @@
     "reviews": "ВІДГУКИ",
     "our_coach": "НАШІ ТРЕНЕРИ",
     "complain": "Поскаржитись",
-    "respond": "Відповісти"
+    "respond": "Відповісти",
+    "comment": "Коментувати",
+    "choose": "Обрати",
+    "get_in_touch": "Зв'язатись"
   },
   "account_page": {
     "general": "ЗАГАЛЬНЕ",

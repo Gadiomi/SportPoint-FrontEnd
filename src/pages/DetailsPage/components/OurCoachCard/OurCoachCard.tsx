@@ -87,20 +87,27 @@ const theme = useTheme();
                       {' '}
                       {price}
                     </div>
-                    <div style={{...fonts.smallText,  width: '100%',
+                    <div
+                      style={{
+                        ...fonts.smallText,
+                        width: '100%',
                         display: 'flex',
-                        justifyContent: 'flex-start',}}>60-хв заняття</div>
+                        justifyContent: 'flex-start',
+                      }}
+                    >
+                      60-хв заняття
+                    </div>
                   </div>
                   <RatingBox
                     iconNames={[IconName.STAR_DEFAULT]}
                     rating={rating}
                     counts={counts}
                     containerStyles={{
-                      marginRight: '28px',
+                      marginRight: `${theme.pxs.x7}px`,
                     }}
                     iconStyles={{
-                      width: '18px',
-                      height: '18px',
+                      width: `${theme.pxs.x4_5}px`,
+                      height: `${theme.pxs.x4_5}px`,
                     }}
                     spanStyles={fonts.mainManrope}
                   />

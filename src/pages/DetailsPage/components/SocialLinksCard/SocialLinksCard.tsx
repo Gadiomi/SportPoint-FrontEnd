@@ -1,5 +1,8 @@
 import React from 'react';
+import { useTheme } from 'styled-components';
+import { useLocation } from 'react-router-dom'; 
 import TitleContainer from '../TitleContainer/TitleContainer';
+import ButtonGetInTouch from '../ButtonGetInTouch/ButtonGetInTouch'
 import { StyledSocialLinksCard, ImgContainer } from './styles';
 
 const socialIconsMap: Record<string, string> = {
@@ -17,6 +20,13 @@ interface SocialLink {
 const SocialLinks: React.FC<{ socialLinks: SocialLink[] }> = ({
   socialLinks,
 }) => {
+  const theme = useTheme();
+  const location = useLocation();
+
+  const isCoachOrClubAccount =
+    location.pathname.includes('/account-trainer/') ||
+    location.pathname.includes('/account-admin-club/');
+
   if (!socialLinks || socialLinks.length === 0) {
     return <div>Соціальні мережі не доступні</div>;
   }
@@ -36,7 +46,10 @@ const SocialLinks: React.FC<{ socialLinks: SocialLink[] }> = ({
                 rel="noopener noreferrer"
               >
                 <img
-                  style={{ width: 32, height: 32 }}
+                  style={{
+                    width: `${theme.pxs.x8}px`,
+                    height: `${theme.pxs.x8}px`,
+                  }}
                   src={iconSrc}
                   alt={`${link.name} Icon`}
                 />
@@ -45,6 +58,7 @@ const SocialLinks: React.FC<{ socialLinks: SocialLink[] }> = ({
           );
         })}
       </ImgContainer>
+      {!isCoachOrClubAccount && <ButtonGetInTouch />}
     </StyledSocialLinksCard>
   );
 };
