@@ -12,10 +12,13 @@ import {
   SpecializationBlock,
 } from './styles';
 import { ICoachData } from '../../types';
+import { fixEnding } from '@/helpers/fixEnding';
 
 type Props = {
   coachData: ICoachData;
 };
+
+const NO_IMAGE = '../../../../public/assets/svg/no_image.svg'; //TEMP!!!
 
 const CoachCard: FC<Props> = ({ coachData }) => {
   const detailsHandler = () => {
@@ -25,7 +28,7 @@ const CoachCard: FC<Props> = ({ coachData }) => {
   return (
     <CoachCardWrapper>
       <CoachInfoWrapper>
-        <CoachImage src={coachData.avatar} alt="coach image" />
+        <CoachImage src={coachData.avatar || NO_IMAGE} alt="coach image" />
         <CoachInfoBlock>
           <NameBlock>
             <h2>{coachData.firstLastName}</h2>
@@ -54,12 +57,11 @@ const CoachCard: FC<Props> = ({ coachData }) => {
                   }}
                 />
               </div>
-              <span>{`${coachData.countReview} відгуки`}</span>
+              <span>{`${coachData.countReview} ${fixEnding(coachData.countReview)}`}</span>
             </Rating>
           </ConditionsBlock>
           <SpecializationBlock>
-            {/* <span>Йога</span> <span>Фітнес</span> */}
-            {coachData.description.abilities.split(',').map(item => (
+            {coachData.description.abilities.map(item => (
               <span key={item}>{item}</span>
             ))}
           </SpecializationBlock>
