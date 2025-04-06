@@ -3,6 +3,7 @@ import { authApi } from './auth/authApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userApi } from './user/userApi';
 import { userReducer } from './user/userProfileSlice';
+import { passwordApi } from './password/passwordApi';
 
 // Store
 export const store = configureStore({
@@ -10,9 +11,14 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     user: userReducer,
+    [passwordApi.reducerPath]: passwordApi.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(authApi.middleware, userApi.middleware),
+    getDefaultMiddleware().concat(
+      authApi.middleware,
+      userApi.middleware,
+      passwordApi.middleware,
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
