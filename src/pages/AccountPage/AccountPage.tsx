@@ -39,7 +39,7 @@ const AccountPage: FC = () => {
           }
         />
         <h3>
-          {userData?.userProfile?.firstLastName ||
+          {userData?.userProfile?.firstName ||
             (userData?.userProfile.description.email
               ? userData?.userProfile.description.email.split('@')[0]
               : 'No Name')}

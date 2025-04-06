@@ -14,7 +14,7 @@ import { CookiesKey } from '@/constants';
 
 interface UserProfileFormData {
   avatar: string | File;
-  firstLastName?: string;
+  firstName?: string;
   lastName: string;
   phone?: string;
   email: string;
@@ -66,7 +66,7 @@ const General: FC = () => {
   const onSubmit = async (formData: UserProfileFormData) => {
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('firstLastName', formData.firstLastName || '');
+      formDataToSend.append('firstName', formData.firstName || '');
       formDataToSend.append('lastName', formData.lastName);
       formDataToSend.append('phone', formData.phone || '');
       formDataToSend.append('email', formData.email);
@@ -84,18 +84,6 @@ const General: FC = () => {
     }
   };
 
-  // const handleLogout = () => {
-  //   // Видалити токени з куків
-  //   Cookies.remove(CookiesKey.TOKEN);
-  //   Cookies.remove(CookiesKey.REFRESH_TOKEN);
-
-  //   // Видалити email з локального сховища
-  //   localStorage.removeItem('userEmail');
-
-  //   // Перенаправити на сторінку логіну
-  //   navigate('/login');
-  // };
-
   useEffect(() => {
     const storedEmail = localStorage.getItem('userEmail');
     if (storedEmail) {
@@ -103,28 +91,6 @@ const General: FC = () => {
       setValue('email', storedEmail);
     }
   }, [setValue]);
-
-  // const onSubmit = async (formData: UserProfileFormData) => {
-  //   try {
-  //     const updatedData = {
-  //       ...formData,
-  //       avatar: avatar ? URL.createObjectURL(avatar) : selectedAvatar,
-  //     };
-
-  //     const response = await updateUserProfile(updatedData).unwrap();
-  //     console.log('Profile updated:', response);
-  //   } catch (error) {
-  //     console.error('Update failed:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const storedProfile = localStorage.getItem('userProfile');
-  //   if (storedProfile) {
-  //     const parsedProfile = JSON.parse(storedProfile);
-  //     reset(parsedProfile); // Оновлення всіх полів одночасно
-  //   }
-  // }, [reset]);
 
   if (isLoading) return <div>Loading profile...</div>;
   return (
@@ -162,7 +128,7 @@ const General: FC = () => {
           }
         />
         <h3>
-          {userData?.userProfile.firstLastName ||
+          {userData?.userProfile.firstName ||
             (userData?.userProfile.description.email
               ? userData?.userProfile.description.email.split('@')[0]
               : 'No Name')}
@@ -196,9 +162,9 @@ const General: FC = () => {
           <Input
             testId="firstName"
             label="First Name"
-            value={watch('firstLastName') || ''}
-            {...register('firstLastName')}
-            onChange={e => setValue('firstLastName', e.target.value)}
+            value={watch('firstName') || ''}
+            {...register('firstName')}
+            onChange={e => setValue('firstName', e.target.value)}
           />
           <Input
             testId="lastName"

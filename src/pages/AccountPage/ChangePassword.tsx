@@ -1,10 +1,12 @@
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import css from './AccountPage.module.css';
 import { useForm } from 'react-hook-form';
 import { useChangePasswordMutation } from '@/redux/user/userApi';
+import PasswordRecovery from '@/components/PasswordRecovery/PasswordRecovery';
+import { ModalContent, ModalOverlay } from './styles';
 
 interface ChangePasswordFormData {
   currentPassword: string;
@@ -23,6 +25,16 @@ const ChangePassword: FC = () => {
     watch,
     formState: { errors },
   } = useForm<ChangePasswordFormData>();
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpen = () => {
+    setModalOpen(true);
+  };
+
+  // const handleClose = () => {
+  //   setModalOpen(false);
+  // };
 
   const onSubmit = async (data: ChangePasswordFormData) => {
     try {
@@ -120,8 +132,16 @@ const ChangePassword: FC = () => {
               title={t(`account_page.restore`)}
               appearance={ButtonAppearance.UNDERLINED}
               testId="restore"
+              onClick={handleOpen}
             ></Button>
           </div>
+          {isModalOpen && (
+            <ModalOverlay>
+              <ModalContent>
+                <PasswordRecovery />
+              </ModalContent>
+            </ModalOverlay>
+          )}
           <div className={css.generalBtns}>
             <Button
               type="button"

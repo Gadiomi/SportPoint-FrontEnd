@@ -18,7 +18,7 @@ export const passwordApi = createApi({
   endpoints: builder => ({
     sendRecoveryCode: builder.mutation<SendCodeResponse, string>({
       query: email => ({
-        url: '/send/verify',
+        url: '/auth/send/verify',
         method: 'POST',
         data: { email },
       }),
@@ -28,7 +28,7 @@ export const passwordApi = createApi({
       { password: string; code: string }
     >({
       query: ({ password, code }) => ({
-        url: '/verify',
+        url: '/auth/verify',
         method: 'POST',
         data: { password, verifyCode: code },
       }),
