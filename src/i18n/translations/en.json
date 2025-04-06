@@ -40,7 +40,10 @@
     "reviews": "REVIEWS",
     "our_coach": "OUR COACH",
     "complain": "Complain",
-    "respond": "Respond"
+    "respond": "Respond",
+    "comment": "Comment",
+    "choose": "Choose",
+    "get_in_touch": "Get in touch"
   },
   "account_page": {
     "general": "GENERAL",

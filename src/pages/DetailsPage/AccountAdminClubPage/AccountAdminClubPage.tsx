@@ -143,14 +143,16 @@ const AdminClubPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
-            address={address}
+            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             avatar={avatar}
+            address={address}
           />
         </StyledProfileCard>
         <EditButton
         // id={id}
         />
+        <StyledHr />
         <ReviewCard
           iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
           counts={[
@@ -201,6 +203,7 @@ const AdminClubPage: FC = () => {
           cleanliness={cleanliness}
           avatar={coachTest.avatar}
           firstName={coachTest.firstName}
+          lastName={coachTest.lastName}
         />
         <ButtonContainer>
           <ButtonLink
