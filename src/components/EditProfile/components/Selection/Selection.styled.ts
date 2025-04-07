@@ -42,7 +42,7 @@ export const SelectedItem = styled.span`
     color: black;
   }
   display: flex;
-  justify-content: space-between;
+  gap: 6px;
 `;
 
 export const SelectStyled = styled.select`

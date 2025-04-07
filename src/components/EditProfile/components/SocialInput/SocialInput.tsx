@@ -52,20 +52,18 @@ const SocialInput: React.FC<SocialInputProps> = ({
     }
   };
 
-  const handleRemove = (name: string) => {
-    const updatedSelection = selectedSocials.filter(item => item.name !== name);
-    setSelectedSocials(updatedSelection);
-    onChange(updatedSelection);
-  };
-
   return (
     <Container>
-      <Label>{labelName}</Label>
+      <Label id="socialSelect-label">{labelName}</Label>
       <SelectedItems>
         {selectedSocials.map(({ name }) => (
           <SelectedItem key={name}>
             {name}
-            <Icon size={24} name={IconName.LINK_ANGLED} />
+            <Icon
+              size={24}
+              styles={{ position: 'absolute', right: '12px', top: '14%' }}
+              name={IconName.LINK_ANGLED}
+            />
           </SelectedItem>
         ))}
       </SelectedItems>
@@ -73,7 +71,7 @@ const SocialInput: React.FC<SocialInputProps> = ({
         id="socialSelect"
         value={currentSocial}
         onChange={handleSelectChange}
-        aria-label="social"
+        aria-labelledby="socialSelect-label"
         title="Виберіть соціальну мережу"
         name="social"
       >

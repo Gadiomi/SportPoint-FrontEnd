@@ -31,6 +31,3 @@ export const AvatarNone = styled.div`
   color: ${({ theme }) => `${theme.color.mainWhite}`};
   font-weight: bold;
 `;
-
-
-

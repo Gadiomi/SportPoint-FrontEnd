@@ -9,7 +9,7 @@ import { useFormContext } from 'react-hook-form';
 
 interface EditTextAreaProps {
   about: string | undefined;
-  handleTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; // Updated this line
+  handleTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   text: string;
   setText: (text: string) => void;
 }
@@ -20,7 +20,7 @@ const EditTextArea: FC<EditTextAreaProps> = ({
   text,
   setText,
 }) => {
-  const { register, setValue } = useFormContext(); // Use the form context for registration and value update
+  const { register, setValue } = useFormContext();
   const maxLength = 850;
 
   useEffect(() => {

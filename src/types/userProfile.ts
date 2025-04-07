@@ -44,4 +44,5 @@ export interface UserProfile {
   club?: string[];
   coach?: string[];
   sport?: string[];
+  work_list?: string[];
 }

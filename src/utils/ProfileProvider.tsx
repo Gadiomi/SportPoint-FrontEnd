@@ -8,12 +8,7 @@ interface ProfileProviderProps {
   children: React.ReactNode;
   methods: any;
 }
-const ProfileProvider: FC<ProfileProviderProps> = ({
-  children,
-  methods,
-}: {
-  children: React.ReactNode;
-}) => {
+const ProfileProvider: FC<ProfileProviderProps> = ({ children, methods }) => {
   const { data: userData, isSuccess } = useGetUserProfileQuery(undefined);
   const dispatch = useDispatch();
 

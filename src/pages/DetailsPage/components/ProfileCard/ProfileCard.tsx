@@ -5,7 +5,7 @@ import { StyledProfileCard, Avatar, AvatarNone } from './styles';
 
 interface ProfileCardProps {
   firstName: string | undefined;
-  lastName?:string| undefined;
+  lastName?: string | undefined;
   avatar: string | undefined;
   address?: string;
 }
@@ -36,7 +36,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <StyledProfileCard>
       {renderAvatar}
-      <div style={{ display: 'flex', flexDirection: 'row', gap:'4px', justifyContent: 'center', marginBottom: `${theme.pxs.x2}px`}}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '4px',
+          justifyContent: 'center',
+          marginBottom: `${theme.pxs.x2}px`,
+        }}
+      >
         <h3 style={fonts.nameDetails}>{firstName} </h3>
         <h3 style={fonts.nameDetails}>{lastName} </h3>
       </div>

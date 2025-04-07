@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 
-export const ListItem = styled.li``;
 export const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  li:nth-of-type(2n) {
+    margin-bottom: 16px;
+  }
 `;
 export const AccountName = styled.div`
   display: flex;
@@ -28,6 +31,8 @@ export const NameTitle = styled.h3`
   font-size: 18px;
   width: 100%;
   text-align: center;
+  text-transform: capitalize;
+
   &::after {
     content: '';
     display: block;

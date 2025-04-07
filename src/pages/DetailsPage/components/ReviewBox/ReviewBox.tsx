@@ -61,7 +61,7 @@ const ReviewsBox: React.FC<ReviewsBoxProps> = ({
           }}
         >
           <h4 style={fonts.secondManrope}>{firstName}</h4>
-            <h4 style={fonts.secondManrope}>{lastName}</h4>
+          <h4 style={fonts.secondManrope}>{lastName}</h4>
         </div>
 
         {renderStars()}

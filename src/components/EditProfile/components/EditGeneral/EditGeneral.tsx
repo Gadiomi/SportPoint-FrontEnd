@@ -1,6 +1,9 @@
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
-import { useUpdateUserProfileMutation } from '@/redux/user/userApi';
-import React, { FC, useEffect, useState } from 'react';
+import {
+  useGetCardsQuery,
+  useUpdateUserProfileMutation,
+} from '@/redux/user/userApi';
+import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -21,48 +24,68 @@ import {
   HiddenInput,
 } from './EditGeneral.styled';
 import { Label } from '../Selection/Selection.styled';
-import { AccountName } from '../../EditProfiles.style';
+import { AccountName, NameTitle } from '../../EditProfiles.style';
 import SocialInput from '../SocialInput/SocialInput';
 import Certificates from '../Certificates/Certificates';
-import { useAppSelector } from '@/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import EditTextArea from '../EditTextArea/EditTextArea';
+import {
+  addCertificates,
+  setAvatar,
+  setSelectedAvatar,
+  setSelectedCity,
+  setSelectedSocial,
+  setSelectedSports,
+  setSelectedWorks,
+  setText,
+} from '@/redux/user/editProfileSlice';
+
+interface CardItem {
+  _id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const userProfile = useAppSelector(state => state.user.user);
-
-  const [selectedSports, setSelectedSports] = useState<string[]>([]);
-  const [selectedSocial, setSelectedSocial] = useState<
-    Array<{ name: string; url: string }>
-  >([]);
-  const [selectedWorks, setSelectedWorks] = useState<string[]>([]);
-  const [selectedCity, setSelectedCity] = useState<string | null>(null);
-  const [text, setText] = useState<string>(
-    userProfile?.description.short_desc || '',
-  );
-
-  const handleSelectionChange = (selectedItems: string[]) => {
-    setSelectedSports(selectedItems);
-  };
-  const handleWorkChange = (selectedItems: string[]) => {
-    setSelectedWorks(selectedItems);
-  };
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setText(value);
-    setValue('description.short_desc', value, { shouldValidate: true }); // Sync with react-hook-form
-  };
-
-  const handleSocialChange = (
-    selectedItems: { name: string; url: string }[],
-  ) => {
-    setSelectedSocial(selectedItems);
-  };
+  const isLoading = useAppSelector(state => state.user.isLoading);
+  const dispatch = useAppDispatch();
+  const {
+    selectedSports,
+    selectedSocial,
+    selectedWorks,
+    selectedCity,
+    text,
+    avatar,
+    selectedAvatar,
+    certificates,
+  } = useAppSelector(state => state.editProfile);
 
   const [updateUserProfile, { isLoading: isUpdating }] =
     useUpdateUserProfileMutation();
+
+  const { data } = useGetCardsQuery({
+    perPage: 100,
+    role: 'adminClub',
+  });
+
+  let cardData:
+    | { id: string; firstName: string; lastName: string; userId: string }[]
+    | string[] = [];
+
+  if (data && data.data) {
+    cardData = data.data.data.map((item: CardItem) => ({
+      role: item.role,
+      userId: item.userId,
+      id: item._id,
+      firstName: item.firstName,
+      lastName: item.lastName,
+    }));
+  }
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UserProfile>({
@@ -70,35 +93,73 @@ const EditGeneral: FC = () => {
       shouldUnregister: false,
     });
 
-  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
-    userProfile?.avatar || null,
-  );
-  const [avatar, setAvatar] = useState<File | null>(null);
-  const [certificates, setCertificates] = useState<File[]>([]);
-
   useEffect(() => {
     if (userProfile) {
       reset(userProfile);
-      setSelectedAvatar(userProfile.avatar || null);
-      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+      dispatch(setSelectedAvatar(userProfile?.avatar || null));
+      dispatch(setSelectedCity(userProfile?.description.address || null));
+      dispatch(setText(userProfile?.description.short_desc || ''));
+      dispatch(setSelectedSports(userProfile?.sport || []));
+      dispatch(setSelectedSocial(userProfile?.description.social_links || []));
+      dispatch(addCertificates([]));
+      dispatch(setSelectedWorks(userProfile?.work_list || []));
     }
-    setSelectedCity(userProfile?.description?.address || null);
-  }, [userProfile, reset]);
+  }, [userProfile, reset, dispatch]);
+
+  const handleSelectionChange = (
+    selectedItems: string[] | { id: string }[],
+  ) => {
+    if (typeof selectedItems[0] === 'string') {
+      dispatch(setSelectedSports(selectedItems as string[]));
+    } else {
+      dispatch(
+        setSelectedSports(
+          selectedItems.map(item => (item as { id: string }).id),
+        ),
+      );
+    }
+  };
+
+  const handleWorkChange = (selectedItems: string[] | { id: string }[]) => {
+    if (typeof selectedItems[0] === 'string') {
+      dispatch(setSelectedWorks(selectedItems as string[]));
+    } else {
+      dispatch(
+        setSelectedWorks(
+          selectedItems.map(item => (item as { id: string }).id),
+        ),
+      );
+    }
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    dispatch(setText(value));
+    setValue('description.short_desc', value, { shouldValidate: true });
+  };
+
+  const handleSocialChange = (
+    selectedItems: { name: string; url: string }[],
+  ) => {
+    console.log(selectedItems);
+    dispatch(setSelectedSocial(selectedItems));
+  };
 
   const handleCertificatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files) {
       const filesArray = Array.from(files);
-      setCertificates(prev => [...prev, ...filesArray]);
+      const newCertificates = [...certificates, ...filesArray];
+      dispatch(addCertificates(newCertificates));
     }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setAvatar(file);
-      setSelectedAvatar(URL.createObjectURL(file));
+      dispatch(setAvatar(file));
+      dispatch(setSelectedAvatar(URL.createObjectURL(file)));
     }
   };
 
@@ -117,6 +178,7 @@ const EditGeneral: FC = () => {
       if (selectedWorks.length > 0) {
         formDataToSend.append('club', JSON.stringify(selectedWorks));
       }
+
       certificates.forEach(file => {
         formDataToSend.append('certificates', file);
       });
@@ -135,23 +197,21 @@ const EditGeneral: FC = () => {
         email: formData.description.email,
       };
 
-      console.log(descriptionData.short_desc);
       formDataToSend.append('description', JSON.stringify(descriptionData));
 
-      console.log(formDataToSend);
       if (avatar) {
         formDataToSend.append('avatar', avatar);
       }
 
       const response = await updateUserProfile(formDataToSend).unwrap();
-      console.log('Profile updated:', response);
+      return response;
     } catch (error) {
       console.error('Update failed:', error);
     }
   };
 
-  // if (isLoading) return <div>Loading profile...</div>;
-
+  if (isLoading) return <div>Loading ...</div>;
+  if (isUpdating) return <div>Updating ...</div>;
   return (
     <Container>
       <Button
@@ -188,14 +248,13 @@ const EditGeneral: FC = () => {
             }
             alt=""
           />
-          <h3>
-            {userProfile?.firstName || userProfile?.lastName
-              ? userProfile?.firstName ||
-                (userProfile?.firstName && userProfile?.lastName)
-              : userProfile?.description.email
-                ? userProfile?.description.email.split('@')[0]
-                : 'No Name'}
-          </h3>
+          <NameTitle>
+            {userProfile?.firstName && userProfile?.lastName
+              ? `${userProfile.firstName} ${userProfile.lastName}`
+              : userProfile?.description?.email
+                ? userProfile.description.email.split('@')[0]
+                : 'Імʼя відсутнє'}
+          </NameTitle>
         </AvatarName>
         <Button
           onClick={() => document.getElementById('avatarInput')?.click()}
@@ -227,7 +286,7 @@ const EditGeneral: FC = () => {
               id="description.address"
               name="description.address"
               value={selectedCity || userProfile?.description.address}
-              onChange={e => setSelectedCity(e.target.value)}
+              onChange={e => dispatch(setSelectedCity(e.target.value))}
             >
               <option value="" disabled>
                 {selectedCity ||
@@ -246,23 +305,21 @@ const EditGeneral: FC = () => {
             <Input
               testId="firstName"
               label="Імʼя"
-              value={userProfile?.firstName || watch('firstName') || ''}
+              value={watch('firstName') || ''}
               {...register('firstName')}
               onChange={e => setValue('firstName', e.target.value)}
             />
             <Input
               testId="lastName"
               label="Прізвище"
-              value={userProfile?.lastName || watch('lastName') || ''}
+              value={watch('lastName') || ''}
               {...register('lastName')}
               onChange={e => setValue('lastName', e.target.value)}
             />
             <Input
               testId="age"
               label="Вік"
-              value={
-                userProfile?.description.age || watch('description.age') || ''
-              }
+              value={watch('description.age') || ''}
               {...register('description.age')}
               onChange={e => setValue('description.age', e.target.value)}
             />
@@ -279,18 +336,14 @@ const EditGeneral: FC = () => {
             <Input
               testId="email"
               label="Email"
-              value={userProfile?.description.email || ''}
+              value={watch('description.email') || ''}
               {...register('description.email')}
               onChange={e => setValue('description.email', e.target.value)}
             />
             <Input
               testId="phone"
               label="Номер телефону"
-              value={
-                userProfile?.description.phone ||
-                watch('description.phone') ||
-                ''
-              }
+              value={watch('description.phone') || ''}
               {...register('description.phone')}
               onChange={e => setValue('description.phone', e.target.value)}
             />
@@ -310,11 +363,11 @@ const EditGeneral: FC = () => {
             userData={userProfile?.sport || []}
           />
           <Selection
-            content={['67ed605dfadadff5e02fe39d', 'logus']}
+            content={cardData}
             placeholder={'Обрати'}
             labelName={'Спортивні клуби, де ви працюєте'}
             onChange={handleWorkChange}
-            userData={userProfile?.club || []}
+            userData={userProfile?.work_list || []}
           />
           <Certificates
             handleCertificatesChange={handleCertificatesChange}

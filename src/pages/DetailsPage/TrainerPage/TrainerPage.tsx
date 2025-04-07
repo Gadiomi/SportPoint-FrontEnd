@@ -74,10 +74,10 @@ const TrainerPage: FC = () => {
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
-//   const [
-//     isLoggedIn,
-//     setIsLoggedIn
-//   ] = useState<boolean>(false);
+  //   const [
+  //     isLoggedIn,
+  //     setIsLoggedIn
+  //   ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -136,8 +136,8 @@ const TrainerPage: FC = () => {
   }
 
   const {
-      firstName,
-      lastName,
+    firstName,
+    lastName,
     avatar,
     countReview,
     rating,
@@ -161,8 +161,8 @@ const TrainerPage: FC = () => {
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
-      firstName: 'Оксана',
-      lastName: 'Шевченко',
+    firstName: 'Оксана',
+    lastName: 'Шевченко',
     rating: 4.5,
     equipment: ['Карате', 'Бокс'],
     price: ['1000 грн'],

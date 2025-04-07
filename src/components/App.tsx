@@ -65,8 +65,6 @@ function App() {
             path={PublicRouteName.CHANGEPASSWORD}
             element={<ChangePassword />}
           />
-          <Route path="edit" element={<EditProfile />} />
-          <Route path="generals" element={<EditGeneral />} />
         </Route>
         {/* </Route> */}
       </Routes>

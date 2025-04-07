@@ -42,7 +42,7 @@ interface PriceItem {
 interface Coach {
   _id: string;
   firstName: string;
-  lastName:string;
+  lastName: string;
   avatar: string;
   countReview: number;
   rating: number;

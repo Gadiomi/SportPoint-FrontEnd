@@ -49,8 +49,8 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
     // };
 
     const { t } = useTranslation();
-const theme = useTheme();
-  
+    const theme = useTheme();
+
     return (
       <StyledOurCoachCard>
         <div style={{ width: '100%', marginBottom: `${theme.pxs.x8}px` }}>
@@ -87,9 +87,16 @@ const theme = useTheme();
                       {' '}
                       {price}
                     </div>
-                    <div style={{...fonts.smallText,  width: '100%',
+                    <div
+                      style={{
+                        ...fonts.smallText,
+                        width: '100%',
                         display: 'flex',
-                        justifyContent: 'flex-start',}}>60-хв заняття</div>
+                        justifyContent: 'flex-start',
+                      }}
+                    >
+                      60-хв заняття
+                    </div>
                   </div>
                   <RatingBox
                     iconNames={[IconName.STAR_DEFAULT]}
