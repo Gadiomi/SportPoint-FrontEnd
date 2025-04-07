@@ -50,6 +50,8 @@ export interface ClubData {
   firstName: string;
   avatar: string;
   description: DescriptionClub;
+  countReview: number;
+  rating: number;
 }
 
 export interface DescriptionClub {

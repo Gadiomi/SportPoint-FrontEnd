@@ -19,7 +19,7 @@ export const TrainersList: React.FC = () => {
 
   if (isLoading) return <p>Завантаження...</p>;
   if (error) return <p>Помилка завантаження даних</p>;
-
+  console.log('data', data.data.data);
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
       <Filters />

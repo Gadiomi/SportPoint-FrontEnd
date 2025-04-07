@@ -9,7 +9,7 @@ import { ClubCard } from '@/components/ClubCard/ClubCard';
 
 export const ClubsList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 1;
+  const itemsPerPage = 5;
   const { data, error, isLoading } = useGetClubCardsQuery({
     page: currentPage,
     perPage: itemsPerPage,

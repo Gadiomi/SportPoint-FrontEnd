@@ -6,43 +6,72 @@ import {
   ClubDetail,
   ClubImage,
   ClubInfo,
+  IconWrap,
+  IconWrapRating,
   InfoWrap,
+  InfoWrapReviews,
+  LightText,
+  RatingText,
 } from './styles';
 import { ClubData } from '../../types';
+import { useTheme } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   clubData: ClubData;
 };
 
 export const ClubCard: FC<Props> = ({ clubData }) => {
-  const { avatar, firstName, description } = clubData;
+  const { avatar, _id, firstName, description, countReview, rating } = clubData;
   const shortDays = description.schedule
-    .flatMap(item => item.days.split(',')) // ['Monday', ' Wednesday']
-    .map(day => day.trim().slice(0, 2)) // ['Mo', 'We']
+    .flatMap(item => item.days.split(','))
+    .map(day => day.trim().slice(0, 2))
     .join(', ');
+  const navigate = useNavigate();
+  const theme = useTheme();
   return (
     <ClubCardBox>
-      <ClubImage src={avatar} alt="coach image" />
+      <ClubImage image={avatar} />
       <ClubInfo>
         <InfoWrap>
-          <Main>{firstName}</Main>
-          <Small>Тренажерна зала</Small>
+          <Main style={{ fontWeight: '500' }}>{firstName}</Main>
+          <LightText style={{ fontWeight: '400' }}>Тренажерна зала</LightText>
         </InfoWrap>
-        <InfoWrap>
-          <Small>20 відгуків</Small>
-        </InfoWrap>
+        <InfoWrapReviews>
+          <IconWrapRating>
+            <RatingText>{rating}</RatingText>
+            <Icon
+              styles={{ color: theme.color.white }}
+              name={IconName.STAR_FILL}
+              size={18}
+            />
+          </IconWrapRating>
+          <Small style={{ color: theme.color.disabled }}>
+            {countReview} відгуків
+          </Small>
+        </InfoWrapReviews>
       </ClubInfo>
       <ClubDetail>
-        <Small>
-          <Icon name={IconName.LOCATION} /> 1.9км
-        </Small>
-
-        <Small>
-          <Icon name={IconName.STAR_DEFAULT} />
-          {shortDays}
-        </Small>
+        <IconWrap>
+          <Icon
+            styles={{ color: theme.color.disabled }}
+            name={IconName.LOCATION}
+          />
+          <LightText style={{ marginLeft: '0px' }}>1.9км</LightText>
+        </IconWrap>
+        <IconWrap>
+          <Icon
+            styles={{ color: theme.color.disabled, fill: theme.color.disabled }}
+            name={IconName.CLOCK}
+          />
+          <LightText>{shortDays}</LightText>
+        </IconWrap>
       </ClubDetail>
-      <Button testId="Детальніше" title={t('more_details')} />
+      <Button
+        testId="Детальніше"
+        title={t('more_details')}
+        onClick={() => navigate(`/details/club/:${_id}`)}
+      />
     </ClubCardBox>
   );
 };
