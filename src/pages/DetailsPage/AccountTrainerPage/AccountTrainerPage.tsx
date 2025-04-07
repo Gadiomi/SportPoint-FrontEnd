@@ -48,12 +48,13 @@ interface Coach {
   rating: number;
   club: string[];
   description: {
+    age: number;
     social_links: SocialLink[];
     price: PriceItem[];
     schedule: ScheduleItem[];
     experience: string;
-
     address: string;
+
     short_desc: string;
     abilities: string;
   };
@@ -136,11 +137,12 @@ const AccountTrainerPage: FC = () => {
     avatar,
     countReview,
     rating,
+
     // phone,
     // email,
   } = coachData || {};
 
-  const { social_links, price, schedule, experience } =
+  const { social_links, price, schedule, experience, address, age } =
     coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
@@ -168,16 +170,19 @@ const AccountTrainerPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
+            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             lastName={lastName}
             avatar={avatar}
+            address={address}
+            age={age}
           />
         </StyledProfileCard>
-        <StyledHr />
         <EditButton
 
         // id={id}
         />
+        <StyledHr />
         <ReviewCard
           iconNames={[
             IconName.LIKE,

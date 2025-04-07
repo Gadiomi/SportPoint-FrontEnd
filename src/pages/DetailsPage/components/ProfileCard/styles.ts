@@ -16,6 +16,7 @@ export const Avatar = styled.img`
   border-radius: 50%;
   margin-bottom: 12px;
   object-fit: cover;
+  flex-shrink: 0;
 `;
 
 export const AvatarNone = styled.div`

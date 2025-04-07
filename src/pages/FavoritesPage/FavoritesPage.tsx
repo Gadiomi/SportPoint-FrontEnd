@@ -26,7 +26,7 @@ const coachsData: ICoachData[] = [
     countReview: 26,
     rating: 4.9,
     description: {
-      abilities: 'Йога, Фітнес',
+      abilities: ['Йога', 'Фітнес'],
       price: [
         {
           name: '60-хв заняття',

@@ -4,7 +4,6 @@ export const StyledSocialLinksCard = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ theme }) => `${theme.pxs.x8}px`};
 `;
 
 export const ImgContainer = styled.div`
@@ -12,4 +11,5 @@ export const ImgContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => `${theme.pxs.x8}px`};
+  margin-bottom: ${({ theme }) => `${theme.pxs.x6}px`};
 `;

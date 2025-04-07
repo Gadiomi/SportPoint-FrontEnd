@@ -153,7 +153,7 @@ const TrainerPage: FC = () => {
     experience,
     address,
     // equipment,
-    // age
+    age,
   } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
@@ -181,19 +181,17 @@ const TrainerPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
+            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             lastName={lastName}
             avatar={avatar}
             address={address}
+            age={age}
             // age={coachTest.age}
             // equipment={coachTest.equipment}
           />
         </StyledProfileCard>
         <StyledHr />
-        {/* <ButtonEdit
-
-        // id={id}
-        /> */}
         <ReviewCard
           iconNames={[
             IconName.LIKE,

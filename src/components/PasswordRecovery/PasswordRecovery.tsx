@@ -1,8 +1,15 @@
+import { Input } from '@/kit';
 import {
   useSendRecoveryCodeMutation,
   useVerifyCodeMutation,
 } from '@/redux/password/passwordApi';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Container, Section } from '@/components/ContainerAndSection';
+import { FontFamily } from '@/kit';
+
+// interface RestoreModalProps {
+//   onClose: () => void;
+// }
 
 const PasswordRecovery = () => {
   const [email, setEmail] = useState('');
@@ -37,12 +44,14 @@ const PasswordRecovery = () => {
   };
 
   return (
-    <div>
+    <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
+      {/* <button onClick={onClose}>Закрити</button> */}
       {step === 1 && (
         <div>
           <h2>Відновлення паролю</h2>
           <p>Введіть електронну пошту для відновлення акаунта</p>
-          <input
+          <Input
+            testId="email"
             type="email"
             placeholder="Email"
             value={email}
@@ -58,7 +67,8 @@ const PasswordRecovery = () => {
         <div>
           <h2>Код підтвердження</h2>
           <p>Введіть код надісланий на ... </p>
-          <input
+          <Input
+            testId="code"
             type="text"
             placeholder=""
             value={code}
@@ -74,13 +84,15 @@ const PasswordRecovery = () => {
         <div>
           <h2>Новий пароль</h2>
           <p>Створіть новий пароль </p>
-          <input
+          <Input
+            testId="password"
             type="password"
             placeholder="Пароль"
             value={newPassword}
             onChange={e => setNewPassword(e.target.value)}
           />
-          <input
+          <Input
+            testId="password"
             type="password"
             placeholder="Підтвердити пароль"
             value={newPassword}
@@ -89,7 +101,7 @@ const PasswordRecovery = () => {
           <button onClick={handleSubmitNewPassword}>Далі</button>
         </div>
       )}
-    </div>
+    </Section>
   );
 };
 

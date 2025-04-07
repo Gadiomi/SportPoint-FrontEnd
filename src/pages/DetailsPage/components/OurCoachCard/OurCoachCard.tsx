@@ -103,11 +103,11 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
                     rating={rating}
                     counts={counts}
                     containerStyles={{
-                      marginRight: '28px',
+                      marginRight: `${theme.pxs.x7}px`,
                     }}
                     iconStyles={{
-                      width: '18px',
-                      height: '18px',
+                      width: `${theme.pxs.x4_5}px`,
+                      height: `${theme.pxs.x4_5}px`,
                     }}
                     spanStyles={fonts.mainManrope}
                   />

@@ -147,15 +147,13 @@ const ClubPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
-            address={address}
+            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             avatar={avatar}
+            address={address}
           />
         </StyledProfileCard>
         <StyledHr />
-        {/* <ButtonEdit
-        // id={id}
-        /> */}
         <ReviewCard
           iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
           counts={[
