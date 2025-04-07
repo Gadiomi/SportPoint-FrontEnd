@@ -1,8 +1,5 @@
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
-import {
-  useGetCardsQuery,
-  useUpdateUserProfileMutation,
-} from '@/redux/user/userApi';
+import { useUpdateUserProfileMutation } from '@/redux/user/userApi';
 import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -39,6 +36,7 @@ import {
   setSelectedWorks,
   setText,
 } from '@/redux/user/editProfileSlice';
+import { useGetCardsQuery } from '@/redux/cards/cardApi';
 
 interface CardItem {
   _id: string;

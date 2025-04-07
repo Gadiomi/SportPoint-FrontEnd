@@ -29,12 +29,6 @@ export const userApi = createApi({
         data: { oldPassword, newPassword },
       }),
     }),
-    getCards: builder.query({
-      query: ({ page, perPage, role }) => ({
-        url: `cards?page=${page}&perPage=${perPage}&role=${role}`,
-        method: 'GET',
-      }),
-    }),
   }),
 });
 
@@ -42,5 +36,4 @@ export const {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
   useChangePasswordMutation,
-  useGetCardsQuery,
 } = userApi;
