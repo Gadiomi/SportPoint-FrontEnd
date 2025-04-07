@@ -65,12 +65,14 @@ export const axiosBaseQuery = () => {
     url,
     method,
     data,
+    params,
   }: {
     url: string;
     method: string;
     data?: any;
+    params?: any;
   }) => {
-    return axiosInstance({ url, method, data })
+    return axiosInstance({ url, method, data, params })
       .then(response => ({ data: response.data }))
       .catch(error => ({ error: error.response?.data || error.message }));
   };

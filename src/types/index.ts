@@ -42,3 +42,23 @@ export interface RegisterFormData {
   club_name: string;
   phone: string;
 }
+
+/* AdminClub List */
+
+export interface ClubData {
+  _id: number;
+  firstName: string;
+  avatar: string;
+  description: DescriptionClub;
+}
+
+export interface DescriptionClub {
+  address: string;
+  abilities: string[];
+  experience: string;
+  schedule: ScheduleClub[];
+}
+export interface ScheduleClub {
+  days: string;
+  hours: string;
+}
