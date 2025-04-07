@@ -4,8 +4,14 @@ import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { fonts } from '@/theme/fonts';
 import { IconName } from '@/kit';
-import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon'
-import { StyledProfileCard, Avatar, AvatarNone } from './styles';
+import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
+import {
+  StyledProfileCard,
+  Avatar,
+  AvatarNone,
+  Sport,
+  SportEl,
+} from './styles';
 
 interface ProfileCardProps {
   iconNames: IconName[];
@@ -14,6 +20,7 @@ interface ProfileCardProps {
   avatar: string | undefined;
   address: string | undefined;
   age?: number;
+  sport?: string[];
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -22,9 +29,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   avatar,
   address,
   age,
+  sport,
 }) => {
   const [avatarError, setAvatarError] = useState(false);
-  const [showButtons, setShowButtons] = useState(true); 
+  const [showButtons, setShowButtons] = useState(true);
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -35,11 +43,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       location.pathname.includes('account-trainer') ||
       location.pathname.includes('account-admin-club')
     ) {
-      setShowButtons(false); 
+      setShowButtons(false);
     } else {
       setShowButtons(true);
     }
-  }, [location.pathname]); 
+  }, [location.pathname]);
 
   const handleAvatarError = () => {
     setAvatarError(true);
@@ -54,14 +62,19 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       </AvatarNone>
     );
 
-    const handleClick = () => {
-      console.log('Icon clicked');
-    };
+  const handleClick = () => {
+    console.log('Icon clicked');
+  };
 
   return (
     <StyledProfileCard>
-      <div style={{display: 'flex',
-    alignItems: 'center', justifyContent: 'center'}}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         {showButtons && (
           <ButtonProfileIcon
             iconName={IconName.MASSAGE_TYPING}
@@ -93,6 +106,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <h3 style={fonts.nameDetails}>{firstName} </h3>
         <h3 style={fonts.nameDetails}>{lastName} </h3>
       </div>
+
       <div
         style={{
           display: 'flex',
@@ -118,6 +132,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </p>
         )}
       </div>
+      <Sport style={fonts.popUp}>
+        {(sport || []).map((item, index) => (
+          <SportEl key={index}>{item}</SportEl>
+        ))}
+      </Sport>
     </StyledProfileCard>
   );
 };

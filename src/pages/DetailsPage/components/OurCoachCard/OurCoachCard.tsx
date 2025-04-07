@@ -14,8 +14,8 @@ import {
   PriceRatingBox,
   StyledButton,
   Avatar,
-  Equipment,
-  EquipmentEl,
+  Sport,
+  SportEl,
 } from './styles';
 
 interface OurCoachCardProps {
@@ -23,7 +23,8 @@ interface OurCoachCardProps {
   firstName: string;
   lastName?: string;
   price: string[];
-  equipment: string[];
+  // equipment: string[];
+  sport?: string[];
   iconNames: IconName[];
   rating: number;
   counts: number[];
@@ -33,7 +34,8 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
   avatar,
   firstName,
   lastName,
-  equipment,
+  // equipment,
+  sport,
   price,
   rating,
   counts,
@@ -49,8 +51,8 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
     // };
 
     const { t } = useTranslation();
-const theme = useTheme();
-  
+    const theme = useTheme();
+
     return (
       <StyledOurCoachCard>
         <div style={{ width: '100%', marginBottom: `${theme.pxs.x8}px` }}>
@@ -112,11 +114,11 @@ const theme = useTheme();
                     spanStyles={fonts.mainManrope}
                   />
                 </PriceRatingBox>
-                <Equipment style={fonts.popUp}>
-                  {equipment.map((item, index) => (
-                    <EquipmentEl key={index}>{item}</EquipmentEl>
+                <Sport style={fonts.popUp}>
+                  {(sport || []).map((item, index) => (
+                    <SportEl key={index}>{item}</SportEl>
                   ))}
-                </Equipment>
+                </Sport>
               </div>
             </OurCoachBox>
             <StyledButton

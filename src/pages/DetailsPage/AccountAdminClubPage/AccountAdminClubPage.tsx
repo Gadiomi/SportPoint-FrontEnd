@@ -6,7 +6,6 @@ import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 
 import EditButton from '../components/EditButton/EditButton';
-import ButtonLink from '../components/ButtonLink/ButtonLink';
 import StyledHr from '../../../components/StyledHr/StyledHr';
 
 import ProfileCard from '../components/ProfileCard/ProfileCard';
@@ -21,7 +20,7 @@ import HrButton from '../components/StyledHrButton/StyledHrButton';
 import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
 
-import { StyledProfileCard, ButtonContainer } from './styles';
+import { StyledProfileCard } from './styles';
 
 interface ScheduleItem {
   days: string;
@@ -182,15 +181,8 @@ const AdminClubPage: FC = () => {
           avatar={coachTest.avatar}
           firstName={coachTest.firstName}
           lastName={coachTest.lastName}
-          equipment={coachTest.equipment}
           price={coachTest.price}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <StyledHr />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
@@ -205,12 +197,6 @@ const AdminClubPage: FC = () => {
           firstName={coachTest.firstName}
           lastName={coachTest.lastName}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <HrButton />
         <Contacts />
       </Container>
