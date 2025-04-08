@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FC, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 import { IconName } from '@/kit';
@@ -16,11 +16,10 @@ import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
+import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
-import ButtonLink from '../components/ButtonLink/ButtonLink';
 import { Contacts } from '../../../components/Footer/Contacts';
-
-import { StyledProfileCard, ButtonContainer } from './styles';
+import { StyledProfileCard } from './styles';
 
 interface ScheduleItem {
   days: string;
@@ -47,6 +46,7 @@ interface Coach {
   countReview: number;
   rating: number;
   club: string[];
+  sport: string[];
   description: {
     address: string;
     age: number;
@@ -71,6 +71,7 @@ interface Coach {
 
 const TrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
+  const { t } = useTranslation();
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
@@ -141,6 +142,7 @@ const TrainerPage: FC = () => {
     avatar,
     countReview,
     rating,
+    sport,
 
     // phone,
     // email,
@@ -152,21 +154,27 @@ const TrainerPage: FC = () => {
     schedule,
     experience,
     address,
+    age,
+    short_desc,
     // equipment,
     age,
+
   } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  // ТЕСТ
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
     firstName: 'Оксана',
     lastName: 'Шевченко',
     rating: 4.5,
-    equipment: ['Карате', 'Бокс'],
+    sport: ['Карате', 'Бокс'],
     price: ['1000 грн'],
     age: 27,
+    short_desc:
+      'Моїм основним напрямком є індивідуальний підхід до кожного клієнта. Я вірю, що кожен має свої сильні сторони, і важливо враховувати фізичні можливості та особисті цілі на шляху до результату. Я працюю з людьми різного віку та рівня підготовки — від початківців до професіоналів, допомагаючи досягати бажаних результатів без ризику для здоров’я.',
   };
 
   const clientService = 4.3;
@@ -174,6 +182,8 @@ const TrainerPage: FC = () => {
   const priceQuality = 2.1;
   const location = 3;
   const cleanliness = 3.7;
+
+  // Закінчення ТЕСТ
 
   return (
     <Section>
@@ -187,8 +197,7 @@ const TrainerPage: FC = () => {
             avatar={avatar}
             address={address}
             age={age}
-            // age={coachTest.age}
-            // equipment={coachTest.equipment}
+            sport={sport}
           />
         </StyledProfileCard>
         <StyledHr />
@@ -200,6 +209,11 @@ const TrainerPage: FC = () => {
           ]}
           counts={[countReview ?? 0, experience ?? '0', roundedRating]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
+        />
+        <StyledHr />
+        <ShortDescriptionCard
+          short_desc={short_desc}
+          title={t('details_page.read_more')}
         />
         <StyledHr />
         <SocialLinks
@@ -218,12 +232,6 @@ const TrainerPage: FC = () => {
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <StyledHr />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
@@ -238,12 +246,6 @@ const TrainerPage: FC = () => {
           firstName={coachTest.firstName}
           lastName={coachTest.lastName}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <HrButton />
         <Contacts />
       </Container>

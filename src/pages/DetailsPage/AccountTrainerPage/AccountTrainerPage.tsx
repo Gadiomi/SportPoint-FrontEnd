@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FC, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 import { IconName } from '@/kit';
@@ -11,16 +11,16 @@ import StyledHr from '../../../components/StyledHr/StyledHr';
 
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
+import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
-import ButtonLink from '../components/ButtonLink/ButtonLink';
 import { Contacts } from '../../../components/Footer/Contacts';
 
-import { StyledProfileCard, ButtonContainer } from './styles';
+import { StyledProfileCard } from './styles';
 
 interface ScheduleItem {
   days: string;
@@ -47,15 +47,16 @@ interface Coach {
   countReview: number;
   rating: number;
   club: string[];
+  sport: string[];
   description: {
     age: number;
     social_links: SocialLink[];
     price: PriceItem[];
     schedule: ScheduleItem[];
-    experience: string;
     address: string;
-
     short_desc: string;
+
+    experience: string;
     abilities: string;
   };
   userId: string;
@@ -71,6 +72,7 @@ interface Coach {
 
 const AccountTrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
+  const { t } = useTranslation();
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
@@ -137,13 +139,20 @@ const AccountTrainerPage: FC = () => {
     avatar,
     countReview,
     rating,
-
+    sport,
     // phone,
     // email,
   } = coachData || {};
 
-  const { social_links, price, schedule, experience, address, age } =
-    coachData?.description || {};
+  const {
+    social_links,
+    price,
+    schedule,
+    experience,
+    address,
+    age,
+    short_desc,
+  } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
@@ -154,8 +163,10 @@ const AccountTrainerPage: FC = () => {
     firstName: 'Оксана',
     lastName: 'Шевченко',
     rating: 4.5,
-    equipment: ['Карате', 'Бокс'],
+    sport: ['Карате', 'Бокс'],
     price: ['1000 грн'],
+    short_desc:
+      'Моїм основним напрямком є індивідуальний підхід до кожного клієнта. Я вірю, що кожен має свої сильні сторони, і важливо враховувати фізичні можливості та особисті цілі на шляху до результату. Я працюю з людьми різного віку та рівня підготовки — від початківців до професіоналів, допомагаючи досягати бажаних результатів без ризику для здоров’я.',
   };
 
   const clientService = 4.3;
@@ -176,6 +187,7 @@ const AccountTrainerPage: FC = () => {
             avatar={avatar}
             address={address}
             age={age}
+            sport={sport}
           />
         </StyledProfileCard>
         <EditButton
@@ -193,6 +205,11 @@ const AccountTrainerPage: FC = () => {
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
         <StyledHr />
+        <ShortDescriptionCard
+          short_desc={short_desc}
+          title={t('details_page.read_more')}
+        />
+        <StyledHr />
         <SocialLinks socialLinks={social_links || []} />
         <StyledHr />
         <PriceCard prices={price || []} />
@@ -205,12 +222,6 @@ const AccountTrainerPage: FC = () => {
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <StyledHr />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
@@ -225,13 +236,6 @@ const AccountTrainerPage: FC = () => {
           firstName={coachTest.firstName}
           lastName={coachTest.lastName}
         />
-
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <HrButton />
         <Contacts />
       </Container>
