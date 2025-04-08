@@ -3,24 +3,36 @@ import React, { useState } from 'react';
 import { Filters } from '../Filters/Filters';
 import { StyledClubsList } from './styles';
 import { Pagination } from '@/components/Pagination/Pagination';
-import { useGetClubCardsQuery } from '@/redux/cards/cardsApi';
-import { ClubData } from '@/types';
+
+import { ClubData, FilterParams } from '@/types';
 import { ClubCard } from '@/components/ClubCard/ClubCard';
+import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 
 export const ClubsList: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-  const { data, error, isLoading } = useGetClubCardsQuery({
-    page: currentPage,
-    perPage: itemsPerPage,
+  const [filters, setFilters] = useState<FilterParams>({
+    city: '',
+    priceFrom: null,
+    priceTo: null,
+    sortBy: null,
+    classification: [],
   });
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, error, isLoading } = useGetCardsQuery({
+    role: 'adminClub',
+    page: currentPage,
+    ...filters,
+  });
+  const getFilteredCards = (newFilters: FilterParams) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
   if (isLoading) return <p>Завантаження...</p>;
   if (error) return <p>Помилка завантаження даних</p>;
-  console.log('Повна відповідь сервера:', data);
-  console.log('Структура даних:', data?.data);
+
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
-      <Filters />
+      <Filters getFilteredCards={getFilteredCards} setFilters={setFilters} />
       <StyledClubsList>
         {data?.data?.data?.map((coach: ClubData) => (
           <ClubCard key={coach._id} clubData={coach} />

@@ -16,6 +16,7 @@ import {
 import { ClubData } from '../../types';
 import { useTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { fonts } from '@/theme/fonts';
 
 type Props = {
   clubData: ClubData;
@@ -70,6 +71,7 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
       <Button
         testId="Детальніше"
         title={t('more_details')}
+        style={{ ...fonts.secondManrope, width: '100%', padding: theme.pxs.x3 }}
         onClick={() => navigate(`/details/club/:${_id}`)}
       />
     </ClubCardBox>

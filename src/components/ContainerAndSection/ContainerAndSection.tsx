@@ -47,6 +47,12 @@ const StyledContainer = styled.div<{ maxWidth?: string }>(
       alignItems: 'center',
       justifyContent: 'center',
       color: theme.color.white,
+
+      /* потім видалити */
+      borderLeft: '2px solid rgba(255, 255, 255, 0.1)',
+      borderRight: '2px solid rgba(255, 255, 255, 0.1)',
+      /* потім видалити */
+
       [theme.mediaRules.up(theme.breakpoints.tablet)]: {
         maxWidth: maxWidth || defaultWidths.md,
       },

@@ -15,15 +15,20 @@ import { SortBy } from './SortBy/SortBy';
 import SortPrice from './SortPrice/SortPrice';
 import { Classification } from './Classification/Classification';
 import { Logo } from '@/components/Logo/Logo';
+import { FilterParams } from '@/types';
 
 interface PropsFiltersModal {
   isFiltersModalOpen: boolean;
   setIsFiltersModalOpen: (value: boolean) => void;
+  getFilteredCards: (filters: FilterParams) => void;
+  setFilters: (filters: FilterParams) => void;
 }
 
 export const FiltersModal: React.FC<PropsFiltersModal> = ({
+  setFilters,
   isFiltersModalOpen,
   setIsFiltersModalOpen,
+  getFilteredCards,
 }) => {
   const theme = useTheme();
   const [select, setSelect] = useState<{ value: string; label: string } | null>(
@@ -36,6 +41,8 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
     from: null,
     to: null,
   });
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [classification, setClassification] = useState<string[]>([]);
 
   useEffect(() => {
     if (isFiltersModalOpen) {
@@ -60,8 +67,28 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
   const handleClose = () => {
     setIsFiltersModalOpen(false);
   };
+
   const handlePriceChange = (from: number | null, to: number | null) => {
     setPriceRange({ from, to });
+  };
+  const handleSortChange = (newSortBy: string | null) => {
+    setSortBy(newSortBy);
+  };
+  const handleClassificationChange = (selectedFilters: string[]) => {
+    setClassification(selectedFilters);
+  };
+  const handleSubmit = () => {
+    const filters = {
+      city: select?.value || '',
+      priceFrom: priceRange.from,
+      priceTo: priceRange.to,
+      sortBy,
+      classification,
+    };
+
+    getFilteredCards(filters);
+    setFilters(filters);
+    setIsFiltersModalOpen(false);
   };
   return (
     <Backdrop onClick={handleClose}>
@@ -83,6 +110,15 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             }}
             appearance={ButtonAppearance.UNDERLINED}
             testId="clean-button"
+            onClick={() =>
+              setFilters({
+                city: '',
+                priceFrom: null,
+                priceTo: null,
+                sortBy: null,
+                classification: [],
+              })
+            }
           />
         </ModalHeader>
 
@@ -100,7 +136,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
           <About style={{ marginBottom: theme.pxs.x4 }}>Впорядкувати за</About>
-          <SortBy />
+          <SortBy sortBy={sortBy} onSortChange={handleSortChange} />
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
@@ -115,7 +151,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
           <About style={{ marginBottom: theme.pxs.x4 }}>Класифікація</About>
-          <Classification />
+          <Classification onChange={handleClassificationChange} />
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
@@ -125,6 +161,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             title="Переглянути результати"
             appearance={ButtonAppearance.PRIMARY}
             testId="submit-filters-button"
+            onClick={handleSubmit}
           />
         </ModalFooter>
       </ModalContainer>

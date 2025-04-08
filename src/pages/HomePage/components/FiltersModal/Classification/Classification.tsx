@@ -2,16 +2,27 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { CustomFilterCheckbox } from '../../CustomFilterCheckbox/CustomFilterCheckbox';
 import { WrapperFilterCheckbox } from '../SortBy/styles';
 
-export const Classification: React.FC = () => {
+interface ClassificationProps {
+  onChange: (selectedFilters: string[]) => void;
+}
+
+export const Classification: React.FC<ClassificationProps> = ({ onChange }) => {
   const [selectedFilter, setSelectedFilter] = useState<string[]>([]);
 
-  const handleFilterChange = useCallback((filter: string) => {
-    setSelectedFilter(prev =>
-      prev.includes(filter)
-        ? prev.filter(f => f !== filter)
-        : [...prev, filter],
-    );
-  }, []);
+  const handleFilterChange = useCallback(
+    (filter: string) => {
+      setSelectedFilter(prev => {
+        const newSelectedFilters = prev.includes(filter)
+          ? prev.filter(f => f !== filter)
+          : [...prev, filter];
+
+        onChange(newSelectedFilters);
+
+        return newSelectedFilters;
+      });
+    },
+    [onChange],
+  );
 
   const options = useMemo(() => {
     return [

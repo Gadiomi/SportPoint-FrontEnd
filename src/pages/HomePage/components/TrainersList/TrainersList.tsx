@@ -5,24 +5,36 @@ import { Filters } from '../Filters/Filters';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { StyledTrainersList } from './styles';
 import CoachCard from '@/components/CoachCard/CoachCard';
-import { ICoachData } from '@/types';
-import { useGetCoachCardsQuery } from '@/redux/cards/cardsApi';
+import { FilterParams, ICoachData } from '@/types';
+import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 
 export const TrainersList: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-
-  const { data, error, isLoading } = useGetCoachCardsQuery({
-    page: currentPage,
-    perPage: itemsPerPage,
+  const [filters, setFilters] = useState<FilterParams>({
+    city: '',
+    priceFrom: null,
+    priceTo: null,
+    sortBy: null,
+    classification: [],
   });
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, error, isLoading } = useGetCardsQuery({
+    role: 'coach',
+    page: currentPage,
+    ...filters,
+  });
+
+  const getFilteredCards = (newFilters: FilterParams) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
 
   if (isLoading) return <p>Завантаження...</p>;
   if (error) return <p>Помилка завантаження даних</p>;
-  console.log('data', data.data.data);
+
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
-      <Filters />
+      <Filters getFilteredCards={getFilteredCards} setFilters={setFilters} />
       <StyledTrainersList>
         {data?.data?.data?.map((coach: ICoachData) => (
           <CoachCard key={coach._id} coachData={coach} />

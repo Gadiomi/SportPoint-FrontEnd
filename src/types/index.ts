@@ -64,3 +64,12 @@ export interface ScheduleClub {
   days: string;
   hours: string;
 }
+
+/* Filters data */
+export interface FilterParams {
+  city: string;
+  priceFrom: number | null;
+  priceTo: number | null;
+  sortBy: string | null;
+  classification: string[];
+}

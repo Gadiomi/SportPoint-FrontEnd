@@ -13,7 +13,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [cardApi.reducerPath]: cardApi.reducer,
-
+    [cardsApi.reducerPath]: cardsApi.reducer,
     user: userReducer,
     editProfile: editProfileReducer,
     [passwordApi.reducerPath]: passwordApi.reducer,

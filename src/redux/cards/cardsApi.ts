@@ -5,30 +5,32 @@ export const cardsApi = createApi({
   reducerPath: 'cardsApi',
   baseQuery: axiosBaseQuery(),
   endpoints: builder => ({
-    getCoachCards: builder.query({
-      query: ({ page = 1, perPage = 4 }) => ({
+    getCards: builder.query({
+      query: ({
+        page = 1,
+        perPage = 4,
+        role,
+        city,
+        priceFrom,
+        priceTo,
+        sortBy,
+        classification,
+      }) => ({
         url: '/cards',
         method: 'GET',
         params: {
           page,
           perPage,
-          'filter.role': 'coach',
-        },
-      }),
-    }),
-
-    getClubCards: builder.query({
-      query: ({ page = 1, perPage = 4 }) => ({
-        url: '/cards',
-        method: 'GET',
-        params: {
-          page,
-          perPage,
-          'filter.role': 'adminClub',
+          role,
+          city,
+          priceFrom,
+          priceTo,
+          sortBy,
+          classification,
         },
       }),
     }),
   }),
 });
 
-export const { useGetCoachCardsQuery, useGetClubCardsQuery } = cardsApi;
+export const { useGetCardsQuery } = cardsApi;
