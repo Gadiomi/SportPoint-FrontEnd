@@ -140,7 +140,6 @@ const AccountTrainerPage: FC = () => {
     countReview,
     rating,
     sport,
-
     // phone,
     // email,
   } = coachData || {};

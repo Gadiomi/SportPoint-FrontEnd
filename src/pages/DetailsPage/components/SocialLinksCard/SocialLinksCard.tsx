@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
-import { useLocation } from 'react-router-dom'; 
+import { useLocation } from 'react-router-dom';
 import TitleContainer from '../TitleContainer/TitleContainer';
-import ButtonGetInTouch from '../ButtonGetInTouch/ButtonGetInTouch'
+import ButtonGetInTouch from '../ButtonGetInTouch/ButtonGetInTouch';
 import { StyledSocialLinksCard, ImgContainer } from './styles';
 
 const socialIconsMap: Record<string, string> = {
