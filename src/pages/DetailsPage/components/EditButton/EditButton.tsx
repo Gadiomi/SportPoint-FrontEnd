@@ -43,8 +43,7 @@ const EditButton: React.FC<EditButtonProps> = () =>
             name={IconName.ARROW_CORNER}
           />
         }
-      >
-      </StyledButton>
+      ></StyledButton>
     );
   };
 

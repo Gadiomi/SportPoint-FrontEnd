@@ -1,0 +1,8 @@
+[
+  { "name": "ВІДГУКИ", "icon": "EDIT_CONTAINED", "route": "reviews" },
+  { "name": "СТАТИСТИКА", "icon": "SMILEY_HAPPY", "route": "statistic" },
+  { "name": "РОЗКЛАД РОБОТИ", "icon": "EDIT_CONTAINED", "route": "schedule" },
+  { "name": "ПОСЛУГИ", "icon": "HELP", "route": "servers" },
+  { "name": "ЗАГАЛЬНЕ", "icon": "ACCOUNT", "route": "general" },
+  { "name": "ЗМІНИТИ ПАРОЛЬ", "icon": "ID", "route": "change-password" }
+]

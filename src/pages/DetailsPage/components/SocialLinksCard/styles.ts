@@ -4,7 +4,6 @@ export const StyledSocialLinksCard = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  
 `;
 
 export const ImgContainer = styled.div`
