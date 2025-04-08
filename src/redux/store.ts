@@ -6,6 +6,7 @@ import { userReducer } from './user/userProfileSlice';
 import { passwordApi } from './password/passwordApi';
 import { editProfileReducer } from './user/editProfileSlice';
 import { cardApi } from './cards/cardApi';
+import { cardsApi } from './cards/cardsApi';
 
 // Store
 export const store = configureStore({
