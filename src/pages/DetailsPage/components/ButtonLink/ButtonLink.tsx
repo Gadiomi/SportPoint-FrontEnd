@@ -1,28 +1,29 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { fonts } from '@/theme/fonts';
 import { StyledButtonLink } from './styles';
 
-// interface ButtonLinkProps {
-//   onClick: () => void;
-//   disabled: boolean;
-// }
+interface ButtonLinkProps {
+  onClick?: () => void;
+  disabled?: boolean;
+  title?: string;
+  buttonText?: string;
+  style?: React.CSSProperties;
+}
 
-// const ButtonLink: React.FC<ButtonLinkProps> = () => {
-//   onClick, disabled;
-// };
-
-const ButtonLink: React.FC = () => {
-  const { t } = useTranslation();
-
+const ButtonLink: React.FC<ButtonLinkProps> = ({
+  onClick,
+  disabled,
+  title,
+  buttonText,
+  style,
+}) => {
   return (
     <StyledButtonLink
-      style={fonts.priceAmount}
-      // onClick={onClick}
-      // disabled={disabled}
-      title={t('details_page.see_more')}
+      style={style}
+      onClick={onClick}
+      disabled={disabled}
+      title={title}
     >
-      {t('details_page.see_more')}
+      {buttonText}
     </StyledButtonLink>
   );
 };
