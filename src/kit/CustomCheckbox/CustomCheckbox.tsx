@@ -5,20 +5,27 @@ interface CustomCheckboxProps {
   checked?: boolean;
   onChange: (checked: boolean) => void;
   label: string;
+  containerStyle?: React.CSSProperties;
+  inputStyle?: React.CSSProperties;
+  labelStyle?: React.CSSProperties;
 }
 
 export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
   checked = false,
   onChange,
   label,
+  containerStyle,
+  inputStyle,
+  labelStyle,
 }) => (
-  <CheckboxContainer>
+  <CheckboxContainer style={containerStyle}>
     <CheckboxInput
       type="checkbox"
       checked={checked}
       onChange={() => onChange(!checked)}
+      style={inputStyle}
     />
-    <CheckboxLabel>{label}</CheckboxLabel>
+    <CheckboxLabel style={labelStyle}>{label}</CheckboxLabel>
   </CheckboxContainer>
 );
 

@@ -29,6 +29,7 @@ interface ScheduleItem {
 interface SocialLink {
   name: string;
   url: string;
+  title: string;
 }
 
 interface PriceItem {
@@ -157,8 +158,6 @@ const TrainerPage: FC = () => {
     age,
     short_desc,
     // equipment,
-    age,
-
   } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
@@ -219,7 +218,7 @@ const TrainerPage: FC = () => {
         <SocialLinks
           socialLinks={social_links || []}
           //   isLoggedIn={isLoggedIn}
-          //   title="Введіть дані, і адміністратор з вами зв’яжеться"
+          title="Введіть дані, і тренер з вами зв’яжеться"
         />
         <StyledHr />
         <PriceCard prices={price || []} />

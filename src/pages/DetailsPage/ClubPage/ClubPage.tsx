@@ -170,7 +170,7 @@ const ClubPage: FC = () => {
         <SocialLinks
           socialLinks={social_links || []}
           //   isLoggedIn={isLoggedIn}
-          //   title="Введіть дані, і адміністратор з вами зв’яжеться"
+          title="Введіть дані, і адміністратор з вами зв’яжеться"
         />
         <StyledHr />
         <GalleryCard />
