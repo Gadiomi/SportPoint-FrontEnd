@@ -1,0 +1,79 @@
+import { FC } from 'react';
+import { Button, Icon, IconName, Main, Small } from '@/kit';
+import { t } from 'i18next';
+import {
+  ClubCardBox,
+  ClubDetail,
+  ClubImage,
+  ClubInfo,
+  IconWrap,
+  IconWrapRating,
+  InfoWrap,
+  InfoWrapReviews,
+  LightText,
+  RatingText,
+} from './styles';
+import { ClubData } from '../../types';
+import { useTheme } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { fonts } from '@/theme/fonts';
+
+type Props = {
+  clubData: ClubData;
+};
+
+export const ClubCard: FC<Props> = ({ clubData }) => {
+  const { avatar, _id, firstName, description, countReview, rating } = clubData;
+  const shortDays = description.schedule
+    .flatMap(item => item.days.split(','))
+    .map(day => day.trim().slice(0, 2))
+    .join(', ');
+  const navigate = useNavigate();
+  const theme = useTheme();
+  return (
+    <ClubCardBox>
+      <ClubImage image={avatar} />
+      <ClubInfo>
+        <InfoWrap>
+          <Main style={{ fontWeight: '500' }}>{firstName}</Main>
+          <LightText style={{ fontWeight: '400' }}>Тренажерна зала</LightText>
+        </InfoWrap>
+        <InfoWrapReviews>
+          <IconWrapRating>
+            <RatingText>{rating}</RatingText>
+            <Icon
+              styles={{ color: theme.color.white }}
+              name={IconName.STAR_FILL}
+              size={18}
+            />
+          </IconWrapRating>
+          <Small style={{ color: theme.color.disabled }}>
+            {countReview} відгуків
+          </Small>
+        </InfoWrapReviews>
+      </ClubInfo>
+      <ClubDetail>
+        <IconWrap>
+          <Icon
+            styles={{ color: theme.color.disabled }}
+            name={IconName.LOCATION}
+          />
+          <LightText style={{ marginLeft: '0px' }}>1.9км</LightText>
+        </IconWrap>
+        <IconWrap>
+          <Icon
+            styles={{ color: theme.color.disabled, fill: theme.color.disabled }}
+            name={IconName.CLOCK}
+          />
+          <LightText>{shortDays}</LightText>
+        </IconWrap>
+      </ClubDetail>
+      <Button
+        testId="Детальніше"
+        title={t('more_details')}
+        style={{ ...fonts.secondManrope, width: '100%', padding: theme.pxs.x3 }}
+        onClick={() => navigate(`/details/club/:${_id}`)}
+      />
+    </ClubCardBox>
+  );
+};

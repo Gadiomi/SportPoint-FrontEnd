@@ -17,6 +17,7 @@ type Props = {
 };
 
 export interface ICoachData {
+  _id: string;
   userId: string;
   firstLastName: string;
   avatar: string;
@@ -40,4 +41,35 @@ export interface RegisterFormData {
   confirm_password: string;
   club_name: string;
   phone: string;
+}
+
+/* AdminClub List */
+
+export interface ClubData {
+  _id: number;
+  firstName: string;
+  avatar: string;
+  description: DescriptionClub;
+  countReview: number;
+  rating: number;
+}
+
+export interface DescriptionClub {
+  address: string;
+  abilities: string[];
+  experience: string;
+  schedule: ScheduleClub[];
+}
+export interface ScheduleClub {
+  days: string;
+  hours: string;
+}
+
+/* Filters data */
+export interface FilterParams {
+  city: string;
+  priceFrom: number | null;
+  priceTo: number | null;
+  sortBy: string | null;
+  classification: string[];
 }

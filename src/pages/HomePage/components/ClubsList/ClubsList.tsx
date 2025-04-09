@@ -1,43 +1,47 @@
 import { Container } from '@/components/ContainerAndSection';
 import React, { useState } from 'react';
-
-import { useTheme } from 'styled-components';
 import { Filters } from '../Filters/Filters';
 import { StyledClubsList } from './styles';
 import { Pagination } from '@/components/Pagination/Pagination';
 
-interface Club {
-  id: number;
-  name: string;
-  number: number;
-}
+import { ClubData, FilterParams } from '@/types';
+import { ClubCard } from '@/components/ClubCard/ClubCard';
+import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 
-interface ClubsListProps {
-  items: Club[];
-}
-export const ClubsList: React.FC<ClubsListProps> = ({ items }) => {
+export const ClubsList: React.FC = () => {
+  const [filters, setFilters] = useState<FilterParams>({
+    city: '',
+    priceFrom: null,
+    priceTo: null,
+    sortBy: null,
+    classification: [],
+  });
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const displayedItems = items.slice(startIndex, startIndex + itemsPerPage);
+  const { data, error, isLoading } = useGetCardsQuery({
+    role: 'adminClub',
+    page: currentPage,
+    ...filters,
+  });
+  const getFilteredCards = (newFilters: FilterParams) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
+  if (isLoading) return <p>Завантаження...</p>;
+  if (error) return <p>Помилка завантаження даних</p>;
 
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
-      <Filters />
+      <Filters getFilteredCards={getFilteredCards} setFilters={setFilters} />
       <StyledClubsList>
-        {displayedItems.map(club => (
-          <li key={club.id}>
-            <h1>{club.number}</h1>
-            <p>{club.name}</p>
-          </li>
+        {data?.data?.data?.map((coach: ClubData) => (
+          <ClubCard key={coach._id} clubData={coach} />
         ))}
       </StyledClubsList>
       <Pagination
-        totalItems={items.length}
-        itemsPerPage={itemsPerPage}
         currentPage={currentPage}
         onPageChange={setCurrentPage}
+        totalPages={data?.data?.totalPages > 0 ? data.data.totalPages : 1}
       />
     </Container>
   );
