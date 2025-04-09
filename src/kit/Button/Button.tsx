@@ -10,7 +10,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   testId: string;
   textStyle?: React.CSSProperties;
   appearance?: ButtonAppearance;
-  customStyles?: React.CSSProperties;
+  styles?: React.CSSProperties;
 }
 
 export function Button({
@@ -21,7 +21,7 @@ export function Button({
   type = 'button',
   testId,
   textStyle,
-  customStyles,
+  styles,
   appearance = ButtonAppearance.PRIMARY,
   ...rest
 }: Props) {
@@ -31,7 +31,7 @@ export function Button({
       disabled={disabled}
       type={type}
       appearance={appearance}
-      customStyles={customStyles}
+      $styles={styles}
       {...rest}
     >
       {prependChild && prependChild}
@@ -44,8 +44,8 @@ export function Button({
 const ButtonStyled = styled.button<{
   disabled?: boolean;
   appearance: ButtonAppearance;
-  customStyles?: React.CSSProperties;
-}>(({ theme, appearance, customStyles }) => {
+  $styles?: React.CSSProperties;
+}>(({ theme, appearance, $styles }) => {
   const backgroundColor = {
     [ButtonAppearance.PRIMARY]: theme.color.mainOrange,
     [ButtonAppearance.UNDERLINED]: 'transparent',
@@ -114,6 +114,6 @@ const ButtonStyled = styled.button<{
       backgroundColor: theme.color.disabled,
       color: theme.color.background,
     },
-    ...customStyles,
+    ...$styles,
   };
 });

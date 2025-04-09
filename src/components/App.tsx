@@ -4,11 +4,10 @@ import PrivateRoute from './PrivateRoutes';
 import { ToastProvider } from '@/hooks/Toasts/ToastProvider';
 import { PublicRouteName } from '@/routes';
 import AccountLayout from '@/pages/AccountPage/AccountLayout';
-import General from '@/pages/AccountPage/General';
 import ChangePassword from '@/pages/AccountPage/ChangePassword';
 import EditProfile from './EditProfile/EditProfiles';
-import EditGeneral from './EditProfile/components/EditGeneral/EditGeneral';
-import ProfileProvider from '@/utils/ProfileProvider';
+import GeneralSettings from './EditProfile/components/GeneralSettings/GeneralSettings';
+import Schedule from './EditProfile/components/Schedule/Schedule';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -54,12 +53,13 @@ function App() {
         {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}
         {/* <Route element={<PrivateRoute />}> */}
         <Route path="/profile" element={<AccountLayout />}>
-          <Route index element={<Account />} />
+          <Route index element={<EditProfile />} />
           {/* <Route path="general" element={<General />} /> */}
           <Route path="favorites" element={<Favorites />} />
           {/* <Route path="change-password" element={<ChangePassword />} /> */}
           <Route path="my-reviews" element={<MyReviews />} />
-          <Route path={PublicRouteName.GENERAL} element={<General />} />
+          <Route path={PublicRouteName.GENERAL} element={<GeneralSettings />} />
+          <Route path="schedule" element={<Schedule />} />
           <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
           <Route
             path={PublicRouteName.CHANGEPASSWORD}

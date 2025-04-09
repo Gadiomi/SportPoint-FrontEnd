@@ -14,15 +14,12 @@ import {
   GeneralBtns,
   Container,
   GeneralForm,
-  AvatarName,
   SelectStyled,
   SelectedContainer,
   InputsSection,
   SectionTitle,
-  HiddenInput,
 } from './EditGeneral.styled';
 import { Label } from '../Selection/Selection.styled';
-import { AccountName, NameTitle } from '../../EditProfiles.style';
 import SocialInput from '../SocialInput/SocialInput';
 import Certificates from '../Certificates/Certificates';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
@@ -38,6 +35,9 @@ import {
 } from '@/redux/user/editProfileSlice';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
 import SearchWork from '../SearchWork/SearchWork';
+import AvatarAndName from '../AvatarAndName/AvatarAndName';
+import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
+import { t } from 'i18next';
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
@@ -55,8 +55,7 @@ const EditGeneral: FC = () => {
     certificates,
   } = useAppSelector(state => state.editProfile);
 
-  const [updateUserProfile, { isLoading: isUpdating }] =
-    useUpdateUserProfileMutation();
+  const [updateUserProfile] = useUpdateUserProfileMutation();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('');
@@ -78,7 +77,6 @@ const EditGeneral: FC = () => {
     [],
   );
 
-  console.log(userProfile);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -194,6 +192,9 @@ const EditGeneral: FC = () => {
       if (selectedProfile.length > 0) {
         formDataToSend.append('club', JSON.stringify(selectedProfile));
       }
+      if (avatar) {
+        formDataToSend.append('avatar', avatar);
+      }
 
       certificates.forEach(file => {
         formDataToSend.append('certificates', file);
@@ -215,10 +216,6 @@ const EditGeneral: FC = () => {
 
       formDataToSend.append('description', JSON.stringify(descriptionData));
 
-      if (avatar) {
-        formDataToSend.append('avatar', avatar);
-      }
-
       const response = await updateUserProfile(formDataToSend).unwrap();
       return response;
     } catch (error) {
@@ -227,7 +224,7 @@ const EditGeneral: FC = () => {
   };
 
   if (isLoading) return <div>Loading ...</div>;
-  if (isUpdating) return <div>Updating ...</div>;
+
   return (
     <Container>
       <Button
@@ -235,7 +232,16 @@ const EditGeneral: FC = () => {
         title={t('account_page.general')}
         appearance={ButtonAppearance.PRIMARY}
         testId="general"
-        customStyles={{ width: '100%', padding: '8px 18px' }}
+        styles={{
+          width: '100%',
+          padding: '8px 18px',
+          justifyContent: 'start',
+          gap: '8px',
+        }}
+        textStyle={{
+          width: '100%',
+          textAlign: 'start',
+        }}
         appendChild={
           <Icon
             styles={{
@@ -255,45 +261,12 @@ const EditGeneral: FC = () => {
           />
         }
       />
-      <AccountName>
-        <AvatarName>
-          <img
-            src={
-              selectedAvatar ||
-              '/public/assets/images/png-transparent-neon-silver-pic-miscellaneous-cdr-angle-thumbnail.png'
-            }
-            alt=""
-          />
-          <NameTitle>
-            {userProfile?.firstName && userProfile?.lastName
-              ? `${userProfile.firstName} ${userProfile.lastName}`
-              : userProfile?.description?.email
-                ? userProfile.description.email.split('@')[0]
-                : 'Імʼя відсутнє'}
-          </NameTitle>
-        </AvatarName>
-        <Button
-          onClick={() => document.getElementById('avatarInput')?.click()}
-          title={t('account_page.change-profile-photo')}
-          appearance={ButtonAppearance.PRIMARY}
-          testId="general"
-          prependChild={
-            <Icon
-              styles={{
-                color: 'currentColor',
-                fill: 'transparent',
-              }}
-              name={IconName.ARROW_REFRESH}
-            />
-          }
-        />
-        <HiddenInput
-          type="file"
-          id="avatarInput"
-          accept="image/*"
-          onChange={handleFileChange}
-        />
-      </AccountName>
+      <AvatarAndName
+        selectedAvatar={selectedAvatar}
+        userProfile={userProfile}
+        t={t}
+        handleFileChange={handleFileChange}
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <GeneralForm>
           <SelectedContainer>
@@ -398,47 +371,7 @@ const EditGeneral: FC = () => {
             setText={setText}
           />
         </GeneralForm>
-
-        <GeneralBtns>
-          <Button
-            type="button"
-            title={t('account_page.back')}
-            appearance={ButtonAppearance.SECONDARY}
-            testId="back"
-            onClick={() => navigate('/profile')}
-            customStyles={{
-              width: '50%',
-              padding: '8px 18px',
-              fontWeight: 500,
-              fontSize: 16,
-              color: '#B7B7B9',
-            }}
-          />
-          <Button
-            type="submit"
-            title={t('account_page.save')}
-            appearance={ButtonAppearance.SECONDARY}
-            testId="save"
-            customStyles={{
-              width: '50%',
-              padding: '8px 18px',
-              fontWeight: 500,
-              fontSize: 16,
-              color: '#B7B7B9',
-            }}
-            prependChild={
-              <Icon
-                styles={{
-                  color: 'currentColor',
-                  fill: 'transparent',
-                  marginRight: '8px',
-                }}
-                width="24"
-                name={IconName.CHECK_CONTAINED}
-              />
-            }
-          />
-        </GeneralBtns>
+        <GeneralsBtn t={t} />
       </form>
     </Container>
   );

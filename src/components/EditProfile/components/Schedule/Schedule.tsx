@@ -3,12 +3,7 @@ declare module 'react-big-calendar';
 import React, { useState } from 'react';
 import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
 import { useNavigate } from 'react-router-dom';
-import {
-  Calendar,
-  momentLocalizer,
-  View,
-  EventProps,
-} from 'react-big-calendar';
+import { momentLocalizer, View, EventProps } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import schedule from '../../data/schedule.json';

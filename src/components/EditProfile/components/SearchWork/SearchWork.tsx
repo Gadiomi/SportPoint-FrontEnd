@@ -2,7 +2,13 @@ import React from 'react';
 import { InputsSection, SectionTitle } from '../EditGeneral/EditGeneral.styled';
 import { Input } from '@/kit';
 import { SelectedItem, SelectedItems } from '../Selection/Selection.styled';
-import { SearchWorkItems, SearchWorkList } from './SearchWork.styled';
+import {
+  CitySpan,
+  DescSpan,
+  NameSpan,
+  SearchWorkItems,
+  SearchWorkList,
+} from './SearchWork.styled';
 
 interface SearchWorkProps {
   searchTerm: string;
@@ -57,9 +63,10 @@ const SearchWork: React.FC<SearchWorkProps> = ({
               <SelectedItem key={work.id}>
                 {work.firstName}
                 <span> {work.lastName}</span>
-                <span>
-                  ({work?.city}\{work.address})
-                </span>
+                <CitySpan>
+                  ({work?.city}
+                  <span>{work.address}</span>)
+                </CitySpan>
               </SelectedItem>
             ))}
         </SelectedItems>
@@ -69,7 +76,7 @@ const SearchWork: React.FC<SearchWorkProps> = ({
           label="Пошук клубів"
           value={searchTerm}
           onChange={handleSearchChange}
-          placeholder="Введіть назву клубу"
+          placeholder="Введіть назву"
         />
         {isFetching && <div>Завантаження...</div>}
         {searchResults?.profiles && searchResults?.profiles?.length > 0 && (
@@ -83,15 +90,23 @@ const SearchWork: React.FC<SearchWorkProps> = ({
                     firstName: profile.firstName,
                     lastName: profile.lastName,
                     address: profile.description?.address || 'Адреса відсутня',
-                    city: profile.description?.address,
+                    city: profile.description?.city || 'Місто відсутнє',
                   })
                 }
               >
-                <strong>
-                  {profile.firstName} {profile.lastName}
-                </strong>
-                -<span>{profile.description?.city}</span>(
-                {profile.description?.address || 'Адреса відсутня'})
+                <CitySpan>
+                  <NameSpan>
+                    {profile.firstName} {profile.lastName}
+                  </NameSpan>
+                  (
+                  <DescSpan>
+                    {profile.description?.city || 'Місто відсутнє'}
+                    <span>
+                      {profile.description?.address || 'Адреса відсутня'}
+                    </span>
+                  </DescSpan>
+                  )
+                </CitySpan>
               </SearchWorkItems>
             ))}
           </SearchWorkList>
