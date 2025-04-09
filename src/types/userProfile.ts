@@ -18,6 +18,7 @@ interface Favorite {
 }
 interface Description {
   address?: string;
+  city?: string;
   short_desc?: string;
   abilities?: string[];
   age?: string;

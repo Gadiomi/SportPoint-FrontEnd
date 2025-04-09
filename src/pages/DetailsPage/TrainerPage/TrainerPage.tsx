@@ -158,7 +158,6 @@ const TrainerPage: FC = () => {
     short_desc,
     // equipment,
     age,
-
   } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;

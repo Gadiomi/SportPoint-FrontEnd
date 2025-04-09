@@ -67,7 +67,7 @@ const Certificates = ({
         onClick={handleClick}
         type="button"
         title="Додати сертифікати"
-        style={{ padding: '8px 18px' }}
+        customStyles={{ padding: '8px 18px' }}
         appearance={ButtonAppearance.PRIMARY}
         prependChild={
           <Icon

@@ -1,6 +1,6 @@
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
 import { useUpdateUserProfileMutation } from '@/redux/user/userApi';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { UserProfile } from '@/types/userProfile';
 import sports from '../../data/sports.json';
 import cities from '../../data/cities.json';
 import socials from '../../data/socials.json';
+import { debounce } from 'lodash';
 import {
   GeneralBtns,
   Container,
@@ -33,18 +34,10 @@ import {
   setSelectedCity,
   setSelectedSocial,
   setSelectedSports,
-  setSelectedWorks,
   setText,
 } from '@/redux/user/editProfileSlice';
-import { useGetCardsQuery } from '@/redux/cards/cardApi';
-
-interface CardItem {
-  _id: string;
-  userId: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-}
+import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
+import SearchWork from '../SearchWork/SearchWork';
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
@@ -55,7 +48,6 @@ const EditGeneral: FC = () => {
   const {
     selectedSports,
     selectedSocial,
-    selectedWorks,
     selectedCity,
     text,
     avatar,
@@ -66,24 +58,32 @@ const EditGeneral: FC = () => {
   const [updateUserProfile, { isLoading: isUpdating }] =
     useUpdateUserProfileMutation();
 
-  const { data } = useGetCardsQuery({
-    perPage: 100,
-    role: 'adminClub',
-  });
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('');
+  const [selectedProfile, setSelectedProfile] = useState<
+    {
+      id: string;
+      firstName: string;
+      lastName: string;
+      address?: string;
+      city?: string;
+    }[]
+  >([]);
 
-  let cardData:
-    | { id: string; firstName: string; lastName: string; userId: string }[]
-    | string[] = [];
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((value: string) => {
+        setDebouncedSearchTerm(value);
+      }, 300),
+    [],
+  );
 
-  if (data && data.data) {
-    cardData = data.data.data.map((item: CardItem) => ({
-      role: item.role,
-      userId: item.userId,
-      id: item._id,
-      firstName: item.firstName,
-      lastName: item.lastName,
-    }));
-  }
+  console.log(userProfile);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  };
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UserProfile>({
@@ -95,14 +95,29 @@ const EditGeneral: FC = () => {
     if (userProfile) {
       reset(userProfile);
       dispatch(setSelectedAvatar(userProfile?.avatar || null));
-      dispatch(setSelectedCity(userProfile?.description.address || null));
+      dispatch(setSelectedCity(userProfile?.description.city || null));
       dispatch(setText(userProfile?.description.short_desc || ''));
       dispatch(setSelectedSports(userProfile?.sport || []));
       dispatch(setSelectedSocial(userProfile?.description.social_links || []));
       dispatch(addCertificates([]));
-      dispatch(setSelectedWorks(userProfile?.work_list || []));
     }
-  }, [userProfile, reset, dispatch]);
+    if (userProfile?.club) {
+      setSelectedProfile(userProfile?.club as any);
+    }
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [userProfile, reset, dispatch, debouncedSearch, setSelectedProfile]);
+
+  const { data: searchResults, isFetching } = useGetByNameQuery(
+    {
+      name: debouncedSearchTerm,
+      role: 'adminClub',
+    },
+    {
+      skip: !debouncedSearchTerm,
+    },
+  );
 
   const handleSelectionChange = (
     selectedItems: string[] | { id: string }[],
@@ -112,18 +127,6 @@ const EditGeneral: FC = () => {
     } else {
       dispatch(
         setSelectedSports(
-          selectedItems.map(item => (item as { id: string }).id),
-        ),
-      );
-    }
-  };
-
-  const handleWorkChange = (selectedItems: string[] | { id: string }[]) => {
-    if (typeof selectedItems[0] === 'string') {
-      dispatch(setSelectedWorks(selectedItems as string[]));
-    } else {
-      dispatch(
-        setSelectedWorks(
           selectedItems.map(item => (item as { id: string }).id),
         ),
       );
@@ -161,6 +164,21 @@ const EditGeneral: FC = () => {
     }
   };
 
+  const handleSelectProfile = (profile: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    address?: string;
+    city?: string;
+  }) => {
+    setSelectedProfile(prevProfiles => {
+      if (prevProfiles.some(p => p.id === profile.id)) {
+        return prevProfiles;
+      }
+      return [...prevProfiles, profile];
+    });
+  };
+
   const onSubmit = async (formData: UserProfile) => {
     try {
       const formDataToSend = new FormData();
@@ -173,8 +191,8 @@ const EditGeneral: FC = () => {
       if (selectedSports.length > 0) {
         formDataToSend.append('sport', JSON.stringify(selectedSports));
       }
-      if (selectedWorks.length > 0) {
-        formDataToSend.append('club', JSON.stringify(selectedWorks));
+      if (selectedProfile.length > 0) {
+        formDataToSend.append('club', JSON.stringify(selectedProfile));
       }
 
       certificates.forEach(file => {
@@ -182,7 +200,7 @@ const EditGeneral: FC = () => {
       });
 
       const descriptionData = {
-        address: selectedCity,
+        city: selectedCity,
         short_desc: text,
         abilities: formData.description.abilities,
         age: formData.description.age,
@@ -217,7 +235,7 @@ const EditGeneral: FC = () => {
         title={t('account_page.general')}
         appearance={ButtonAppearance.PRIMARY}
         testId="general"
-        style={{ width: '100%', padding: '8px 18px' }}
+        customStyles={{ width: '100%', padding: '8px 18px' }}
         appendChild={
           <Icon
             styles={{
@@ -360,12 +378,14 @@ const EditGeneral: FC = () => {
             onChange={handleSelectionChange}
             userData={userProfile?.sport || []}
           />
-          <Selection
-            content={cardData}
-            placeholder={'Обрати'}
-            labelName={'Спортивні клуби, де ви працюєте'}
-            onChange={handleWorkChange}
-            userData={userProfile?.work_list || []}
+          <SearchWork
+            searchTerm={searchTerm}
+            handleSearchChange={handleSearchChange}
+            isFetching={isFetching}
+            searchResults={searchResults}
+            setSelectedProfile={handleSelectProfile}
+            selectedProfile={selectedProfile}
+            title={'Спортивні клуби, де ви працюєте'}
           />
           <Certificates
             handleCertificatesChange={handleCertificatesChange}
@@ -386,7 +406,7 @@ const EditGeneral: FC = () => {
             appearance={ButtonAppearance.SECONDARY}
             testId="back"
             onClick={() => navigate('/profile')}
-            style={{
+            customStyles={{
               width: '50%',
               padding: '8px 18px',
               fontWeight: 500,
@@ -399,7 +419,7 @@ const EditGeneral: FC = () => {
             title={t('account_page.save')}
             appearance={ButtonAppearance.SECONDARY}
             testId="save"
-            style={{
+            customStyles={{
               width: '50%',
               padding: '8px 18px',
               fontWeight: 500,
