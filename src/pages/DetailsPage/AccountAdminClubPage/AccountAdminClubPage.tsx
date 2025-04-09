@@ -164,7 +164,10 @@ const AdminClubPage: FC = () => {
           labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
         <StyledHr />
-        <SocialLinks socialLinks={social_links || []} />
+        <SocialLinks
+          socialLinks={social_links || []}
+          title="Введіть дані, і адміністратор з вами зв’яжеться"
+        />
         <StyledHr />
         <GalleryCard />
         <StyledHr />

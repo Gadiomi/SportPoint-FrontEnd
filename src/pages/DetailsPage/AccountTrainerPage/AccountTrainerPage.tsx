@@ -210,7 +210,10 @@ const AccountTrainerPage: FC = () => {
           title={t('details_page.read_more')}
         />
         <StyledHr />
-        <SocialLinks socialLinks={social_links || []} />
+        <SocialLinks
+          socialLinks={social_links || []}
+          title="Введіть дані, і тренер з вами зв’яжеться"
+        />
         <StyledHr />
         <PriceCard prices={price || []} />
         <StyledHr />

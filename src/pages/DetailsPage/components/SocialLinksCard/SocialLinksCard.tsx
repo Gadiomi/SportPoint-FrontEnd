@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTheme } from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import ButtonGetInTouch from '../ButtonGetInTouch/ButtonGetInTouch';
+import ModalGetInTouch from '../ModalGetInTouch/ModalGetInTouch';
 import { StyledSocialLinksCard, ImgContainer } from './styles';
 
 const socialIconsMap: Record<string, string> = {
@@ -17,8 +18,9 @@ interface SocialLink {
   url: string;
 }
 
-const SocialLinks: React.FC<{ socialLinks: SocialLink[] }> = ({
+const SocialLinks: React.FC<{ socialLinks: SocialLink[]; title: string }> = ({
   socialLinks,
+  title,
 }) => {
   const theme = useTheme();
   const location = useLocation();
@@ -26,6 +28,15 @@ const SocialLinks: React.FC<{ socialLinks: SocialLink[] }> = ({
   const isCoachOrClubAccount =
     location.pathname.includes('/account-trainer/') ||
     location.pathname.includes('/account-admin-club/');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   if (!socialLinks || socialLinks.length === 0) {
     return <div>Соціальні мережі не доступні</div>;
@@ -58,7 +69,12 @@ const SocialLinks: React.FC<{ socialLinks: SocialLink[] }> = ({
           );
         })}
       </ImgContainer>
-      {!isCoachOrClubAccount && <ButtonGetInTouch />}
+      {!isCoachOrClubAccount && <ButtonGetInTouch onClick={handleOpenModal} />}
+      <ModalGetInTouch
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={title}
+      />
     </StyledSocialLinksCard>
   );
 };
