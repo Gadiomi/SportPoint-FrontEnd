@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CustomFilterCheckbox } from '../../CustomFilterCheckbox/CustomFilterCheckbox';
 import { WrapperFilterCheckbox } from './styles';
 
@@ -14,23 +14,23 @@ export const SortBy: React.FC<SortByProps> = ({ sortBy, onSortChange }) => {
   return (
     <WrapperFilterCheckbox>
       <CustomFilterCheckbox
-        checked={sortBy === 'new'}
-        onChange={() => handleFilterChange('new')}
+        checked={sortBy === 'нові'}
+        onChange={() => handleFilterChange('нові')}
         label="Нові"
       />
       <CustomFilterCheckbox
-        checked={sortBy === 'priceAsc'}
-        onChange={() => handleFilterChange('priceAsc')}
+        checked={sortBy === 'ціна_за_зростанням'}
+        onChange={() => handleFilterChange('ціна_за_зростанням')}
         label="Ціна за зростанням"
       />
       <CustomFilterCheckbox
-        checked={sortBy === 'popular'}
-        onChange={() => handleFilterChange('popular')}
+        checked={sortBy === 'популярні'}
+        onChange={() => handleFilterChange('популярні')}
         label="Популярні"
       />
       <CustomFilterCheckbox
-        checked={sortBy === 'priceDesc'}
-        onChange={() => handleFilterChange('priceDesc')}
+        checked={sortBy === 'ціна_за_спаданням'}
+        onChange={() => handleFilterChange('ціна_за_спаданням')}
         label="Ціна за спаданням"
       />
     </WrapperFilterCheckbox>

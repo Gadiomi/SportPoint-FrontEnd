@@ -10,14 +10,14 @@ import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 
 export const ClubsList: React.FC = () => {
   const [filters, setFilters] = useState<FilterParams>({
-    city: '',
-    priceFrom: null,
-    priceTo: null,
-    sortBy: null,
-    classification: [],
+    address: '',
+    minPrice: null,
+    maxPrice: null,
+    abilities: '',
+    sort: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
-
+  console.log('filters:', filters);
   const { data, error, isLoading } = useGetCardsQuery({
     role: 'adminClub',
     page: currentPage,
@@ -29,7 +29,7 @@ export const ClubsList: React.FC = () => {
   };
   if (isLoading) return <p>Завантаження...</p>;
   if (error) return <p>Помилка завантаження даних</p>;
-
+  console.log('data.data', data.data);
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
       <Filters getFilteredCards={getFilteredCards} setFilters={setFilters} />

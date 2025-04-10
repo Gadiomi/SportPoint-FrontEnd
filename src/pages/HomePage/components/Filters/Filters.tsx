@@ -18,7 +18,6 @@ export const Filters: React.FC<FiltersProps> = ({
     setIsFiltersModalOpen(true);
   };
 
-  console.log('getFilteredCards', getFilteredCards);
   return (
     <>
       <StyledButton

@@ -28,6 +28,7 @@ export const store = configureStore({
       userApi.middleware,
       passwordApi.middleware,
       cardApi.middleware,
+      cardsApi.middleware,
     ),
 });
 

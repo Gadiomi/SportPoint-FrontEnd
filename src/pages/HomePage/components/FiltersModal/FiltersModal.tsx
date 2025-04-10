@@ -71,25 +71,33 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
   const handlePriceChange = (from: number | null, to: number | null) => {
     setPriceRange({ from, to });
   };
-  const handleSortChange = (newSortBy: string | null) => {
-    setSortBy(newSortBy);
-  };
-  const handleClassificationChange = (selectedFilters: string[]) => {
-    setClassification(selectedFilters);
+  const filters = {
+    address: select?.value || undefined,
+    minPrice: priceRange.from || 0,
+    maxPrice: priceRange.to || 0,
+    abilities: classification.length > 0 ? classification.join(',') : undefined,
+    sort: sortBy || 'нові',
   };
   const handleSubmit = () => {
-    const filters = {
-      city: select?.value || '',
-      priceFrom: priceRange.from,
-      priceTo: priceRange.to,
-      sortBy,
-      classification,
-    };
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, value]) => value !== undefined),
+    );
 
-    getFilteredCards(filters);
-    setFilters(filters);
+    getFilteredCards(cleanedFilters);
     setIsFiltersModalOpen(false);
+    console.log('Submitted filters:', filters);
   };
+
+  const handleClearFilters = () => {
+    const clearedFilters = filters;
+
+    setSelect(null);
+    setPriceRange({ from: null, to: null });
+    setSortBy(null);
+    setClassification([]);
+    setFilters(clearedFilters);
+  };
+
   return (
     <Backdrop onClick={handleClose}>
       <ModalContainer onClick={e => e.stopPropagation()}>
@@ -110,15 +118,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             }}
             appearance={ButtonAppearance.UNDERLINED}
             testId="clean-button"
-            onClick={() =>
-              setFilters({
-                city: '',
-                priceFrom: null,
-                priceTo: null,
-                sortBy: null,
-                classification: [],
-              })
-            }
+            onClick={handleClearFilters}
           />
         </ModalHeader>
 
@@ -136,7 +136,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
           <About style={{ marginBottom: theme.pxs.x4 }}>Впорядкувати за</About>
-          <SortBy sortBy={sortBy} onSortChange={handleSortChange} />
+          <SortBy sortBy={sortBy} onSortChange={setSortBy} />
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
@@ -151,7 +151,10 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
           <About style={{ marginBottom: theme.pxs.x4 }}>Класифікація</About>
-          <Classification onChange={handleClassificationChange} />
+          <Classification
+            classification={classification}
+            onChange={setClassification}
+          />
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />

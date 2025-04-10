@@ -67,9 +67,9 @@ export interface ScheduleClub {
 
 /* Filters data */
 export interface FilterParams {
-  city: string;
-  priceFrom: number | null;
-  priceTo: number | null;
-  sortBy: string | null;
-  classification: string[];
+  address?: string;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  abilities?: string;
+  sort?: string | null;
 }

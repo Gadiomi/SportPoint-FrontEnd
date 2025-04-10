@@ -21,7 +21,11 @@ export const TrainersList: React.FC = () => {
   const { data, error, isLoading } = useGetCardsQuery({
     role: 'coach',
     page: currentPage,
-    ...filters,
+    address: filters.city || undefined,
+    minPrice: filters.priceFrom,
+    maxPrice: filters.priceTo,
+    abilities: JSON.stringify(filters.classification),
+    sort: filters.sortBy,
   });
 
   const getFilteredCards = (newFilters: FilterParams) => {
