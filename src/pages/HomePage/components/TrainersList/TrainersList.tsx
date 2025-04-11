@@ -10,22 +10,18 @@ import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 
 export const TrainersList: React.FC = () => {
   const [filters, setFilters] = useState<FilterParams>({
-    city: '',
-    priceFrom: null,
-    priceTo: null,
-    sortBy: null,
-    classification: [],
+    address: '',
+    minPrice: null,
+    maxPrice: null,
+    abilities: '',
+    sort: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, error, isLoading } = useGetCardsQuery({
     role: 'coach',
     page: currentPage,
-    address: filters.city || undefined,
-    minPrice: filters.priceFrom,
-    maxPrice: filters.priceTo,
-    abilities: JSON.stringify(filters.classification),
-    sort: filters.sortBy,
+    ...filters,
   });
 
   const getFilteredCards = (newFilters: FilterParams) => {

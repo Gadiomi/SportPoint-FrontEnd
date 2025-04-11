@@ -17,7 +17,7 @@ export const ClubsList: React.FC = () => {
     sort: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
-  console.log('filters:', filters);
+
   const { data, error, isLoading } = useGetCardsQuery({
     role: 'adminClub',
     page: currentPage,
