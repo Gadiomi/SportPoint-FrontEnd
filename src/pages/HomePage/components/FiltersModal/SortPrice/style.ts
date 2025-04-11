@@ -50,3 +50,8 @@ export const StyleStyledHr = styled(StyledHr)(({ theme }) => ({
   marginTop: theme.pxs.x8,
   marginBottom: theme.pxs.x8,
 }));
+export const ErrorText = styled.p(({ theme }) => ({
+  ...theme.fonts.mainButton,
+  color: 'red',
+  marginTop: '8px',
+}));
