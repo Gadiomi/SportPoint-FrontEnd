@@ -16,6 +16,7 @@ import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
+import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
@@ -225,6 +226,8 @@ const AccountTrainerPage: FC = () => {
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <CertificatesCard />
         <StyledHr />
         <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}

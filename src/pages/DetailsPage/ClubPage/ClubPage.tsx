@@ -14,6 +14,7 @@ import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
 import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
@@ -182,6 +183,8 @@ const ClubPage: FC = () => {
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <OurHallsCard />
         <StyledHr />
         <LocationCard />
         <StyledHr />

@@ -14,6 +14,7 @@ import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
@@ -229,6 +230,8 @@ const TrainerPage: FC = () => {
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <CertificatesCard />
         <StyledHr />
         <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}

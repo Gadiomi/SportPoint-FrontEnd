@@ -14,15 +14,15 @@ import {
   NavigationButtonNext,
 } from './styles';
 
-const GalleryCard: React.FC = () => {
+const CertificatesCard: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const galleryImg = [
     '/assets/images/DetailsPage/gallery_01_x1.jpg',
     '/assets/images/DetailsPage/gallery_02_x1.jpg',
-    '/assets/images/homePage/gym@1.jpg',
-    '/assets/images/homePage/trainer@1.jpg',
+    '/assets/images/DetailsPage/gallery_01_x1.jpg',
+    '/assets/images/DetailsPage/gallery_02_x1.jpg',
   ];
 
   const handleImageClick = (src: string, index: number) => {
@@ -63,7 +63,7 @@ const GalleryCard: React.FC = () => {
   return (
     <div>
       <StyledGalleryCard>
-        <TitleContainer titleKey="details_page.gallery" />
+        <TitleContainer titleKey="details_page.certificates" />
         <Swiper spaceBetween={8} slidesPerView={2}>
           {galleryImg.map((src, idx) => (
             <SwiperSlide key={idx}>
@@ -106,4 +106,4 @@ const GalleryCard: React.FC = () => {
   );
 };
 
-export default GalleryCard;
+export default CertificatesCard;
