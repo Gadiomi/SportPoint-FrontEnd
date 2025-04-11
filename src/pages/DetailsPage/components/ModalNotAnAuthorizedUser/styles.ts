@@ -23,30 +23,16 @@ export const ModalContainer = styled.div`
 
 export const ModalHeader = styled.h2`
   width: 168px;
+  color: ${({ theme }) => theme.color.secWhite};
 `;
 
 export const ModalContent = styled.div`
   margin: ${({ theme }) => `${theme.pxs.x6}px ${theme.pxs.x0}px`};
+  text-align: center;
 `;
 
 export const ModalFooter = styled.div`
-  text-align: right;
-`;
-
-export const CheckboxContainer = styled.div`
+  text-align: center;
   display: flex;
-  flex-direction: column;
   gap: ${({ theme }) => `${theme.pxs.x6}px`};
-`;
-
-export const Checkbox_1 = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-export const Checkbox_2 = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 `;

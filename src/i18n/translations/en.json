@@ -45,7 +45,9 @@
     "choose": "Choose",
     "get_in_touch": "Get in touch",
     "read_more": "Read more",
-    "send": "Send"
+    "send": "Send",
+    "no": "No",
+    "yes": "Yes"
   },
   "account_page": {
     "general": "GENERAL",

@@ -30,6 +30,7 @@ interface SocialLink {
   name: string;
   url: string;
   title: string;
+  isLoggedIn: boolean;
 }
 
 interface PriceItem {
@@ -76,10 +77,10 @@ const TrainerPage: FC = () => {
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
-  //   const [
-  //     isLoggedIn,
-  //     setIsLoggedIn
-  //   ] = useState<boolean>(false);
+  const [
+    isLoggedIn,
+    // setIsLoggedIn
+  ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -162,6 +163,10 @@ const TrainerPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  const title = isLoggedIn
+    ? 'Введіть дані, і тренер з вами зв’яжеться'
+    : 'Тільки авторизовані користувачі можуть зв’язатися з тренером';
+
   // ТЕСТ
   const coachTest = {
     avatar:
@@ -217,8 +222,8 @@ const TrainerPage: FC = () => {
         <StyledHr />
         <SocialLinks
           socialLinks={social_links || []}
-          //   isLoggedIn={isLoggedIn}
-          title="Введіть дані, і тренер з вами зв’яжеться"
+          isLoggedIn={isLoggedIn}
+          title={title}
         />
         <StyledHr />
         <PriceCard prices={price || []} />

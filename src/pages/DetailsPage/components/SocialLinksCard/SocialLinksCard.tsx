@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import ButtonGetInTouch from '../ButtonGetInTouch/ButtonGetInTouch';
 import ModalGetInTouch from '../ModalGetInTouch/ModalGetInTouch';
+import ModalNotAnAuthorizedUser from '../ModalNotAnAuthorizedUser/ModalNotAnAuthorizedUser';
 import { StyledSocialLinksCard, ImgContainer } from './styles';
 
 const socialIconsMap: Record<string, string> = {
@@ -18,10 +19,13 @@ interface SocialLink {
   url: string;
 }
 
-const SocialLinks: React.FC<{ socialLinks: SocialLink[]; title: string }> = ({
-  socialLinks,
-  title,
-}) => {
+const SocialLinks: React.FC<{
+  socialLinks: SocialLink[];
+  title: string;
+  isLoggedIn: boolean;
+}> = ({ socialLinks, title, isLoggedIn }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const theme = useTheme();
   const location = useLocation();
 
@@ -29,7 +33,6 @@ const SocialLinks: React.FC<{ socialLinks: SocialLink[]; title: string }> = ({
     location.pathname.includes('/account-trainer/') ||
     location.pathname.includes('/account-admin-club/');
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -70,11 +73,19 @@ const SocialLinks: React.FC<{ socialLinks: SocialLink[]; title: string }> = ({
         })}
       </ImgContainer>
       {!isCoachOrClubAccount && <ButtonGetInTouch onClick={handleOpenModal} />}
-      <ModalGetInTouch
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        title={title}
-      />
+      {isLoggedIn ? (
+        <ModalGetInTouch
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          title={title}
+        />
+      ) : (
+        <ModalNotAnAuthorizedUser
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          title={title}
+        />
+      )}
     </StyledSocialLinksCard>
   );
 };
