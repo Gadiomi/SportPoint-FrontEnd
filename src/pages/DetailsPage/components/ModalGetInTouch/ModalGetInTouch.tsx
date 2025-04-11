@@ -130,7 +130,7 @@ const ModalGetInTouch: React.FC<ModalGetInTouchProps> = ({
                 onChange={handleCheckboxChange1}
                 label="Я згодний(а) на обрабку даних та з умовами оферти."
                 inputStyle={{ display: 'none' }}
-                labelStyle={{ textAlign: 'left' }}
+                labelStyle={{ textAlign: 'left', ...fonts.modalSpan }}
               />
             </Checkbox_1>
             <Checkbox_2>
@@ -155,7 +155,7 @@ const ModalGetInTouch: React.FC<ModalGetInTouchProps> = ({
                 onChange={handleCheckboxChange2}
                 label="Прошу не дзвонити, а зв’язатися у месенджері за вказаним номером."
                 inputStyle={{ display: 'none' }}
-                labelStyle={{ textAlign: 'left' }}
+                labelStyle={{ textAlign: 'left', ...fonts.modalSpan }}
               />
             </Checkbox_2>
             <Button

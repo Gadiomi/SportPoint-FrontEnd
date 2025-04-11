@@ -76,6 +76,10 @@ const AccountTrainerPage: FC = () => {
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
+  const [
+    isLoggedIn,
+    // setIsLoggedIn
+  ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -156,6 +160,8 @@ const AccountTrainerPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  const title = '';
+
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
@@ -212,7 +218,8 @@ const AccountTrainerPage: FC = () => {
         <StyledHr />
         <SocialLinks
           socialLinks={social_links || []}
-          title="Введіть дані, і тренер з вами зв’яжеться"
+          isLoggedIn={isLoggedIn}
+          title={title}
         />
         <StyledHr />
         <PriceCard prices={price || []} />

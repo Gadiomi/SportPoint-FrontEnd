@@ -69,6 +69,7 @@ export const fonts: fontsMap = {
   spanWorkIn: createFontStyle("'Manrope', sans-serif", '300', '12px', '21px'),
 
   modalInput: createFontStyle("'Manrope', sans-serif", '300', '12px', '12px'),
+  modalSpan: createFontStyle("'Manrope', sans-serif", '400', '12px', '14px'),
 
   // Як тільки на макеті стилі змінять, одразу видалю
 };
