@@ -73,10 +73,10 @@ const ClubPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
 
   const [adminClubData, setAdminClubData] = useState<AdminClub | null>(null);
-//   const [
-//     isLoggedIn,
-//     setIsLoggedIn
-//   ] = useState<boolean>(false);
+  //   const [
+  //     isLoggedIn,
+  //     setIsLoggedIn
+  //   ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

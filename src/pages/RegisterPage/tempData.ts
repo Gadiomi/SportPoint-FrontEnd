@@ -23,7 +23,7 @@ export const sportTypes = [
   { value: 'Пілатес', label: 'Пілатес' },
   { value: 'Кикбоксинг', label: 'Кикбоксинг' },
   { value: 'Тхеквондо', label: 'Тхеквондо' },
-  { value: 'Бокси', label: 'Бокси' },
+  { value: 'Бокс', label: 'Бокс' },
   { value: 'Групові заняття', label: 'Групові заняття' },
 ];
 

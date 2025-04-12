@@ -49,8 +49,8 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
     // };
 
     const { t } = useTranslation();
-const theme = useTheme();
-  
+    const theme = useTheme();
+
     return (
       <StyledOurCoachCard>
         <div style={{ width: '100%', marginBottom: `${theme.pxs.x8}px` }}>

@@ -55,7 +55,7 @@ const RegisterPage = () => {
       city: '',
       address: '',
       // abilities: [''],
-      sport: [''],
+      sport: [' '],
     },
     mode: 'onChange',
   });
@@ -111,42 +111,44 @@ const RegisterPage = () => {
       ...(currentRole === Roles.COACH && {
         firstName: data.first_name.trim(),
         lastName: data.second_name.trim(),
-        // abilities: data.abilities,
-        // sport: data.sport,
+        city: data.city,
+        address: data.address,
+        sport: data.sport?.join(),
       }),
       ...(currentRole === Roles.ADMIN_CLUB && {
         clubName: data.club_name.trim(),
         phone: data.phone.trim(),
+        city: data.city,
         address: data.address,
+        abilities: data.sport,
       }),
     };
     console.log('registerData -> ', registerData);
-    // try {
-    //   const response: any = await registerUser(registerData).unwrap();
-    //   console.log(' - response ->', response);
-    //   if (response.token && response.refreshToken) {
-    //     Cookies.set(CookiesKey.TOKEN, response.token, {
-    //       expires: 7,
-    //       secure: true,
-    //       sameSite: 'Strict',
-    //     });
-    //     Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
-    //       expires: 7,
-    //       secure: true,
-    //       sameSite: 'Strict',
-    //     });
-    //     localStorage.setItem('userEmail', response.email);
-    //     console.log('Registered email:', response.email);
-    //   }
-    //   reset();
-    //   nav('/profile');
-    // } catch (err) {
-    //   console.error('Registration failed:', err);
-    // }
+    try {
+      const response: any = await registerUser(registerData).unwrap();
+      console.log(' - response ->', response);
+      if (response.token && response.refreshToken) {
+        Cookies.set(CookiesKey.TOKEN, response.token, {
+          expires: 7,
+          secure: true,
+          sameSite: 'Strict',
+        });
+        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+          expires: 7,
+          secure: true,
+          sameSite: 'Strict',
+        });
+        localStorage.setItem('userEmail', response.email);
+        // console.log('Registered email:', response.email);
+      }
+      reset();
+      nav('/profile');
+    } catch (err) {
+      console.error('Registration failed:', err);
+    }
   };
 
   const selectedSports = watch('sport') || [];
-  console.log('selectedSports -> ', selectedSports);
 
   return (
     <Section>

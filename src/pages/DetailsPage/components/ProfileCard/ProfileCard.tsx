@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { fonts } from '@/theme/fonts';
 import { IconName } from '@/kit';
-import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon'
+import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
 import { StyledProfileCard, Avatar, AvatarNone } from './styles';
 
 interface ProfileCardProps {
@@ -24,7 +24,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   age,
 }) => {
   const [avatarError, setAvatarError] = useState(false);
-  const [showButtons, setShowButtons] = useState(true); 
+  const [showButtons, setShowButtons] = useState(true);
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -35,11 +35,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       location.pathname.includes('account-trainer') ||
       location.pathname.includes('account-admin-club')
     ) {
-      setShowButtons(false); 
+      setShowButtons(false);
     } else {
       setShowButtons(true);
     }
-  }, [location.pathname]); 
+  }, [location.pathname]);
 
   const handleAvatarError = () => {
     setAvatarError(true);
@@ -54,14 +54,19 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       </AvatarNone>
     );
 
-    const handleClick = () => {
-      console.log('Icon clicked');
-    };
+  const handleClick = () => {
+    console.log('Icon clicked');
+  };
 
   return (
     <StyledProfileCard>
-      <div style={{display: 'flex',
-    alignItems: 'center', justifyContent: 'center'}}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         {showButtons && (
           <ButtonProfileIcon
             iconName={IconName.MASSAGE_TYPING}
