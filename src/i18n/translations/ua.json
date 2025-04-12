@@ -17,6 +17,8 @@
     },
     "already_have": "Вже маєте акаунт?",
     "button_title": "Увійти",
+    "have_not_yet": "Ще не маєте акаунт?",
+    "button_title_reg": "Зареєструватись",
     "form": {
       "email": "Email",
       "password": "Пароль",
@@ -25,7 +27,9 @@
     "forgott_pass": "Забули пароль?",
     "forgott_button": "Відновити",
     "signup_google": "Зареєструватись через Google",
-    "signup_facebook": "Зареєструватись через Facebook"
+    "signup_facebook": "Зареєструватись через Facebook",
+    "login_google": "Увійти через Google",
+    "login_facebook": "Увійти через Facebook"
   },
   "details_page": {
     "edit_button": "Редагувати профіль",

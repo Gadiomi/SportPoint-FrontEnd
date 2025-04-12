@@ -17,6 +17,8 @@
     },
     "already_have": "Already have an account?",
     "button_title": "Log In",
+    "have_not_yet": "Don't have account yet?",
+    "button_title_reg": "Sign up",
     "form": {
       "email": "Email",
       "password": "Password",
@@ -25,7 +27,9 @@
     "forgott_pass": "Forgot password?",
     "forgott_button": "Recover",
     "signup_google": "Sign Up with Google",
-    "signup_facebook": "Sign Up with Facebook"
+    "signup_facebook": "Sign Up with Facebook",
+    "login_google": "Login with Google",
+    "login_facebook": "Login with Facebook"
   },
   "details_page": {
     "edit_button": "Edit profile",

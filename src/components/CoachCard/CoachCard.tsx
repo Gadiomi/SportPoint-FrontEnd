@@ -28,10 +28,10 @@ const CoachCard: FC<Props> = ({ coachData }) => {
   return (
     <CoachCardWrapper>
       <CoachInfoWrapper>
-        <CoachImage src={coachData.avatar || NO_IMAGE} alt="coach image" />
+        <CoachImage src={coachData?.avatar || NO_IMAGE} alt="coach image" />
         <CoachInfoBlock>
           <NameBlock>
-            <h2>{coachData.firstLastName}</h2>
+            <h2>{coachData?.firstLastName}</h2>
             <Icon
               name={IconName.HEART_FILL}
               styles={{
@@ -42,12 +42,12 @@ const CoachCard: FC<Props> = ({ coachData }) => {
           </NameBlock>
           <ConditionsBlock>
             <div>
-              <h2>{`${coachData.description.price[0].amount || '-'} грн`}</h2>
-              <span>{coachData.description.price[0].name}</span>
+              <h2>{`${coachData?.description?.price[0]?.amount || '-'} грн`}</h2>
+              <span>{coachData?.description?.price[0]?.name}</span>
             </div>
             <Rating>
               <div>
-                <h2>{coachData.rating}</h2>
+                <h2>{coachData?.rating}</h2>
                 <Icon
                   name={IconName.STAR_FILL}
                   styles={{
@@ -57,11 +57,11 @@ const CoachCard: FC<Props> = ({ coachData }) => {
                   }}
                 />
               </div>
-              <span>{`${coachData.countReview} ${fixEnding(coachData.countReview)}`}</span>
+              <span>{`${coachData?.countReview} ${fixEnding(coachData?.countReview)}`}</span>
             </Rating>
           </ConditionsBlock>
           <SpecializationBlock>
-            {coachData.description.abilities.map(item => (
+            {coachData?.description?.abilities.map(item => (
               <span key={item}>{item}</span>
             ))}
           </SpecializationBlock>
