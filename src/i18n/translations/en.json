@@ -47,7 +47,9 @@
     "read_more": "Read more",
     "send": "Send",
     "no": "No",
-    "yes": "Yes"
+    "yes": "Yes",
+    "certificates": "CERTIFICATES",
+    "our_halls": "OUR HALLS"
   },
   "account_page": {
     "general": "GENERAL",
