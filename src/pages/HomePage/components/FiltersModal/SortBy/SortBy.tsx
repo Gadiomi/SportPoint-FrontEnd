@@ -1,32 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CustomFilterCheckbox } from '../../CustomFilterCheckbox/CustomFilterCheckbox';
 import { WrapperFilterCheckbox } from './styles';
 
-export const SortBy: React.FC = () => {
-  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+interface SortByProps {
+  sortBy: string | null;
+  onSortChange: (newSortBy: string | null) => void;
+}
+
+export const SortBy: React.FC<SortByProps> = ({ sortBy, onSortChange }) => {
   const handleFilterChange = (filter: string) => {
-    setSelectedFilter(prev => (prev === filter ? null : filter));
+    onSortChange(filter === sortBy ? null : filter); // Викликаємо функцію, що надає батьківський компонент
   };
   return (
     <WrapperFilterCheckbox>
       <CustomFilterCheckbox
-        checked={selectedFilter === 'new'}
-        onChange={() => handleFilterChange('new')}
+        checked={sortBy === 'нові'}
+        onChange={() => handleFilterChange('нові')}
         label="Нові"
       />
       <CustomFilterCheckbox
-        checked={selectedFilter === 'priceAsc'}
-        onChange={() => handleFilterChange('priceAsc')}
+        checked={sortBy === 'ціна_за_зростанням'}
+        onChange={() => handleFilterChange('ціна_за_зростанням')}
         label="Ціна за зростанням"
       />
       <CustomFilterCheckbox
-        checked={selectedFilter === 'popular'}
-        onChange={() => handleFilterChange('popular')}
+        checked={sortBy === 'популярні'}
+        onChange={() => handleFilterChange('популярні')}
         label="Популярні"
       />
       <CustomFilterCheckbox
-        checked={selectedFilter === 'priceDesc'}
-        onChange={() => handleFilterChange('priceDesc')}
+        checked={sortBy === 'ціна_за_спаданням'}
+        onChange={() => handleFilterChange('ціна_за_спаданням')}
         label="Ціна за спаданням"
       />
     </WrapperFilterCheckbox>

@@ -6,6 +6,9 @@ import { PublicRouteName } from '@/routes';
 import AccountLayout from '@/pages/AccountPage/AccountLayout';
 import General from '@/pages/AccountPage/General';
 import ChangePassword from '@/pages/AccountPage/ChangePassword';
+import EditProfile from './EditProfile/EditProfiles';
+import EditGeneral from './EditProfile/components/EditGeneral/EditGeneral';
+import ProfileProvider from '@/utils/ProfileProvider';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -62,7 +65,6 @@ function App() {
             path={PublicRouteName.CHANGEPASSWORD}
             element={<ChangePassword />}
           />
-          {/* <Route path={PublicRouteName.REVIEWS} element={<Reviews />} /> */}
         </Route>
         {/* </Route> */}
       </Routes>

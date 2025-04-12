@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FC, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 import { IconName } from '@/kit';
@@ -14,13 +14,13 @@ import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
+import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
-import ButtonLink from '../components/ButtonLink/ButtonLink';
 import { Contacts } from '../../../components/Footer/Contacts';
-
-import { StyledProfileCard, ButtonContainer } from './styles';
+import { StyledProfileCard } from './styles';
 
 interface ScheduleItem {
   days: string;
@@ -30,6 +30,8 @@ interface ScheduleItem {
 interface SocialLink {
   name: string;
   url: string;
+  title: string;
+  isLoggedIn: boolean;
 }
 
 interface PriceItem {
@@ -47,6 +49,7 @@ interface Coach {
   countReview: number;
   rating: number;
   club: string[];
+  sport: string[];
   description: {
     address: string;
     age: number;
@@ -71,13 +74,14 @@ interface Coach {
 
 const TrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
+  const { t } = useTranslation();
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
-  //   const [
-  //     isLoggedIn,
-  //     setIsLoggedIn
-  //   ] = useState<boolean>(false);
+  const [
+    isLoggedIn,
+    // setIsLoggedIn
+  ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -141,6 +145,7 @@ const TrainerPage: FC = () => {
     avatar,
     countReview,
     rating,
+    sport,
 
     // phone,
     // email,
@@ -152,21 +157,29 @@ const TrainerPage: FC = () => {
     schedule,
     experience,
     address,
-    // equipment,
     age,
+    short_desc,
+    // equipment,
   } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  const title = isLoggedIn
+    ? 'Введіть дані, і тренер з вами зв’яжеться'
+    : 'Тільки авторизовані користувачі можуть зв’язатися з тренером';
+
+  // ТЕСТ
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
     firstName: 'Оксана',
     lastName: 'Шевченко',
     rating: 4.5,
-    equipment: ['Карате', 'Бокс'],
+    sport: ['Карате', 'Бокс'],
     price: ['1000 грн'],
     age: 27,
+    short_desc:
+      'Моїм основним напрямком є індивідуальний підхід до кожного клієнта. Я вірю, що кожен має свої сильні сторони, і важливо враховувати фізичні можливості та особисті цілі на шляху до результату. Я працюю з людьми різного віку та рівня підготовки — від початківців до професіоналів, допомагаючи досягати бажаних результатів без ризику для здоров’я.',
   };
 
   const clientService = 4.3;
@@ -174,6 +187,8 @@ const TrainerPage: FC = () => {
   const priceQuality = 2.1;
   const location = 3;
   const cleanliness = 3.7;
+
+  // Закінчення ТЕСТ
 
   return (
     <Section>
@@ -187,8 +202,7 @@ const TrainerPage: FC = () => {
             avatar={avatar}
             address={address}
             age={age}
-            // age={coachTest.age}
-            // equipment={coachTest.equipment}
+            sport={sport}
           />
         </StyledProfileCard>
         <StyledHr />
@@ -202,15 +216,22 @@ const TrainerPage: FC = () => {
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
         <StyledHr />
+        <ShortDescriptionCard
+          short_desc={short_desc}
+          title={t('details_page.read_more')}
+        />
+        <StyledHr />
         <SocialLinks
           socialLinks={social_links || []}
-          //   isLoggedIn={isLoggedIn}
-          //   title="Введіть дані, і адміністратор з вами зв’яжеться"
+          isLoggedIn={isLoggedIn}
+          title={title}
         />
         <StyledHr />
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <CertificatesCard />
         <StyledHr />
         <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}
@@ -218,12 +239,6 @@ const TrainerPage: FC = () => {
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <StyledHr />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
@@ -238,12 +253,6 @@ const TrainerPage: FC = () => {
           firstName={coachTest.firstName}
           lastName={coachTest.lastName}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <HrButton />
         <Contacts />
       </Container>

@@ -6,7 +6,6 @@ import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 
 // import ButtonEdit from '../components/ButtonEdit/ButtonEdit';
-import ButtonLink from '../components/ButtonLink/ButtonLink';
 import StyledHr from '../../../components/StyledHr/StyledHr';
 
 import ProfileCard from '../components/ProfileCard/ProfileCard';
@@ -15,13 +14,14 @@ import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
 import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
 
-import { StyledProfileCard, ButtonContainer } from './styles';
+import { StyledProfileCard } from './styles';
 
 interface ScheduleItem {
   days: string;
@@ -59,6 +59,7 @@ interface AdminClub {
   };
   countReview: number;
   rating: number;
+  sport: string[];
   equipment: string;
 
   phone: string;
@@ -73,10 +74,10 @@ const ClubPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
 
   const [adminClubData, setAdminClubData] = useState<AdminClub | null>(null);
-  //   const [
-  //     isLoggedIn,
-  //     setIsLoggedIn
-  //   ] = useState<boolean>(false);
+  const [
+    isLoggedIn,
+    // setIsLoggedIn
+  ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -115,6 +116,7 @@ const ClubPage: FC = () => {
     avatar,
     countReview,
     rating,
+    // sport,
     // coach,
     // phone,
     // email,
@@ -125,13 +127,17 @@ const ClubPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  const title = isLoggedIn
+    ? 'Введіть дані, і адміністратор з вами зв’яжеться'
+    : 'Тільки авторизовані користувачі можуть зв’язатися з адміністратором';
+
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
     firstName: 'Оксана',
     lastName: 'Шевченко',
     rating: 4.5,
-    equipment: ['Карате', 'Бокс'],
+    sport: ['Карате', 'Бокс'],
     price: ['1000 грн'],
   };
 
@@ -168,8 +174,8 @@ const ClubPage: FC = () => {
         <StyledHr />
         <SocialLinks
           socialLinks={social_links || []}
-          //   isLoggedIn={isLoggedIn}
-          //   title="Введіть дані, і адміністратор з вами зв’яжеться"
+          isLoggedIn={isLoggedIn}
+          title={title}
         />
         <StyledHr />
         <GalleryCard />
@@ -177,6 +183,8 @@ const ClubPage: FC = () => {
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <OurHallsCard />
         <StyledHr />
         <LocationCard />
         <StyledHr />
@@ -187,15 +195,10 @@ const ClubPage: FC = () => {
           avatar={coachTest.avatar}
           firstName={coachTest.firstName}
           lastName={coachTest.lastName}
-          equipment={coachTest.equipment}
+          // sport={sport || []}
+          sport={coachTest.sport}
           price={coachTest.price}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <StyledHr />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
@@ -210,12 +213,6 @@ const ClubPage: FC = () => {
           firstName={coachTest.firstName}
           lastName={coachTest.lastName}
         />
-        <ButtonContainer>
-          <ButtonLink
-          // onClick={onClick}
-          // disabled={disabled}
-          />
-        </ButtonContainer>
         <HrButton />
         <Contacts />
       </Container>

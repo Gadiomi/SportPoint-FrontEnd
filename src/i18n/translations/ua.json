@@ -47,7 +47,13 @@
     "respond": "Відповісти",
     "comment": "Коментувати",
     "choose": "Обрати",
-    "get_in_touch": "Зв'язатись"
+    "get_in_touch": "Зв'язатись",
+    "read_more": "Читати далі",
+    "send": "Надіслати",
+    "no": "Ні",
+    "yes": "Так",
+    "certificates": "СЕРТИФІКАТИ",
+    "our_halls": "НАШІ ЗАЛИ"
   },
   "account_page": {
     "general": "ЗАГАЛЬНЕ",
@@ -74,6 +80,17 @@
     "name": "Ім’я",
     "second_name": "Прізвище",
     "club_name": "Назва клубу",
+    "phone": "Номер телефону",
+    "change-profile-photo": "Змінити фото профілю",
+    "logout": "Вийти",
+    "zone": "Небезпечна зона",
+    "delete": "Видалити обліковий запис",
+    "change-password-h": "Змінити пароль",
+    "password-current": "Введіть поточний пароль",
+    "password-new": "Введіть новий пароль",
+    "password-confirm": "Підтвердити новий пароль",
+    "forgot": "Забули пароль?",
+    "restore": "Відновити",
     "phone": "Номер телефону"
   }
 }

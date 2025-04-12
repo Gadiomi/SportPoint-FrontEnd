@@ -24,7 +24,7 @@ export const PriceRatingBox = styled.div`
   gap: 16px;
 `;
 
-export const Equipment = styled.div`
+export const Sport = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -32,7 +32,7 @@ export const Equipment = styled.div`
   flex-wrap: wrap;
 `;
 
-export const EquipmentEl = styled.div`
+export const SportEl = styled.div`
   width: auto;
   display: flex;
   border-radius: 20px;

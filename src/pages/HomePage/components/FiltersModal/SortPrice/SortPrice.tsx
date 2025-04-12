@@ -21,16 +21,18 @@ const SortPrice: React.FC<PriceFilterProps> = ({
   priceRange,
   onFilterChange,
 }) => {
-  const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    type: 'from' | 'to',
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const value = e.target.value === '' ? null : Number(e.target.value);
-    onFilterChange(value, priceRange.to);
-  };
 
-  const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value === '' ? null : Number(e.target.value);
-    onFilterChange(priceRange.from, value);
+    if (type === 'from') {
+      onFilterChange(value, priceRange.to);
+    } else {
+      onFilterChange(priceRange.from, value);
+    }
   };
-
   return (
     <PriceFilterWrapper>
       <InputWrapper>
@@ -39,7 +41,7 @@ const SortPrice: React.FC<PriceFilterProps> = ({
           <StyledInput
             type="number"
             value={priceRange.from ?? ''}
-            onChange={handleFromChange}
+            onChange={e => handleInputChange('from', e)}
             placeholder="0"
             min="0"
           />
@@ -53,7 +55,7 @@ const SortPrice: React.FC<PriceFilterProps> = ({
           <StyledInput
             type="number"
             value={priceRange.to ?? ''}
-            onChange={handleToChange}
+            onChange={e => handleInputChange('to', e)}
             placeholder="1000"
             min="0"
           />

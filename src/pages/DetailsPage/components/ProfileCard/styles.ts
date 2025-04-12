@@ -31,4 +31,25 @@ export const AvatarNone = styled.div`
   font-size: 64px;
   color: ${({ theme }) => `${theme.color.mainWhite}`};
   font-weight: bold;
+  flex-shrink: 0;
+`;
+
+export const Sport = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+export const SportEl = styled.div`
+  width: auto;
+  display: flex;
+  border-radius: 20px;
+  border: 1px solid rgba(41, 68, 135, 1);
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  padding: 6px 12px;
 `;
