@@ -150,6 +150,15 @@ const RegisterPage = () => {
 
   const selectedSports = watch('sport') || [];
 
+  const changeRole = (role: string) => {
+    setCurrentRole(role);
+    if (role !== currentRole) {
+      reset();
+      setIsOpenAddress(false);
+      setIsOpenSports(false);
+    }
+  };
+
   return (
     <Section>
       {/* ??? */}
@@ -170,8 +179,7 @@ const RegisterPage = () => {
               title={t(`login_page.tabs.${role}`)}
               testId={role}
               onClick={() => {
-                setCurrentRole(role);
-                role !== currentRole ? reset() : null;
+                changeRole(role);
               }}
               {...(currentRole !== role
                 ? { style: { backgroundColor: theme.color.inputBar } }
