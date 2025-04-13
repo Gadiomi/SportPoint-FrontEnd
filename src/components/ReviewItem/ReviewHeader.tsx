@@ -2,11 +2,14 @@ import React from 'react';
 import { ReviewHeaderContainer, Header } from './styles';
 import { Icon } from '@/kit';
 import { IconName } from '@/kit';
+import { useNavigate } from 'react-router-dom';
+import { IconDiv } from './styles';
 
 type ReviewHeaderProps = {
   title?: string;
   leftIcon?: IconName | null;
   rightIcon?: IconName | null;
+  leftIconStyles?: React.CSSProperties;
   onClick?: () => void;
 };
 
@@ -14,14 +17,31 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
   title = 'МОЇ ВІДГУКИ',
   leftIcon = IconName.MASSAGE_TYPING,
   rightIcon = IconName.ARROW_LEFT,
+  leftIconStyles = {},
 }) => {
+  const navigate = useNavigate();
+
+  const handleRightIconClick = () => {
+    if (rightIcon === IconName.ARROW_LEFT) {
+      navigate('/profile'); // Navigate to the /profile page
+    }
+  };
+
   return (
     <ReviewHeaderContainer>
       <Header>
-        {leftIcon && <Icon name={leftIcon} styles={{ fill: 'none' }} />}
+        {leftIcon && (
+          <Icon name={leftIcon} styles={{ fill: 'none', ...leftIconStyles }} />
+        )}
         {title}
       </Header>
-      {rightIcon && <Icon name={rightIcon} styles={{ fill: 'none' }} />}
+      {rightIcon && (
+        <IconDiv onClick={handleRightIconClick}>
+          {' '}
+          {/* Wrapping the Icon in a div */}
+          <Icon name={rightIcon} styles={{ fill: 'none' }} />
+        </IconDiv>
+      )}
     </ReviewHeaderContainer>
   );
 };

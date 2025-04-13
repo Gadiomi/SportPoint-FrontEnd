@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useAppSelector } from '@/redux/reviews/reviewsSelector';
+import { fetchReviewsByOwner } from '@/redux/reviews/reviewsApi';
 import styled from 'styled-components';
 import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
 import EditReviewPage from '@/pages/ReviewsPage/EditReviewPage';
+import AverageRating from './AverageRating';
 // import styledHr from '@/components/';
 import axios from 'axios';
 import { Icon } from '@/kit';
@@ -10,14 +13,13 @@ import {
   Title,
   Bar,
   RatingBar,
-  Summary,
   RatingContainer,
   Loading,
   ErrorText,
-  CountReviews,
 } from './styles';
 
 const ReviewStats: React.FC = () => {
+  // const ownerId = useAppSelector(state => state.Auth.user?._id);
   const [ratings, setRatings] = useState<{ [key: number]: number }>({
     5: 0,
     4: 0,
@@ -30,16 +32,31 @@ const ReviewStats: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [firstComment, setFirstComment] = useState<any>(null);
+  const [trainerData, setTrainerData] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          'https://sportpoint-backend.onrender.com/cards/67cb064cb731dc6d28584704',
-        );
+        //  if (!ownerId) return;
 
-        const comments = response.data.data.userComments;
-        console.log('01.04', comments);
+        const response = await fetchReviewsByOwner('67f241921c039dcf35baaea2');
+
+        //  console.log('ReviewStats',response);
+        const data = response;
+
+        // Пошук першого коментаря користувача (можна замінити на авторизованого)
+        const commentsArray = Array.isArray(response) ? response : [response];
+        const userComment = commentsArray[0]; // TODO: замінити на фільтр по userId
+        setFirstComment(userComment);
+
+        setTrainerData({
+          name: data.firstName,
+          surname: data.lastName,
+          avatar: data.avatar,
+          userRole: data.role,
+          sport: data.sport || [],
+        });
 
         // Ініціалізація об'єкта підрахунку оцінок
         const ratingsCount = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -47,7 +64,7 @@ const ReviewStats: React.FC = () => {
         let sum = 0;
 
         // Перевірка чи це масив коментарів
-        const commentsArray = Array.isArray(comments) ? comments : [comments];
+        // const commentsArray = Array.isArray(comments) ? comments : [comments];
 
         // Перебір всіх коментарів і підрахунок оцінок
         commentsArray.forEach(comment => {
@@ -97,28 +114,37 @@ const ReviewStats: React.FC = () => {
           ))}
         </div>
         <div>
-          <Summary>
-            <strong>{averageRating.toFixed(1)}</strong>
-            <Icon
-              name={IconName.STAR_FILL}
-              styles={{ fill: '#ED772F', color: 'transparent' }}
-              size={20}
-            />
-          </Summary>
-          <CountReviews>{totalReviews} відгуки</CountReviews>
+          <AverageRating
+            averageRating={averageRating}
+            totalReviews={totalReviews}
+          />
+          {/* <Date>{review.date ?? 'Дата не вказана'}</Date> */}
         </div>
       </RatingContainer>
       <div onClick={() => setIsEditing(true)}>
         <ReviewHeader
           title="Залишити відгук"
-          leftIcon={null}
+          leftIcon={IconName.ARROW_CORNER}
           rightIcon={IconName.ARROW_CORNER}
+          leftIconStyles={{ opacity: 0 }}
         />
       </div>
       {/* Якщо isEditing true, відображаємо сторінку редагування */}
-      {isEditing && (
+      {isEditing && firstComment && trainerData && (
         <EditReviewPage
-          review={{ id: '', name: 'Користувач', avatar: '', comment: '' }}
+          review={{
+            id: firstComment._id,
+            name: trainerData.name || '',
+            surname: trainerData.surname || '',
+            avatar: trainerData.avatar || '',
+            userRole: trainerData.userRole,
+            sport: trainerData.sport || [],
+            comment: firstComment.text || '',
+            createdAt: firstComment.createdAt,
+            updatedAt: firstComment.updatedAt,
+            averageRating,
+            totalReviews,
+          }}
           onCancel={() => setIsEditing(false)} // Кнопка для скасування редагування
         />
       )}
