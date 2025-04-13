@@ -41,6 +41,10 @@ export interface RegisterFormData {
   confirm_password: string;
   club_name: string;
   phone: string;
+  city?: string;
+  address?: string;
+  // abilities?: string[];
+  sport?: string[];
 }
 
 /* AdminClub List */
