@@ -14,6 +14,7 @@ import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
 import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
@@ -72,6 +73,10 @@ const AdminClubPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
 
   const [adminClubData, setAdminClubData] = useState<AdminClub | null>(null);
+  const [
+    isLoggedIn,
+    // setIsLoggedIn
+  ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -120,6 +125,8 @@ const AdminClubPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  const title = '';
+
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
@@ -164,13 +171,19 @@ const AdminClubPage: FC = () => {
           labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
         <StyledHr />
-        <SocialLinks socialLinks={social_links || []} />
+        <SocialLinks
+          socialLinks={social_links || []}
+          isLoggedIn={isLoggedIn}
+          title={title}
+        />
         <StyledHr />
         <GalleryCard />
         <StyledHr />
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <OurHallsCard />
         <StyledHr />
         <LocationCard />
         <StyledHr />

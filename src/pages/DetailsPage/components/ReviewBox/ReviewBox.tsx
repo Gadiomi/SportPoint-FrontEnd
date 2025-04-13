@@ -90,7 +90,7 @@ const ReviewsBox: React.FC<ReviewsBoxProps> = ({
       </ReviewsBoxContainer>
       <ReviewsBoxWrapper>
         <StyledButton
-          testId="details_page.edit_button"
+          testId="details_page.complain"
           title={t('details_page.complain')}
           appearance={ButtonAppearance.UNDERLINED}
           style={{

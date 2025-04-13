@@ -27,7 +27,7 @@ export const ButtonListItem = styled.li`
   margin: 0;
 `;
 
-export const StyledCalendar = styled(Calendar)`
+export const StyledCalendar = styled(Calendar)<{ view: string }>`
   border-radius: 8px;
   background-color: transparent;
 
@@ -35,9 +35,7 @@ export const StyledCalendar = styled(Calendar)`
     border: none;
     position: absolute;
   }
-  .rbc-calendar {
-    position: relative;
-  }
+
   .rbc-time-view {
     display: flex;
     flex-direction: column;
@@ -46,7 +44,13 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .rbc-time-content {
-    display: none;
+    display: ${({ view }) => (view === 'week' ? 'none' : 'flex')};
+  }
+  .rbc-month-view {
+    border: none;
+  }
+  .rbc-month-row {
+    overflow: visible;
   }
 
   .rbc-header {
@@ -57,10 +61,17 @@ export const StyledCalendar = styled(Calendar)`
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 5px 0;
+    padding: 6px 0;
   }
 
   .rbc-time-view .rbc-allday-cell {
-    display: none;
+    display: ${({ view }) => (view === 'week' ? 'none' : 'flex')};
+  }
+
+  .rbc-date-cell.rbc-now {
+    background-color: transparent;
+    color: #000;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
 `;

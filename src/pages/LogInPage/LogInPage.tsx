@@ -13,6 +13,7 @@ import { useTheme } from '@/hooks';
 import { CookiesKey, Roles } from '@/constants';
 import { useLoginMutation } from '@/redux/auth/authApi';
 import { useNavigate } from 'react-router-dom';
+import SocialNetButton from '../RegisterPage/components/SocialNetButton/SocialNetButton';
 
 type logInFormInputs = {
   email: string;
@@ -178,45 +179,15 @@ const LogInPage: FC = () => {
             }
           />
         </Form>
-        <Button
-          type="submit"
-          testId="login_page.signup_google"
-          title={t('login_page.signup_google')}
-          appearance={ButtonAppearance.SECONDARY}
-          style={{
-            width: '100%',
-            borderColor: theme.color.mainOrange,
-            marginBottom: theme.pxs.x2,
-          }}
-          appendChild={
-            <img
-              style={{ width: 24, height: 24, marginLeft: theme.pxs.x2 }}
-              src="/assets/images/icon_google.png"
-            />
-          }
-        />
-        <Button
-          testId="login_page.signup_facebook"
-          title={t('login_page.signup_facebook')}
-          appearance={ButtonAppearance.SECONDARY}
-          style={{
-            width: '100%',
-            borderColor: theme.color.mainOrange,
-            marginBottom: theme.pxs.x6,
-          }}
-          appendChild={
-            <img
-              style={{ width: 24, height: 24, marginLeft: theme.pxs.x2 }}
-              src="/assets/images/icon_facebook.png"
-            />
-          }
-        />
+        <SocialNetButton name={'google'} act={'login'} />
+        <SocialNetButton name={'facebook'} act={'login'} />
         <CallToActionWrapper>
-          <Text>{t('login_page.already_have')}</Text>
+          <Text>{t('login_page.have_not_yet')}</Text>
           <Button
-            testId="login_page.already_have"
-            title={t('login_page.button_title')}
+            testId="login_page.have_not_yet"
+            title={t('login_page.button_title_reg')}
             appearance={ButtonAppearance.UNDERLINED}
+            onClick={() => nav('/register')}
           />
         </CallToActionWrapper>
       </Container>

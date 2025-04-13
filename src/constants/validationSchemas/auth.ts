@@ -47,4 +47,8 @@ export const RegisterFormSchema = yup.object({
   second_name: yup.string().required(REGEXP.email.mes.required),
   club_name: yup.string().required(REGEXP.email.mes.required),
   phone: yup.string().required(REGEXP.email.mes.required),
+  city: yup.string(),
+  address: yup.string(),
+  // abilities: yup.array().of(yup.string()),
+  sport: yup.array().of(yup.string().required()),
 });

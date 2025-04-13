@@ -16,6 +16,7 @@ import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
+import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
@@ -76,6 +77,10 @@ const AccountTrainerPage: FC = () => {
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
+  const [
+    isLoggedIn,
+    // setIsLoggedIn
+  ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -156,6 +161,8 @@ const AccountTrainerPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  const title = '';
+
   const coachTest = {
     avatar:
       'https://res.cloudinary.com/dkr0mmyqe/image/upload/v1735050627/ylzoczbh3tva6o7hojgb.jpg',
@@ -210,11 +217,17 @@ const AccountTrainerPage: FC = () => {
           title={t('details_page.read_more')}
         />
         <StyledHr />
-        <SocialLinks socialLinks={social_links || []} />
+        <SocialLinks
+          socialLinks={social_links || []}
+          isLoggedIn={isLoggedIn}
+          title={title}
+        />
         <StyledHr />
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <CertificatesCard />
         <StyledHr />
         <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}

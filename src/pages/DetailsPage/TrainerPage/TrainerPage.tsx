@@ -14,6 +14,7 @@ import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
 import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
@@ -29,6 +30,8 @@ interface ScheduleItem {
 interface SocialLink {
   name: string;
   url: string;
+  title: string;
+  isLoggedIn: boolean;
 }
 
 interface PriceItem {
@@ -75,10 +78,10 @@ const TrainerPage: FC = () => {
 
   const [coachData, setCoachData] = useState<Coach | null>(null);
   const [clubsName, setClubsName] = useState<string[]>([]);
-  //   const [
-  //     isLoggedIn,
-  //     setIsLoggedIn
-  //   ] = useState<boolean>(false);
+  const [
+    isLoggedIn,
+    // setIsLoggedIn
+  ] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -157,10 +160,13 @@ const TrainerPage: FC = () => {
     age,
     short_desc,
     // equipment,
-    age,
   } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
+
+  const title = isLoggedIn
+    ? 'Введіть дані, і тренер з вами зв’яжеться'
+    : 'Тільки авторизовані користувачі можуть зв’язатися з тренером';
 
   // ТЕСТ
   const coachTest = {
@@ -217,13 +223,15 @@ const TrainerPage: FC = () => {
         <StyledHr />
         <SocialLinks
           socialLinks={social_links || []}
-          //   isLoggedIn={isLoggedIn}
-          //   title="Введіть дані, і адміністратор з вами зв’яжеться"
+          isLoggedIn={isLoggedIn}
+          title={title}
         />
         <StyledHr />
         <PriceCard prices={price || []} />
         <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
+        <StyledHr />
+        <CertificatesCard />
         <StyledHr />
         <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}

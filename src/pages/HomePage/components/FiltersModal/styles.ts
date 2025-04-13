@@ -11,6 +11,7 @@ export const Backdrop = styled.div(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  zIndex: '1200',
 }));
 
 export const ModalContainer = styled.div(({ theme }) => ({

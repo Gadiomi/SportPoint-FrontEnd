@@ -15,15 +15,20 @@ import { SortBy } from './SortBy/SortBy';
 import SortPrice from './SortPrice/SortPrice';
 import { Classification } from './Classification/Classification';
 import { Logo } from '@/components/Logo/Logo';
+import { FilterParams } from '@/types';
 
 interface PropsFiltersModal {
   isFiltersModalOpen: boolean;
   setIsFiltersModalOpen: (value: boolean) => void;
+  getFilteredCards: (filters: FilterParams) => void;
+  setFilters: (filters: FilterParams) => void;
 }
 
 export const FiltersModal: React.FC<PropsFiltersModal> = ({
+  setFilters,
   isFiltersModalOpen,
   setIsFiltersModalOpen,
+  getFilteredCards,
 }) => {
   const theme = useTheme();
   const [select, setSelect] = useState<{ value: string; label: string } | null>(
@@ -36,6 +41,8 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
     from: null,
     to: null,
   });
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [classification, setClassification] = useState<string[]>([]);
 
   useEffect(() => {
     if (isFiltersModalOpen) {
@@ -60,9 +67,37 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
   const handleClose = () => {
     setIsFiltersModalOpen(false);
   };
+
   const handlePriceChange = (from: number | null, to: number | null) => {
     setPriceRange({ from, to });
   };
+  const filters = {
+    address: select?.value || undefined,
+    minPrice: priceRange.from || 0,
+    maxPrice: priceRange.to || 0,
+    abilities: classification.length > 0 ? classification.join(',') : undefined,
+    sort: sortBy || 'нові',
+  };
+  const handleSubmit = () => {
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, value]) => value !== undefined),
+    );
+
+    getFilteredCards(cleanedFilters);
+    setIsFiltersModalOpen(false);
+    console.log('Submitted filters:', filters);
+  };
+
+  const handleClearFilters = () => {
+    const clearedFilters = filters;
+
+    setSelect(null);
+    setPriceRange({ from: null, to: null });
+    setSortBy(null);
+    setClassification([]);
+    setFilters(clearedFilters);
+  };
+
   return (
     <Backdrop onClick={handleClose}>
       <ModalContainer onClick={e => e.stopPropagation()}>
@@ -83,6 +118,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             }}
             appearance={ButtonAppearance.UNDERLINED}
             testId="clean-button"
+            onClick={handleClearFilters}
           />
         </ModalHeader>
 
@@ -100,7 +136,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
           <About style={{ marginBottom: theme.pxs.x4 }}>Впорядкувати за</About>
-          <SortBy />
+          <SortBy sortBy={sortBy} onSortChange={setSortBy} />
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
@@ -115,7 +151,10 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
           <About style={{ marginBottom: theme.pxs.x4 }}>Класифікація</About>
-          <Classification />
+          <Classification
+            classification={classification}
+            onChange={setClassification}
+          />
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
@@ -125,6 +164,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             title="Переглянути результати"
             appearance={ButtonAppearance.PRIMARY}
             testId="submit-filters-button"
+            onClick={handleSubmit}
           />
         </ModalFooter>
       </ModalContainer>

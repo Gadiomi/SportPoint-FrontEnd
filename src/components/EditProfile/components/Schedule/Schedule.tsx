@@ -132,7 +132,7 @@ const Schedule = () => {
 
       <StyledCalendar
         localizer={localizer}
-        events={events}
+        // events={events}
         startAccessor={event => event.start}
         endAccessor={event => event.end}
         defaultDate={new Date()}

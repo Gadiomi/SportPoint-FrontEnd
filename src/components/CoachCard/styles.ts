@@ -26,6 +26,7 @@ export const CoachImage = styled.img`
   width: 90px;
   height: 90px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const CoachInfoBlock = styled.div`
