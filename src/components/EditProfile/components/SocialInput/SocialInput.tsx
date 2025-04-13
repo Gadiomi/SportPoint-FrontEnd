@@ -1,6 +1,7 @@
 import {
   Container,
   Label,
+  SelectArrow,
   SelectedItem,
   SelectedItems,
   SelectStyled,
@@ -15,7 +16,7 @@ interface SocialInputProps {
   placeholder: string;
   labelName: string;
   onChange: (selectedItems: { name: string; url: string }[]) => void;
-  userData: { name: string; url: string }[]; // Expected format for userData
+  userData: { name: string; url: string }[];
 }
 
 const SocialInput: React.FC<SocialInputProps> = ({
@@ -67,21 +68,23 @@ const SocialInput: React.FC<SocialInputProps> = ({
           </SelectedItem>
         ))}
       </SelectedItems>
-      <SelectStyled
-        id="socialSelect"
-        value={currentSocial}
-        onChange={handleSelectChange}
-        aria-labelledby="socialSelect-label"
-        title="Виберіть соціальну мережу"
-        name="social"
-      >
-        <option value="">{placeholder}</option>
-        {content.map(conte => (
-          <option key={conte} value={conte}>
-            {conte}
-          </option>
-        ))}
-      </SelectStyled>
+      <div>
+        <SelectStyled
+          id="socialSelect"
+          value={currentSocial}
+          onChange={handleSelectChange}
+          aria-labelledby="socialSelect-label"
+          title="Виберіть соціальну мережу"
+          name="social"
+        >
+          <option value="">{placeholder}</option>
+          {content.map(conte => (
+            <option key={conte} value={conte}>
+              {conte}
+            </option>
+          ))}
+        </SelectStyled>
+      </div>
       {currentSocial && (
         <AddUrlContainer>
           <Input

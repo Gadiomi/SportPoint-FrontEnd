@@ -7,6 +7,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  @media screen and (min-width: 320px) {
+    padding: 0 12px;
+  }
 `;
 
 export const AvatarName = styled.div`
@@ -66,10 +69,11 @@ export const SelectStyled = styled.select`
   }
 `;
 
-export const InputsSection = styled.div`
+export const InputsSection = styled.div<{ view?: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: ${({ view }) => (view === true ? '8' : '16px')};
+
   width: 100%;
 `;
 

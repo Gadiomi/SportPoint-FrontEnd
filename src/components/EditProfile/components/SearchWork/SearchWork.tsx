@@ -14,6 +14,7 @@ interface SearchWorkProps {
   searchTerm: string;
   handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isFetching: boolean;
+  view: boolean;
   searchResults: {
     profiles: {
       _id: string;
@@ -52,15 +53,16 @@ const SearchWork: React.FC<SearchWorkProps> = ({
   setSelectedProfile,
   selectedProfile,
   title,
+  view,
 }) => {
   return (
     <div>
-      <InputsSection>
+      <InputsSection view={view}>
         <SectionTitle>{title}</SectionTitle>
-        <SelectedItems>
-          {selectedProfile &&
-            selectedProfile?.map(work => (
-              <SelectedItem key={work.id}>
+        {selectedProfile &&
+          selectedProfile?.map(work => (
+            <SelectedItems key={work.id}>
+              <SelectedItem>
                 {work.firstName}
                 <span> {work.lastName}</span>
                 <CitySpan>
@@ -68,8 +70,8 @@ const SearchWork: React.FC<SearchWorkProps> = ({
                   <span>{work.address}</span>)
                 </CitySpan>
               </SelectedItem>
-            ))}
-        </SelectedItems>
+            </SelectedItems>
+          ))}
 
         <Input
           testId="searchClubs"

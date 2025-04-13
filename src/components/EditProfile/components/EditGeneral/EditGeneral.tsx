@@ -11,7 +11,6 @@ import cities from '../../data/cities.json';
 import socials from '../../data/socials.json';
 import { debounce } from 'lodash';
 import {
-  GeneralBtns,
   Container,
   GeneralForm,
   SelectStyled,
@@ -37,7 +36,6 @@ import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
 import SearchWork from '../SearchWork/SearchWork';
 import AvatarAndName from '../AvatarAndName/AvatarAndName';
 import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
-import { t } from 'i18next';
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
@@ -346,7 +344,7 @@ const EditGeneral: FC = () => {
           />
           <Selection
             content={sports}
-            placeholder={'Обрати'}
+            // placeholder={'Обрати'}
             labelName={'Ваші види спорту'}
             onChange={handleSelectionChange}
             userData={userProfile?.sport || []}
@@ -359,6 +357,7 @@ const EditGeneral: FC = () => {
             setSelectedProfile={handleSelectProfile}
             selectedProfile={selectedProfile}
             title={'Спортивні клуби, де ви працюєте'}
+            view={false}
           />
           <Certificates
             handleCertificatesChange={handleCertificatesChange}

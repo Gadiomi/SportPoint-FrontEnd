@@ -42,3 +42,9 @@ export const NameTitle = styled.h3`
     margin-top: 12px;
   }
 `;
+
+export const SectionStyled = styled.div`
+  @media screen and (min-width: 320px) {
+    padding: 0 12px;
+  }
+`;
