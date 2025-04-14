@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Icon } from '@/kit';
-
 import { Button } from '@/kit';
 
 export const StyledWorksInCard = styled.div`

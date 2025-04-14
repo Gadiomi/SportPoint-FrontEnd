@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
 import { useTranslation } from 'react-i18next';
 import { IconName, ButtonAppearance } from '@/kit';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 
 import {
@@ -84,6 +85,7 @@ const WorksInCard: React.FC<WorksInCardProps> = ({
           ></StyledButton>
         </WorksInWrapper>
       </WorksInContainer>
+      <StyledHr style={{ marginBottom: '32px' }} />
     </StyledWorksInCard>
   );
 };

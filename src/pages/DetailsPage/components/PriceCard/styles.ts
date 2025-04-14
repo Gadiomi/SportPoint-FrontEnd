@@ -4,14 +4,13 @@ export const StyledPriceCard = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: ${({ theme }) => `${theme.pxs.x2}px`};
 `;
 
 export const PriceContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => `${theme.pxs.x4}px`};
-  margin-bottom: ${({ theme }) => `${theme.pxs.x6}px`};
+  margin-bottom: ${({ theme }) => `${theme.pxs.x8}px`};
 `;
 
 export const PriceDiv = styled.div`

@@ -4,7 +4,6 @@ export const StyledReviewDetailsCard = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: ${({ theme }) => `${theme.pxs.x2}px`};
 `;
 
 export const ProgressBarBox = styled.div`

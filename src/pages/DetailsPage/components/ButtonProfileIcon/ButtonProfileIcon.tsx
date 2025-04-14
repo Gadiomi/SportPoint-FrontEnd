@@ -46,7 +46,7 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
           />
         }
       ></Button>
-      <span style={{ ...fonts.addressDetails, color: theme.color.secWhite }}>
+      <span style={{ ...fonts.smallText, color: theme.color.secWhite }}>
         {text}
       </span>
     </div>

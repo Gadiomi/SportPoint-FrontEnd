@@ -4,10 +4,6 @@ import { useParams } from 'react-router-dom';
 import { IconName } from '@/kit';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
-
-import EditButton from '../components/EditButton/EditButton';
-import StyledHr from '../../../components/StyledHr/StyledHr';
-
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
@@ -49,6 +45,7 @@ interface AdminClub {
   certificates: string[];
   coach: string[];
   description: {
+    city: string;
     address: string;
     short_desc: string;
     abilities: string;
@@ -120,7 +117,7 @@ const AdminClubPage: FC = () => {
     // email,
   } = adminClubData || {};
 
-  const { social_links, price, schedule, address } =
+  const { social_links, price, schedule, city, address } =
     adminClubData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
@@ -152,13 +149,10 @@ const AdminClubPage: FC = () => {
             iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             avatar={avatar}
+            city={city}
             address={address}
           />
         </StyledProfileCard>
-        <EditButton
-        // id={id}
-        />
-        <StyledHr />
         <ReviewCard
           iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
           counts={[
@@ -170,23 +164,15 @@ const AdminClubPage: FC = () => {
           ]}
           labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
-        <StyledHr />
         <SocialLinks
           socialLinks={social_links || []}
           isLoggedIn={isLoggedIn}
           title={title}
         />
-        <StyledHr />
         <GalleryCard />
-        <StyledHr />
-        <PriceCard prices={price || []} />
-        <StyledHr />
-        <WorkingHoursCard schedules={schedule || []} />
-        <StyledHr />
         <OurHallsCard />
-        <StyledHr />
-        <LocationCard />
-        <StyledHr />
+        <PriceCard prices={price || []} />
+        <WorkingHoursCard schedules={schedule || []} />
         <OurCoachCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}
@@ -196,7 +182,8 @@ const AdminClubPage: FC = () => {
           lastName={coachTest.lastName}
           price={coachTest.price}
         />
-        <StyledHr />
+        <LocationCard />
+
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}
