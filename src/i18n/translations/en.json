@@ -4,6 +4,7 @@
   "signup": "Sign Up",
   "chosen": "CHOSEN",
   "coachs": "Coachs",
+  "clubs-list": "Sports clubs",
   "clubs": "Clubs",
   "more_details": "More details",
   "show_more": "Show more",
@@ -92,5 +93,19 @@
     "second_name": "Second name",
     "club_name": "Club's name",
     "phone": "Phone"
+  },
+  "home_page": {
+    "homeDescr": "Discover the best sports clubs and professional trainers in your area.",
+    "motivation": "BE SPORTY",
+    "loading": "Loading",
+    "reviews": "reviews",
+    "filters": "Filter",
+    "filtering": "Filter",
+    "clean": "clean",
+    "city": "City",
+    "sortBy": "Sort by",
+    "price": "Price",
+    "classification": "Classification",
+    "resultFilter": "Show result"
   }
 }
