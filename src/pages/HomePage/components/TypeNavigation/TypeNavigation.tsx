@@ -4,6 +4,7 @@ import { Icon, IconName, Light, Title } from '@/kit';
 import { useTheme } from 'styled-components';
 import { LinkItem, LinkList, StyledLink } from './styles';
 import { TitleBox } from '@/kit/TitleBox';
+import { t } from 'i18next';
 
 export const TypeNavigation: React.FC = () => {
   const theme = useTheme();
@@ -19,14 +20,11 @@ export const TypeNavigation: React.FC = () => {
         iconStyles={{
           color: theme.color.mainOrange,
         }}
-        title="БУДЬ СПОРТИВНИМ"
+        title={t('home_page.motivation')}
         boxStyle={{ marginBottom: theme.pxs.x2 }}
       />
 
-      <Light>
-        Відкрийте для себе найкращі спортивні клуби та професійних тренерів у
-        вашому регіоні.
-      </Light>
+      <Light>{t('home_page.homeDescr')}</Light>
       <LinkList>
         <LinkItem>
           <StyledLink
@@ -34,7 +32,7 @@ export const TypeNavigation: React.FC = () => {
             $bgImage1x="/assets/images/homePage/trainer@1.jpg"
             $bgImage2x="/assets/images/homePage/trainer@2.jpg"
           >
-            <Title>ТРЕНЕРИ</Title>
+            <Title style={{ textTransform: 'uppercase' }}>{t('coachs')}</Title>
             <Icon name={IconName.ARROW_RIGHT} size={theme.pxs.x6} />
           </StyledLink>
         </LinkItem>
@@ -44,7 +42,9 @@ export const TypeNavigation: React.FC = () => {
             $bgImage1x="/assets/images/homePage/gym@1.jpg"
             $bgImage2x="/assets/images/homePage/gym@2.jpg"
           >
-            <Title>СПОРТКЛУБИ</Title>
+            <Title style={{ textTransform: 'uppercase' }}>
+              {t('clubs-list')}
+            </Title>
             <Icon name={IconName.ARROW_RIGHT} size={theme.pxs.x6} />
           </StyledLink>
         </LinkItem>

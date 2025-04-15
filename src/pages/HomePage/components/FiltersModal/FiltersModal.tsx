@@ -16,6 +16,7 @@ import SortPrice from './SortPrice/SortPrice';
 import { Classification } from './Classification/Classification';
 import { Logo } from '@/components/Logo/Logo';
 import { FilterParams } from '@/types';
+import { t } from 'i18next';
 
 interface PropsFiltersModal {
   isFiltersModalOpen: boolean;
@@ -76,7 +77,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
     minPrice: priceRange.from || 0,
     maxPrice: priceRange.to || 0,
     abilities: classification.length > 0 ? classification.join(',') : undefined,
-    sort: sortBy || 'нові',
+    sort: sortBy || 'new',
   };
   const handleSubmit = () => {
     const cleanedFilters = Object.fromEntries(
@@ -85,12 +86,10 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
 
     getFilteredCards(cleanedFilters);
     setIsFiltersModalOpen(false);
-    console.log('Submitted filters:', filters);
   };
 
   const handleClearFilters = () => {
     const clearedFilters = filters;
-
     setSelect(null);
     setPriceRange({ from: null, to: null });
     setSortBy(null);
@@ -106,9 +105,9 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
           <CloseButton onClick={handleClose} type="button">
             <Icon name={IconName.X} />
           </CloseButton>
-          <Medium>Фільтрувати</Medium>
+          <Medium>{t('home_page.filtering')}</Medium>
           <Button
-            title="очистити"
+            title={t('home_page.clean')}
             style={{
               textDecoration: 'none',
               color: theme.color.disabled,
@@ -124,7 +123,9 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
 
         <ModalContent>
           <StyledHr style={{ marginBottom: theme.pxs.x4 }} />
-          <About style={{ marginBottom: theme.pxs.x4 }}>Місто</About>
+          <About style={{ marginBottom: theme.pxs.x4 }}>
+            {t('home_page.city')}
+          </About>
           <CustomSelect
             options={cityOptions}
             value={select}
@@ -135,13 +136,17 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
-          <About style={{ marginBottom: theme.pxs.x4 }}>Впорядкувати за</About>
+          <About style={{ marginBottom: theme.pxs.x4 }}>
+            {t('home_page.sortBy')}
+          </About>
           <SortBy sortBy={sortBy} onSortChange={setSortBy} />
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
 
-          <About style={{ marginBottom: theme.pxs.x4 }}>Ціна</About>
+          <About style={{ marginBottom: theme.pxs.x4 }}>
+            {t('home_page.price')}
+          </About>
           <SortPrice
             priceRange={priceRange}
             onFilterChange={handlePriceChange}
@@ -150,7 +155,9 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
           <StyledHr
             style={{ marginTop: theme.pxs.x8, marginBottom: theme.pxs.x8 }}
           />
-          <About style={{ marginBottom: theme.pxs.x4 }}>Класифікація</About>
+          <About style={{ marginBottom: theme.pxs.x4 }}>
+            {t('home_page.classification')}
+          </About>
           <Classification
             classification={classification}
             onChange={setClassification}
@@ -161,7 +168,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
         </ModalContent>
         <ModalFooter>
           <Button
-            title="Переглянути результати"
+            title={t('home_page.resultFilter')}
             appearance={ButtonAppearance.PRIMARY}
             testId="submit-filters-button"
             onClick={handleSubmit}
