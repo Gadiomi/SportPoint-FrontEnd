@@ -187,23 +187,18 @@ const RegisterPage = () => {
       setClubsList(
         selectedCityClubList.length > 0 ? selectedCityClubList : initClubsList,
       );
-      // const clubsList = selectedCityClubList.map(club => ({
-      //   value: `${club.clubName}, ${club.address}`,
-      //   label: `${club.clubName}, ${club.address}`,
-      // }));
-      // console.log(' - clubsList -> ', clubsList);
     }
   }, [selectedCity, currentRole]);
 
   // --- / - ---
   // ---  - ---
-  console.log(' -  - isOpenSports -> ', isOpenSports);
-  console.log(
-    ' -  -- selectedSports -> ',
-    selectedSports,
-    ' - ',
-    selectedSports.join(' | '),
-  );
+  // console.log(' -  - isOpenSports -> ', isOpenSports);
+  // console.log(
+  //   ' -  -- selectedSports -> ',
+  //   selectedSports,
+  //   ' - ',
+  //   selectedSports.join(' | '),
+  // );
   const sportsTitle = () => {
     return !isOpenSports && selectedSports[0].length > 0
       ? selectedSports.join(' | ').toString()
