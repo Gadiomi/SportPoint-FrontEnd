@@ -9,7 +9,7 @@ interface SortByProps {
 
 export const SortBy: React.FC<SortByProps> = ({ sortBy, onSortChange }) => {
   const handleFilterChange = (filter: string) => {
-    onSortChange(filter === sortBy ? null : filter); // Викликаємо функцію, що надає батьківський компонент
+    onSortChange(filter === sortBy ? null : filter);
   };
   return (
     <WrapperFilterCheckbox>

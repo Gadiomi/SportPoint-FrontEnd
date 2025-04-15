@@ -77,7 +77,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
     minPrice: priceRange.from || 0,
     maxPrice: priceRange.to || 0,
     abilities: classification.length > 0 ? classification.join(',') : undefined,
-    sort: sortBy || 'нові',
+    sort: sortBy || 'new',
   };
   const handleSubmit = () => {
     const cleanedFilters = Object.fromEntries(
