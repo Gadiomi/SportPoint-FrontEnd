@@ -1,4 +1,5 @@
 import React from 'react';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import { StyledLocationCard, ImageContainer, StyledImage } from './styles';
 
@@ -11,6 +12,7 @@ const LocationCard: React.FC = () => {
       <ImageContainer>
         <StyledImage src={imageSrc} alt="Location" />
       </ImageContainer>
+      <StyledHr />
     </StyledLocationCard>
   );
 };

@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { fonts } from '@/theme/fonts';
 import { IconName } from '@/kit';
 import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
+import EditButton from '../../components/EditButton/EditButton';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import {
   StyledProfileCard,
   Avatar,
@@ -18,8 +20,9 @@ interface ProfileCardProps {
   firstName: string | undefined;
   lastName?: string | undefined;
   avatar: string | undefined;
+  city: string | undefined;
   address: string | undefined;
-  age?: number;
+  age?: string;
   sport?: string[];
 }
 
@@ -27,26 +30,28 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   firstName,
   lastName,
   avatar,
+  city,
   address,
   age,
   sport,
 }) => {
   const [avatarError, setAvatarError] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
+  const [showEditButton, setShowEditButton] = useState(true);
 
   const { t } = useTranslation();
   const theme = useTheme();
   const location = useLocation();
 
   useEffect(() => {
-    if (
-      location.pathname.includes('account-trainer') ||
-      location.pathname.includes('account-admin-club')
-    ) {
-      setShowButtons(false);
-    } else {
-      setShowButtons(true);
-    }
+    const path = location.pathname;
+
+    const hideIcons =
+      path.includes('account-trainer') || path.includes('account-admin-club');
+    setShowButtons(!hideIcons);
+    const showEdit =
+      path.includes('account-trainer') || path.includes('account-admin-club');
+    setShowEditButton(showEdit);
   }, [location.pathname]);
 
   const handleAvatarError = () => {
@@ -73,6 +78,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          gap: '24px',
         }}
       >
         {showButtons && (
@@ -119,13 +125,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         }}
       >
         <p style={{ ...fonts.addressDetails, color: theme.color.secWhite }}>
+          {city}
+        </p>
+        <p style={{ ...fonts.addressDetails, color: theme.color.secWhite }}>
           {address}
         </p>
         {age && (
           <p style={{ ...fonts.addressDetails, color: theme.color.secWhite }}>
             {age}
             <span
-              style={{ ...fonts.addressDetails, color: theme.color.secWhite }}
+              style={{
+                ...fonts.addressDetails,
+                color: theme.color.secWhite,
+                paddingLeft: '4px',
+              }}
             >
               років
             </span>
@@ -137,6 +150,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <SportEl key={index}>{item}</SportEl>
         ))}
       </Sport>
+      {showEditButton && (
+        <EditButton
+        // id={id}
+        />
+      )}
+      <StyledHr style={{ marginBottom: '16px' }} />
     </StyledProfileCard>
   );
 };

@@ -7,7 +7,6 @@ import { Logo } from '@/components/Logo/Logo';
 import { IconName } from '@/kit';
 
 // import ButtonEdit from '../components/ButtonEdit/ButtonEdit';
-import StyledHr from '../../../components/StyledHr/StyledHr';
 
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
@@ -51,8 +50,9 @@ interface Coach {
   club: string[];
   sport: string[];
   description: {
+    city: string;
     address: string;
-    age: number;
+    age: string;
     social_links: SocialLink[];
     price: PriceItem[];
     schedule: ScheduleItem[];
@@ -88,9 +88,14 @@ const TrainerPage: FC = () => {
   useEffect(() => {
     if (id) {
       const url = `https://sportpoint-backend.onrender.com/cards/${id}`;
+      const token = localStorage.getItem('token');
       console.log('Запит до API:', url);
       axios
-        .get(url)
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then(response => {
           setCoachData(response.data.data.data);
           console.log('DATA', response.data.data.data);
@@ -156,6 +161,7 @@ const TrainerPage: FC = () => {
     price,
     schedule,
     experience,
+    city,
     address,
     age,
     short_desc,
@@ -200,12 +206,12 @@ const TrainerPage: FC = () => {
             firstName={firstName}
             lastName={lastName}
             avatar={avatar}
+            city={city}
             address={address}
             age={age}
             sport={sport}
           />
         </StyledProfileCard>
-        <StyledHr />
         <ReviewCard
           iconNames={[
             IconName.LIKE,
@@ -215,31 +221,25 @@ const TrainerPage: FC = () => {
           counts={[countReview ?? 0, experience ?? '0', roundedRating]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
-        <StyledHr />
         <ShortDescriptionCard
           short_desc={short_desc}
           title={t('details_page.read_more')}
         />
-        <StyledHr />
+        <CertificatesCard />
         <SocialLinks
           socialLinks={social_links || []}
           isLoggedIn={isLoggedIn}
           title={title}
         />
-        <StyledHr />
         <PriceCard prices={price || []} />
-        <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
-        <StyledHr />
-        <CertificatesCard />
-        <StyledHr />
+
         <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}
           clubId={clubsName[0]}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
         />
-        <StyledHr />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}

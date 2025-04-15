@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Icon, IconName } from '@/kit';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledGalleryCard,
@@ -102,6 +102,7 @@ const CertificatesCard: React.FC = () => {
           </ModalContent>
         </ModalOverlay>
       )}
+      <StyledHr style={{ marginBottom: '32px' }} />
     </div>
   );
 };

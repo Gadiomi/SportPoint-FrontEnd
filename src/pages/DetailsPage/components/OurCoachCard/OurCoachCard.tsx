@@ -4,6 +4,7 @@ import { IconName, ButtonAppearance, ButtonTypogr } from '@/kit';
 import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
 import { useTranslation } from 'react-i18next';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import RatingBox from '../RatingBox/RatingBox';
 
@@ -131,6 +132,7 @@ const OurCoachCard: React.FC<OurCoachCardProps> = ({
             </StyledButton>
           </OurCoachWrapper>
         </div>
+        <StyledHr />
       </StyledOurCoachCard>
     );
   };

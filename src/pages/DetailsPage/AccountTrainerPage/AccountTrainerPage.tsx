@@ -5,10 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 import { IconName } from '@/kit';
-
-import EditButton from '../components/EditButton/EditButton';
-import StyledHr from '../../../components/StyledHr/StyledHr';
-
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
@@ -50,10 +46,11 @@ interface Coach {
   club: string[];
   sport: string[];
   description: {
-    age: number;
+    age: string;
     social_links: SocialLink[];
     price: PriceItem[];
     schedule: ScheduleItem[];
+    city: string;
     address: string;
     short_desc: string;
 
@@ -154,6 +151,7 @@ const AccountTrainerPage: FC = () => {
     price,
     schedule,
     experience,
+    city,
     address,
     age,
     short_desc,
@@ -192,16 +190,12 @@ const AccountTrainerPage: FC = () => {
             firstName={firstName}
             lastName={lastName}
             avatar={avatar}
+            city={city}
             address={address}
             age={age}
             sport={sport}
           />
         </StyledProfileCard>
-        <EditButton
-
-        // id={id}
-        />
-        <StyledHr />
         <ReviewCard
           iconNames={[
             IconName.LIKE,
@@ -211,31 +205,25 @@ const AccountTrainerPage: FC = () => {
           counts={[countReview ?? 0, experience ?? '0', roundedRating]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
-        <StyledHr />
         <ShortDescriptionCard
           short_desc={short_desc}
           title={t('details_page.read_more')}
         />
-        <StyledHr />
+        <CertificatesCard />
         <SocialLinks
           socialLinks={social_links || []}
           isLoggedIn={isLoggedIn}
           title={title}
         />
-        <StyledHr />
         <PriceCard prices={price || []} />
-        <StyledHr />
         <WorkingHoursCard schedules={schedule || []} />
-        <StyledHr />
-        <CertificatesCard />
-        <StyledHr />
+
         <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}
           clubId={clubsName[0]}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
         />
-        <StyledHr />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}

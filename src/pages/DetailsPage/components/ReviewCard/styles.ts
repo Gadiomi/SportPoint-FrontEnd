@@ -3,12 +3,16 @@ import { Icon } from '@/kit';
 
 export const StyledReviewCard = styled.div`
   width: 100%;
+`;
+
+export const StyledReview = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: ${({ theme }) => `${theme.pxs.x6}px`};
+  margin-bottom: ${({ theme }) => `${theme.pxs.x4}px`};
   background: ${({ theme }) => theme.color.inputBar};
-  padding: ${({ theme }) => `${theme.pxs.x3_5}px ${theme.pxs.x8}px`};
+  padding: ${({ theme }) => `${theme.pxs.x3}px ${theme.pxs.x6}px`};
   gap: ${({ theme }) => `${theme.pxs.x8}px`};
   border-radius: ${({ theme }) => `${theme.pxs.x1_5}px`};
 `;

@@ -9,28 +9,28 @@ interface SortByProps {
 
 export const SortBy: React.FC<SortByProps> = ({ sortBy, onSortChange }) => {
   const handleFilterChange = (filter: string) => {
-    onSortChange(filter === sortBy ? null : filter); // Викликаємо функцію, що надає батьківський компонент
+    onSortChange(filter === sortBy ? null : filter);
   };
   return (
     <WrapperFilterCheckbox>
       <CustomFilterCheckbox
-        checked={sortBy === 'нові'}
-        onChange={() => handleFilterChange('нові')}
+        checked={sortBy === 'new'}
+        onChange={() => handleFilterChange('new')}
         label="Нові"
       />
       <CustomFilterCheckbox
-        checked={sortBy === 'ціна_за_зростанням'}
-        onChange={() => handleFilterChange('ціна_за_зростанням')}
+        checked={sortBy === 'price_asc'}
+        onChange={() => handleFilterChange('price_asc')}
         label="Ціна за зростанням"
       />
       <CustomFilterCheckbox
-        checked={sortBy === 'популярні'}
-        onChange={() => handleFilterChange('популярні')}
+        checked={sortBy === 'popular'}
+        onChange={() => handleFilterChange('popular')}
         label="Популярні"
       />
       <CustomFilterCheckbox
-        checked={sortBy === 'ціна_за_спаданням'}
-        onChange={() => handleFilterChange('ціна_за_спаданням')}
+        checked={sortBy === 'price_dec'}
+        onChange={() => handleFilterChange('price_dec')}
         label="Ціна за спаданням"
       />
     </WrapperFilterCheckbox>
