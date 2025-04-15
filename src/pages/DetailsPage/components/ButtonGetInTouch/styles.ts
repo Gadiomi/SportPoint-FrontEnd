@@ -8,7 +8,7 @@ export const StyledButton = styled(Button)`
   position: relative;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: ${({ theme }) => `${theme.pxs.x8}px`};
+  margin-bottom: ${({ theme }) => `${theme.pxs.x6}px`};
   padding-left: ${({ theme }) => `${theme.pxs.x2_5}px`};
   padding-right: ${({ theme }) => `${theme.pxs.x6_5}px`};
 `;

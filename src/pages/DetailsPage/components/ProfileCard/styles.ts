@@ -11,8 +11,8 @@ export const StyledProfileCard = styled.div`
 `;
 
 export const Avatar = styled.img`
-  width: 134px;
-  height: 134px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin-bottom: 12px;
   object-fit: cover;
@@ -23,8 +23,8 @@ export const AvatarNone = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 134px;
-  height: 134px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin-bottom: ${({ theme }) => `${theme.pxs.x3}px`};
   background-color: ${({ theme }) => `${theme.color.mainOrange}`};
@@ -41,6 +41,7 @@ export const Sport = styled.div`
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: ${({ theme }) => `${theme.pxs.x5_5}px`};
 `;
 
 export const SportEl = styled.div`

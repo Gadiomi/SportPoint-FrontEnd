@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import ButtonGetInTouch from '../ButtonGetInTouch/ButtonGetInTouch';
 import ModalGetInTouch from '../ModalGetInTouch/ModalGetInTouch';
@@ -73,6 +74,7 @@ const SocialLinks: React.FC<{
         })}
       </ImgContainer>
       {!isCoachOrClubAccount && <ButtonGetInTouch onClick={handleOpenModal} />}
+      <StyledHr />
       {isLoggedIn ? (
         <ModalGetInTouch
           isOpen={isModalOpen}

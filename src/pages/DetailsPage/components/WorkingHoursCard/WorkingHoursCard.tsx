@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledWorkingHoursCard,
@@ -38,6 +39,7 @@ const WorkingHoursCard: React.FC<WorkingHoursCardProps> = ({ schedules }) => {
           </WorkingHoursDiv>
         ))}
       </WorkingHoursContainer>
+      <StyledHr style={{ marginBottom: '32px' }} />
     </StyledWorkingHoursCard>
   );
 };

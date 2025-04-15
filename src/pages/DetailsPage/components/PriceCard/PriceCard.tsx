@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
-
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledPriceCard,
@@ -66,6 +66,7 @@ const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
           );
         })}
       </PriceContainer>
+      <StyledHr style={{ marginTop: '0', marginBottom: '32px' }} />
     </StyledPriceCard>
   );
 };
