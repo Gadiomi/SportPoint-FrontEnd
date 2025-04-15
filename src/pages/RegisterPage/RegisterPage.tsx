@@ -3,9 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useRegisterMutation } from '@/redux/auth';
 import Cookies from 'js-cookie';
+import { t } from 'i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CookiesKey, Roles } from '@/constants';
 import { Container, Section } from '@/components/ContainerAndSection';
+import CitySelect from './components/CitySelect';
+import AddressWidget from './components/AddressWidget/AddressWidget';
+import SocialNetButton from './components/SocialNetButton/SocialNetButton';
+import SportsListChoice from './components/SportsList/SportsList';
+import { Button, ButtonAppearance, Icon, IconName, Input, Loader } from '@/kit';
+import { useTheme } from '@/hooks';
+import { RegisterFormData } from '@/types';
+import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
+import { useClubsInfo } from './getData';
 import {
   AddressWrapper,
   CallToActionWrapper,
@@ -13,25 +24,20 @@ import {
   Image,
   Line,
   PlaceWrapper,
+  SimpleInput,
   // SportsList,
   Subtitle,
   TabsWrapper,
   Title,
   TitleWrapper,
 } from './styles';
-import { t } from 'i18next';
-import { Button, ButtonAppearance, Icon, IconName, Input, Loader } from '@/kit';
-import { useTheme } from '@/hooks';
-import { RegisterFormData } from '@/types';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
 
-import CitySelect from './components/CitySelect';
-import AddressWidget from './components/AddressWidget/AddressWidget';
-import SocialNetButton from './components/SocialNetButton/SocialNetButton';
 // --- - ---
-import { cityOptions, clubsList, sportTypes } from './tempData';
-import SportsListChoice from './components/SportsList/SportsList';
+import {
+  cityOptions,
+  // clubsList
+} from './tempData';
+import { OptionType } from './components/types';
 // --- / - ---
 
 const RegisterPage = () => {
@@ -54,8 +60,8 @@ const RegisterPage = () => {
       phone: ' ',
       city: '',
       address: '',
+      sport: [''],
       // abilities: [''],
-      sport: [' '],
     },
     mode: 'onChange',
   });
@@ -116,7 +122,8 @@ const RegisterPage = () => {
         sport: data.sport?.join(),
       }),
       ...(currentRole === Roles.ADMIN_CLUB && {
-        clubName: data.club_name.trim(),
+        // clubName: data.club_name.trim(),
+        firstName: data.club_name.trim(),
         phone: data.phone.trim(),
         city: data.city,
         address: data.address,
@@ -142,7 +149,8 @@ const RegisterPage = () => {
         // console.log('Registered email:', response.email);
       }
       reset();
-      nav('/profile');
+      // nav('/profile');
+      nav('/');
     } catch (err) {
       console.error('Registration failed:', err);
     }
@@ -158,6 +166,47 @@ const RegisterPage = () => {
       setIsOpenSports(false);
     }
   };
+
+  // ---  - ---
+  const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
+  const selectedCity = watch('city') || '';
+  console.log(' - - - selectedCity -> ', selectedCity);
+  const clubsDescription = useClubsInfo();
+  const [clubsList, setClubsList] = useState<OptionType[]>(initClubsList);
+
+  useEffect(() => {
+    if (selectedCity && currentRole === Roles.COACH) {
+      console.log(' - * - clubsDescription -> ', clubsDescription);
+      const selectedCityClubList = clubsDescription
+        ?.filter(item => item.city === selectedCity)
+        .map(club => ({
+          value: `${club.clubName}, ${club.address}`,
+          label: `${club.clubName}, ${club.address}`,
+        }));
+      console.log(' - selectedCityClubList -> ', selectedCityClubList);
+      setClubsList(
+        selectedCityClubList.length > 0 ? selectedCityClubList : initClubsList,
+      );
+    }
+  }, [selectedCity, currentRole]);
+
+  // --- / - ---
+  // ---  - ---
+  // console.log(' -  - isOpenSports -> ', isOpenSports);
+  // console.log(
+  //   ' -  -- selectedSports -> ',
+  //   selectedSports,
+  //   ' - ',
+  //   selectedSports.join(' | '),
+  // );
+  const sportsTitle = () => {
+    return !isOpenSports && selectedSports[0].length > 0
+      ? selectedSports.join(' | ').toString()
+      : currentRole === Roles.COACH
+        ? 'Вид спорту'
+        : 'Послуги';
+  };
+  // --- / - ---
 
   return (
     <Section>
@@ -414,12 +463,34 @@ const RegisterPage = () => {
                     );
                   }}
                 />
-
-                <Controller
+                {currentRole === Roles.COACH ? (
+                  <Controller
+                    name="address"
+                    control={control}
+                    render={({ field, fieldState }) => {
+                      return (
+                        <CitySelect
+                          field={field}
+                          options={clubsList}
+                          placeholder={'Оберіть клуб'}
+                          onMenuOpen={() => setIsClubOpen(true)}
+                          onMenuClose={() => setIsClubOpen(false)}
+                        />
+                      );
+                    }}
+                  />
+                ) : (
+                  <SimpleInput
+                    type="text"
+                    placeholder="Ввести назву та адресу клубу"
+                    {...register('address')}
+                  />
+                )}
+                {/* <Controller
                   name="address"
                   control={control}
                   render={({ field, fieldState }) => {
-                    return (
+                    return currentRole === Roles.COACH ? (
                       <CitySelect
                         field={field}
                         options={clubsList}
@@ -427,9 +498,15 @@ const RegisterPage = () => {
                         onMenuOpen={() => setIsClubOpen(true)}
                         onMenuClose={() => setIsClubOpen(false)}
                       />
+                    ) : (
+                      <SimpleInput
+                        type="text"
+                        placeholder="Ввести назву та адресу клубу"
+                        {...register('address')}
+                      />
                     );
                   }}
-                />
+                /> */}
                 {/* </AddressWrapper>
           </PlaceWrapper> */}
               </AddressWidget>
@@ -437,7 +514,8 @@ const RegisterPage = () => {
               <AddressWidget
                 handler={sportsHandler}
                 isOpen={isOpenSports}
-                title={currentRole === Roles.COACH ? 'Вид спорту' : 'Послуги'}
+                // title={currentRole === Roles.COACH ? 'Вид спорту' : 'Послуги'}
+                title={sportsTitle()}
                 contentRef={sportRef}
                 height={'auto'}
               >
