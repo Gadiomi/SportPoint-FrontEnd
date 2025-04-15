@@ -80,7 +80,7 @@ export const InputStyled = styled.input`
 
 export const DropdownToggle = styled.div<{ isOpen: boolean }>`
   padding: 8px 12px 8px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #b7b7b9;
   border-radius: 4px;
   cursor: pointer;
   background-color: transparent;
@@ -88,12 +88,15 @@ export const DropdownToggle = styled.div<{ isOpen: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 14px;
+  font-weight: 400;
+  color: #b7b7b9;
 
   &::after {
     content: '';
     display: block;
-    width: 62px;
-    height: 90%;
+    width: 24px;
+    height: 24px;
     background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a 1 1 0 01-1.414 0l-4-4a 1 1 0 010-1.414z" clip-rule="evenodd"/></svg>');
     background-repeat: no-repeat;
     background-size: cover;
@@ -145,13 +148,6 @@ export const DropdownItem = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  white-space: nowrap; /* Забороняє перенос тексту */
-  overflow: hidden; /* Приховує текст, який не вміщується */
-  text-overflow: ellipsis; /* Додає три крапки для обрізаного тексту */
-
-  &:hover {
-    background-color: #f5f5f5; /* Додаємо фон при наведенні */
-  }
 `;
 
 export const DropdownContainer = styled.div`
@@ -172,41 +168,19 @@ export const DropdownLabel = styled.label`
   justify-content: space-between;
   align-items: center;
   color: #1c1b20;
-  margin: 6px;
+  font-size: 14px;
+  font-weight: 400;
 
   input {
-    width: 16px;
-    height: 16px;
-    border: 1px solid #1c1b20;
-    border-radius: 4px;
-    appearance: none;
-    cursor: pointer;
-    padding: 0;
-    color: #1c1b20;
-
-    &:checked {
-      border: 1px solid #ed772f;
-    }
-
-    &:checked::before {
-      content: '✓';
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ed772f;
-      font-size: 12px;
-    }
-
-    &:hover {
-      border-color: #ff8c42;
-    }
+    visibility: hidden;
+    width: 0;
   }
 
   input:checked + span {
     color: #ed772f;
   }
-  span {
-    text-overflow: ellipsis;
-    overflow: hidden;
+
+  input:checked + svg {
+    color: #ed772f;
   }
 `;

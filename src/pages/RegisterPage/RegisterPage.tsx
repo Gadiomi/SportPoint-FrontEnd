@@ -55,7 +55,7 @@ const RegisterPage = () => {
       city: '',
       address: '',
       // abilities: [''],
-      sport: [' '],
+      sport: [],
     },
     mode: 'onChange',
   });
@@ -113,7 +113,7 @@ const RegisterPage = () => {
         lastName: data.second_name.trim(),
         city: data.city,
         address: data.address,
-        sport: data.sport?.join(),
+        sport: data.sport,
       }),
       ...(currentRole === Roles.ADMIN_CLUB && {
         clubName: data.club_name.trim(),

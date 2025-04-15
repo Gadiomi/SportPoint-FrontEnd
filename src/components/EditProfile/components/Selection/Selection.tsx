@@ -9,7 +9,7 @@ import {
   DropdownLabel,
   DropdownInput,
 } from './Selection.styled';
-import { Input } from '@/kit';
+import { Icon, IconName, Input } from '@/kit';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 interface SelectionProps {
@@ -70,6 +70,20 @@ const Selection: React.FC<SelectionProps> = ({
             content.map((conte, index) => (
               <DropdownItem key={index}>
                 <DropdownLabel>
+                  <Icon
+                    width="16px"
+                    height="16px"
+                    styles={{
+                      color: selectedSports.includes(conte)
+                        ? 'rgba(237, 119, 47, 1)'
+                        : 'currentColor',
+                    }}
+                    name={
+                      selectedSports.includes(conte)
+                        ? IconName.CHECK_FILL
+                        : IconName.CHECK_SQUARE_CONTAINED
+                    }
+                  />
                   <input
                     type="checkbox"
                     value={conte}

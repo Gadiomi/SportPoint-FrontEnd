@@ -9,7 +9,7 @@ import { UserProfile } from '@/types/userProfile';
 import sports from '../../data/sports.json';
 import cities from '../../data/cities.json';
 import socials from '../../data/socials.json';
-import { debounce } from 'lodash';
+import { debounce, toNumber } from 'lodash';
 import {
   Container,
   GeneralForm,
@@ -188,7 +188,7 @@ const EditGeneral: FC = () => {
         formDataToSend.append('sport', JSON.stringify(selectedSports));
       }
       if (selectedProfile.length > 0) {
-        formDataToSend.append('club', JSON.stringify(selectedProfile));
+        formDataToSend.append('club', JSON.stringify(selectedProfile.flat()));
       }
       if (avatar) {
         formDataToSend.append('avatar', avatar);
@@ -199,13 +199,13 @@ const EditGeneral: FC = () => {
       });
 
       const descriptionData = {
-        city: selectedCity,
+        city: selectedCity ?? '',
         short_desc: text,
         abilities: formData.description.abilities,
         age: formData.description.age,
         schedule: formData.description.schedule,
         equipment: formData.description.equipment,
-        experience: formData.description.experience,
+        experience: toNumber(formData.description.experience),
         price: formData.description.price,
         social_links: selectedSocial,
         phone: formData.description.phone,
@@ -313,9 +313,12 @@ const EditGeneral: FC = () => {
             <Input
               testId="experience"
               label="Досвід"
-              value={watch('description.experience') || ''}
+              type="number"
+              value={watch('description.experience')?.toString() || ''}
               {...register('description.experience')}
-              onChange={e => setValue('description.experience', e.target.value)}
+              onChange={e =>
+                setValue('description.experience', e.target.valueAsNumber)
+              }
             />
           </InputsSection>
           <InputsSection>

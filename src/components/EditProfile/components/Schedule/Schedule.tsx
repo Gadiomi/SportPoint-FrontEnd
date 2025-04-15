@@ -256,6 +256,18 @@ const Schedule = () => {
           title={'Обрати клуб'}
           view={true}
         />
+        <SearchWork
+          searchTerm={searchTerm}
+          handleSearchChange={handleSearchChange}
+          isFetching={isFetching}
+          searchResults={searchResults}
+          setSelectedProfile={handleSelectProfile}
+          selectedProfile={selectedProfile}
+          title={'Обрати залу'}
+          view={true}
+        />
+
+        <Button testId="add" title="Додати години"></Button>
         <GeneralsBtn t={t} />
       </FormStyled>
     </Container>

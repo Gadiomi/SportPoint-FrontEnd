@@ -24,7 +24,7 @@ interface Description {
   age?: string;
   schedule?: Schedule[];
   equipment?: string[];
-  experience?: string;
+  experience?: number;
   price?: Price[];
   social_links?: SocialLink[];
   phone?: string;
