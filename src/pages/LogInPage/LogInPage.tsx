@@ -29,7 +29,7 @@ const LogInPage: FC = () => {
   const dispatch = useAppDispatch();
   const { isLogin } = useAppSelector(state => state.setLogin);
   // -- - --
-  console.log(' -*- isLogin: ', isLogin); // example!
+  console.log(' - * - isLogin: ', isLogin); // Example!
   // -- / - --
   const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
