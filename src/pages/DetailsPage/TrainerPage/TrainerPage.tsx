@@ -1,13 +1,11 @@
-import axios from 'axios';
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 import { IconName } from '@/kit';
-
-// import ButtonEdit from '../components/ButtonEdit/ButtonEdit';
-
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
@@ -21,140 +19,33 @@ import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
 import { StyledProfileCard } from './styles';
 
-interface ScheduleItem {
-  days: string;
-  hours: string;
-}
-
-interface SocialLink {
-  name: string;
-  url: string;
-  title: string;
-  isLoggedIn: boolean;
-}
-
-interface PriceItem {
-  _id: string;
-  name: string;
-  amount: string;
-  description?: string;
-}
-
-interface Coach {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  avatar: string;
-  countReview: number;
-  rating: number;
-  club: string[];
-  sport: string[];
-  description: {
-    city: string;
-    address: string;
-    age: string;
-    social_links: SocialLink[];
-    price: PriceItem[];
-    schedule: ScheduleItem[];
-    experience: string;
-    equipment: string;
-
-    short_desc: string;
-    abilities: string;
-  };
-  userId: string;
-  certificates: string[];
-  phone: string;
-  email: string;
-  images: string[];
-  coach: string[];
-  favorite: object[];
-  role: string;
-}
-
 const TrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
   const { t } = useTranslation();
 
-  const [coachData, setCoachData] = useState<Coach | null>(null);
-  const [clubsName, setClubsName] = useState<string[]>([]);
-  const [
-    isLoggedIn,
-    // setIsLoggedIn
-  ] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
+    skip: !id,
+  });
 
-  useEffect(() => {
-    if (id) {
-      const url = `https://sportpoint-backend.onrender.com/cards/${id}`;
-      const token = localStorage.getItem('token');
-      console.log('Запит до API:', url);
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(response => {
-          setCoachData(response.data.data.data);
-          console.log('DATA', response.data.data.data);
-          const clubIds = response.data.data.data.club;
-          console.log('ID клубу:', clubIds);
+  const userRole = Cookies.get('userRole');
+  console.log('userRole', userRole);
 
-          if (clubIds.length === 0) {
-            setClubsName(['Клуб не знайдено']);
-          } else {
-            Promise.all(
-              clubIds.map((clubId: string) => {
-                const clubUrl = `https://sportpoint-backend.onrender.com/clubs/${clubId}`;
-                return axios.get(clubUrl);
-              }),
-            )
-              .then(clubResponses => {
-                const clubNames = clubResponses.map(
-                  clubResponse => clubResponse.data.name,
-                );
-                setClubsName(clubNames);
-              })
-              .catch(err => {
-                console.error('Помилка при отриманні клубів:', err);
-                setClubsName(['Клуб не знайдено']);
-              });
-          }
+  const isLoggedIn = !!localStorage.getItem('accessToken');
 
-          setIsLoading(false);
-        })
-        .catch(err => {
-          console.error(err);
-          setError('Помилка при отриманні даних');
-          setIsLoading(false);
-        });
-    } else {
-      setError('ID не знайдено');
-      setIsLoading(false);
-    }
-  }, [id]);
+  console.log('Отримані дані з бекенду:', data);
 
   if (isLoading) {
     return <div>Завантаження...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div>Помилка отримання данних</div>;
   }
 
-  const {
-    firstName,
-    lastName,
-    avatar,
-    countReview,
-    rating,
-    sport,
+  const coachData = data?.data?.data;
 
-    // phone,
-    // email,
-  } = coachData || {};
+  const { firstName, lastName, avatar, countReview, rating, sport } =
+    coachData || {};
 
   const {
     social_links,
@@ -165,12 +56,14 @@ const TrainerPage: FC = () => {
     address,
     age,
     short_desc,
-    // equipment,
   } = coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
-  const title = isLoggedIn
+  const token = localStorage.getItem('accessToken');
+  console.log('Token:', token);
+
+  const title = token
     ? 'Введіть дані, і тренер з вами зв’яжеться'
     : 'Тільки авторизовані користувачі можуть зв’язатися з тренером';
 
@@ -234,12 +127,12 @@ const TrainerPage: FC = () => {
         <PriceCard prices={price || []} />
         <WorkingHoursCard schedules={schedule || []} />
 
-        <WorksInCard
+        {/* <WorksInCard
           clubsName={clubsName[0] || 'Невідомий клуб'}
           clubId={clubsName[0]}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
-        />
+        /> */}
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}
