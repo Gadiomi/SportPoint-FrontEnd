@@ -9,6 +9,7 @@ import ChangePassword from '@/pages/AccountPage/ChangePassword';
 import EditProfile from './EditProfile/EditProfiles';
 import EditGeneral from './EditProfile/components/EditGeneral/EditGeneral';
 import ProfileProvider from '@/utils/ProfileProvider';
+import MainLayout from './NavBar/MainLayout';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -40,31 +41,36 @@ function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/trainers" element={<TrainersPage />} />
-        <Route path="/clubs" element={<ClubsPage />} />
-        <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/details" element={<Details />}>
-          <Route path="trainer/:id" element={<TrainerPage />} />
-          <Route path="account-trainer/:id" element={<AccountTrainer />} />
-          <Route path="club/:id" element={<Club />} />
-          <Route path="account-admin-club/:id" element={<AccountAdminClub />} />
-        </Route>
-        {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}
-        {/* <Route element={<PrivateRoute />}> */}
-        <Route path="/profile" element={<AccountLayout />}>
-          <Route index element={<Account />} />
-          {/* <Route path="general" element={<General />} /> */}
-          <Route path="favorites" element={<Favorites />} />
-          {/* {<Route path="change-password" element={<ChangePassword />} />  */}
-          <Route path="reviews" element={<Reviews />} />
-          <Route path={PublicRouteName.GENERAL} element={<General />} />
-          <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
-          <Route
-            path={PublicRouteName.CHANGEPASSWORD}
-            element={<ChangePassword />}
-          />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/trainers" element={<TrainersPage />} />
+          <Route path="/clubs" element={<ClubsPage />} />
+          <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/details" element={<Details />}>
+            <Route path="trainer/:id" element={<TrainerPage />} />
+            <Route path="account-trainer/:id" element={<AccountTrainer />} />
+            <Route path="club/:id" element={<Club />} />
+            <Route
+              path="account-admin-club/:id"
+              element={<AccountAdminClub />}
+            />
+          </Route>
+          {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}
+          {/* <Route element={<PrivateRoute />}> */}
+          <Route path="/profile" element={<AccountLayout />}>
+            <Route index element={<Account />} />
+            {/* <Route path="general" element={<General />} /> */}
+            <Route path="favorites" element={<Favorites />} />
+            {/* {<Route path="change-password" element={<ChangePassword />} />  */}
+            <Route path="reviews" element={<Reviews />} />
+            <Route path={PublicRouteName.GENERAL} element={<General />} />
+            <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
+            <Route
+              path={PublicRouteName.CHANGEPASSWORD}
+              element={<ChangePassword />}
+            />
+          </Route>
         </Route>
         {/* </Route> */}
       </Routes>
