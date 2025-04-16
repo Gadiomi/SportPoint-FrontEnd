@@ -51,11 +51,15 @@ export const ClubsList: React.FC = () => {
             getFilteredCards={getFilteredCards}
             setFilters={setFilters}
           />
-          <StyledClubsList>
-            {data?.data?.data?.map((coach: ClubData) => (
-              <ClubCard key={coach._id} clubData={coach} />
-            ))}
-          </StyledClubsList>
+          {data?.data?.data.length !== 0 ? (
+            <StyledClubsList>
+              {data?.data?.data?.map((coach: ClubData) => (
+                <ClubCard key={coach._id} clubData={coach} />
+              ))}
+            </StyledClubsList>
+          ) : (
+            <Loading>Немає даних для відображення</Loading>
+          )}
           <Pagination
             currentPage={currentPage}
             onPageChange={setCurrentPage}
