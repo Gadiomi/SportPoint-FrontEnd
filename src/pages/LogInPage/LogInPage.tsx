@@ -14,6 +14,9 @@ import { CookiesKey, Roles } from '@/constants';
 import { useLoginMutation } from '@/redux/auth/authApi';
 import { useNavigate } from 'react-router-dom';
 import SocialNetButton from '../RegisterPage/components/SocialNetButton/SocialNetButton';
+import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { setIsLogin } from '@/redux/auth/loginSlice';
 
 type logInFormInputs = {
   email: string;
@@ -23,6 +26,11 @@ type logInFormInputs = {
 const LogInPage: FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const { isLogin } = useAppSelector(state => state.setLogin);
+  // -- - --
+  console.log(' -*- isLogin: ', isLogin); // example!
+  // -- / - --
   const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
   const nav = useNavigate();
@@ -59,9 +67,10 @@ const LogInPage: FC = () => {
         });
       }
 
+      reset();
+      dispatch(setIsLogin(true));
       nav('/profile');
       console.log('Login Success:', response);
-      reset();
     } catch (err) {
       console.error('Login failed:', err);
     }
@@ -106,7 +115,7 @@ const LogInPage: FC = () => {
               return (
                 <Input
                   {...field}
-                  label={t('login_page.form.email')}
+                  label={t('login_page.form.email') + '*'}
                   testId="login_page.form.email"
                   errorMessage={fieldState.error?.message}
                   containerStyles={{ marginBottom: theme.pxs.x2 }}
@@ -122,7 +131,7 @@ const LogInPage: FC = () => {
               return (
                 <Input
                   {...field}
-                  label={t('login_page.form.password')}
+                  label={t('login_page.form.password') + '*'}
                   testId="login_page.form.password"
                   errorMessage={fieldState.error?.message}
                   containerStyles={{
@@ -131,28 +140,10 @@ const LogInPage: FC = () => {
                   }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
-                    <div
-                      onClick={toggleVisibilityPassword}
-                      style={{ paddingRight: theme.pxs.x1, width: 'auto' }}
-                    >
-                      {isVisiblePassword ? (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_CLOSE}
-                        />
-                      ) : (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_OPEN}
-                        />
-                      )}
-                    </div>
+                    <EyeForPassword
+                      isVisiblePassword={isVisiblePassword}
+                      toggleVisibilityPassword={toggleVisibilityPassword}
+                    />
                   }
                 />
               );
