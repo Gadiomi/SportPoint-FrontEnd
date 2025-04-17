@@ -44,13 +44,13 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/trainers" element={<TrainersPage />} />
+          <Route path="trainer/:id" element={<TrainerPage />} />
           <Route path="/clubs" element={<ClubsPage />} />
-          <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
           <Route path="/register" element={<Register />} />
+          <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
+          <Route path="club/:id" element={<Club />} />
           <Route path="/details" element={<Details />}>
-            <Route path="trainer/:id" element={<TrainerPage />} />
             <Route path="account-trainer/:id" element={<AccountTrainer />} />
-            <Route path="club/:id" element={<Club />} />
             <Route
               path="account-admin-club/:id"
               element={<AccountAdminClub />}

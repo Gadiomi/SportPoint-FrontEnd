@@ -127,12 +127,13 @@ const TrainerPage: FC = () => {
         <PriceCard prices={price || []} />
         <WorkingHoursCard schedules={schedule || []} />
 
-        {/* <WorksInCard
-          clubsName={clubsName[0] || 'Невідомий клуб'}
-          clubId={clubsName[0]}
+        <WorksInCard
+          // key={club._id}
+          clubs={coachData?.club || []}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
-        /> */}
+        />
+
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}
