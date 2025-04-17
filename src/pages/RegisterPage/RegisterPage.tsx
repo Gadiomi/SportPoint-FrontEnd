@@ -8,22 +8,24 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CookiesKey, Roles } from '@/constants';
 import { Container, Section } from '@/components/ContainerAndSection';
+import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import CitySelect from './components/CitySelect';
 import AddressWidget from './components/AddressWidget/AddressWidget';
 import SocialNetButton from './components/SocialNetButton/SocialNetButton';
 import SportsListChoice from './components/SportsList/SportsList';
-import { Button, ButtonAppearance, Icon, IconName, Input, Loader } from '@/kit';
+import { Button, ButtonAppearance, Input, Loader } from '@/kit';
 import { useTheme } from '@/hooks';
 import { RegisterFormData } from '@/types';
 import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
 import { useClubsInfo } from './getData';
+import { OptionType } from './components/types';
 import {
   AddressWrapper,
+  PlaceWrapper,
   CallToActionWrapper,
   Form,
   Image,
   Line,
-  PlaceWrapper,
   SimpleInput,
   // SportsList,
   Subtitle,
@@ -37,8 +39,9 @@ import {
   cityOptions,
   // clubsList
 } from './tempData';
-import { OptionType } from './components/types';
 // --- / - ---
+
+const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
 
 const RegisterPage = () => {
   const {
@@ -48,6 +51,9 @@ const RegisterPage = () => {
     reset,
     register,
     watch,
+    setValue,
+    // resetField,
+    // getFieldState,
   } = useForm<RegisterFormData>({
     resolver: yupResolver(RegisterFormSchema),
     defaultValues: {
@@ -80,6 +86,7 @@ const RegisterPage = () => {
   const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
   const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
   const [isOpenSports, setIsOpenSports] = useState<boolean>(false);
+  const [clubsList, setClubsList] = useState<OptionType[]>(initClubsList);
 
   const updateHeight = useCallback(() => {
     if (contentRef.current) {
@@ -96,6 +103,11 @@ const RegisterPage = () => {
     }
   }, [isOpenAddress, isCityOpen, isClubOpen]);
   // }, [isOpenAddress, isCityOpen, isClubOpen, updateHeight]);
+
+  const clubsDescription = useClubsInfo();
+  const selectedCity = watch('city') || '';
+  const selectedAddress = watch('address') || '';
+  const selectedSports = watch('sport') || [];
 
   const toggleVisibilityPassword = () => {
     setIsVisiblePassword(prev => !prev);
@@ -119,7 +131,8 @@ const RegisterPage = () => {
         lastName: data.second_name.trim(),
         city: data.city,
         address: data.address,
-        sport: data.sport?.join(),
+        sport: JSON.stringify(data.sport),
+        // sport: data.sport?.join(),
       }),
       ...(currentRole === Roles.ADMIN_CLUB && {
         // clubName: data.club_name.trim(),
@@ -128,6 +141,7 @@ const RegisterPage = () => {
         city: data.city,
         address: data.address,
         abilities: data.sport,
+        // abilities: JSON.stringify(data.sport),
       }),
     };
     console.log('registerData -> ', registerData);
@@ -146,7 +160,6 @@ const RegisterPage = () => {
           sameSite: 'Strict',
         });
         localStorage.setItem('userEmail', response.email);
-        // console.log('Registered email:', response.email);
       }
       reset();
       // nav('/profile');
@@ -155,8 +168,6 @@ const RegisterPage = () => {
       console.error('Registration failed:', err);
     }
   };
-
-  const selectedSports = watch('sport') || [];
 
   const changeRole = (role: string) => {
     setCurrentRole(role);
@@ -167,16 +178,9 @@ const RegisterPage = () => {
     }
   };
 
-  // ---  - ---
-  const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
-  const selectedCity = watch('city') || '';
-  console.log(' - - - selectedCity -> ', selectedCity);
-  const clubsDescription = useClubsInfo();
-  const [clubsList, setClubsList] = useState<OptionType[]>(initClubsList);
-
   useEffect(() => {
     if (selectedCity && currentRole === Roles.COACH) {
-      console.log(' - * - clubsDescription -> ', clubsDescription);
+      // console.log(' - * - clubsDescription -> ', clubsDescription);
       const selectedCityClubList = clubsDescription
         ?.filter(item => item.city === selectedCity)
         .map(club => ({
@@ -188,17 +192,10 @@ const RegisterPage = () => {
         selectedCityClubList.length > 0 ? selectedCityClubList : initClubsList,
       );
     }
+    setValue('address', '');
   }, [selectedCity, currentRole]);
-
   // --- / - ---
-  // ---  - ---
-  // console.log(' -  - isOpenSports -> ', isOpenSports);
-  // console.log(
-  //   ' -  -- selectedSports -> ',
-  //   selectedSports,
-  //   ' - ',
-  //   selectedSports.join(' | '),
-  // );
+
   const sportsTitle = () => {
     return !isOpenSports && selectedSports[0].length > 0
       ? selectedSports.join(' | ').toString()
@@ -206,7 +203,14 @@ const RegisterPage = () => {
         ? 'Вид спорту'
         : 'Послуги';
   };
-  // --- / - ---
+
+  const addressTitle = () => {
+    return !isOpenAddress && selectedCity
+      ? `${selectedCity}, ${selectedAddress ? selectedAddress : 'без адреси'}`
+      : currentRole === Roles.COACH
+        ? 'Місце роботи'
+        : 'Адреса клубу';
+  };
 
   return (
     <Section>
@@ -274,7 +278,7 @@ const RegisterPage = () => {
               />
             </>
           ) : null}
-          {/* --- /- --- */}
+          {/* --- - --- */}
           {currentRole === Roles.COACH ? (
             <>
               <Controller
@@ -284,7 +288,7 @@ const RegisterPage = () => {
                   return (
                     <Input
                       {...field}
-                      label={t('register_page.name')}
+                      label={t('register_page.name') + '*'}
                       testId="register_page.name"
                       errorMessage={fieldState.error?.message}
                       containerStyles={{ marginBottom: theme.pxs.x4 }}
@@ -301,7 +305,7 @@ const RegisterPage = () => {
                   return (
                     <Input
                       {...field}
-                      label={t('register_page.second_name')}
+                      label={t('register_page.second_name') + '*'}
                       testId="register_page.second_name"
                       errorMessage={fieldState.error?.message}
                       containerStyles={{ marginBottom: theme.pxs.x4 }}
@@ -346,28 +350,10 @@ const RegisterPage = () => {
                   }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
-                    <div
-                      onClick={toggleVisibilityPassword}
-                      style={{ paddingRight: theme.pxs.x1, width: 'auto' }}
-                    >
-                      {isVisiblePassword ? (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_CLOSE}
-                        />
-                      ) : (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_OPEN}
-                        />
-                      )}
-                    </div>
+                    <EyeForPassword
+                      isVisiblePassword={isVisiblePassword}
+                      toggleVisibilityPassword={toggleVisibilityPassword}
+                    />
                   }
                 />
               );
@@ -390,30 +376,10 @@ const RegisterPage = () => {
                   }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
-                    <div
-                      onClick={toggleVisibilityPassword}
-                      style={{
-                        paddingRight: theme.pxs.x1,
-                        width: 'auto',
-                      }}
-                    >
-                      {isVisiblePassword ? (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            // fill: 'transparent',
-                          }}
-                          name={IconName.EYE_CLOSE}
-                        />
-                      ) : (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                          }}
-                          name={IconName.EYE_OPEN}
-                        />
-                      )}
-                    </div>
+                    <EyeForPassword
+                      isVisiblePassword={isVisiblePassword}
+                      toggleVisibilityPassword={toggleVisibilityPassword}
+                    />
                   }
                 />
               );
@@ -427,27 +393,10 @@ const RegisterPage = () => {
               <AddressWidget
                 handler={addressHandler}
                 isOpen={isOpenAddress}
-                title={
-                  currentRole === Roles.COACH ? 'Місце роботи' : 'Адреса клубу'
-                }
+                title={addressTitle()}
                 contentRef={contentRef}
                 height={height}
               >
-                {/* <PlaceWrapper>
-            <GroupTitle
-              handler={addressHandler}
-              isOpen={isOpenAddress}
-              title={'Адреса клубу'}
-            />
-            <AddressWrapper
-              ref={contentRef}
-              style={{
-                height,
-                paddingTop: isOpenAddress ? '10px' : '0px',
-                overflow: 'hidden',
-                transition: 'height 0.3s ease',
-              }}
-            > */}
                 <Controller
                   name="city"
                   control={control}
@@ -486,35 +435,11 @@ const RegisterPage = () => {
                     {...register('address')}
                   />
                 )}
-                {/* <Controller
-                  name="address"
-                  control={control}
-                  render={({ field, fieldState }) => {
-                    return currentRole === Roles.COACH ? (
-                      <CitySelect
-                        field={field}
-                        options={clubsList}
-                        placeholder={'Оберіть клуб'}
-                        onMenuOpen={() => setIsClubOpen(true)}
-                        onMenuClose={() => setIsClubOpen(false)}
-                      />
-                    ) : (
-                      <SimpleInput
-                        type="text"
-                        placeholder="Ввести назву та адресу клубу"
-                        {...register('address')}
-                      />
-                    );
-                  }}
-                /> */}
-                {/* </AddressWrapper>
-          </PlaceWrapper> */}
               </AddressWidget>
 
               <AddressWidget
                 handler={sportsHandler}
                 isOpen={isOpenSports}
-                // title={currentRole === Roles.COACH ? 'Вид спорту' : 'Послуги'}
                 title={sportsTitle()}
                 contentRef={sportRef}
                 height={'auto'}
