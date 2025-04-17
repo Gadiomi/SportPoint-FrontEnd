@@ -7,6 +7,7 @@ import { passwordApi } from './password/passwordApi';
 import { editProfileReducer } from './user/editProfileSlice';
 import { cardApi } from './cards/cardApi';
 import { cardsApi } from './cards/cardsApi';
+import { cardIdApi } from './details/cardIdApi';
 import { loginReducer } from './auth/loginSlice';
 
 // Store
@@ -19,6 +20,7 @@ export const store = configureStore({
     user: userReducer,
     editProfile: editProfileReducer,
     [passwordApi.reducerPath]: passwordApi.reducer,
+    [cardIdApi.reducerPath]: cardIdApi.reducer,
     setLogin: loginReducer,
   },
   middleware: getDefaultMiddleware =>
@@ -31,6 +33,7 @@ export const store = configureStore({
       passwordApi.middleware,
       cardApi.middleware,
       cardsApi.middleware,
+      cardIdApi.middleware,
     ),
 });
 
