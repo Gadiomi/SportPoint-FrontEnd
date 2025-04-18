@@ -33,7 +33,7 @@ const LogInPage: FC = () => {
   // -- / - --
   const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     reset,
@@ -69,7 +69,7 @@ const LogInPage: FC = () => {
 
       reset();
       dispatch(setIsLogin(true));
-      nav('/profile');
+      navigate('/profile');
       console.log('Login Success:', response);
     } catch (err) {
       console.error('Login failed:', err);
@@ -178,7 +178,7 @@ const LogInPage: FC = () => {
             testId="login_page.have_not_yet"
             title={t('login_page.button_title_reg')}
             appearance={ButtonAppearance.UNDERLINED}
-            onClick={() => nav('/register')}
+            onClick={() => navigate('/register')}
           />
         </CallToActionWrapper>
       </Container>

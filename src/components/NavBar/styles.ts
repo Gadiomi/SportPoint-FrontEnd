@@ -29,6 +29,7 @@ export const StyledNavLink = styled(NavLink)(({ theme }) => ({
   alignItems: 'center',
 }));
 export const Descr = styled.li(({ theme }) => ({
+  // export const Descr = styled.p(({ theme }) => ({
   ...fonts.smallText,
   lineHeight: `${theme.pxs.x3_5}px`,
 }));

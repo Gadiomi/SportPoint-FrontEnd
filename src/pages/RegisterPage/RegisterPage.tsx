@@ -39,6 +39,7 @@ import {
   cityOptions,
   // clubsList
 } from './tempData';
+import LocalModal from './components/LocalModal/LocalModal';
 // --- / - ---
 
 const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
@@ -66,14 +67,14 @@ const RegisterPage = () => {
       phone: ' ',
       city: '',
       address: '',
-      sport: [''],
+      sport: [' '],
       // abilities: [''],
     },
     mode: 'onChange',
   });
 
   const { theme } = useTheme();
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterMutation();
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -87,6 +88,7 @@ const RegisterPage = () => {
   const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
   const [isOpenSports, setIsOpenSports] = useState<boolean>(false);
   const [clubsList, setClubsList] = useState<OptionType[]>(initClubsList);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const updateHeight = useCallback(() => {
     if (contentRef.current) {
@@ -120,6 +122,10 @@ const RegisterPage = () => {
     setIsOpenSports(prev => !prev);
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const onSubmit = async (data: RegisterFormData) => {
     console.log(' - data -> ', data);
     const registerData = {
@@ -140,8 +146,8 @@ const RegisterPage = () => {
         phone: data.phone.trim(),
         city: data.city,
         address: data.address,
-        abilities: data.sport,
-        // abilities: JSON.stringify(data.sport),
+        // abilities: data.sport,
+        abilities: JSON.stringify(data.sport),
       }),
     };
     console.log('registerData -> ', registerData);
@@ -162,8 +168,9 @@ const RegisterPage = () => {
         localStorage.setItem('userEmail', response.email);
       }
       reset();
-      // nav('/profile');
-      nav('/');
+      setIsModalOpen(true);
+      // navigate('/profile');
+      // navigate('/');
     } catch (err) {
       console.error('Registration failed:', err);
     }
@@ -197,7 +204,8 @@ const RegisterPage = () => {
   // --- / - ---
 
   const sportsTitle = () => {
-    return !isOpenSports && selectedSports[0].length > 0
+    // return !isOpenSports && selectedSports[0].length > 0
+    return !isOpenSports && selectedSports[0] !== ' '
       ? selectedSports.join(' | ').toString()
       : currentRole === Roles.COACH
         ? 'Вид спорту'
@@ -479,9 +487,12 @@ const RegisterPage = () => {
             testId="login_page.already_have"
             title={t('login_page.button_title')}
             appearance={ButtonAppearance.UNDERLINED}
-            onClick={() => nav('/login')}
+            onClick={() => navigate('/login')}
           />
         </CallToActionWrapper>
+        {/* --- - --- */}
+        <LocalModal isModalOpen={isModalOpen} handleClose={handleCloseModal} />
+        {/* --- /- --- */}
       </Container>
     </Section>
   );

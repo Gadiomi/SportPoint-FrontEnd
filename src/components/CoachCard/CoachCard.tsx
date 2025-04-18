@@ -13,6 +13,7 @@ import {
 } from './styles';
 import { ICoachData } from '../../types';
 import { fixEnding } from '@/helpers/fixEnding';
+import { fonts } from '@/theme/fonts';
 
 type Props = {
   coachData: ICoachData;
@@ -24,6 +25,7 @@ const CoachCard: FC<Props> = ({ coachData }) => {
   const detailsHandler = () => {
     console.log('detailsHandler!!!'); //Temp !!!
   };
+  console.log(' - coachData -> ', coachData);
 
   return (
     <CoachCardWrapper>
@@ -31,11 +33,12 @@ const CoachCard: FC<Props> = ({ coachData }) => {
         <CoachImage src={coachData?.avatar || NO_IMAGE} alt="coach image" />
         <CoachInfoBlock>
           <NameBlock>
-            <h2>{coachData?.firstLastName}</h2>
+            <h2>{`${coachData?.firstName} ${coachData?.lastName}`}</h2>
             <Icon
-              name={IconName.HEART_FILL}
+              // name={IconName.HEART_FILL}
+              name={IconName.HEART_NONE}
               styles={{
-                fill: '#EC4033',
+                // fill: '#EC4033',
                 color: '#EC4033',
               }}
             />
@@ -71,6 +74,10 @@ const CoachCard: FC<Props> = ({ coachData }) => {
         testId="Детальніше"
         title={t('more_details')}
         onClick={detailsHandler}
+        style={{
+          ...fonts.secondManrope,
+          padding: '6px',
+        }}
       />
     </CoachCardWrapper>
   );
