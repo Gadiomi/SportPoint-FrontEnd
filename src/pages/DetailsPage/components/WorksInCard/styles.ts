@@ -27,6 +27,7 @@ export const WorksInWrapper = styled.div`
   gap: ${({ theme }) => `${theme.pxs.x2}px`};
   border-radius: ${({ theme }) => `${theme.pxs.x1_5}px`};
   box-shadow: 0 0 10px rgba(43, 54, 149, 0.9);
+  margin-bottom: 16px;
 `;
 
 export const Name = styled.div`
