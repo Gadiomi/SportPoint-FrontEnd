@@ -24,6 +24,7 @@ export const SocialLink = styled.a(({ theme }) => ({
 
 export const FooterContainer = styled.footer(({ theme }) => ({
   width: '100%',
+  marginBottom: '20px',
 }));
 export const FooterLinks = styled.div(({ theme }) => ({
   display: 'flex',

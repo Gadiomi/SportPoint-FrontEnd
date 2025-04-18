@@ -39,7 +39,7 @@ export const TrainersList: React.FC = () => {
       ) : (
         <>
           <StyledButtonBack
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(`/`)}
             testId="coachsBack"
             title={t('coachs')}
             style={{ textDecoration: 'none' }}

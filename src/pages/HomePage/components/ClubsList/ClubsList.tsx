@@ -41,7 +41,7 @@ export const ClubsList: React.FC = () => {
       ) : (
         <>
           <StyledButtonBack
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(`/`)}
             testId="clubsBack"
             title={t('clubs-list')}
             appearance={ButtonAppearance.UNDERLINED}

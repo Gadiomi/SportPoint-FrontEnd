@@ -5,8 +5,8 @@ import { Box } from './styles';
 const MainLayout = () => {
   return (
     <Box>
-      <Outlet />
       <NavBar />
+      <Outlet />
     </Box>
   );
 };
