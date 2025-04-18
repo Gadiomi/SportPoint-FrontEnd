@@ -43,7 +43,8 @@ const LocalModal: FC<ILocalModal> = ({ isModalOpen, handleClose }) => {
               }}
               onClick={() => {
                 handleClose;
-                navigate('/profile');
+                navigate('/');
+                // navigate('/profile');
               }}
             />
           </ModalContainer>
