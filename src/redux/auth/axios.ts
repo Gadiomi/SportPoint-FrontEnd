@@ -63,7 +63,6 @@ axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
-
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -72,6 +71,7 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         console.log('[Retry] Повторний запит з токеном:', newAccessToken);
         return axios(originalRequest);
+        // return axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error(
           '[Response] Помилка під час повторної авторизації:',
