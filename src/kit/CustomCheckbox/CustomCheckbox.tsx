@@ -8,6 +8,7 @@ interface CustomCheckboxProps {
   containerStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
   labelStyle?: React.CSSProperties;
+  errorMessage?: string;
 }
 
 export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
@@ -17,6 +18,7 @@ export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
   containerStyle,
   inputStyle,
   labelStyle,
+  errorMessage,
 }) => (
   <CheckboxContainer style={containerStyle}>
     <CheckboxInput
@@ -26,10 +28,12 @@ export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
       style={inputStyle}
     />
     <CheckboxLabel style={labelStyle}>{label}</CheckboxLabel>
+    {errorMessage && <ErrorText>{errorMessage}</ErrorText>}{' '}
+    {/* Відображення помилки */}
   </CheckboxContainer>
 );
 
-const CheckboxContainer = styled.label`
+const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -48,3 +52,8 @@ const CheckboxLabel = styled.span`
   ${({ theme }) => theme.fonts.lightManrope};
   color: ${({ theme }) => theme.color.mainWhite};
 `;
+
+const ErrorText = styled.span(({ theme }) => ({
+  color: theme.color.error,
+  ...theme.fonts.lightManrope,
+}));
