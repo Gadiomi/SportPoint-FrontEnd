@@ -3,14 +3,18 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Box = styled.div(({ theme }) => ({}));
-export const Nav = styled.nav(({ theme }) => ({
+export const NavBox = styled.div(({ theme }) => ({
   position: 'fixed',
+  zIndex: 501,
   bottom: theme.pxs.x0,
   left: theme.pxs.x0,
   width: '100%',
+}));
+export const Nav = styled.nav(({ theme }) => ({
   backgroundColor: theme.color.background,
-  boxShadow: '0 -1px 5px rgba(0, 0, 0, 0.1)',
-  zIndex: '50',
+  borderRadius: '8px 8px 0 0',
+  margin: '0 auto',
+  maxWidth: '375px',
 }));
 export const NavList = styled.ul(({ theme }) => ({
   display: 'flex',
@@ -28,8 +32,7 @@ export const StyledNavLink = styled(NavLink)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
 }));
-export const Descr = styled.li(({ theme }) => ({
-  // export const Descr = styled.p(({ theme }) => ({
+export const Descr = styled.p(({ theme }) => ({
   ...fonts.smallText,
   lineHeight: `${theme.pxs.x3_5}px`,
 }));
