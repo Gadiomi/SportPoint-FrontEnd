@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface MenuWrapperProps {
-  isOpen: boolean;
+  $isOpen: boolean;
 }
 
 export const Overlay = styled.div`
@@ -11,12 +11,12 @@ export const Overlay = styled.div`
   z-index: 199;
 `;
 
-export const MenuWrapper = styled.div<MenuWrapperProps>(({ isOpen }) => ({
+export const MenuWrapper = styled.div<MenuWrapperProps>(({ $isOpen }) => ({
   position: 'fixed',
   bottom: 0,
   left: 0,
   right: 0,
-  transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
+  transform: $isOpen ? 'translateY(0)' : 'translateY(100%)',
   transition: 'transform 0.3s ease-in-out',
   maxWidth: '375px',
   margin: '0 auto',

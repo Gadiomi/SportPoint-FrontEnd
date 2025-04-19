@@ -53,8 +53,8 @@ export const ClubsList: React.FC = () => {
           />
           {data?.data?.data.length !== 0 ? (
             <StyledClubsList>
-              {data?.data?.data?.map((coach: ClubData) => (
-                <ClubCard key={coach._id} clubData={coach} />
+              {data?.data?.data?.map((club: ClubData) => (
+                <ClubCard key={club._id} clubData={club} />
               ))}
             </StyledClubsList>
           ) : (

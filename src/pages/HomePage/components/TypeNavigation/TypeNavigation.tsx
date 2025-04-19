@@ -16,15 +16,6 @@ export const TypeNavigation: React.FC = () => {
         paddingBottom: '122px',
       }}
     >
-      <TitleBox
-        iconStyles={{
-          color: theme.color.mainOrange,
-        }}
-        title={t('home_page.motivation')}
-        boxStyle={{ marginBottom: theme.pxs.x2 }}
-      />
-
-      <Light>{t('home_page.homeDescr')}</Light>
       <LinkList>
         <LinkItem>
           <StyledLink
@@ -49,6 +40,15 @@ export const TypeNavigation: React.FC = () => {
           </StyledLink>
         </LinkItem>
       </LinkList>
+      <TitleBox
+        iconStyles={{
+          color: theme.color.mainOrange,
+        }}
+        title={t('home_page.motivation')}
+        boxStyle={{ marginBottom: theme.pxs.x2 }}
+      />
+
+      <Light>{t('home_page.homeDescr')}</Light>
     </Container>
   );
 };

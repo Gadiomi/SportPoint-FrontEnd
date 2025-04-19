@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   testId: string;
   value: string;
   errorMessage?: string;
-  label?: string;
+  label?: ReactNode;
   appendChild?: React.ReactNode;
   containerStyles?: React.CSSProperties;
   labelStyles?: React.CSSProperties;

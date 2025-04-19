@@ -5,7 +5,7 @@ export const LinkList = styled.ul(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.pxs.x2,
-  marginTop: theme.pxs.x10_5,
+  marginBottom: theme.pxs.x10_5,
   width: '100%',
 }));
 
