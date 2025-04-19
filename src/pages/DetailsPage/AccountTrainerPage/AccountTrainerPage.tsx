@@ -96,16 +96,8 @@ const AccountTrainerPage: FC = () => {
   const { firstName, lastName, avatar, countReview, rating, sport } =
     coachData || {};
 
-  const {
-    social_links,
-    price,
-    schedule,
-    experience,
-    city,
-    address,
-    age,
-    short_desc,
-  } = coachData?.description || {};
+  const { social_links, price, schedule, experience, city, age, short_desc } =
+    coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
@@ -144,7 +136,6 @@ const AccountTrainerPage: FC = () => {
             lastName={lastName}
             avatar={avatar}
             city={city}
-            address={address}
             age={age}
             sport={sport}
           />
@@ -171,12 +162,12 @@ const AccountTrainerPage: FC = () => {
         <PriceCard prices={price || []} />
         <WorkingHoursCard schedules={schedule || []} />
 
-        {/* <WorksInCard
-          clubsName={clubsName[0] || 'Невідомий клуб'}
-          clubId={clubsName[0]}
+        <WorksInCard
+          // key={club._id}
+          clubs={coachData?.club || []}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
-        /> */}
+        />
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}

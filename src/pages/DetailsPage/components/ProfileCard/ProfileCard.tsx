@@ -6,6 +6,7 @@ import { fonts } from '@/theme/fonts';
 import { IconName } from '@/kit';
 import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
 import EditButton from '../../components/EditButton/EditButton';
+import ModalNotAnAuthorizedUser from '../ModalNotAnAuthorizedUser/ModalNotAnAuthorizedUser';
 import StyledHr from '../../../../components/StyledHr/StyledHr';
 import {
   StyledProfileCard,
@@ -21,7 +22,7 @@ interface ProfileCardProps {
   lastName?: string | undefined;
   avatar: string | undefined;
   city: string | undefined;
-  address: string | undefined;
+  address?: string | undefined;
   age?: string;
   sport?: string[];
 }
@@ -38,6 +39,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [avatarError, setAvatarError] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
   const [showEditButton, setShowEditButton] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -58,6 +61,34 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     setAvatarError(true);
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openCommentModal = () => {
+    setModalTitle('Тільки авторизовані користувачі можуть коментувати');
+    setIsModalOpen(true);
+  };
+
+  const openChooseModal = () => {
+    setModalTitle('Тільки авторизовані користувачі можуть обирати');
+    setIsModalOpen(true);
+  };
+
+  const getYearWord = (num: number): string => {
+    const lastDigit = num % 10;
+    const lastTwoDigits = num % 100;
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+      return 'років';
+    }
+
+    if (lastDigit === 1) return 'рік';
+    if (lastDigit >= 2 && lastDigit <= 4) return 'роки';
+
+    return 'років';
+  };
+
   const renderAvatar =
     avatar && !avatarError ? (
       <Avatar src={avatar} alt={firstName} onError={handleAvatarError} />
@@ -66,10 +97,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         {firstName ? firstName.charAt(0).toUpperCase() : ''}
       </AvatarNone>
     );
-
-  const handleClick = () => {
-    console.log('Icon clicked');
-  };
 
   return (
     <StyledProfileCard>
@@ -85,7 +112,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <ButtonProfileIcon
             iconName={IconName.MASSAGE_TYPING}
             text={t('details_page.comment')}
-            onClick={handleClick}
+            onClick={openCommentModal}
           />
         )}
 
@@ -95,7 +122,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <ButtonProfileIcon
             iconName={IconName.HEART_NONE}
             text={t('details_page.choose')}
-            onClick={handleClick}
+            onClick={openChooseModal}
           />
         )}
       </div>
@@ -140,7 +167,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 paddingLeft: '4px',
               }}
             >
-              років
+              {getYearWord(Number(age))}
             </span>
           </p>
         )}
@@ -153,6 +180,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       {showEditButton && (
         <EditButton
         // id={id}
+        />
+      )}
+      {isModalOpen && (
+        <ModalNotAnAuthorizedUser
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          title={modalTitle}
         />
       )}
       <StyledHr style={{ marginBottom: '16px' }} />

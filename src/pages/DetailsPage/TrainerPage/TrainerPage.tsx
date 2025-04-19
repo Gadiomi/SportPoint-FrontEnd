@@ -47,16 +47,8 @@ const TrainerPage: FC = () => {
   const { firstName, lastName, avatar, countReview, rating, sport } =
     coachData || {};
 
-  const {
-    social_links,
-    price,
-    schedule,
-    experience,
-    city,
-    address,
-    age,
-    short_desc,
-  } = coachData?.description || {};
+  const { social_links, price, schedule, experience, city, age, short_desc } =
+    coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
@@ -100,7 +92,6 @@ const TrainerPage: FC = () => {
             lastName={lastName}
             avatar={avatar}
             city={city}
-            address={address}
             age={age}
             sport={sport}
           />
