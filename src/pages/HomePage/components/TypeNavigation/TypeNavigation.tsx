@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components';
 import { LinkItem, LinkList, StyledLink } from './styles';
 import { TitleBox } from '@/kit/TitleBox';
 import { t } from 'i18next';
+import { SwiperNav } from './SwiperNav';
 
 export const TypeNavigation: React.FC = () => {
   const theme = useTheme();
@@ -47,8 +48,9 @@ export const TypeNavigation: React.FC = () => {
         title={t('home_page.motivation')}
         boxStyle={{ marginBottom: theme.pxs.x2 }}
       />
-
       <Light>{t('home_page.homeDescr')}</Light>
+
+      <SwiperNav />
     </Container>
   );
 };

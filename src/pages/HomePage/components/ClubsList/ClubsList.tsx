@@ -8,18 +8,20 @@ import { ClubData, FilterParams } from '@/types';
 import { ClubCard } from '@/components/ClubCard/ClubCard';
 import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 import { Loading, StyledButtonBack } from '../TrainersList/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ButtonAppearance, Icon, IconName } from '@/kit';
 
 import { t } from 'i18next';
 
 export const ClubsList: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const abilityFromUrl = searchParams.get('abilities') || '';
   const [filters, setFilters] = useState<FilterParams>({
     address: '',
     minPrice: null,
     maxPrice: null,
-    abilities: '',
+    abilities: abilityFromUrl,
     sort: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
