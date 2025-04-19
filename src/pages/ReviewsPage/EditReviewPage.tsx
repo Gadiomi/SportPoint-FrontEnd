@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useAppSelector } from '@/redux/reviews/reviewsSelector';
 import { saveReview } from '@/redux/reviews/reviewsApi';
+import { Review } from '@/types/Review';
 import UserInfo from '@/components/ReviewItem/ReviwUserInfo';
+import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
 import FeedbackSection from '@/components/ReviewItem/FeedbackSection';
 import StyledHr from '@/components/StyledHr/StyledHr';
 import { IconName } from '@/kit';
@@ -24,40 +27,49 @@ import {
   ModalContent,
   RatingLabels,
 } from './styles';
+import { DeleteButton } from '@/components/ReviewItem/styles';
 
 // Додаємо інтерфейс для props
 interface EditReviewPageProps {
-  review: {
-    id: string;
-    name: string;
-    surname: string;
-    avatar: string;
-    userRole: 'customer' | 'coach' | 'adminClub';
-    sport?: string[];
-    comment: string;
-    createdAt: string;
-    updatedAt: string;
-    averageRating: number;
-    totalReviews: number;
-  };
+  review: Review;
   onCancel: () => void;
+  onSave?: (updatedReview: Review) => void;
 }
+
+const mapBackendRatings = (backendRatings: any) => ({
+  attitude: backendRatings.clientService || 0,
+  service: backendRatings.serviceQuality || 0,
+  price: backendRatings.priceQuality || 0,
+  cleanliness: backendRatings.cleanliness || 0,
+});
 
 const EditReviewPage: React.FC<EditReviewPageProps> = ({
   review,
   onCancel,
+  onSave,
 }) => {
+  const reduxUserId = useAppSelector(state => state.user.user?.userCommentId);
+  console.log('reduxUserId', reduxUserId);
+  const userCommentId = review.userCommentId || reduxUserId;
+  // const userCommentId = useAppSelector((state) => state.user.user?.userCommentId);
+  // const [userCommentId, setuserCommentId] = useState(review.userCommentId);
+  console.log('userCommentId', userCommentId);
   const [comment, setComment] = useState(review?.comment || '');
-  const [ratings, setRatings] = useState({
-    attitude: 0,
-    service: 0,
-    price: 0,
-    cleanliness: 0,
-  });
+  const [ratings, setRatings] = useState(() =>
+    review.ratings
+      ? mapBackendRatings(review.ratings)
+      : {
+          attitude: 0,
+          service: 0,
+          price: 0,
+          cleanliness: 0,
+        },
+  );
 
   // Стан для перевірки змін у формі
   const [isEdited, setIsEdited] = useState(false);
   const [hasComment, setHasComment] = useState(!!review.comment);
+  const [averageRating, setAverageRating] = useState(review.averageRating || 0);
 
   // Визначаємо, чи відбулися зміни
   useEffect(() => {
@@ -78,22 +90,66 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
     setRatings(prev => ({ ...prev, [key]: value }));
   };
 
+  const calculateAverage = (ratings: Record<string, number>): number => {
+    const values = Object.values(ratings);
+    const sum = values.reduce((acc, val) => acc + val, 0);
+    return +(sum / values.length).toFixed(1);
+  };
+
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        alert('Будь ласка, увійдіть у систему, щоб залишити відгук.');
+      const hasAnyRating = Object.values(ratings).some(r => r > 0);
+      if (!hasAnyRating && !comment.trim()) {
+        alert('Заповніть всі поля рейтингу та залиште коментар.');
         return;
       }
 
-      await saveReview(review.id, comment, ratings); // ✔️ API-запит
+      const isEditing = !!review.comment;
+      const reviewId = isEditing ? review.id : null;
+      console.log('!!!!!!!!!!!!!!!!!!!', reviewId);
 
+      const targetType = review.userRole === 'coach' ? 'trainer' : 'club';
+
+      const mappedRatings = {
+        clientService: ratings.attitude,
+        serviceQuality: ratings.service,
+        priceQuality: ratings.price,
+        cleanliness: ratings.cleanliness,
+        location: 0, // або якось інакше
+      };
+
+      if (!userCommentId) {
+        alert('Користувача не знайдено. Увійдіть у систему ще раз.');
+        return;
+      }
+      await saveReview(reviewId, comment, ratings, userCommentId, targetType);
+
+      const newAverage = calculateAverage(mappedRatings);
+      setAverageRating(newAverage);
+
+      if (onSave) {
+        const updatedReview: Review = {
+          ...review,
+          comment,
+          ratings: mappedRatings,
+          updatedAt: new Date().toISOString(),
+          averageRating: newAverage,
+        };
+        onSave(updatedReview);
+      }
       console.log('Відгук збережено успішно');
-      onCancel(); // Повернутись назад після збереження
+      onCancel();
     } catch (error) {
       console.error('Помилка при збереженні відгуку:', error);
+      alert('Щось пішло не так при збереженні. Спробуйте ще раз.');
     }
   };
+
+  useEffect(() => {
+    if (averageRating) {
+      setAverageRating(averageRating);
+    }
+  }, [averageRating]);
 
   const ratingLabels =
     review.userRole === 'coach'
@@ -119,13 +175,30 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
       <ModalOverlay>
         <ModalContent>
           <HeaderEdit>
-            <Icon name={IconName.ARROW_RIGHT} styles={{ fill: 'none' }} />{' '}
-            {hasComment ? 'РЕДАГУВАТИ ВІДГУК' : 'НОВИЙ ВІДГУК'}
+            {hasComment ? (
+              <ReviewHeader
+                title="РЕДАГУВАТИ ВІДГУК"
+                leftIcon={IconName.EDIT_CONTAINED}
+                onCancel={onCancel}
+              />
+            ) : (
+              <HeaderEdit onClick={onCancel}>
+                <Icon name={IconName.ARROW_LEFT} styles={{ fill: 'none' }} />
+                НАЗАД
+              </HeaderEdit>
+            )}
           </HeaderEdit>
-          <UserInfo
-            userId={review.id} // Відправка userId для запиту
-            reviewDate={reviewDateToShow}
-          />
+          {review && (
+            <UserInfo
+              userId={review.id}
+              avatar={review.avatar}
+              firstName={review.name}
+              lastName={review.surname}
+              role={review.userRole}
+              createdAt={review.createdAt}
+              updatedAt={review.updatedAt}
+            />
+          )}
           <OverallRatingSection>
             <OverallTitle>
               Загальна оцінка{' '}
@@ -133,18 +206,16 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
             </OverallTitle>
             <StarsDisplay>
               {Array.from({ length: 5 }, (_, i) => (
-                <StarIcon key={i} filled={i < Math.round(review.averageRating)}>
+                <StarIcon key={i} $filled={i < Math.round(averageRating)}>
                   <Icon
                     name={IconName.STAR_DEFAULT}
                     styles={{
                       fill:
-                        review.totalReviews > 0 &&
-                        i < Math.round(review.averageRating)
+                        review.totalReviews > 0 && i < Math.round(averageRating)
                           ? '#ED772F'
                           : 'none',
                       color:
-                        review.totalReviews > 0 &&
-                        i < Math.round(review.averageRating)
+                        review.totalReviews > 0 && i < Math.round(averageRating)
                           ? '#ED772F'
                           : '#494949',
                     }}
@@ -176,7 +247,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
                           index + 1,
                         )
                       }
-                      filled={index < ratings[key as keyof typeof ratings]}
+                      $filled={index < ratings[key as keyof typeof ratings]}
                     >
                       <Icon
                         name={IconName.STAR_DEFAULT}
@@ -207,7 +278,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
           />
 
           <ButtonGroupEdit>
-            <CancelButton onClick={onCancel}>Назад</CancelButton>
+            <DeleteButton onClick={onCancel}>Назад</DeleteButton>
             <SaveButton
               onClick={handleSave}
               style={{
@@ -215,7 +286,8 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
                 border: `2px solid ${isEdited ? '#ED772F' : '#494949'}`,
               }}
             >
-              {hasComment ? 'Редагувати' : 'Опублікувати'}
+              <Icon name={IconName.CHECK_CONTAINED} />
+              {hasComment} Зберігти
             </SaveButton>
           </ButtonGroupEdit>
         </ModalContent>

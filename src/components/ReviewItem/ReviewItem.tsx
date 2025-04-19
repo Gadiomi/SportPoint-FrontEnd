@@ -10,8 +10,7 @@ import {
   StyledDate,
   Div,
 } from './styles';
-import { Icon } from '@/kit';
-import { IconName } from '@/kit';
+import { Icon, IconName } from '@/kit';
 import { colorsLight } from '@/theme/colors';
 import styled from 'styled-components';
 
@@ -76,27 +75,25 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
                 styles={{
                   fill:
                     index < Number(review.rating ?? 0) // Перевірка на undefined
-                      ? colorsLight.darkGray
-                      : colorsLight.background,
-                  color: colorsLight.darkGray,
+                      ? colorsLight.mainOrange
+                      : '#494949',
+                  color: 'transparent',
                 }}
                 size={16}
               />
             ))}
           </Stars>
         </div>
-        <Text>
-          <StyledDate>
-            {' '}
-            {reviewDateToShow
-              ? new Date(reviewDateToShow).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: '2-digit',
-                  year: 'numeric',
-                })
-              : 'Дата не вказана'}
-          </StyledDate>
-        </Text>
+        <StyledDate>
+          {' '}
+          {reviewDateToShow
+            ? new Date(reviewDateToShow).toLocaleDateString('en-US', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+              })
+            : 'Дата не вказана'}
+        </StyledDate>
       </UserInfo>
       <Comment>{review.comment ?? 'Немає коментаря'}</Comment>
       <Footer></Footer>
@@ -105,8 +102,3 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
 };
 
 export default ReviewItem;
-
-const Text = styled.p(({ theme }) => ({
-  ...theme.fonts.lightManrope,
-  color: theme.color.secWhite,
-}));

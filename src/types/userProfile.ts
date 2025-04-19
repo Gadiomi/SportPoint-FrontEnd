@@ -31,6 +31,7 @@ interface Description {
 }
 export interface UserProfile {
   userId: string;
+  userCommentId?: string;
   countReview: number;
   rating: number;
   firstName?: string;
@@ -45,4 +46,16 @@ export interface UserProfile {
   coach?: string[];
   sport?: string[];
   work_list?: string[];
+  user_comments?: {
+    adminReply?: string;
+    average?: number;
+    comment?: string;
+    createdAt?: string;
+    owner?: string;
+    ratings?: {
+      [key: string]: number;
+    };
+    updatedAt?: string;
+    userCommentId: string;
+  }[];
 }

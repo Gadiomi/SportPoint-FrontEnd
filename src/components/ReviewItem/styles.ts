@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { ThemeConsumer } from 'styled-components';
 
 export const Div = styled.div``;
 
@@ -25,7 +25,7 @@ export const Header = styled.div`
   line-height: 22px;
   gap: 8px;
 `;
-export const IconDiv = styled.div`
+export const IconDiv = styled.button`
   width: 24px;
 `;
 
@@ -40,18 +40,18 @@ export const ReviewCard = styled.div`
 
 export const UserInfo = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch;
   flex-wrap: nowrap;
   gap: 10px;
 `;
 
 export const Avatar = styled.img`
   border-radius: 50%;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
 `;
 
-export const Name = styled.span`
+export const Name = styled.div`
   font-weight: bold;
   font-size: 16px;
 `;
@@ -59,13 +59,13 @@ export const Name = styled.span`
 export const Stars = styled.div`
   width: 0 auto;
   display: flex;
+  gap: 2px;
   color: transparent;
 `;
 
 export const Star = styled.div`
   width: 10px;
   height: 10px;
-  stroke: transparent;
   strokewidth: 0;
 `;
 
@@ -92,10 +92,10 @@ export const FeedbackButton = styled.button`
   cursor: pointer;
 `;
 export const StyledDate = styled.div`
-  width: 64px;
   display: flex;
   justify-content: flex-end;
   font-size: 10px;
+  color: ${({ theme }) => theme.color.secWhite};
 `;
 
 export const ButtonGroup = styled.div`
@@ -107,6 +107,7 @@ export const ButtonGroup = styled.div`
 
 export const DeleteButton = styled.button`
   width: 130px;
+  height: 36px;
   background: #ff7f00;
   color: ${({ theme }) => theme.color.mainWhite};
   border: none;
@@ -158,6 +159,18 @@ export const Badge = styled.div`
   margin-top: 4px;
 `;
 
+export const InitialsAvatar = styled.div`
+  width: 88px;
+  height: auto;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+`;
+
 // ---------*****ReviewTabsSwitcher--------
 // Стилізація кнопок за допомогою styled-components
 export const ButtonGroupTab = styled.div`
@@ -188,7 +201,7 @@ export const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 34px;
+  gap: 20px;
   padding -top: 16px;
   padding-bottom:24px;
 `;

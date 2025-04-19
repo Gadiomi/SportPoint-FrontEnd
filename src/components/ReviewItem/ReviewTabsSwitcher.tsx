@@ -17,7 +17,7 @@ const ReviewTabsSwitcher: React.FC<TabsSwitcherProps> = ({
   return (
     <ButtonGroupTab>
       {tabs.map((tabLabel, index) => {
-        const value = tabLabel === 'Тренери' ? 'coach' : 'adminClub';
+        const value = tabLabel === 'Клуби' ? 'adminClub' : 'coach';
         return (
           <TabButton
             key={index}

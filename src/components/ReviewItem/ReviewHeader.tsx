@@ -11,9 +11,11 @@ type ReviewHeaderProps = {
   rightIcon?: IconName | null;
   leftIconStyles?: React.CSSProperties;
   onClick?: () => void;
+  onCancel?: () => void;
 };
 
 const ReviewHeader: React.FC<ReviewHeaderProps> = ({
+  onCancel,
   title = 'МОЇ ВІДГУКИ',
   leftIcon = IconName.MASSAGE_TYPING,
   rightIcon = IconName.ARROW_LEFT,
@@ -23,7 +25,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
 
   const handleRightIconClick = () => {
     if (rightIcon === IconName.ARROW_LEFT) {
-      navigate('/profile'); // Navigate to the /profile page
+      if (onCancel) onCancel();
     }
   };
 
