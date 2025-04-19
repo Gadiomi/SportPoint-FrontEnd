@@ -25,7 +25,6 @@ const CoachCard: FC<Props> = ({ coachData }) => {
   const detailsHandler = () => {
     console.log('detailsHandler!!!'); //Temp !!!
   };
-  console.log(' - coachData -> ', coachData);
 
   return (
     <CoachCardWrapper>
