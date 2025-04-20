@@ -6,12 +6,14 @@ type InitialState = {
   user: UserProfile | null;
   initDataRaw: string;
   isLoading: boolean;
+  userCommentId?: string;
 };
 
 const initialState: InitialState = {
   user: null,
   initDataRaw: '',
   isLoading: false,
+  userCommentId: undefined,
 };
 
 export const userSlice = createSlice({
@@ -20,6 +22,7 @@ export const userSlice = createSlice({
   reducers: {
     setUserProfile: (state, action) => {
       state.user = action.payload;
+      state.userCommentId = action.payload.userCommentId;
     },
   },
   extraReducers: builder => {
@@ -31,6 +34,7 @@ export const userSlice = createSlice({
         userApi.endpoints.getUserProfile.matchFulfilled,
         (state, action) => {
           state.user = action.payload.userProfile;
+          state.userCommentId = action.payload.userProfile.userCommentId;
           state.isLoading = false;
         },
       );
@@ -42,6 +46,7 @@ export const userSlice = createSlice({
         userApi.endpoints.updateUserProfile.matchFulfilled,
         (state, action) => {
           state.user = action.payload.userProfile;
+          state.userCommentId = action.payload.userProfile.userCommentId;
           state.isLoading = false;
         },
       )

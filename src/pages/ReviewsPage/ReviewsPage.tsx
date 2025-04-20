@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useAppSelector } from '@/redux/reviews/reviewsSelector';
 import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
 import ReviewItem from '@/components/ReviewItem/ReviewItem';
 import ReviewStats from '@/components/ReviewItem/ReviewStats';
 import EditReviewPage from './EditReviewPage';
 import ReviewActions from '@/components/ReviewItem/ReviewActions';
-import FeedbackSection from '@/components/ReviewItem/FeedbackSection';
 import ReviewTabsSwitcher from '@/components/ReviewItem/ReviewTabsSwitcher';
-import AverageRating from '@/components/ReviewItem/AverageRating';
 import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { ReviewCard } from '@/components/ReviewItem/styles';
-import { Div } from './styles';
-import { fetchReviewsByCardId } from '@/redux/reviews/reviewsApi';
-import { date } from 'yup';
+import { Div, ButtonMore, ContainerButtonMore } from './styles';
+import { fetchReviewsByOwner, deleteReview } from '@/redux/reviews/reviewsApi';
 
-// Інтерфейси
-interface UserData {
+interface Review {
   id: string;
+  userCommentId: string;
   name: string;
   surname: string;
   avatar: string;
-}
-
-interface ReviewData {
-  id: string;
   comment: string;
   createdAt: string;
   updatedAt: string;
@@ -34,17 +27,23 @@ interface ReviewData {
   dislikes: number;
   isFirstReview: boolean;
   userRole: 'customer' | 'coach' | 'adminClub';
-}
-
-interface Review extends UserData, ReviewData {
   averageRating: number;
   totalReviews: number;
-} // об'єднуємо
+  ratings?: {
+    clientService: number;
+    serviceQuality: number;
+    priceQuality: number;
+    location: number;
+    cleanliness: number;
+  };
+  targetId: string;
+}
 
 const ReviewsPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAppSelector(state => state.user);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isCreatingReview, setIsCreatingReview] = useState(false);
@@ -52,140 +51,100 @@ const ReviewsPage = () => {
   const [selectedTab, setSelectedTab] = useState<'coach' | 'adminClub'>(
     'adminClub',
   );
+  const [showAll, setShowAll] = useState(false);
+  const reviewsToShow = showAll ? reviews : reviews.slice(0, 2);
 
   const { t } = useTranslation();
   const { theme } = useTheme();
 
+  const handleReviewUpdate = (updatedReview: Review) => {
+    setReviews(prev =>
+      prev.map(r => (r.id === updatedReview.id ? updatedReview : r)),
+    );
+    fetchReviews(); // просто онови весь список
+    setIsEditing(false);
+  };
+
   const fetchReviews = async () => {
+    if (!user?.userId) return;
     setLoading(true);
     try {
-      const reviewsResponse = await fetchReviewsByCardId(
-        '67cadbb405a41b47ac8ded40',
+      const response = await fetchReviewsByOwner(user.userId);
+      const reviewsData = response.data;
+      console.log('reviewsData', reviewsData);
+      // setReviews(reviewsData);
+
+      if (!Array.isArray(reviewsData)) {
+        throw new Error('Некоректний формат даних від сервера');
+      }
+
+      const parsedReviews: Review[] = reviewsData
+        .map((item): Review | null => {
+          const userProfile = item.userProfile;
+          if (!userProfile) return null;
+
+          return {
+            id: item._id,
+            userCommentId: item.userCommentId,
+            name: userProfile.firstName ?? '',
+            surname: userProfile.lastName ?? '',
+            avatar: userProfile.avatar ?? '',
+            comment: item.comment ?? '',
+            createdAt: item.createdAt ?? '',
+            updatedAt: item.updatedAt ?? '',
+            rating: Math.round(item.average || 0),
+            likes: 0,
+            dislikes: 0,
+            userRole: userProfile.role ?? 'customer',
+            isFirstReview: item.isFirst ?? false,
+            averageRating: item.average ?? 0,
+            totalReviews: 1,
+            targetId: item.targetId ?? '',
+            //  ratings: item.ratings || null,
+          };
+        })
+        .filter((review): review is Review => review !== null);
+
+      const filteredByTab = parsedReviews.filter(
+        review => review.userRole === selectedTab,
       );
 
-      const cardData = reviewsResponse.data;
-      const userComment = reviewsResponse.userComments;
-
-      console.log('Розпарсені дані:', cardData);
-      console.log('', userComment);
-
-      // Перевірка, чи є коментар
-      if (!userComment) {
-        setReviews([]);
-        return;
-      }
-
-      console.log(selectedTab);
-
-      // Обчислення середнього рейтингу
-      const averageRating = userComment.average || 0;
-      console.log(averageRating);
-      const totalReviews = 1;
-
-      const userRole = cardData.role;
-      console.log(userRole);
-
-      console.log(cardData.firstName);
-
-      if (!userRole) {
-        setError('Не вдалося визначити роль користувача');
-        setReviews([]);
-        return;
-      }
-
-      const review: Review = {
-        id: userComment._id,
-        name: cardData.firstName,
-        surname: cardData.lastName,
-        avatar: cardData.avatar,
-        comment: userComment.comment,
-        createdAt: userComment.cretedAt,
-        updatedAt: userComment.updatedAt,
-        rating: Math.round(averageRating),
-        likes: 0,
-        dislikes: 0,
-        userRole: cardData.role,
-        isFirstReview: userComment.isFirst ?? false, // Передаємо isFirstReview
-        averageRating,
-        totalReviews,
-        // images: userComments.images,
-      };
-
-      const reviewDateToShow = review.updatedAt
-        ? review.updatedAt
-        : review.createdAt;
-      console.log('Page', reviewDateToShow);
-
-      console.log('Parsed role:', review.userRole);
-      console.log('Selected tab:', selectedTab);
-
-      // Фільтрація за табом
-      if (review.userRole === selectedTab) {
-        setReviews([review]);
-      } else {
-        setReviews([]);
-      }
+      setReviews(filteredByTab);
     } catch (err) {
-      setError('Не вдалося завантажити відгуки');
-      console.error(err);
+      console.error('Помилка при отриманні відгуків:', err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchReviews(); // Викликаємо при першому рендері
-  }, []);
+    fetchReviews();
+  }, [user?.userId, selectedTab]);
+  // console.log(selectedTab);
+  // console.log('user?.userId inside useEffect:', user?.userId);
 
-  useEffect(() => {
-    if (id) {
-      fetchReviews();
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchReviews(); // оновлюємо при зміні вкладки
-  }, [selectedTab]);
-
-  const handleFeedback = (id: string, type: 'like' | 'dislike') => {
-    setReviews(prevReviews =>
-      prevReviews.map(review =>
-        review.id === id
-          ? {
-              ...review,
-              likes: type === 'like' ? (review.likes === 1 ? 0 : 1) : 0,
-              dislikes:
-                type === 'dislike' ? (review.dislikes === 1 ? 0 : 1) : 0,
-            }
-          : review,
-      ),
-    );
-  };
-
-  // Функція видалення відгуку
+  // Функція для видалення відгуку
   const handleDeleteReview = async (id: string) => {
+    console.log('Йде видалення відгуку з id:', id);
     if (window.confirm('Ви дійсно хочете видалити цей відгук?')) {
       try {
-        await axios.delete(
-          `http://sportpoint-backend.onrender.com/reviews/${id}`,
-        );
-        setReviews(prevReviews =>
-          prevReviews.filter(review => review.id !== id),
-        );
+        await deleteReview(id); // Викликаємо функцію для видалення
+        setReviews(prev => prev.filter(review => review.id !== id));
       } catch (err) {
+        console.error('Помилка при видаленні:', err);
         setError('Не вдалося видалити відгук');
-        console.error(err);
       }
     }
   };
 
   const handleEdit = (review: Review) => {
+    console.log('Редагуємо відгук з id:', review.id);
     setCurrentReview(review);
     setIsEditing(true);
   };
 
   const handleCreateReview = () => {
-    setIsCreatingReview(true); // Увімкнути режим створення відгуку
+    setIsCreatingReview(true);
   };
 
   return (
@@ -194,8 +153,9 @@ const ReviewsPage = () => {
         currentReview && (
           <Div>
             <EditReviewPage
-              review={currentReview as Review}
+              review={currentReview}
               onCancel={() => setIsEditing(false)}
+              onSave={handleReviewUpdate}
             />
           </Div>
         )
@@ -206,43 +166,51 @@ const ReviewsPage = () => {
           <ReviewTabsSwitcher
             tabs={['Клуби', 'Тренери']}
             selectedTab={selectedTab}
-            onSelectTab={(tab: 'coach' | 'adminClub') => setSelectedTab(tab)}
-            // onReviewsChange={handleTabChange}  // Додаємо обробник зміни вкладки
+            onSelectTab={tab => setSelectedTab(tab)}
           />
+
           <ReviewStats />
+
           {loading ? (
             <p>Завантаження...</p>
           ) : error ? (
             <p>{error}</p>
           ) : (
-            reviews.map(review => {
-              const reviewDateToShow = review.updatedAt || review.createdAt;
+            <>
+              {reviewsToShow.map(review => {
+                const reviewDateToShow = review.updatedAt || review.createdAt;
 
-              return (
-                <ReviewCard key={review.id}>
-                  <ReviewItem review={review} />
-                  <FeedbackSection
-                    reviewId={review.id}
-                    likes={review.likes}
-                    dislikes={review.dislikes}
-                    onLike={handleFeedback}
-                    onDislike={handleFeedback}
-                  />
-                  <ReviewActions
-                    reviewId={review.id}
-                    onDelete={handleDeleteReview}
-                    onEdit={() => handleEdit(review)}
-                    userRole={review.userRole}
-                    isFirstReview={review.isFirstReview ?? false}
-                    reviewDate={reviewDateToShow}
-                  />
-                </ReviewCard>
-              );
-            })
+                return (
+                  <ReviewCard key={review.id}>
+                    <ReviewItem review={review} />
+
+                    <ReviewActions
+                      reviewId={review.id}
+                      userCommentId={review.userCommentId}
+                      onDelete={handleDeleteReview}
+                      onEdit={() => handleEdit(review)}
+                      userRole={review.userRole}
+                      isFirstReview={review.isFirstReview}
+                      createdAt={reviewDateToShow}
+                      ownerId={review.targetId} // Якщо targetId є власником відгуку
+                      currentUserId={id || ''}
+                    />
+                  </ReviewCard>
+                );
+              })}
+              <ContainerButtonMore>
+                {reviews.length > 2 && (
+                  <ButtonMore onClick={() => setShowAll(prev => !prev)}>
+                    {showAll ? 'Приховати' : 'Побачити більше'}
+                  </ButtonMore>
+                )}
+              </ContainerButtonMore>
+            </>
           )}
         </>
       )}
     </Div>
   );
 };
+
 export default ReviewsPage;

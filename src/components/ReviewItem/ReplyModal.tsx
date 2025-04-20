@@ -13,11 +13,13 @@ interface Props {
   onClose: () => void;
   onSubmit: (replyText: string) => void;
   reviewId: string;
-  reviewDate: string;
+  createdAt: string;
 }
 
-const Overlay = styled.div<{ isOpen: boolean }>`
-  display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'flex' : 'none')};
+const Overlay = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isOpen',
+})<{ isOpen: boolean }>`
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   position: fixed;
   top: 0;
   left: 0;
@@ -40,7 +42,7 @@ const ReplyModal: React.FC<Props> = ({
   onClose,
   onSubmit,
   reviewId,
-  reviewDate,
+  createdAt,
 }) => {
   const [text, setText] = useState('');
 
@@ -56,7 +58,7 @@ const ReplyModal: React.FC<Props> = ({
           title="Відповісти на відгук"
           leftIcon={IconName.EDIT_CONTAINED}
         />
-        <ReviewUserInfo userId={reviewId} reviewDate={reviewDate} />
+        <ReviewUserInfo userId={reviewId} createdAt={createdAt} />
         <StyledHr />
         <TextArea
           value={text}
