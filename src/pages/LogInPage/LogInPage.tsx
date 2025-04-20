@@ -17,6 +17,7 @@ import SocialNetButton from '../RegisterPage/components/SocialNetButton/SocialNe
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { setIsLogin } from '@/redux/auth/loginSlice';
+import { WrongDataMessage } from './styles';
 
 type logInFormInputs = {
   email: string;
@@ -33,6 +34,7 @@ const LogInPage: FC = () => {
   // -- / - --
   const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
+  const [isIncorrectData, setIsIncorrectData] = useState<boolean>(false);
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -52,25 +54,29 @@ const LogInPage: FC = () => {
         email: data.email,
         password: data.password,
       });
-      localStorage.setItem('userEmail', data.email);
 
-      if (response.token && response.refreshToken) {
-        Cookies.set(CookiesKey.TOKEN, response.token, {
-          expires: 7,
-          secure: true,
-          sameSite: 'Strict',
-        });
-        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
-          expires: 7,
-          secure: true,
-          sameSite: 'Strict',
-        });
+      if (!response.error && response?.data?.status === 200) {
+        if (response.token && response.refreshToken) {
+          Cookies.set(CookiesKey.TOKEN, response.token, {
+            expires: 7,
+            secure: true,
+            sameSite: 'Strict',
+          });
+          Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+            expires: 7,
+            secure: true,
+            sameSite: 'Strict',
+          });
+        }
+        localStorage.setItem('userEmail', data.email);
+        reset();
+        dispatch(setIsLogin(true));
+        setIsIncorrectData(false);
+        console.log('Login Success:', response);
+        navigate('/profile');
+      } else {
+        setIsIncorrectData(true);
       }
-
-      reset();
-      dispatch(setIsLogin(true));
-      navigate('/profile');
-      console.log('Login Success:', response);
     } catch (err) {
       console.error('Login failed:', err);
     }
@@ -82,7 +88,7 @@ const LogInPage: FC = () => {
 
   return (
     <Section>
-      <Container maxWidth="320px">
+      <Container styles={{ maxWidth: '375px' }}>
         <Image
           srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
           src="/public/assets/images/logo@1.png"
@@ -149,6 +155,13 @@ const LogInPage: FC = () => {
               );
             }}
           />
+          {/* --- - --- */}
+          {isIncorrectData ? (
+            <WrongDataMessage>
+              Невірно введено email або пароль
+            </WrongDataMessage>
+          ) : null}
+          {/* --- / - --- */}
           <CallToActionWrapper style={{ marginBottom: theme.pxs.x12 }}>
             <Text>{t('login_page.forgott_pass')}</Text>
             <Button

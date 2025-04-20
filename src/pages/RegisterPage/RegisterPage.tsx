@@ -13,6 +13,7 @@ import CitySelect from './components/CitySelect';
 import AddressWidget from './components/AddressWidget/AddressWidget';
 import SocialNetButton from './components/SocialNetButton/SocialNetButton';
 import SportsListChoice from './components/SportsList/SportsList';
+import LocalModal from './components/LocalModal/LocalModal';
 import { Button, ButtonAppearance, Input, Loader } from '@/kit';
 import { useTheme } from '@/hooks';
 import { RegisterFormData } from '@/types';
@@ -35,11 +36,7 @@ import {
 } from './styles';
 
 // --- - ---
-import {
-  cityOptions,
-  // clubsList
-} from './tempData';
-import LocalModal from './components/LocalModal/LocalModal';
+import { cityOptions } from './tempData';
 // --- / - ---
 
 const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
@@ -490,9 +487,8 @@ const RegisterPage = () => {
             onClick={() => navigate('/login')}
           />
         </CallToActionWrapper>
-        {/* --- - --- */}
+
         <LocalModal isModalOpen={isModalOpen} handleClose={handleCloseModal} />
-        {/* --- /- --- */}
       </Container>
     </Section>
   );
