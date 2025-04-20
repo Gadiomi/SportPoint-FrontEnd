@@ -19,55 +19,6 @@ import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
 import { StyledProfileCard } from './styles';
 
-// interface ScheduleItem {
-//   days: string;
-//   hours: string;
-// }
-
-// interface SocialLink {
-//   name: string;
-//   url: string;
-// }
-
-// interface PriceItem {
-//   _id: string;
-//   name: string;
-//   amount: string;
-//   description?: string;
-// }
-
-// interface Coach {
-//   _id: string;
-//   firstName: string;
-//   lastName: string;
-//   avatar: string;
-//   countReview: number;
-//   rating: number;
-//   club: string[];
-//   sport: string[];
-//   description: {
-//     age: string;
-//     social_links: SocialLink[];
-//     price: PriceItem[];
-//     schedule: ScheduleItem[];
-//     city: string;
-//     address: string;
-//     short_desc: string;
-
-//     experience: string;
-//     abilities: string;
-//   };
-//   userId: string;
-//   equipment: string;
-//   certificates: string[];
-//   phone: string;
-//   email: string;
-//   images: string[];
-//   coach: string[];
-//   favorite: object[];
-//   role: string;
-// }
-
 const AccountTrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
   const { t } = useTranslation();
@@ -76,8 +27,8 @@ const AccountTrainerPage: FC = () => {
     skip: !id,
   });
 
-  const userRole = Cookies.get('userRole');
-  console.log('userRole', userRole);
+  // const userRole = Cookies.get('userRole');
+  // console.log('userRole', userRole);
 
   const isLoggedIn = !!localStorage.getItem('accessToken');
 
@@ -93,8 +44,17 @@ const AccountTrainerPage: FC = () => {
 
   const coachData = data?.data?.data;
 
-  const { firstName, lastName, avatar, countReview, rating, sport } =
-    coachData || {};
+  const {
+    _id,
+    role,
+    firstName,
+    lastName,
+    avatar,
+    countReview,
+    rating,
+    sport,
+    certificates,
+  } = coachData || {};
 
   const { social_links, price, schedule, experience, city, age, short_desc } =
     coachData?.description || {};
@@ -131,6 +91,8 @@ const AccountTrainerPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
+            _id={_id}
+            role={role}
             iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             lastName={lastName}
@@ -149,25 +111,35 @@ const AccountTrainerPage: FC = () => {
           counts={[countReview ?? 0, experience ?? '0', roundedRating]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
-        <ShortDescriptionCard
-          short_desc={short_desc}
-          title={t('details_page.read_more')}
-        />
-        <CertificatesCard />
-        <SocialLinks
-          socialLinks={social_links || []}
-          isLoggedIn={isLoggedIn}
-          title={title}
-        />
-        <PriceCard prices={price || []} />
-        <WorkingHoursCard schedules={schedule || []} />
+        {short_desc && (
+          <ShortDescriptionCard
+            short_desc={short_desc}
+            title={t('details_page.read_more')}
+          />
+        )}
+        {certificates && certificates.length > 0 && (
+          <CertificatesCard certificates={certificates} />
+        )}
+        {social_links && social_links.length > 0 && (
+          <SocialLinks
+            socialLinks={social_links || []}
+            isLoggedIn={isLoggedIn}
+            title={title}
+          />
+        )}
+        {price && price.length > 0 && <PriceCard prices={price || []} />}
+        {schedule && schedule.length > 0 && (
+          <WorkingHoursCard schedules={schedule || []} />
+        )}
 
-        <WorksInCard
-          // key={club._id}
-          clubs={coachData?.club || []}
-          iconNames={[IconName.LOCATION, IconName.CLOCK]}
-          labels={['1,5 км', '24/7']}
-        />
+        {coachData?.club && coachData.club.length > 0 && (
+          <WorksInCard
+            // key={club._id}
+            clubs={coachData?.club || []}
+            iconNames={[IconName.LOCATION, IconName.CLOCK]}
+            labels={['1,5 км', '24/7']}
+          />
+        )}
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}
