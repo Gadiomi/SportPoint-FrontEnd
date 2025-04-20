@@ -36,6 +36,9 @@ const TrainersPage = lazy(
 );
 const ClubsPage = lazy(() => import('../pages/HomePage/ClubsPage/ClubsPage'));
 const Reviews = lazy(() => import('../pages/ReviewsPage/ReviewsPage'));
+const ResultSearch = lazy(
+  () => import('../pages/ResultSearchPage/ResultSearchPage'),
+);
 
 function App() {
   return (
@@ -43,6 +46,7 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/result" element={<ResultSearch />} />
           <Route path="/trainers" element={<TrainersPage />} />
           <Route path="trainer/:id" element={<TrainerPage />} />
           <Route path="/clubs" element={<ClubsPage />} />

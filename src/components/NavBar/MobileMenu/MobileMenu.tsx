@@ -24,7 +24,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   return (
     <NavBox>
       <Overlay onClick={onClose} />
-      <MenuWrapper isOpen={isOpen}>
+      <MenuWrapper $isOpen={isOpen}>
         <MenuContent>
           <MenuList>
             <MenuItem

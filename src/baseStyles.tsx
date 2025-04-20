@@ -15,7 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     
   }
  
-
+p{    color: ${({ theme }) => theme.color.white};}
 html {
     box-sizing: border-box;
 }

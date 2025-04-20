@@ -11,7 +11,7 @@ export const NavBox = styled.div(({ theme }) => ({
   width: '100%',
 }));
 export const Nav = styled.nav(({ theme }) => ({
-  backgroundColor: theme.color.background,
+  backgroundColor: theme.color.inputBar,
   borderRadius: '8px 8px 0 0',
   margin: '0 auto',
   maxWidth: '375px',
