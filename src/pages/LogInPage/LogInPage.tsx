@@ -178,7 +178,12 @@ const LogInPage: FC = () => {
             disabled={!isValid || isLoading}
             appendChild={
               isSubmitting || isLoading ? (
-                <Loader size={'16px'} stroke={'#f0f0f0'} strokeWidth={'1'} />
+                <Loader
+                  size={'16px'}
+                  stroke={'#f0f0f0'}
+                  strokeWidth={'1'}
+                  style={{ marginLeft: '4px' }}
+                />
               ) : null
             }
           />
