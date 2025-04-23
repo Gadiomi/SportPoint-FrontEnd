@@ -6,8 +6,8 @@ export const List = styled.ul`
   gap: 16px;
 `;
 export const ListItem = styled.li`
-  background-color: #303030 90%;
-  box-shadow: 0px 0px 10px 1px #2b3695e5;
+  background-color: rgba(48, 48, 48, 1);
+  box-shadow: 0px 0px 6px 1px rgba(43, 54, 149, 0.9);
   border-radius: 6px;
   display: flex;
   flex-direction: column;

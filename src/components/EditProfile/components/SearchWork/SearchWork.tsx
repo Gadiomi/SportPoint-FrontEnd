@@ -9,24 +9,15 @@ import {
   SearchWorkItems,
   SearchWorkList,
 } from './SearchWork.styled';
+import { SearchResults } from '../Schedule/types/schedule';
 
 interface SearchWorkProps {
   searchTerm: string;
   handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isFetching: boolean;
   view: boolean;
-  searchResults?: {
-    profiles: {
-      _id: string;
-      firstName: string;
-      lastName: string;
-      avatar?: string;
-      description: {
-        address?: string;
-        city?: string;
-      };
-    }[];
-  } | null;
+  searchResults?: SearchResults | null;
+
   setSelectedProfile: (profile: {
     id: string;
     firstName: string;

@@ -13,7 +13,14 @@ export const scheduleApi = createApi({
         data: workoutPlans,
       }),
     }),
+    deleteSchedule: builder.mutation({
+      query: id => ({
+        url: `/workoutPlan/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useAddScheduleMutation } = scheduleApi;
+export const { useAddScheduleMutation, useDeleteScheduleMutation } =
+  scheduleApi;

@@ -4,4 +4,5 @@ export enum PublicRouteName {
   GENERAL = 'general',
   CHANGEPASSWORD = 'change-password',
   REVIEWS = 'reviews',
+  SCHEDULE = 'schedule',
 }

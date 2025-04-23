@@ -19,6 +19,7 @@ export interface WorkoutPlan {
   selectedGym: string;
   createdAt: string;
   updatedAt: string;
+  _id: string;
 }
 
 interface Favorite {

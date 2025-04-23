@@ -28,30 +28,26 @@ import uaMessages from './components/uaMessages';
 import { parse, startOfWeek, getDay, format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 import { useAddScheduleMutation } from '@/redux/schedule/scheduleApi';
-import ScheduleCard from './components/SchaduleCard/ScheduleCard';
-
-interface Profile {
-  id: string;
-  firstName: string;
-  lastName: string;
-  address?: string;
-  city?: string;
-  avatar?: string;
-}
+import ScheduleCard from './components/ScheduleCard/ScheduleCard';
+import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
 
 const locales = {
   uk: uk,
 };
 
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
-  getDay,
-  locales,
-});
-
 const Schedule = () => {
+  const localizer = useMemo(
+    () =>
+      dateFnsLocalizer({
+        format,
+        parse,
+        startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
+        getDay,
+        locales,
+      }),
+    [],
+  );
+
   const userProfile = useAppSelector(state => state.user.user);
   const [addSchedule] = useAddScheduleMutation();
   const navigate = useNavigate();
@@ -62,28 +58,10 @@ const Schedule = () => {
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [beginTime, setBeginTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
-
-  const [savedSchedule, setSavedSchedule] = useState<
-    {
-      day: Date;
-      begin: string;
-      end: string;
-      profile: Profile;
-      weekday: string;
-      monthShort: string;
-    }[]
-  >([]);
-
-  const [backendSchedule, setBackendSchedule] = useState<
-    {
-      day: Date;
-      begin: string;
-      end: string;
-      profile: Profile;
-      weekday: string;
-      monthShort: string;
-    }[]
-  >([]);
+  const [savedSchedule, setSavedSchedule] = useState<ScheduleEntry[]>([]);
+  const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
+  const [localSearchResults, setLocalSearchResults] =
+    useState<SearchResults | null>(null);
 
   useEffect(() => {
     if (userProfile?.description.schedule) {
@@ -91,13 +69,14 @@ const Schedule = () => {
         day: new Date(item.date.startTime),
         begin: format(new Date(item.date.startTime), 'HH:mm'),
         end: format(new Date(item.date.endTime), 'HH:mm'),
+        _id: item._id,
         profile: {
           firstName: item.selectedGym,
           lastName: '',
           address: item.selection.address,
           city: item.selection.city,
           avatar: item.selection.avatar,
-          id: 'generated-id',
+          id: item._id || 'default-id',
         },
         weekday: format(new Date(item.date.startTime), 'EEEE', { locale: uk }),
         monthShort: format(new Date(item.date.startTime), 'MMM', {
@@ -117,9 +96,14 @@ const Schedule = () => {
           prev.map(e => getDateWithoutTime(new Date(e.day))),
         );
 
-        const filtered = transformed.filter(
-          e => !existingDates.has(getDateWithoutTime(new Date(e.day))),
-        );
+        const filtered = transformed.filter(e => {
+          const entryProfile = e.profile;
+          if (!entryProfile.id) {
+            entryProfile.id = 'default-id';
+          }
+
+          return !existingDates.has(getDateWithoutTime(new Date(e.day)));
+        });
 
         return [...filtered, ...prev];
       });
@@ -136,12 +120,6 @@ const Schedule = () => {
     [],
   );
 
-  useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [userProfile, debouncedSearch]);
-
   const { data: searchResults, isFetching } = useGetByNameQuery(
     {
       name: debouncedSearchTerm,
@@ -151,6 +129,14 @@ const Schedule = () => {
       skip: !debouncedSearchTerm,
     },
   );
+
+  useEffect(() => {
+    if (!debouncedSearchTerm) {
+      setLocalSearchResults(null);
+    } else if (searchResults) {
+      setLocalSearchResults(searchResults);
+    }
+  }, [debouncedSearchTerm, searchResults]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
@@ -190,7 +176,6 @@ const Schedule = () => {
       const start = new Date(entry.day);
       const [startHour, startMin] = entry.begin.split(':');
       start.setHours(Number(startHour), Number(startMin));
-
       const end = new Date(entry.day);
       const [endHour, endMin] = entry.end.split(':');
       end.setHours(Number(endHour), Number(endMin));
@@ -210,6 +195,7 @@ const Schedule = () => {
       };
     });
   };
+
   const onSubmit = async () => {
     try {
       const backendReadySchedule = convertScheduleToBackendFormat();
@@ -255,6 +241,7 @@ const Schedule = () => {
     setBeginTime('');
     setEndTime('');
     setSelectedProfile([]);
+    setSearchTerm('');
   };
 
   return (
@@ -350,7 +337,7 @@ const Schedule = () => {
           searchTerm={searchTerm}
           handleSearchChange={handleSearchChange}
           isFetching={isFetching}
-          searchResults={searchResults}
+          searchResults={localSearchResults}
           setSelectedProfile={handleSelectProfile}
           selectedProfile={selectedProfile}
           title={'Обрати клуб'}
@@ -366,10 +353,13 @@ const Schedule = () => {
         />
 
         {savedSchedule.length > 0 && (
-          <ScheduleCard savedSchedule={savedSchedule} />
+          <ScheduleCard
+            savedSchedule={savedSchedule}
+            setSavedSchedule={setSavedSchedule}
+          />
         )}
         <GeneralsBtn t={t} />
-      </FormStyled>{' '}
+      </FormStyled>
     </Container>
   );
 };
