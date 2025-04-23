@@ -7,22 +7,31 @@ interface Price {
   description?: string;
   amount: string;
 }
-interface Schedule {
-  days?: string;
-  hours?: string;
-  date?: Date;
+// interface Schedule {
+//   days?: string;
+//   hours?: string;
+//   date?: Date;
+// }
+
+export interface WorkoutPlan {
+  date: DateSchema;
+  selection: SelectionSchema;
+  selectedGym: string;
+  createdAt: string;
+  updatedAt: string;
 }
+
 interface Favorite {
   userId: string;
   role: string;
 }
-interface Description {
+export interface Description {
   address?: string;
   city?: string;
   short_desc?: string;
   abilities?: string[];
   age?: string;
-  schedule?: Schedule[];
+  schedule?: WorkoutPlan[];
   equipment?: string[];
   experience?: number;
   price?: Price[];
@@ -46,4 +55,16 @@ export interface UserProfile {
   coach?: string[];
   sport?: string[];
   work_list?: string[];
+}
+
+export interface DateSchema {
+  startTime: string;
+  endTime: string;
+}
+
+export interface SelectionSchema {
+  selectedType: string;
+  city: string;
+  address: string;
+  avatar?: string;
 }

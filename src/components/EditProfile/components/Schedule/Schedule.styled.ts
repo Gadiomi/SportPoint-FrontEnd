@@ -85,8 +85,16 @@ export const StyledCalendar = styled(Calendar)<{ view: string }>`
     border: none;
   }
 
+  .rbc-month-header {
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 14px;
+    color: #b7b7b9;
+  }
   .rbc-month-row {
     overflow: visible;
+    border: none;
   }
 
   .rbc-header {
@@ -108,6 +116,9 @@ export const StyledCalendar = styled(Calendar)<{ view: string }>`
     top: ${({ view }) => (view === 'day' ? '0' : 'auto')};
     left: ${({ view }) => (view === 'day' ? '40%' : 'auto')};
   }
+  .rbc-time-header {
+    display: ${({ view }) => (view === 'day' ? 'none' : 'block')};
+  }
 
   .rbc-today {
     background-color: ${({ view }) =>
@@ -115,14 +126,33 @@ export const StyledCalendar = styled(Calendar)<{ view: string }>`
     border-radius: 100%;
     color: #f8f7f4;
   }
+  .rbc-row {
+    gap: 12px;
+  }
+
   .rbc-date-cell {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    flex: none;
+    color: #b7b7b9;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .rbc-now {
+    background-color: #ed772f;
+    border-radius: 100%;
+    color: #f8f7f4;
   }
   .rbc-day-slot .rbc-events-container {
     width: 40%;
+  }
+  .rbc-row-bg {
+    display: none;
   }
 `;
 
@@ -137,4 +167,13 @@ export const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   gap: 16px;
+`;
+
+export const DayCell = styled.div<{ isSelected?: boolean }>`
+  background-color: ${({ isSelected }) =>
+    isSelected ? '#E0F7FA' : 'transparent'};
+  border-radius: ${({ isSelected }) => (isSelected ? '8px' : '0')};
+  width: 100%;
+  height: 100%;
+  border: ${({ isSelected }) => (isSelected ? '2px solid #00796B' : 'none')};
 `;

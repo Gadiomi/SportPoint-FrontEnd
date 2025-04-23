@@ -15,11 +15,12 @@ interface SearchWorkProps {
   handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isFetching: boolean;
   view: boolean;
-  searchResults: {
+  searchResults?: {
     profiles: {
       _id: string;
       firstName: string;
       lastName: string;
+      avatar?: string;
       description: {
         address?: string;
         city?: string;
@@ -32,17 +33,20 @@ interface SearchWorkProps {
     lastName: string;
     address?: string;
     city?: string;
+    avatar?: string;
   }) => void;
-  selectedProfile:
+  selectedProfile?:
     | {
         id: string;
         firstName: string;
         lastName: string;
         address?: string;
         city?: string;
+        avatar?: string;
       }[]
     | null;
   title: string;
+  label?: string;
 }
 
 const SearchWork: React.FC<SearchWorkProps> = ({
@@ -54,6 +58,7 @@ const SearchWork: React.FC<SearchWorkProps> = ({
   selectedProfile,
   title,
   view,
+  label,
 }) => {
   return (
     <div>
@@ -75,10 +80,9 @@ const SearchWork: React.FC<SearchWorkProps> = ({
 
         <Input
           testId="searchClubs"
-          label="Пошук клубів"
+          label={label}
           value={searchTerm}
           onChange={handleSearchChange}
-          placeholder="Введіть назву"
         />
         {isFetching && <div>Завантаження...</div>}
         {searchResults?.profiles && searchResults?.profiles?.length > 0 && (
@@ -93,6 +97,7 @@ const SearchWork: React.FC<SearchWorkProps> = ({
                     lastName: profile.lastName,
                     address: profile.description?.address || 'Адреса відсутня',
                     city: profile.description?.city || 'Місто відсутнє',
+                    avatar: profile.avatar,
                   })
                 }
               >

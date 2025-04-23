@@ -30,7 +30,7 @@ const CustomToolbar = ({
       {Object.entries(schedule.buttons).map(([key, value], index) => (
         <ButtonListItem key={index}>
           <ButtonItem
-            isActive={activeView === key}
+            $isActive={activeView === key}
             type="button"
             onClick={() => {
               if (key === 'day') {

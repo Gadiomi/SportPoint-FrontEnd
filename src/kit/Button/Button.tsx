@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { CSSObject } from 'styled-components';
 
 import { ButtonAppearance } from './constants';
 
@@ -10,7 +10,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   testId: string;
   textStyle?: React.CSSProperties;
   appearance?: ButtonAppearance;
-  styles?: React.CSSProperties;
+  styles?: CSSObject;
 }
 
 export function Button({

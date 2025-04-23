@@ -69,10 +69,12 @@ export const SelectStyled = styled.select`
   }
 `;
 
-export const InputsSection = styled.div<{ view?: boolean }>`
+export const InputsSection = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'view',
+})<{ view?: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: ${({ view }) => (view === true ? '8' : '16px')};
+  gap: ${({ view }) => (view ? '8px' : '16px')};
 
   width: 100%;
 `;

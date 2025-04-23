@@ -1,4 +1,5 @@
-import moment from 'moment';
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
 import {
   DayContainer,
   StyledDate,
@@ -7,20 +8,24 @@ import {
 } from './CustomDateCellWrapper.styled';
 
 const CustomDateCell = ({ date }: { date: Date }) => {
-  const isToday = moment(date).isSame(new Date(), 'day');
+  const isToday =
+    format(date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd');
 
   return isToday ? (
-    <StyledDateNow>{moment(date).format('DD')}</StyledDateNow>
+    <StyledDateNow>{format(date, 'dd')}</StyledDateNow>
   ) : (
-    <StyledDate>{moment(date).format('DD')}</StyledDate>
+    <StyledDate>{format(date, 'dd')}</StyledDate>
   );
 };
+
 const CustomDateCellWrapper = ({ date }: { date: Date }) => {
+  const weekday = format(date, 'iii', { locale: uk }).slice(0, 2);
   return (
     <DayContainer>
-      <StyledWeeksName>{moment(date).format('ddd')}</StyledWeeksName>
+      <StyledWeeksName>{weekday}</StyledWeeksName>
       <CustomDateCell date={date} />
     </DayContainer>
   );
 };
+
 export default CustomDateCellWrapper;

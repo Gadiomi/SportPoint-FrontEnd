@@ -8,6 +8,7 @@ import { editProfileReducer } from './user/editProfileSlice';
 import { cardApi } from './cards/cardApi';
 import { byNameApi } from './searchByName/searchByNameApi';
 import { cardsApi } from './cards/cardsApi';
+import { scheduleApi } from './schedule/scheduleApi';
 
 // Store
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     [cardApi.reducerPath]: cardApi.reducer,
     [byNameApi.reducerPath]: byNameApi.reducer,
     [cardsApi.reducerPath]: cardsApi.reducer,
+    [scheduleApi.reducerPath]: scheduleApi.reducer,
 
     user: userReducer,
     editProfile: editProfileReducer,
@@ -33,6 +35,7 @@ export const store = configureStore({
       cardApi.middleware,
       byNameApi.middleware,
       cardsApi.middleware,
+      scheduleApi.middleware,
     ),
 });
 

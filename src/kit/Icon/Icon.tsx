@@ -1,12 +1,12 @@
 import React from 'react';
 import { IconName } from './constants';
-import styled from 'styled-components';
+import styled, { CSSObject } from 'styled-components';
 export interface IconProps {
   name: IconName;
   width?: string;
   height?: string;
   size?: string | number;
-  styles?: React.CSSProperties;
+  styles?: CSSObject;
 }
 
 export const Icon = React.memo(
