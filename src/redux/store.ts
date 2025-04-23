@@ -8,6 +8,7 @@ import { editProfileReducer } from './user/editProfileSlice';
 import { cardApi } from './cards/cardApi';
 import { cardsApi } from './cards/cardsApi';
 import { cardIdApi } from './details/cardIdApi';
+import { favoritesApi } from './details/favoritesApi';
 import { loginReducer } from './auth/loginSlice';
 import { searchApi } from './search/searchApi';
 
@@ -23,6 +24,7 @@ export const store = configureStore({
     editProfile: editProfileReducer,
     [passwordApi.reducerPath]: passwordApi.reducer,
     [cardIdApi.reducerPath]: cardIdApi.reducer,
+    [favoritesApi.reducerPath]: favoritesApi.reducer,
     setLogin: loginReducer,
   },
   middleware: getDefaultMiddleware =>
@@ -36,6 +38,7 @@ export const store = configureStore({
       cardApi.middleware,
       cardsApi.middleware,
       cardIdApi.middleware,
+      favoritesApi.middleware,
       searchApi.middleware,
     ),
 });

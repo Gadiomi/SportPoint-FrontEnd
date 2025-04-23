@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { CookiesKey } from '@/constants';
 import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { fonts } from '@/theme/fonts';
 import { IconName } from '@/kit';
+import {
+  useAddToFavoritesMutation,
+  useGetFavoritesQuery,
+  useRemoveFromFavoritesMutation,
+} from '../../../../redux/details/favoritesApi';
 import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
 import EditButton from '../../components/EditButton/EditButton';
 import ModalNotAnAuthorizedUser from '../ModalNotAnAuthorizedUser/ModalNotAnAuthorizedUser';
+
 import StyledHr from '../../../../components/StyledHr/StyledHr';
 import {
   StyledProfileCard,
@@ -45,6 +53,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [showEditButton, setShowEditButton] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [addToFavorites] = useAddToFavoritesMutation();
+  const { data: favoritesData, refetch } = useGetFavoritesQuery({ role });
+  const [removeFromFavorites] = useRemoveFromFavoritesMutation();
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -61,22 +73,45 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     setShowEditButton(showEdit);
   }, [location.pathname]);
 
-  const handleAvatarError = () => {
-    setAvatarError(true);
-  };
+  useEffect(() => {
+    if (!_id || !Array.isArray(favoritesData?.data)) return;
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    const isInFavorites = favoritesData.data.some(
+      (fav: any) => fav._id === _id,
+    );
+    setIsFavorite(isInFavorites);
+  }, [favoritesData, _id]);
 
-  const openCommentModal = () => {
-    setModalTitle('Тільки авторизовані користувачі можуть коментувати');
-    setIsModalOpen(true);
-  };
+  const handleToggleFavorite = async () => {
+    const token = Cookies.get(CookiesKey.TOKEN);
+    if (!token) {
+      openChooseModal();
+      return;
+    }
 
-  const openChooseModal = () => {
-    setModalTitle('Тільки авторизовані користувачі можуть обирати');
-    setIsModalOpen(true);
+    if (!_id || !role) {
+      return;
+    }
+
+    try {
+      if (!isFavorite) {
+        await addToFavorites({ id: _id, data: { role } }).unwrap();
+        setIsFavorite(true);
+      } else {
+        await removeFromFavorites({ id: _id }).unwrap();
+        setIsFavorite(false);
+      }
+
+      await refetch();
+    } catch (err: any) {
+      console.error(
+        'Помилка при обробці улюбленого:',
+        err?.response?.data || err,
+      );
+      if (err?.status === 409) {
+        alert('Ця картка вже є в улюблених');
+      }
+    }
   };
 
   const getYearWord = (num: number): string => {
@@ -91,6 +126,24 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     if (lastDigit >= 2 && lastDigit <= 4) return 'роки';
 
     return 'років';
+  };
+
+  const openCommentModal = () => {
+    setModalTitle('Тільки авторизовані користувачі можуть коментувати');
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openChooseModal = () => {
+    setModalTitle('Тільки авторизовані користувачі можуть обирати');
+    setIsModalOpen(true);
+  };
+
+  const handleAvatarError = () => {
+    setAvatarError(true);
   };
 
   const renderAvatar =
@@ -124,9 +177,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
         {showButtons && (
           <ButtonProfileIcon
-            iconName={IconName.HEART_NONE}
+            iconName={isFavorite ? IconName.HEART_FILL : IconName.HEART_NONE}
             text={t('details_page.choose')}
-            onClick={openChooseModal}
+            onClick={handleToggleFavorite}
+            iconStyle={{
+              fill: isFavorite ? '#F8F7F4' : 'transparent',
+            }}
           />
         )}
       </div>

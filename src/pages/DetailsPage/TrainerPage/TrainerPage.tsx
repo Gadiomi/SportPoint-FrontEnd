@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
@@ -19,6 +18,9 @@ import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
 import { StyledProfileCard } from './styles';
 
+import Cookies from 'js-cookie';
+import { CookiesKey } from '@/constants';
+
 const TrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
   const { t } = useTranslation();
@@ -30,7 +32,13 @@ const TrainerPage: FC = () => {
   // const userRole = Cookies.get('userRole');
   // console.log('userRole', userRole);
 
-  const isLoggedIn = !!localStorage.getItem('accessToken');
+  const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
+
+  const userId = Cookies.get('userId');
+  console.log('userId:', userId);
+
+  const token = Cookies.get(CookiesKey.TOKEN);
+  console.log('Token:', token);
 
   console.log('Отримані дані з бекенду:', data);
   console.log('ID користувача:', data?._id);
@@ -62,9 +70,6 @@ const TrainerPage: FC = () => {
     coachData?.description || {};
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
-
-  const token = localStorage.getItem('accessToken');
-  console.log('Token:', token);
 
   const title = token
     ? 'Введіть дані, і тренер з вами зв’яжеться'
