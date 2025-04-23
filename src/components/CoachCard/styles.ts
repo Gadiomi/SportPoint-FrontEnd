@@ -24,6 +24,7 @@ export const CoachInfoWrapper = styled.div`
 
 export const CoachImage = styled.img`
   width: 90px;
+  min-width: 90px;
   height: 90px;
   border-radius: 50%;
   object-fit: cover;

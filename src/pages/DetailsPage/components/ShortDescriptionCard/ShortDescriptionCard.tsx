@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import ButtonLink from '../ButtonLink/ButtonLink';
+import { ShortDescriptionContainer } from './styles';
 
 interface ShortDescriptionCardProps {
   short_desc: string | undefined;
@@ -33,20 +35,13 @@ const ShortDescriptionCard: React.FC<ShortDescriptionCardProps> = ({
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-        marginTop: '8px',
-        marginBottom: '32px',
-      }}
-    >
+    <ShortDescriptionContainer>
       <p
         ref={textRef}
         style={{
           ...fonts.secondManrope,
           color: theme.color.secWhite,
+          marginBottom: '32px',
           display: '-webkit-box',
           overflow: 'hidden',
           WebkitBoxOrient: 'vertical',
@@ -70,11 +65,13 @@ const ShortDescriptionCard: React.FC<ShortDescriptionCardProps> = ({
             style={{
               ...fonts.secondManrope,
               color: theme.color.white,
+              marginBottom: '32px',
             }}
           />
         </div>
       )}
-    </div>
+      <StyledHr />
+    </ShortDescriptionContainer>
   );
 };
 

@@ -48,7 +48,7 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
             />
           </IconWrapRating>
           <Small style={{ color: theme.color.disabled }}>
-            {countReview} відгуків
+            {countReview} {t('home_page.reviews')}
           </Small>
         </InfoWrapReviews>
       </ClubInfo>
@@ -65,13 +65,21 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
             styles={{ color: theme.color.disabled, fill: theme.color.disabled }}
             name={IconName.CLOCK}
           />
-          <LightText>{shortDays}</LightText>
+          {shortDays ? (
+            <LightText>{shortDays}</LightText>
+          ) : (
+            <LightText>-</LightText>
+          )}
         </IconWrap>
       </ClubDetail>
       <Button
         testId="Детальніше"
         title={t('more_details')}
-        style={{ ...fonts.secondManrope, width: '100%', padding: theme.pxs.x3 }}
+        style={{
+          ...fonts.secondManrope,
+          width: '100%',
+          padding: theme.pxs.x1_5,
+        }}
         onClick={() => navigate(`/details/club/:${_id}`)}
       />
     </ClubCardBox>

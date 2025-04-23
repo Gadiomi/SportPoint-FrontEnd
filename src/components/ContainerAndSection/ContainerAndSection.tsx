@@ -18,7 +18,7 @@ export const Container: React.FC<ContainerProps> = ({
   styles,
 }) => {
   return (
-    <StyledContainer style={styles} maxWidth={maxWidth}>
+    <StyledContainer style={styles} $maxWidth={maxWidth}>
       {children}
     </StyledContainer>
   );
@@ -35,12 +35,12 @@ export const Section: React.FC<SectionProps> = ({
   );
 };
 
-const StyledContainer = styled.div<{ maxWidth?: string }>(
-  ({ theme, maxWidth }) => {
+const StyledContainer = styled.div<{ $maxWidth?: string }>(
+  ({ theme, $maxWidth }) => {
     const defaultWidths = { base: '375px', md: '768px', lg: '1024px' };
     return {
       width: '100%',
-      maxWidth: maxWidth || defaultWidths.base,
+      maxWidth: $maxWidth || defaultWidths.base,
       margin: '0 auto',
       display: 'flex',
       flexDirection: 'column',
@@ -48,16 +48,14 @@ const StyledContainer = styled.div<{ maxWidth?: string }>(
       justifyContent: 'center',
       color: theme.color.white,
 
-      /* потім видалити */
       borderLeft: '2px solid rgba(255, 255, 255, 0.1)',
       borderRight: '2px solid rgba(255, 255, 255, 0.1)',
-      /* потім видалити */
 
       [theme.mediaRules.up(theme.breakpoints.tablet)]: {
-        maxWidth: maxWidth || defaultWidths.md,
+        maxWidth: $maxWidth || defaultWidths.md,
       },
       [theme.mediaRules.up(theme.breakpoints.desktop)]: {
-        maxWidth: maxWidth || defaultWidths.lg,
+        maxWidth: $maxWidth || defaultWidths.lg,
       },
     };
   },

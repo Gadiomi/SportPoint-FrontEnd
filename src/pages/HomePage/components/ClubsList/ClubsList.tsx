@@ -7,13 +7,21 @@ import { Pagination } from '@/components/Pagination/Pagination';
 import { ClubData, FilterParams } from '@/types';
 import { ClubCard } from '@/components/ClubCard/ClubCard';
 import { useGetCardsQuery } from '@/redux/cards/cardsApi';
+import { Loading, StyledButtonBack } from '../TrainersList/styles';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ButtonAppearance, Icon, IconName } from '@/kit';
+
+import { t } from 'i18next';
 
 export const ClubsList: React.FC = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const abilityFromUrl = searchParams.get('abilities') || '';
   const [filters, setFilters] = useState<FilterParams>({
     address: '',
     minPrice: null,
     maxPrice: null,
-    abilities: '',
+    abilities: abilityFromUrl,
     sort: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,22 +35,41 @@ export const ClubsList: React.FC = () => {
     setFilters(newFilters);
     setCurrentPage(1);
   };
-  if (isLoading) return <p>Завантаження...</p>;
-  if (error) return <p>Помилка завантаження даних</p>;
-  console.log('data.data', data.data);
+
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
-      <Filters getFilteredCards={getFilteredCards} setFilters={setFilters} />
-      <StyledClubsList>
-        {data?.data?.data?.map((coach: ClubData) => (
-          <ClubCard key={coach._id} clubData={coach} />
-        ))}
-      </StyledClubsList>
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalPages={data?.data?.totalPages > 0 ? data.data.totalPages : 1}
-      />
+      {isLoading ? (
+        <Loading>{t('home_page.loading')}...</Loading>
+      ) : (
+        <>
+          <StyledButtonBack
+            onClick={() => navigate(`/`)}
+            testId="clubsBack"
+            title={t('clubs-list')}
+            appearance={ButtonAppearance.UNDERLINED}
+            appendChild={<Icon name={IconName.ARROW_LEFT} />}
+          />
+          <Filters
+            getFilteredCards={getFilteredCards}
+            setFilters={setFilters}
+          />
+          {data?.data?.data.length !== 0 ? (
+            <StyledClubsList>
+              {data?.data?.data?.map((club: ClubData) => (
+                <ClubCard key={club._id} clubData={club} />
+              ))}
+            </StyledClubsList>
+          ) : (
+            <Loading>Немає даних для відображення</Loading>
+          )}
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            totalPages={data?.data?.totalPages > 0 ? data.data.totalPages : 1}
+          />
+        </>
+      )}
+      {error ? <p>Помилка завантаження даних</p> : null}
     </Container>
   );
 };

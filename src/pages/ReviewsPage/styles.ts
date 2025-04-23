@@ -4,6 +4,36 @@ export const Star = styled.div`
   stroke: transparent;
   strokewidth: 0;
 `;
+
+export const Div = styled.div`
+  width: 100%;
+`;
+//-----------------**********МОДАЛКА****************
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+export const ModalContent = styled.div`
+  background-color: ${({ theme }) => theme.color.background};
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto; /* Прокрутка при потребі */
+  z-index: 1001;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+`;
+
 // -----------------************* page EditReviewPage *****************
 
 export const ContainerEdit = styled.div`
@@ -32,23 +62,44 @@ export const Label = styled.span`
   font-size: 14px;
 `;
 
-export const HeaderEdit = styled.h2`
+export const HeaderEdit = styled.div`
   display: flex;
   font-size: 18px;
   gap: 4px;
-  margin-bottom: 16px;
-  margin-top: 16px;
 `;
 
-export const UserInfoEdit = styled.div`
-  width: 100%;
-  background: ${({ theme }) => theme.color.inputBar};
-  box-shadow: 1px 1px 10px rgba(43, 54, 149, 0.9);
+export const OverallRatingSection = styled.div`
   display: flex;
-  padding: 18px 10px;
-  margim-top: 16px;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0;
 `;
+
+export const OverallTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.color.mainWhite};
+  display: flex;
+  align-items: center;
+`;
+
+export const StarsDisplay = styled.div`
+  display: flex;
+  width: 152px;
+  margin-top: 16px;
+`;
+export const RatingLabels = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+// const StarIcon = styled.span<{ filled?: boolean }>`
+//   margin-right: 4px;
+//   svg {
+//     width: 20px;
+//     height: 20px;
+//   }
+// `;
 
 export const ReviewSummary = styled.div`
   display: flex;
@@ -81,9 +132,11 @@ export const Starsedit = styled.div`
   gap: 5px;
 `;
 
-export const StarIcon = styled(Star)<{ filled: boolean }>`
+export const StarIcon = styled(Star).withConfig({
+  shouldForwardProp: prop => prop !== 'filled',
+})<{ $filled: boolean }>`
   cursor: pointer;
-  color: ${({ filled }) => (filled ? '#ED772F' : '#494949')};
+  color: ${({ $filled }) => ($filled ? '#ED772F' : '#494949')};
   transition: color 0.2s;
 
   &:hover {
@@ -116,6 +169,10 @@ export const CancelButton = styled.button`
 `;
 
 export const SaveButton = styled.button`
+  display: flex;
+  align-items: center;
+  height: 36px;
+  gap: 8px;
   color: ${({ theme }) => theme.color.white};
   border: 1px solid ${({ theme }) => theme.color.secWhite};
   border-radius: 6px;
@@ -127,4 +184,31 @@ export const SaveButton = styled.button`
   &:focus {
     background: #bd510e;
   }
+`;
+export const ContainerButtonMore = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 32px 12px 90px 12px;
+`;
+
+export const ButtonMore = styled.button`
+position: relative;
+color: ${({ theme }) => theme.color.white};
+text-align: right;
+font-size:16px;
+
+ &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.5px; /* Відстань під текстом */
+    width: 100%;
+    height: 0.5px; /* Товщина лінії */
+    background-color: ${({ theme }) => theme.color.white};
+  }
+   &:hover {
+    color: ${({ theme }) => theme.color.mainOrange};
+
+  &:hover::after {
+    background-color: ${({ theme }) => theme.color.mainOrange};
 `;

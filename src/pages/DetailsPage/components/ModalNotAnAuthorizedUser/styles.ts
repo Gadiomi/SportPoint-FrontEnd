@@ -19,11 +19,13 @@ export const ModalContainer = styled.div`
   padding: ${({ theme }) => `${theme.pxs.x4}px`};
   border-radius: ${({ theme }) => `${theme.pxs.x1_5}px`};
   width: 275px;
+  box-shadow: 0 0 10px rgba(43, 54, 149, 0.9);
 `;
 
 export const ModalHeader = styled.h2`
   width: 168px;
   color: ${({ theme }) => theme.color.secWhite};
+  text-align: left;
 `;
 
 export const ModalContent = styled.div`

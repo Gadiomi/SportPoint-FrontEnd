@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Input } from '@/kit';
-import { Icon, IconName } from '@/kit';
-import { Button, ButtonAppearance } from '@/kit';
+import { Input, Icon, IconName, Button, ButtonAppearance } from '@/kit';
 import { CustomCheckbox } from '@/kit/CustomCheckbox';
 import { fonts } from '@/theme/fonts';
 import { useTheme } from 'styled-components';
@@ -17,6 +18,30 @@ import {
   Checkbox_2,
 } from './styles';
 
+interface FormData {
+  name: string;
+  phone: string;
+  checkbox_1: boolean;
+  checkbox_2?: boolean;
+}
+
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .min(2, "Ім'я має містити не менше 2 літер")
+    .max(32, "Ім'я не може містити більше 32 літер")
+    .matches(/^[A-Za-zА-Яа-яЇїІіЄєҐґ\s'-]+$/, "Ім'я має містити лише літери")
+    .required("Ім'я обов'язкове"),
+  phone: yup
+    .string()
+    .matches(/^\+380\d{9}$/, 'Формат телефону +380XXXXXXXXX')
+    .required("Телефон обов'язковий"),
+  checkbox_1: yup
+    .boolean()
+    .oneOf([true], 'Для продовження, погодьтесь з умовами оферти')
+    .required('Необхідно погодитися з умовами'),
+});
+
 interface ModalGetInTouchProps {
   isOpen: boolean;
   onClose: () => void;
@@ -30,25 +55,22 @@ const ModalGetInTouch: React.FC<ModalGetInTouchProps> = ({
 }: ModalGetInTouchProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [checked1, setChecked1] = useState(false);
-  const [checked2, setChecked2] = useState(false);
+  const [phoneValue, setPhoneValue] = useState('');
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
+  const { control, handleSubmit, reset } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+    mode: 'onChange',
+    defaultValues: {
+      name: '',
+      phone: '',
+      checkbox_1: false,
+    },
+  });
 
-  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(event.target.value);
-  };
-
-  const handleCheckboxChange1 = () => {
-    setChecked1(!checked1);
-  };
-
-  const handleCheckboxChange2 = () => {
-    setChecked2(!checked2);
+  const onSubmit: SubmitHandler<FormData> = data => {
+    console.log('Відправлені дані:', data);
+    reset();
+    onClose();
   };
 
   useEffect(() => {
@@ -70,7 +92,7 @@ const ModalGetInTouch: React.FC<ModalGetInTouchProps> = ({
       <ModalContainer onClick={e => e.stopPropagation()}>
         <ModalHeader style={fonts.modalTitle}>{title}</ModalHeader>
         <ModalContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div
               style={{
                 display: 'flex',
@@ -78,103 +100,167 @@ const ModalGetInTouch: React.FC<ModalGetInTouchProps> = ({
                 gap: '24px',
               }}
             >
-              <Input
-                style={{
-                  ...fonts.modalInput,
-                  color: theme.color.secWhite,
-                  padding: '10px',
-                  width: '100%',
-                }}
-                testId="name-input"
-                value={name}
-                onChange={handleNameChange}
-                label="Ваше Ім’я"
+              <Controller
+                name="name"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Input
+                    {...field}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const value = e.target.value;
+                      const onlyLetters = value.replace(
+                        /[^A-Za-zА-Яа-яЇїІіЄєҐґ\s'-]/g,
+                        '',
+                      );
+                      field.onChange(onlyLetters);
+                    }}
+                    value={field.value}
+                    style={{
+                      ...fonts.modalInput,
+                      color: theme.color.secWhite,
+                      padding: '10px',
+                      width: '100%',
+                    }}
+                    testId="name-input"
+                    label="Ваше Ім’я*"
+                    errorMessage={fieldState.error?.message}
+                  />
+                )}
               />
 
-              <Input
-                style={{
-                  ...fonts.modalInput,
-                  color: theme.color.secWhite,
-                  padding: '10px',
-                }}
-                testId="phone-input"
-                value={phone}
-                onChange={handlePhoneChange}
-                label="Ваш номер телефону"
-                type="tel"
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Input
+                    {...field}
+                    onChange={e => {
+                      const input = e.target.value;
+
+                      const cleaned = input.replace(/[^\d]/g, '');
+
+                      if (!cleaned.startsWith('380')) {
+                        setPhoneValue('+380' + cleaned.slice(0, 9));
+                        field.onChange('+380' + cleaned.slice(0, 9));
+                      } else {
+                        setPhoneValue('+' + cleaned.slice(0, 12));
+                        field.onChange('+' + cleaned.slice(0, 12));
+                      }
+                    }}
+                    onFocus={() => {
+                      if (!phoneValue || !phoneValue.startsWith('+380')) {
+                        setPhoneValue('+380');
+                        field.onChange('+380');
+                      }
+                    }}
+                    style={{
+                      ...fonts.modalInput,
+                      color: theme.color.secWhite,
+                      padding: '10px',
+                    }}
+                    testId="phone-input"
+                    label="Ваш номер телефону*"
+                    type="tel"
+                    errorMessage={fieldState.error?.message}
+                  />
+                )}
               />
+              <CheckboxContainer>
+                <Controller
+                  name="checkbox_1"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Checkbox_1>
+                      <div
+                        style={{ width: 'auto' }}
+                        onClick={() => field.onChange(!field.value)}
+                      >
+                        <Icon
+                          name={
+                            field.value
+                              ? IconName.CHECK_FILL
+                              : IconName.CHECK_SQUARE_CONTAINED
+                          }
+                          styles={{
+                            cursor: 'pointer',
+                            fill: 'transparent',
+                            width: '24px',
+                            height: '24px',
+                            marginRight: '8px',
+                          }}
+                        />
+                      </div>
+                      <CustomCheckbox
+                        containerStyle={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '4px',
+                        }}
+                        checked={field.value}
+                        onChange={field.onChange}
+                        label="Я згодний(а) на обрабку даних та з умовами оферти."
+                        inputStyle={{ display: 'none' }}
+                        labelStyle={{ textAlign: 'left', ...fonts.modalSpan }}
+                        errorMessage={fieldState.error?.message}
+                      />
+                    </Checkbox_1>
+                  )}
+                />
+                <Controller
+                  name="checkbox_2"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox_2>
+                      <div
+                        style={{ width: 'auto' }}
+                        onClick={() => field.onChange(!field.value)}
+                      >
+                        <Icon
+                          name={
+                            field.value
+                              ? IconName.CHECK_FILL
+                              : IconName.CHECK_SQUARE_CONTAINED
+                          }
+                          styles={{
+                            cursor: 'pointer',
+                            fill: 'transparent',
+                            width: '24px',
+                            height: '24px',
+                            marginRight: '8px',
+                          }}
+                        />
+                      </div>
+                      <CustomCheckbox
+                        checked={field.value}
+                        onChange={field.onChange}
+                        label="Прошу не дзвонити, а зв’язатися у месенджері за вказаним номером."
+                        inputStyle={{ display: 'none' }}
+                        labelStyle={{ textAlign: 'left', ...fonts.modalSpan }}
+                      />
+                    </Checkbox_2>
+                  )}
+                />
+                <Button
+                  testId="details_page.send"
+                  title={t('details_page.send')}
+                  type="submit"
+                  appearance={ButtonAppearance.PRIMARY}
+                  prependChild={
+                    <Icon
+                      styles={{
+                        color: 'currentColor',
+                        fill: 'transparent',
+                      }}
+                      name={IconName.MAIL}
+                    />
+                  }
+                  style={{ ...fonts.secondManrope, gap: '10px' }}
+                />
+              </CheckboxContainer>
             </div>
           </form>
         </ModalContent>
-        <ModalFooter>
-          <CheckboxContainer>
-            <Checkbox_1>
-              <div onClick={handleCheckboxChange1} style={{ width: 'auto' }}>
-                <Icon
-                  name={
-                    checked1
-                      ? IconName.CHECK_FILL
-                      : IconName.CHECK_SQUARE_CONTAINED
-                  }
-                  styles={{
-                    cursor: 'pointer',
-                    fill: checked1 ? 'transparent' : 'transparent',
-                    width: '24px',
-                    height: '24px',
-                    marginRight: '8px',
-                  }}
-                />
-              </div>
-              <CustomCheckbox
-                checked={checked1}
-                onChange={handleCheckboxChange1}
-                label="Я згодний(а) на обрабку даних та з умовами оферти."
-                inputStyle={{ display: 'none' }}
-                labelStyle={{ textAlign: 'left', ...fonts.modalSpan }}
-              />
-            </Checkbox_1>
-            <Checkbox_2>
-              <div onClick={handleCheckboxChange2} style={{ width: 'auto' }}>
-                <Icon
-                  name={
-                    checked2
-                      ? IconName.CHECK_FILL
-                      : IconName.CHECK_SQUARE_CONTAINED
-                  }
-                  styles={{
-                    cursor: 'pointer',
-                    fill: checked1 ? 'transparent' : 'transparent',
-                    width: '24px',
-                    height: '24px',
-                    marginRight: '8px',
-                  }}
-                />
-              </div>
-              <CustomCheckbox
-                checked={checked2}
-                onChange={handleCheckboxChange2}
-                label="Прошу не дзвонити, а зв’язатися у месенджері за вказаним номером."
-                inputStyle={{ display: 'none' }}
-                labelStyle={{ textAlign: 'left', ...fonts.modalSpan }}
-              />
-            </Checkbox_2>
-            <Button
-              testId="details_page.send"
-              title={t('details_page.send')}
-              appearance={ButtonAppearance.PRIMARY}
-              prependChild={
-                <Icon
-                  styles={{
-                    color: 'currentColor',
-                    fill: 'transparent',
-                  }}
-                  name={IconName.MAIL}
-                />
-              }
-              style={{ ...fonts.secondManrope, gap: '10px' }}
-            />
-          </CheckboxContainer>
-        </ModalFooter>
+        <ModalFooter></ModalFooter>
         <Button
           testId="details_page.close_modal"
           title=""

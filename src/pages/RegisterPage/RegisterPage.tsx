@@ -3,36 +3,44 @@ import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useRegisterMutation } from '@/redux/auth';
 import Cookies from 'js-cookie';
+import { t } from 'i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CookiesKey, Roles } from '@/constants';
 import { Container, Section } from '@/components/ContainerAndSection';
+import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
+import CitySelect from './components/CitySelect';
+import AddressWidget from './components/AddressWidget/AddressWidget';
+import SocialNetButton from './components/SocialNetButton/SocialNetButton';
+import SportsListChoice from './components/SportsList/SportsList';
+import LocalModal from './components/LocalModal/LocalModal';
+import { Button, ButtonAppearance, Input, Loader } from '@/kit';
+import { useTheme } from '@/hooks';
+import { RegisterFormData } from '@/types';
+import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
+import { useClubsInfo } from './getData';
+import { OptionType } from './components/types';
 import {
-  AddressWrapper,
+  // AddressWrapper,
+  // PlaceWrapper,
   CallToActionWrapper,
   Form,
   Image,
   Line,
-  PlaceWrapper,
+  SimpleInput,
   // SportsList,
   Subtitle,
   TabsWrapper,
   Title,
   TitleWrapper,
 } from './styles';
-import { t } from 'i18next';
-import { Button, ButtonAppearance, Icon, IconName, Input, Loader } from '@/kit';
-import { useTheme } from '@/hooks';
-import { RegisterFormData } from '@/types';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
 
-import CitySelect from './components/CitySelect';
-import AddressWidget from './components/AddressWidget/AddressWidget';
-import SocialNetButton from './components/SocialNetButton/SocialNetButton';
 // --- - ---
-import { cityOptions, clubsList, sportTypes } from './tempData';
-import SportsListChoice from './components/SportsList/SportsList';
+import { cityOptions } from './tempData';
+// import { useDeleteAccountMutation } from '@/redux/auth/authApi';
 // --- / - ---
+
+const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
 
 const RegisterPage = () => {
   const {
@@ -42,6 +50,7 @@ const RegisterPage = () => {
     reset,
     register,
     watch,
+    setValue,
   } = useForm<RegisterFormData>({
     resolver: yupResolver(RegisterFormSchema),
     defaultValues: {
@@ -54,15 +63,17 @@ const RegisterPage = () => {
       phone: ' ',
       city: '',
       address: '',
+      sport: [' '],
       // abilities: [''],
-      sport: [],
     },
     mode: 'onChange',
   });
 
   const { theme } = useTheme();
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterMutation();
+  // const [deleteAccount, { isLoading: isLoadingDel, isSuccess, isError }] =
+  //   useDeleteAccountMutation();
 
   const contentRef = useRef<HTMLDivElement>(null);
   const sportRef = useRef<HTMLDivElement>(null);
@@ -74,6 +85,8 @@ const RegisterPage = () => {
   const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
   const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
   const [isOpenSports, setIsOpenSports] = useState<boolean>(false);
+  const [clubsList, setClubsList] = useState<OptionType[]>(initClubsList);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const updateHeight = useCallback(() => {
     if (contentRef.current) {
@@ -91,6 +104,11 @@ const RegisterPage = () => {
   }, [isOpenAddress, isCityOpen, isClubOpen]);
   // }, [isOpenAddress, isCityOpen, isClubOpen, updateHeight]);
 
+  const clubsDescription = useClubsInfo();
+  const selectedCity = watch('city') || '';
+  const selectedAddress = watch('address') || '';
+  const selectedSports = watch('sport') || [];
+
   const toggleVisibilityPassword = () => {
     setIsVisiblePassword(prev => !prev);
   };
@@ -100,6 +118,10 @@ const RegisterPage = () => {
   };
   const sportsHandler = () => {
     setIsOpenSports(prev => !prev);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   const onSubmit = async (data: RegisterFormData) => {
@@ -113,14 +135,16 @@ const RegisterPage = () => {
         lastName: data.second_name.trim(),
         city: data.city,
         address: data.address,
-        sport: data.sport,
+        sport: JSON.stringify(data.sport),
+        // sport: data.sport?.join(),
       }),
       ...(currentRole === Roles.ADMIN_CLUB && {
-        clubName: data.club_name.trim(),
+        // clubName: data.club_name.trim(),
+        firstName: data.club_name.trim(),
         phone: data.phone.trim(),
         city: data.city,
         address: data.address,
-        abilities: data.sport,
+        abilities: JSON.stringify(data.sport),
       }),
     };
     console.log('registerData -> ', registerData);
@@ -139,16 +163,15 @@ const RegisterPage = () => {
           sameSite: 'Strict',
         });
         localStorage.setItem('userEmail', response.email);
-        // console.log('Registered email:', response.email);
       }
       reset();
-      nav('/profile');
+      setIsModalOpen(true);
+      // navigate('/profile');
+      // navigate('/');
     } catch (err) {
       console.error('Registration failed:', err);
     }
   };
-
-  const selectedSports = watch('sport') || [];
 
   const changeRole = (role: string) => {
     setCurrentRole(role);
@@ -158,6 +181,57 @@ const RegisterPage = () => {
       setIsOpenSports(false);
     }
   };
+
+  useEffect(() => {
+    if (selectedCity && currentRole === Roles.COACH) {
+      const selectedCityClubList = clubsDescription
+        ?.filter(item => item.city === selectedCity)
+        .map(club => ({
+          value: `${club.clubName}, ${club.address}`,
+          label: `${club.clubName}, ${club.address}`,
+        }));
+      console.log(' - selectedCityClubList -> ', selectedCityClubList);
+      setClubsList(
+        selectedCityClubList.length > 0 ? selectedCityClubList : initClubsList,
+      );
+    }
+    setValue('address', '');
+  }, [selectedCity, currentRole]);
+  // --- / - ---
+
+  const sportsTitle = () => {
+    return !isOpenSports && selectedSports[0] !== ' '
+      ? selectedSports.join(' | ').toString()
+      : currentRole === Roles.COACH
+        ? 'Вид спорту'
+        : 'Послуги';
+  };
+
+  const addressTitle = () => {
+    return !isOpenAddress && selectedCity
+      ? `${selectedCity}, ${selectedAddress ? selectedAddress : 'без адреси'}`
+      : currentRole === Roles.COACH
+        ? 'Місце роботи'
+        : 'Адреса клубу';
+  };
+  // ---------
+  // const deleteHandler = async () => {
+  //   console.log('delete account');
+  //   try {
+  //     const response: any = await deleteAccount('').unwrap();
+  //     console.log(' - response ->', response);
+  //     //  if (response.token && response.refreshToken) {
+  //     Cookies.remove(CookiesKey.TOKEN, { path: '' });
+  //     Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '' });
+  //     localStorage.clear();
+  //     //  }
+  //     //  setIsModalOpen(true);
+  //     // navigate('/profile');
+  //     // navigate('/');
+  //   } catch (err) {
+  //     console.error('Не вдалося видалити акаунт: ', err);
+  //   }
+  // };
 
   return (
     <Section>
@@ -225,7 +299,7 @@ const RegisterPage = () => {
               />
             </>
           ) : null}
-          {/* --- /- --- */}
+          {/* --- - --- */}
           {currentRole === Roles.COACH ? (
             <>
               <Controller
@@ -235,7 +309,7 @@ const RegisterPage = () => {
                   return (
                     <Input
                       {...field}
-                      label={t('register_page.name')}
+                      label={t('register_page.name') + '*'}
                       testId="register_page.name"
                       errorMessage={fieldState.error?.message}
                       containerStyles={{ marginBottom: theme.pxs.x4 }}
@@ -252,7 +326,7 @@ const RegisterPage = () => {
                   return (
                     <Input
                       {...field}
-                      label={t('register_page.second_name')}
+                      label={t('register_page.second_name') + '*'}
                       testId="register_page.second_name"
                       errorMessage={fieldState.error?.message}
                       containerStyles={{ marginBottom: theme.pxs.x4 }}
@@ -297,28 +371,10 @@ const RegisterPage = () => {
                   }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
-                    <div
-                      onClick={toggleVisibilityPassword}
-                      style={{ paddingRight: theme.pxs.x1, width: 'auto' }}
-                    >
-                      {isVisiblePassword ? (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_CLOSE}
-                        />
-                      ) : (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_OPEN}
-                        />
-                      )}
-                    </div>
+                    <EyeForPassword
+                      isVisiblePassword={isVisiblePassword}
+                      toggleVisibilityPassword={toggleVisibilityPassword}
+                    />
                   }
                 />
               );
@@ -341,30 +397,10 @@ const RegisterPage = () => {
                   }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
-                    <div
-                      onClick={toggleVisibilityPassword}
-                      style={{
-                        paddingRight: theme.pxs.x1,
-                        width: 'auto',
-                      }}
-                    >
-                      {isVisiblePassword ? (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            // fill: 'transparent',
-                          }}
-                          name={IconName.EYE_CLOSE}
-                        />
-                      ) : (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                          }}
-                          name={IconName.EYE_OPEN}
-                        />
-                      )}
-                    </div>
+                    <EyeForPassword
+                      isVisiblePassword={isVisiblePassword}
+                      toggleVisibilityPassword={toggleVisibilityPassword}
+                    />
                   }
                 />
               );
@@ -378,27 +414,10 @@ const RegisterPage = () => {
               <AddressWidget
                 handler={addressHandler}
                 isOpen={isOpenAddress}
-                title={
-                  currentRole === Roles.COACH ? 'Місце роботи' : 'Адреса клубу'
-                }
+                title={addressTitle()}
                 contentRef={contentRef}
                 height={height}
               >
-                {/* <PlaceWrapper>
-            <GroupTitle
-              handler={addressHandler}
-              isOpen={isOpenAddress}
-              title={'Адреса клубу'}
-            />
-            <AddressWrapper
-              ref={contentRef}
-              style={{
-                height,
-                paddingTop: isOpenAddress ? '10px' : '0px',
-                overflow: 'hidden',
-                transition: 'height 0.3s ease',
-              }}
-            > */}
                 <Controller
                   name="city"
                   control={control}
@@ -414,30 +433,35 @@ const RegisterPage = () => {
                     );
                   }}
                 />
-
-                <Controller
-                  name="address"
-                  control={control}
-                  render={({ field, fieldState }) => {
-                    return (
-                      <CitySelect
-                        field={field}
-                        options={clubsList}
-                        placeholder={'Оберіть клуб'}
-                        onMenuOpen={() => setIsClubOpen(true)}
-                        onMenuClose={() => setIsClubOpen(false)}
-                      />
-                    );
-                  }}
-                />
-                {/* </AddressWrapper>
-          </PlaceWrapper> */}
+                {currentRole === Roles.COACH ? (
+                  <Controller
+                    name="address"
+                    control={control}
+                    render={({ field, fieldState }) => {
+                      return (
+                        <CitySelect
+                          field={field}
+                          options={clubsList}
+                          placeholder={'Оберіть клуб'}
+                          onMenuOpen={() => setIsClubOpen(true)}
+                          onMenuClose={() => setIsClubOpen(false)}
+                        />
+                      );
+                    }}
+                  />
+                ) : (
+                  <SimpleInput
+                    type="text"
+                    placeholder="Ввести назву та адресу клубу"
+                    {...register('address')}
+                  />
+                )}
               </AddressWidget>
 
               <AddressWidget
                 handler={sportsHandler}
                 isOpen={isOpenSports}
-                title={currentRole === Roles.COACH ? 'Вид спорту' : 'Послуги'}
+                title={sportsTitle()}
                 contentRef={sportRef}
                 height={'auto'}
               >
@@ -476,9 +500,24 @@ const RegisterPage = () => {
             testId="login_page.already_have"
             title={t('login_page.button_title')}
             appearance={ButtonAppearance.UNDERLINED}
-            onClick={() => nav('/login')}
+            onClick={() => navigate('/login')}
           />
         </CallToActionWrapper>
+
+        <LocalModal isModalOpen={isModalOpen} handleClose={handleCloseModal} />
+        {/* --- -- --- */}
+        {/* <button
+          style={{
+            margin: '16px auto',
+            padding: '8px 12px',
+            border: '1px solid red',
+            color: 'red',
+          }}
+          onClick={() => deleteHandler()}
+        >
+          delete account
+        </button> */}
+        {/* --- - / - --- */}
       </Container>
     </Section>
   );

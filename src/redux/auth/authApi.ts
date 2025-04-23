@@ -35,10 +35,22 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['Auth'],
     }),
+    deleteAccount: builder.mutation({
+      query: () => ({
+        url: 'auth/delete/account',
+        method: 'DELETE',
+        // credentials: 'include',
+      }),
+      invalidatesTags: ['Auth'],
+    }),
   }),
 
   tagTypes: ['Auth'],
 });
 
-export const { useRegisterMutation, useLoginMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useDeleteAccountMutation,
+} = authApi;

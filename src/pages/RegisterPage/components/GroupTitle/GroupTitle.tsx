@@ -14,6 +14,7 @@ const GroupTitle: FC<IGroupTitleProps> = ({ handler, isOpen, title }) => {
           color: 'currentColor',
           transition: `transform  ${theme.transitions.rotate}`,
           transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+          minWidth: '24px',
         }}
         name={IconName.DOWN_ARROW}
       />

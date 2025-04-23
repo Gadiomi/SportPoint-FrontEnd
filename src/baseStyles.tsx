@@ -1,12 +1,21 @@
-:root {
+import { createGlobalStyle } from 'styled-components';
+
+export const GlobalStyle = createGlobalStyle`
+   :root {
     font-family: "Roboto", sans-serif;
     line-height: 1.5;
     font-weight: 400;
-    --main: #121417;
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
+  body {
+    background-color: ${({ theme }) => theme.color.background};
+    color: ${({ theme }) => theme.color.white};
+    
+  }
+ 
+p{    color: ${({ theme }) => theme.color.white};}
 html {
     box-sizing: border-box;
 }
@@ -79,9 +88,7 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: var(--accent-color);
-}
+
 
 input {
     width: 100%;
@@ -104,10 +111,4 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   transition: all 5000s ease-in-out 0s;
 }
-.section {
-
-}
-
-.container {
-
-}
+`;

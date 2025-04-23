@@ -19,7 +19,8 @@ type Props = {
 export interface ICoachData {
   _id: string;
   userId: string;
-  firstLastName: string;
+  firstName: string;
+  lastName: string;
   avatar: string;
   countReview: number;
   rating: number;
@@ -61,8 +62,9 @@ export interface ClubData {
 export interface DescriptionClub {
   address: string;
   abilities: string[];
-  experience: string;
-  schedule: ScheduleClub[];
+  experience?: string;
+  schedule?: ScheduleClub[];
+  price?: TCoachPrice[];
 }
 export interface ScheduleClub {
   days: string;
@@ -76,4 +78,19 @@ export interface FilterParams {
   maxPrice?: number | null;
   abilities?: string;
   sort?: string | null;
+}
+
+/* Search Data*/
+export interface SearchResultCoach extends ICoachData {
+  role: 'coach';
+}
+
+export interface SearchResultClub extends ClubData {
+  role: 'adminClub';
+}
+
+export type SearchResultParams = SearchResultCoach | SearchResultClub;
+
+export interface SearchResponse {
+  profiles: SearchResultParams[];
 }

@@ -1,6 +1,4 @@
-import { Light } from '@/kit';
 import { fonts } from '@/theme/fonts';
-import { url } from 'inspector';
 import styled from 'styled-components';
 
 export const ClubCardBox = styled.div(({ theme }) => ({

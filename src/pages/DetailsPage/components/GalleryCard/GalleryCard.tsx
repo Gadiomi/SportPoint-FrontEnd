@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Icon, IconName } from '@/kit';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledGalleryCard,
@@ -14,16 +14,13 @@ import {
   NavigationButtonNext,
 } from './styles';
 
-const GalleryCard: React.FC = () => {
+interface GalleryCardProps {
+  images: string[];
+}
+
+const GalleryCard: React.FC<GalleryCardProps> = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  const galleryImg = [
-    '/assets/images/DetailsPage/gallery_01_x1.jpg',
-    '/assets/images/DetailsPage/gallery_02_x1.jpg',
-    '/assets/images/homePage/gym@1.jpg',
-    '/assets/images/homePage/trainer@1.jpg',
-  ];
 
   const handleImageClick = (src: string, index: number) => {
     setSelectedImage(src);
@@ -36,17 +33,16 @@ const GalleryCard: React.FC = () => {
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const nextIndex = (currentIndex + 1) % galleryImg.length;
+    const nextIndex = (currentIndex + 1) % images.length;
     setCurrentIndex(nextIndex);
-    setSelectedImage(galleryImg[nextIndex]);
+    setSelectedImage(images[nextIndex]);
   };
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const prevIndex =
-      (currentIndex - 1 + galleryImg.length) % galleryImg.length;
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
     setCurrentIndex(prevIndex);
-    setSelectedImage(galleryImg[prevIndex]);
+    setSelectedImage(images[prevIndex]);
   };
 
   useEffect(() => {
@@ -65,7 +61,7 @@ const GalleryCard: React.FC = () => {
       <StyledGalleryCard>
         <TitleContainer titleKey="details_page.gallery" />
         <Swiper spaceBetween={8} slidesPerView={2}>
-          {galleryImg.map((src, idx) => (
+          {images.map((src, idx) => (
             <SwiperSlide key={idx}>
               <SwiperImg
                 src={src}
@@ -76,6 +72,7 @@ const GalleryCard: React.FC = () => {
           ))}
         </Swiper>
       </StyledGalleryCard>
+      <StyledHr />
 
       {selectedImage && (
         <ModalOverlay onClick={closeModal}>

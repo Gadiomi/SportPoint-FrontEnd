@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import ButtonGetInTouch from '../ButtonGetInTouch/ButtonGetInTouch';
 import ModalGetInTouch from '../ModalGetInTouch/ModalGetInTouch';
@@ -52,7 +53,8 @@ const SocialLinks: React.FC<{
           const iconSrc = socialIconsMap[link.name.toLowerCase()];
 
           return (
-            iconSrc && (
+            iconSrc &&
+            (isLoggedIn ? (
               <a
                 key={link.name}
                 href={link.url}
@@ -63,16 +65,40 @@ const SocialLinks: React.FC<{
                   style={{
                     width: `${theme.pxs.x8}px`,
                     height: `${theme.pxs.x8}px`,
+                    opacity: 1,
+                    cursor: 'pointer',
                   }}
                   src={iconSrc}
                   alt={`${link.name} Icon`}
                 />
               </a>
-            )
+            ) : (
+              <div
+                key={link.name}
+                style={{
+                  width: `${theme.pxs.x8}px`,
+                  height: `${theme.pxs.x8}px`,
+                  opacity: 0.4,
+                  cursor: 'not-allowed',
+                }}
+                title="Авторизуйтеся, щоб перейти за посиланням"
+              >
+                <img
+                  src={iconSrc}
+                  alt={`${link.name} Icon`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    pointerEvents: 'none',
+                  }}
+                />
+              </div>
+            ))
           );
         })}
       </ImgContainer>
       {!isCoachOrClubAccount && <ButtonGetInTouch onClick={handleOpenModal} />}
+      <StyledHr />
       {isLoggedIn ? (
         <ModalGetInTouch
           isOpen={isModalOpen}

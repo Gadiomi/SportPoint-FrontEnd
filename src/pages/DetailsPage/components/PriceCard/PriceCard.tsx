@@ -1,15 +1,15 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
-
+import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import {
   StyledPriceCard,
   PriceContainer,
+  PriceWrapper,
   PriceDiv,
-  PriceNameContainer,
+  PricePhoto,
   PriceName,
-  PriceDescription,
   PriceAmountContainer,
   PriceAmount,
   RatePerHour,
@@ -20,6 +20,7 @@ interface Price {
   name: string;
   amount: string;
   description?: string;
+  image?: string;
 }
 
 interface PriceCardProps {
@@ -32,6 +33,8 @@ const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
     return <div>Ціни не доступні</div>;
   }
 
+  console.log('Prices from backend:', prices);
+
   return (
     <StyledPriceCard>
       <TitleContainer titleKey="details_page.price" />
@@ -42,30 +45,50 @@ const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
           }
           return (
             <PriceDiv key={price._id || index}>
-              <PriceNameContainer>
-                <PriceName style={fonts.priceName}>
+              <PricePhoto
+                src={
+                  price.image
+                    ? price.image
+                    : '/assets/images/DetailsPage/Price_no_photo.png'
+                }
+                alt={price.name}
+                style={fonts.priceName}
+              />
+              <PriceWrapper>
+                <PriceName style={fonts.secondManrope}>
                   {price.name || 'Не вказано'}
                 </PriceName>
-                <PriceDescription
+                <PriceAmountContainer>
+                  <PriceAmount
+                    style={{
+                      ...fonts.descriptionCard,
+                      color: theme.color.secWhite,
+                    }}
+                  >
+                    {price.amount || '-'}
+                    <RatePerHour
+                      style={{
+                        ...fonts.descriptionCard,
+                        color: theme.color.secWhite,
+                        paddingLeft: '4px',
+                      }}
+                    >
+                      грн/год
+                    </RatePerHour>
+                  </PriceAmount>
+                </PriceAmountContainer>
+              </PriceWrapper>
+
+              {/* <PriceDescription
                   style={{ ...fonts.priceName, color: theme.color.secWhite }}
                 >
                   {price.description || ''}
-                </PriceDescription>
-              </PriceNameContainer>
-              <PriceAmountContainer>
-                <PriceAmount style={fonts.priceAmount}>
-                  {price.amount || '-'}
-                </PriceAmount>
-                <RatePerHour
-                  style={{ ...fonts.priceAmount, color: theme.color.secWhite }}
-                >
-                  грн/год
-                </RatePerHour>
-              </PriceAmountContainer>
+                </PriceDescription> */}
             </PriceDiv>
           );
         })}
       </PriceContainer>
+      <StyledHr style={{ marginTop: '0', marginBottom: '32px' }} />
     </StyledPriceCard>
   );
 };

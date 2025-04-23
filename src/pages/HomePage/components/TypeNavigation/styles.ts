@@ -5,7 +5,7 @@ export const LinkList = styled.ul(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.pxs.x2,
-  marginTop: theme.pxs.x10_5,
+  marginBottom: theme.pxs.x10_5,
   width: '100%',
 }));
 
@@ -35,4 +35,30 @@ export const StyledLink = styled(Link)<{
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
+}));
+export const StyledImage = styled.div<{
+  $bgImage2x: string;
+}>(({ theme, $bgImage2x }) => ({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'flex-end',
+  justifyContent: 'center',
+  width: '112px',
+  height: '144px',
+  borderRadius: theme.pxs.x2,
+  cursor: 'pointer',
+  background: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${$bgImage2x})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+}));
+
+export const SportName = styled.div(({ theme }) => ({
+  ...theme.fonts.secondTitle,
+  fontWeight: '600',
+  textTransform: 'uppercase',
+  position: 'absolute',
+  width: '100%',
+  textAlign: 'center',
+  bottom: '50%',
+  color: theme.color.white,
 }));

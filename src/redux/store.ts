@@ -9,6 +9,9 @@ import { cardApi } from './cards/cardApi';
 import { byNameApi } from './searchByName/searchByNameApi';
 import { cardsApi } from './cards/cardsApi';
 import { scheduleApi } from './schedule/scheduleApi';
+import { cardIdApi } from './details/cardIdApi';
+import { loginReducer } from './auth/loginSlice';
+import { searchApi } from './search/searchApi';
 
 // Store
 export const store = configureStore({
@@ -19,10 +22,12 @@ export const store = configureStore({
     [byNameApi.reducerPath]: byNameApi.reducer,
     [cardsApi.reducerPath]: cardsApi.reducer,
     [scheduleApi.reducerPath]: scheduleApi.reducer,
-
+    [searchApi.reducerPath]: searchApi.reducer,
     user: userReducer,
     editProfile: editProfileReducer,
     [passwordApi.reducerPath]: passwordApi.reducer,
+    [cardIdApi.reducerPath]: cardIdApi.reducer,
+    setLogin: loginReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -36,6 +41,8 @@ export const store = configureStore({
       byNameApi.middleware,
       cardsApi.middleware,
       scheduleApi.middleware,
+      cardIdApi.middleware,
+      searchApi.middleware,
     ),
 });
 

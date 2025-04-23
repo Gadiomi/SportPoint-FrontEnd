@@ -3,6 +3,7 @@ import { ButtonAppearance, Icon, IconName } from '@/kit';
 import { FiltersModal } from '../FiltersModal/FiltersModal';
 import { StyledButton } from '@/pages/HomePage/components/Filters/styles';
 import { FilterParams } from '@/types';
+import { t } from 'i18next';
 
 interface FiltersProps {
   getFilteredCards: (filters: FilterParams) => void;
@@ -23,7 +24,7 @@ export const Filters: React.FC<FiltersProps> = ({
       <StyledButton
         onClick={handleOpenModal}
         testId="filter-button"
-        title="Фільтр"
+        title={t('home_page.filters')}
         style={{ textDecoration: 'none' }}
         appearance={ButtonAppearance.UNDERLINED}
         appendChild={<Icon name={IconName.FILTER} />}

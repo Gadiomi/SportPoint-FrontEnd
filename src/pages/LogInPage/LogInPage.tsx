@@ -14,6 +14,10 @@ import { CookiesKey, Roles } from '@/constants';
 import { useLoginMutation } from '@/redux/auth/authApi';
 import { useNavigate } from 'react-router-dom';
 import SocialNetButton from '../RegisterPage/components/SocialNetButton/SocialNetButton';
+import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { setIsLogin } from '@/redux/auth/loginSlice';
+import { WrongDataMessage } from './styles';
 
 type logInFormInputs = {
   email: string;
@@ -23,9 +27,15 @@ type logInFormInputs = {
 const LogInPage: FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const { isLogin } = useAppSelector(state => state.setLogin);
+  // -- - --
+  console.log(' - * - isLogin: ', isLogin); // Example!
+  // -- / - --
   const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
-  const nav = useNavigate();
+  const [isIncorrectData, setIsIncorrectData] = useState<boolean>(false);
+  const navigate = useNavigate();
   const {
     handleSubmit,
     reset,
@@ -44,24 +54,29 @@ const LogInPage: FC = () => {
         email: data.email,
         password: data.password,
       });
-      localStorage.setItem('userEmail', data.email);
 
-      if (response.token && response.refreshToken) {
-        Cookies.set(CookiesKey.TOKEN, response.token, {
-          expires: 7,
-          secure: true,
-          sameSite: 'Strict',
-        });
-        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
-          expires: 7,
-          secure: true,
-          sameSite: 'Strict',
-        });
+      if (!response.error && response?.data?.status === 200) {
+        if (response.token && response.refreshToken) {
+          Cookies.set(CookiesKey.TOKEN, response.token, {
+            expires: 7,
+            secure: true,
+            sameSite: 'Strict',
+          });
+          Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+            expires: 7,
+            secure: true,
+            sameSite: 'Strict',
+          });
+        }
+        localStorage.setItem('userEmail', data.email);
+        reset();
+        dispatch(setIsLogin(true));
+        setIsIncorrectData(false);
+        console.log('Login Success:', response);
+        navigate('/profile');
+      } else {
+        setIsIncorrectData(true);
       }
-
-      nav('/profile');
-      console.log('Login Success:', response);
-      reset();
     } catch (err) {
       console.error('Login failed:', err);
     }
@@ -73,7 +88,7 @@ const LogInPage: FC = () => {
 
   return (
     <Section>
-      <Container maxWidth="320px">
+      <Container styles={{ maxWidth: '375px' }}>
         <Image
           srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
           src="/public/assets/images/logo@1.png"
@@ -106,7 +121,7 @@ const LogInPage: FC = () => {
               return (
                 <Input
                   {...field}
-                  label={t('login_page.form.email')}
+                  label={t('login_page.form.email') + '*'}
                   testId="login_page.form.email"
                   errorMessage={fieldState.error?.message}
                   containerStyles={{ marginBottom: theme.pxs.x2 }}
@@ -122,7 +137,7 @@ const LogInPage: FC = () => {
               return (
                 <Input
                   {...field}
-                  label={t('login_page.form.password')}
+                  label={t('login_page.form.password') + '*'}
                   testId="login_page.form.password"
                   errorMessage={fieldState.error?.message}
                   containerStyles={{
@@ -131,33 +146,22 @@ const LogInPage: FC = () => {
                   }}
                   type={isVisiblePassword ? 'text' : 'password'}
                   appendChild={
-                    <div
-                      onClick={toggleVisibilityPassword}
-                      style={{ paddingRight: theme.pxs.x1, width: 'auto' }}
-                    >
-                      {isVisiblePassword ? (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_CLOSE}
-                        />
-                      ) : (
-                        <Icon
-                          styles={{
-                            color: 'currentColor',
-                            fill: 'transparent',
-                          }}
-                          name={IconName.EYE_OPEN}
-                        />
-                      )}
-                    </div>
+                    <EyeForPassword
+                      isVisiblePassword={isVisiblePassword}
+                      toggleVisibilityPassword={toggleVisibilityPassword}
+                    />
                   }
                 />
               );
             }}
           />
+          {/* --- - --- */}
+          {isIncorrectData ? (
+            <WrongDataMessage>
+              Невірно введено email або пароль
+            </WrongDataMessage>
+          ) : null}
+          {/* --- / - --- */}
           <CallToActionWrapper style={{ marginBottom: theme.pxs.x12 }}>
             <Text>{t('login_page.forgott_pass')}</Text>
             <Button
@@ -174,7 +178,12 @@ const LogInPage: FC = () => {
             disabled={!isValid || isLoading}
             appendChild={
               isSubmitting || isLoading ? (
-                <Loader size={'16px'} stroke={'#f0f0f0'} strokeWidth={'1'} />
+                <Loader
+                  size={'16px'}
+                  stroke={'#f0f0f0'}
+                  strokeWidth={'1'}
+                  style={{ marginLeft: '4px' }}
+                />
               ) : null
             }
           />
@@ -187,7 +196,7 @@ const LogInPage: FC = () => {
             testId="login_page.have_not_yet"
             title={t('login_page.button_title_reg')}
             appearance={ButtonAppearance.UNDERLINED}
-            onClick={() => nav('/register')}
+            onClick={() => navigate('/register')}
           />
         </CallToActionWrapper>
       </Container>

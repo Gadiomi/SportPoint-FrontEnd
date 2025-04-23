@@ -35,3 +35,8 @@ export const PasswordBlock = styled.div`
     cursor: pointer;
   }
 `;
+
+export const WrongDataMessage = styled.div`
+  color: #f00;
+  text-align: center;
+`;
