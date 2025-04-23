@@ -27,12 +27,13 @@ const TrainerPage: FC = () => {
     skip: !id,
   });
 
-  const userRole = Cookies.get('userRole');
-  console.log('userRole', userRole);
+  // const userRole = Cookies.get('userRole');
+  // console.log('userRole', userRole);
 
   const isLoggedIn = !!localStorage.getItem('accessToken');
 
   console.log('Отримані дані з бекенду:', data);
+  console.log('ID користувача:', data?._id);
 
   if (isLoading) {
     return <div>Завантаження...</div>;
@@ -43,9 +44,19 @@ const TrainerPage: FC = () => {
   }
 
   const coachData = data?.data?.data;
+  console.log('ID користувача:', coachData?._id);
 
-  const { firstName, lastName, avatar, countReview, rating, sport } =
-    coachData || {};
+  const {
+    _id,
+    role,
+    firstName,
+    lastName,
+    avatar,
+    countReview,
+    rating,
+    sport,
+    certificates,
+  } = coachData || {};
 
   const { social_links, price, schedule, experience, city, age, short_desc } =
     coachData?.description || {};
@@ -87,6 +98,8 @@ const TrainerPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
+            _id={_id}
+            role={role}
             iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             lastName={lastName}
@@ -105,25 +118,35 @@ const TrainerPage: FC = () => {
           counts={[countReview ?? 0, experience ?? '0', roundedRating]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
-        <ShortDescriptionCard
-          short_desc={short_desc}
-          title={t('details_page.read_more')}
-        />
-        <CertificatesCard />
-        <SocialLinks
-          socialLinks={social_links || []}
-          isLoggedIn={isLoggedIn}
-          title={title}
-        />
-        <PriceCard prices={price || []} />
-        <WorkingHoursCard schedules={schedule || []} />
+        {short_desc && (
+          <ShortDescriptionCard
+            short_desc={short_desc}
+            title={t('details_page.read_more')}
+          />
+        )}
+        {certificates && certificates.length > 0 && (
+          <CertificatesCard certificates={certificates} />
+        )}
+        {social_links && social_links.length > 0 && (
+          <SocialLinks
+            socialLinks={social_links || []}
+            isLoggedIn={isLoggedIn}
+            title={title}
+          />
+        )}
+        {price && price.length > 0 && <PriceCard prices={price || []} />}
+        {schedule && schedule.length > 0 && (
+          <WorkingHoursCard schedules={schedule || []} />
+        )}
 
-        <WorksInCard
-          // key={club._id}
-          clubs={coachData?.club || []}
-          iconNames={[IconName.LOCATION, IconName.CLOCK]}
-          labels={['1,5 км', '24/7']}
-        />
+        {coachData?.club && coachData.club.length > 0 && (
+          <WorksInCard
+            // key={club._id}
+            clubs={coachData?.club || []}
+            iconNames={[IconName.LOCATION, IconName.CLOCK]}
+            labels={['1,5 км', '24/7']}
+          />
+        )}
 
         <ReviewDetailsCard
           iconNames={[IconName.STAR_DEFAULT]}

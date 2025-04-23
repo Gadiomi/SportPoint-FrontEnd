@@ -17,6 +17,8 @@ import {
 } from './styles';
 
 interface ProfileCardProps {
+  _id: string | undefined;
+  role: string;
   iconNames: IconName[];
   firstName: string | undefined;
   lastName?: string | undefined;
@@ -28,6 +30,8 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
+  _id,
+  role,
   firstName,
   lastName,
   avatar,
@@ -177,11 +181,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <SportEl key={index}>{item}</SportEl>
         ))}
       </Sport>
-      {showEditButton && (
-        <EditButton
-        // id={id}
-        />
-      )}
+      {showEditButton && <EditButton _id={_id} role={role} />}
       {isModalOpen && (
         <ModalNotAnAuthorizedUser
           isOpen={isModalOpen}

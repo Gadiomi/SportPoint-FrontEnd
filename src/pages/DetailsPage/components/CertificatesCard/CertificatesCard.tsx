@@ -14,16 +14,15 @@ import {
   NavigationButtonNext,
 } from './styles';
 
-const CertificatesCard: React.FC = () => {
+interface CertificatesCardProps {
+  certificates: string[];
+}
+
+const CertificatesCard: React.FC<CertificatesCardProps> = ({
+  certificates,
+}) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  const galleryImg = [
-    '/assets/images/DetailsPage/gallery_01_x1.jpg',
-    '/assets/images/DetailsPage/gallery_02_x1.jpg',
-    '/assets/images/DetailsPage/gallery_01_x1.jpg',
-    '/assets/images/DetailsPage/gallery_02_x1.jpg',
-  ];
 
   const handleImageClick = (src: string, index: number) => {
     setSelectedImage(src);
@@ -36,17 +35,17 @@ const CertificatesCard: React.FC = () => {
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const nextIndex = (currentIndex + 1) % galleryImg.length;
+    const nextIndex = (currentIndex + 1) % certificates.length;
     setCurrentIndex(nextIndex);
-    setSelectedImage(galleryImg[nextIndex]);
+    setSelectedImage(certificates[nextIndex]);
   };
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     const prevIndex =
-      (currentIndex - 1 + galleryImg.length) % galleryImg.length;
+      (currentIndex - 1 + certificates.length) % certificates.length;
     setCurrentIndex(prevIndex);
-    setSelectedImage(galleryImg[prevIndex]);
+    setSelectedImage(certificates[prevIndex]);
   };
 
   useEffect(() => {
@@ -62,10 +61,12 @@ const CertificatesCard: React.FC = () => {
 
   return (
     <div>
-      <StyledGalleryCard>
+      <StyledGalleryCard
+        className={certificates.length === 1 ? 'single-slide' : ''}
+      >
         <TitleContainer titleKey="details_page.certificates" />
         <Swiper spaceBetween={8} slidesPerView={2}>
-          {galleryImg.map((src, idx) => (
+          {certificates.map((src, idx) => (
             <SwiperSlide key={idx}>
               <SwiperImg
                 src={src}
@@ -81,24 +82,23 @@ const CertificatesCard: React.FC = () => {
         <ModalOverlay onClick={closeModal}>
           <ModalContent>
             <FullScreenImage src={selectedImage} alt="full screen preview" />
-            <NavigationButtonPrev onClick={handlePrevImage}>
-              <Icon
-                name={IconName.DOWN_ARROW}
-                styles={{
-                  width: '32px',
-                  height: '32px',
-                }}
-              />
-            </NavigationButtonPrev>
-            <NavigationButtonNext onClick={handleNextImage}>
-              <Icon
-                name={IconName.DOWN_ARROW}
-                styles={{
-                  width: '32px',
-                  height: '32px',
-                }}
-              />
-            </NavigationButtonNext>
+            {certificates.length > 1 && (
+              <>
+                <NavigationButtonPrev onClick={handlePrevImage}>
+                  <Icon
+                    name={IconName.DOWN_ARROW}
+                    styles={{ width: '32px', height: '32px' }}
+                  />
+                </NavigationButtonPrev>
+
+                <NavigationButtonNext onClick={handleNextImage}>
+                  <Icon
+                    name={IconName.DOWN_ARROW}
+                    styles={{ width: '32px', height: '32px' }}
+                  />
+                </NavigationButtonNext>
+              </>
+            )}
           </ModalContent>
         </ModalOverlay>
       )}

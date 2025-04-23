@@ -5,6 +5,10 @@ export const StyledGalleryCard = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: ${({ theme }) => `${theme.pxs.x8}px`};
+
+  &.single-slide .swiper-wrapper {
+    justify-content: center;
+  }
 `;
 
 export const SwiperImg = styled.img`

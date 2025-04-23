@@ -27,8 +27,8 @@ const ClubPage: FC = () => {
     skip: !id,
   });
 
-  const userRole = Cookies.get('userRole');
-  console.log('userRole', userRole);
+  // const userRole = Cookies.get('userRole');
+  // console.log('userRole', userRole);
 
   const isLoggedIn = !!localStorage.getItem('accessToken');
 
@@ -44,7 +44,10 @@ const ClubPage: FC = () => {
 
   const adminClubData = data?.data?.data;
 
-  const { firstName, avatar, countReview, rating } = adminClubData || {};
+  console.log('ROLE:', adminClubData?.role);
+
+  const { _id, role, firstName, avatar, countReview, rating, images } =
+    adminClubData || {};
 
   const { social_links, price, schedule, city, address } =
     adminClubData?.description || {};
@@ -77,6 +80,8 @@ const ClubPage: FC = () => {
         <Logo />
         <StyledProfileCard>
           <ProfileCard
+            _id={_id}
+            role={role}
             iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             avatar={avatar}
@@ -95,15 +100,19 @@ const ClubPage: FC = () => {
           ]}
           labels={['Відгуки', 'Тренери', 'Рейтинг']}
         />
-        <SocialLinks
-          socialLinks={social_links || []}
-          isLoggedIn={isLoggedIn}
-          title={title}
-        />
-        <GalleryCard />
+        {social_links && social_links.length > 0 && (
+          <SocialLinks
+            socialLinks={social_links || []}
+            isLoggedIn={isLoggedIn}
+            title={title}
+          />
+        )}
+        {images && images.length > 0 && <GalleryCard images={images} />}
         <OurHallsCard />
-        <PriceCard prices={price || []} />
-        <WorkingHoursCard schedules={schedule || []} />
+        {price && price.length > 0 && <PriceCard prices={price || []} />}
+        {schedule && schedule.length > 0 && (
+          <WorkingHoursCard schedules={schedule || []} />
+        )}
         <OurCoachCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}
