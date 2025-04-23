@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '@/redux/auth/authApi';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
+import { AccountName } from './styles';
 
 interface UserProfileFormData {
   avatar: string | File;
@@ -120,7 +121,8 @@ const General: FC = () => {
           />
         }
       />
-      <div className={css.accountName}>
+
+      <AccountName>
         <img
           src={
             selectedAvatar ||
@@ -138,7 +140,6 @@ const General: FC = () => {
           title={t(`account_page.change-profile-photo`)}
           appearance={ButtonAppearance.PRIMARY}
           testId="general"
-          className={css.refreshBtn}
           prependChild={
             <Icon
               styles={{
@@ -156,7 +157,8 @@ const General: FC = () => {
           accept="image/*"
           onChange={handleFileChange}
         />
-      </div>
+      </AccountName>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={css.generalForm}>
           <Input

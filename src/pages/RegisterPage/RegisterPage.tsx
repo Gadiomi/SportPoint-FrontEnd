@@ -21,8 +21,8 @@ import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
 import { useClubsInfo } from './getData';
 import { OptionType } from './components/types';
 import {
-  AddressWrapper,
-  PlaceWrapper,
+  // AddressWrapper,
+  // PlaceWrapper,
   CallToActionWrapper,
   Form,
   Image,
@@ -37,6 +37,7 @@ import {
 
 // --- - ---
 import { cityOptions } from './tempData';
+// import { useDeleteAccountMutation } from '@/redux/auth/authApi';
 // --- / - ---
 
 const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
@@ -50,8 +51,6 @@ const RegisterPage = () => {
     register,
     watch,
     setValue,
-    // resetField,
-    // getFieldState,
   } = useForm<RegisterFormData>({
     resolver: yupResolver(RegisterFormSchema),
     defaultValues: {
@@ -73,6 +72,8 @@ const RegisterPage = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterMutation();
+  // const [deleteAccount, { isLoading: isLoadingDel, isSuccess, isError }] =
+  //   useDeleteAccountMutation();
 
   const contentRef = useRef<HTMLDivElement>(null);
   const sportRef = useRef<HTMLDivElement>(null);
@@ -143,7 +144,6 @@ const RegisterPage = () => {
         phone: data.phone.trim(),
         city: data.city,
         address: data.address,
-        // abilities: data.sport,
         abilities: JSON.stringify(data.sport),
       }),
     };
@@ -184,7 +184,6 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (selectedCity && currentRole === Roles.COACH) {
-      // console.log(' - * - clubsDescription -> ', clubsDescription);
       const selectedCityClubList = clubsDescription
         ?.filter(item => item.city === selectedCity)
         .map(club => ({
@@ -201,7 +200,6 @@ const RegisterPage = () => {
   // --- / - ---
 
   const sportsTitle = () => {
-    // return !isOpenSports && selectedSports[0].length > 0
     return !isOpenSports && selectedSports[0] !== ' '
       ? selectedSports.join(' | ').toString()
       : currentRole === Roles.COACH
@@ -216,6 +214,24 @@ const RegisterPage = () => {
         ? 'Місце роботи'
         : 'Адреса клубу';
   };
+  // ---------
+  // const deleteHandler = async () => {
+  //   console.log('delete account');
+  //   try {
+  //     const response: any = await deleteAccount('').unwrap();
+  //     console.log(' - response ->', response);
+  //     //  if (response.token && response.refreshToken) {
+  //     Cookies.remove(CookiesKey.TOKEN, { path: '' });
+  //     Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '' });
+  //     localStorage.clear();
+  //     //  }
+  //     //  setIsModalOpen(true);
+  //     // navigate('/profile');
+  //     // navigate('/');
+  //   } catch (err) {
+  //     console.error('Не вдалося видалити акаунт: ', err);
+  //   }
+  // };
 
   return (
     <Section>
@@ -489,6 +505,19 @@ const RegisterPage = () => {
         </CallToActionWrapper>
 
         <LocalModal isModalOpen={isModalOpen} handleClose={handleCloseModal} />
+        {/* --- -- --- */}
+        {/* <button
+          style={{
+            margin: '16px auto',
+            padding: '8px 12px',
+            border: '1px solid red',
+            color: 'red',
+          }}
+          onClick={() => deleteHandler()}
+        >
+          delete account
+        </button> */}
+        {/* --- - / - --- */}
       </Container>
     </Section>
   );

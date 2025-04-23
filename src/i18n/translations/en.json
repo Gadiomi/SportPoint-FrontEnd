@@ -62,6 +62,7 @@
     "change-password": "CHANGE PASSWORD",
     "reviews": "MY REVIEWS",
     "favorites": "FAVORITES",
+    "online-appointment": "ONLINE APPOINTMENT",
     "back": "Back",
     "save": "Save",
     "change-profile-photo": "Change profile photo"
@@ -74,7 +75,6 @@
     "second_name": "Second name",
     "club_name": "Club's name",
     "phone": "Phone",
-
     "change-profile-photo": "Change profile photo",
     "logout": "Log out",
     "zone": "Dander zone",

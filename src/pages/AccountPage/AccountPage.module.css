@@ -1,11 +1,3 @@
-.accountCont {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  padding-bottom: 74px;
-  padding-top: 6px;
-}
 .accountBtn {
   width: 100%;
   height: 40px;
@@ -15,21 +7,6 @@
   }
 }
 
-.accountName {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  & img {
-    width: 134px;
-    height: 134px;
-    border-radius: 50%;
-  }
-  & h3 {
-    font-size: 18px;
-    font-weight: 700;
-  }
-}
 .generalCont {
   width: 100%;
   padding-bottom: 85px;
@@ -61,42 +38,7 @@
     text-align: center;
   }
 }
-.accountName {
-  padding-top: 13px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #b7b7b9;
-}
-.accountName .refreshBtn {
-  font-size: 14px;
-  font-weight: 400;
-  padding: 0px 32px;
-  height: 32px;
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  margin-bottom: 16px;
-}
-.accountName img {
-  object-fit: cover;
-}
-.accountName h3 {
-  paddding-top: 8px;
-}
-.accountDeleteCont {
-  padding-bottom: 94px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  & h4 {
-    color: #b7b7b9;
-    font-size: 12px;
-    font-weight: 300;
-  }
-}
-.accountDeleteCont .accountDelete {
-  color: #b7b7b9;
-}
+
 .generalBtns .generalBtnBack {
   width: 145px;
   height: 36px;

@@ -89,7 +89,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           ) : (
             <Button
               testId="exit-button"
-              title="Ввійти"
+              title="Увійти"
               prependChild={<Icon name={IconName.LOGOUT_02} />}
               style={{
                 width: '100%',

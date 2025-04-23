@@ -1,4 +1,6 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { fonts } from '@/theme/fonts';
 import { Button, Icon, IconName } from '@/kit';
 import {
   Backdrop,
@@ -7,9 +9,6 @@ import {
   ModalHeader,
   CloseButton,
 } from './styles';
-import { useNavigate } from 'react-router-dom';
-import { fonts } from '@/theme/fonts';
-
 interface ILocalModal {
   isModalOpen: boolean;
   handleClose: () => void;
@@ -17,6 +16,12 @@ interface ILocalModal {
 
 const LocalModal: FC<ILocalModal> = ({ isModalOpen, handleClose }) => {
   const navigate = useNavigate();
+  const onClickHandler = async () => {
+    handleClose;
+    navigate('/login');
+    // navigate('/profile');
+  };
+
   return (
     <>
       {isModalOpen ? (
@@ -41,11 +46,7 @@ const LocalModal: FC<ILocalModal> = ({ isModalOpen, handleClose }) => {
                 padding: '6px 24px',
                 marginBottom: '8px',
               }}
-              onClick={() => {
-                handleClose;
-                navigate('/');
-                // navigate('/profile');
-              }}
+              onClick={onClickHandler}
             />
           </ModalContainer>
         </Backdrop>

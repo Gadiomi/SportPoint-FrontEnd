@@ -68,8 +68,8 @@ axiosInstance.interceptors.response.use(
 
       try {
         const newAccessToken = await refreshAccessToken();
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         console.log('[Retry] Повторний запит з токеном:', newAccessToken);
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return axios(originalRequest);
         // return axiosInstance(originalRequest);
       } catch (refreshError) {
