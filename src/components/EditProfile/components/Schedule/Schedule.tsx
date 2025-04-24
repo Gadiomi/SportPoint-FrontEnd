@@ -7,10 +7,12 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import schedule from '../../data/schedule.json';
 import {
   Container,
+  CustomContainer,
   FormStyled,
   InputsBeginEnd,
   ScheduleContainer,
   StyledCalendar,
+  TimeAndDateContainer,
 } from './Schedule.styled';
 import CustomHeader from './components/CustomHeader/CustomHeader';
 import CustomDateCellWrapper from './components/CustomDateCellWrapper/CustomDateCellWrapper';
@@ -205,7 +207,8 @@ const Schedule = () => {
       console.error('Update failed:', error);
     }
   };
-  const preventViewChange = () => false;
+  const preventViewChange = () => true;
+
   const handleDrillDown = (date: Date) => {
     setSelectedDay(date);
   };
@@ -248,7 +251,7 @@ const Schedule = () => {
     <Container>
       <ScheduleContainer>
         <Button
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/profile/edit')}
           title="РОЗКЛАД РОБОТИ"
           appearance={ButtonAppearance.PRIMARY}
           testId="general"
@@ -290,9 +293,8 @@ const Schedule = () => {
           }}
           components={{
             toolbar: props => (
-              <>
+              <CustomContainer>
                 <CustomToolbar
-                  onNavigate={props.onNavigate}
                   onView={props.onView}
                   schedule={schedule}
                   activeView={view}
@@ -302,7 +304,7 @@ const Schedule = () => {
                   view={props.view}
                   onNavigate={props.onNavigate}
                 />
-              </>
+              </CustomContainer>
             ),
             week: {
               header: CustomDateCellWrapper,
@@ -311,8 +313,13 @@ const Schedule = () => {
         />
       </ScheduleContainer>
       <FormStyled onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <SectionTitle>Робочі години</SectionTitle>
+        <TimeAndDateContainer>
+          <SectionTitle>Дата та час послуги</SectionTitle>
+          <Input
+            testId="selected-time"
+            value={(selectedDay && format(selectedDay, 'dd/MM/yyyy')) ?? ''}
+            containerStyles={{ marginBottom: '8px' }}
+          />
           <InputsBeginEnd>
             <Input
               testId="begin"
@@ -331,7 +338,7 @@ const Schedule = () => {
               onChange={handleEndChange}
             />
           </InputsBeginEnd>
-        </div>
+        </TimeAndDateContainer>
 
         <SearchWork
           searchTerm={searchTerm}

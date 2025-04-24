@@ -29,12 +29,14 @@ export const ToolbarContainer = styled.div`
   justify-content: space-between;
   flex-direction: column-reverse;
   align-items: center;
-  margin-bottom: 34px;
+  position: absolute;
+  right: 8%;
+  width: max-content;
+  z-index: 100;
 `;
 
 export const ButtonList = styled.ul`
   display: flex;
-  background-color: #303030;
   justify-content: center;
   align-items: center;
   border-radius: 4px;
@@ -42,7 +44,7 @@ export const ButtonList = styled.ul`
 
 export const ButtonListItem = styled.li`
   margin: 0;
-  border-radius: 4px;
+  border-radius: 60px;
 `;
 
 export const StyledCalendar = styled(Calendar)<{ view: string }>`
@@ -155,6 +157,11 @@ export const StyledCalendar = styled(Calendar)<{ view: string }>`
     display: none;
   }
 `;
+export const TimeAndDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
 
 export const InputsBeginEnd = styled.div`
   display: flex;
@@ -176,4 +183,8 @@ export const DayCell = styled.div<{ isSelected?: boolean }>`
   width: 100%;
   height: 100%;
   border: ${({ isSelected }) => (isSelected ? '2px solid #00796B' : 'none')};
+`;
+
+export const CustomContainer = styled.div`
+  position: relative;
 `;

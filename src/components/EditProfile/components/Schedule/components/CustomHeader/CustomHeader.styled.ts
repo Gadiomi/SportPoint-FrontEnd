@@ -9,7 +9,7 @@ export const NavContainer = styled.div`
 
   span {
     text-align: left;
-    padding-left: 34px;
+    padding-left: 22px;
   }
 `;
 

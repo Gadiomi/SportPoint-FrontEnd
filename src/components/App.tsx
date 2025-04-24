@@ -67,15 +67,16 @@ function App() {
             <Route index element={<Account />} />
             <Route path="edit" element={<LayoutEdit />}>
               <Route index element={<EditProfile />} />
-
+              <Route path="reviews" element={<Reviews />} />
+              <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
+              <Route
+                path={PublicRouteName.CHANGEPASSWORD}
+                element={<ChangePassword />}
+              />
               <Route path="schedule" element={<Schedule />} />
               <Route path="general" element={<EditGeneral />} />
             </Route>
-            {/* <Route path="general" element={<General />} /> */}
-            <Route path="favorites" element={<Favorites />} />
-            {/* {<Route path="change-password" element={<ChangePassword />} />  */}
             <Route path="reviews" element={<Reviews />} />
-            <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
             <Route
               path={PublicRouteName.CHANGEPASSWORD}
               element={<ChangePassword />}

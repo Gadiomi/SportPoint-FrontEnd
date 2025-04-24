@@ -1,18 +1,17 @@
 import styled from 'styled-components';
 
 export const ButtonItem = styled.button<{ $isActive: boolean }>`
-  background-color: ${({ $isActive }) => ($isActive ? '#ED772F' : '#303030')};
-  width: ${({ $isActive }) => ($isActive ? '84px' : '102px')};
+  background-color: rgba(41, 68, 135, 1);
   color: #fff;
   border: none;
-  padding: ${({ $isActive }) => ($isActive ? '4px 8px' : '6px 16px')};
+  padding: 2px 12px;
   cursor: pointer;
-  border-radius: ${({ $isActive }) => ($isActive ? '4px' : '4px')};
+  border-radius: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    background-color: ${({ $isActive }) => ($isActive ? '#ED672F' : '#303030')};
+    background-color: #ed672f;
   }
 `;

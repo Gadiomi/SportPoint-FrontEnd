@@ -22,16 +22,17 @@ const CustomHeader = ({
     const firstDayOfWeek = startOfWeek(date, { locale: uk });
     const lastDayOfWeek = endOfWeek(date, { locale: uk });
 
-    const startOfWeekFormatted = format(firstDayOfWeek, 'd MMMM', {
+    const startOfWeekFormatted = format(firstDayOfWeek, 'd', {
       locale: uk,
     });
-    const endOfWeekFormatted = format(lastDayOfWeek, 'd MMMM yyyy', {
+    const endOfWeekFormatted = format(lastDayOfWeek, 'd MMMM, yyyy', {
       locale: uk,
     });
 
     return (
       <NavContainer>
         <span>{`${startOfWeekFormatted} - ${endOfWeekFormatted}`}</span>
+
         <ButtonsContainer>
           <button type="button" onClick={() => onNavigate('PREV')}>
             <Icon
