@@ -6,12 +6,14 @@ import { useTheme } from 'styled-components';
 
 interface ButtonProfileIconProps {
   iconName: IconName;
+  iconStyle?: React.CSSProperties;
   onClick: () => void;
   text: string;
 }
 
 const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
   iconName,
+  iconStyle,
   onClick,
   text,
 }) => {
@@ -41,6 +43,7 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
             styles={{
               color: 'currentColor',
               fill: 'transparent',
+              ...iconStyle,
             }}
             name={iconName}
           />

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { IconName } from '@/kit';
 import { Container, Section } from '@/components/ContainerAndSection';
@@ -17,6 +16,8 @@ import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
+import Cookies from 'js-cookie';
+import { CookiesKey } from '@/constants';
 
 import { StyledProfileCard } from './styles';
 
@@ -30,7 +31,10 @@ const ClubPage: FC = () => {
   // const userRole = Cookies.get('userRole');
   // console.log('userRole', userRole);
 
-  const isLoggedIn = !!localStorage.getItem('accessToken');
+  const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
+
+  const userId = Cookies.get('userId');
+  console.log('userId:', userId);
 
   console.log('Отримані дані з бекенду:', data);
 

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
@@ -17,6 +16,8 @@ import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
+import Cookies from 'js-cookie';
+import { CookiesKey } from '@/constants';
 import { StyledProfileCard } from './styles';
 
 const AccountTrainerPage: FC = () => {
@@ -30,7 +31,10 @@ const AccountTrainerPage: FC = () => {
   // const userRole = Cookies.get('userRole');
   // console.log('userRole', userRole);
 
-  const isLoggedIn = !!localStorage.getItem('accessToken');
+  const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
+
+  const userId = Cookies.get('userId');
+  console.log('userId:', userId);
 
   console.log('Отримані дані з бекенду:', data);
 
