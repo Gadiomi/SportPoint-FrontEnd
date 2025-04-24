@@ -44,4 +44,8 @@ export enum IconName {
   SMILEY_HAPPY = 'icon-smiley-happy',
   X = 'icon-x',
   ID = 'icon-password',
+  LEFT_ANGLE_QUOTE = 'icon-left-angle-quote',
+  RIGHT_ANGLE_QUOTE = 'icon-right-angle-quote',
+  EDIT = 'icon-edit',
+  DELETE = 'icon-delete',
 }

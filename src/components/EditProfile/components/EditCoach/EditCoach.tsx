@@ -20,7 +20,7 @@ const EditCoach = () => {
         title={'РЕДАГУВАННЯ'}
         appearance={ButtonAppearance.SECONDARY}
         testId="general"
-        style={{
+        styles={{
           width: '100%',
           padding: '8px 0',
           display: 'flex',
@@ -74,7 +74,7 @@ const EditCoach = () => {
                 title={content.name}
                 appearance={ButtonAppearance.PRIMARY}
                 testId="general"
-                style={{ width: '100%', padding: '8px 18px' }}
+                styles={{ width: '100%', padding: '8px 18px' }}
                 textStyle={{
                   width: '100%',
                   paddingLeft: '8px',

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { CSSObject } from 'styled-components';
 
 import { ButtonAppearance } from './constants';
 
@@ -10,6 +10,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   testId: string;
   textStyle?: React.CSSProperties;
   appearance?: ButtonAppearance;
+  styles?: CSSObject;
 }
 
 export function Button({
@@ -20,6 +21,7 @@ export function Button({
   type = 'button',
   testId,
   textStyle,
+  styles,
   appearance = ButtonAppearance.PRIMARY,
   ...rest
 }: Props) {
@@ -29,6 +31,7 @@ export function Button({
       disabled={disabled}
       type={type}
       appearance={appearance}
+      $styles={styles}
       {...rest}
     >
       {prependChild && prependChild}
@@ -41,7 +44,8 @@ export function Button({
 const ButtonStyled = styled.button<{
   disabled?: boolean;
   appearance: ButtonAppearance;
-}>(({ theme, appearance }) => {
+  $styles?: React.CSSProperties;
+}>(({ theme, appearance, $styles }) => {
   const backgroundColor = {
     [ButtonAppearance.PRIMARY]: theme.color.mainOrange,
     [ButtonAppearance.UNDERLINED]: 'transparent',
@@ -110,5 +114,6 @@ const ButtonStyled = styled.button<{
       backgroundColor: theme.color.disabled,
       color: theme.color.background,
     },
+    ...$styles,
   };
 });
