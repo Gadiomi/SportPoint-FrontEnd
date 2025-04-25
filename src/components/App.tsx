@@ -6,11 +6,11 @@ import { PublicRouteName } from '@/routes';
 import AccountLayout from '@/pages/AccountPage/AccountLayout';
 import ChangePassword from '@/pages/AccountPage/ChangePassword';
 import EditProfile from './EditProfile/EditProfiles';
-import EditGeneral from './EditProfile/components/EditGeneral/EditGeneral';
 import ProfileProvider from '@/utils/ProfileProvider';
 import MainLayout from './NavBar/MainLayout';
 import Schedule from './EditProfile/components/Schedule/Schedule';
 import LayoutEdit from './EditProfile/components/LayoutEdit/LayoutEdit';
+import EditAllGeneral from './EditProfile/components/EditAllGeneral/EditAllGeneral';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -74,7 +74,7 @@ function App() {
                 element={<ChangePassword />}
               />
               <Route path="schedule" element={<Schedule />} />
-              <Route path="general" element={<EditGeneral />} />
+              <Route path="general" element={<EditAllGeneral />} />
             </Route>
             <Route path="reviews" element={<Reviews />} />
             <Route
