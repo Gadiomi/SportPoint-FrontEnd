@@ -72,7 +72,7 @@ const AccountPage: FC = () => {
         <ProfileButton title={'reviews'} />
         <ProfileButton title={'online-appointment'} />
         <Line margin={'16px 0'} />
-        <ProfileButton title={'general'} />
+        <ProfileButton title={'edit'} />
         <ProfileButton title={'change-password'} />
       </AccountCont>
 
