@@ -17,7 +17,7 @@ const ProfileButton: FC<Props> = ({ title }) => {
   const navigate = useNavigate();
 
   const ThisIconName: TIconName = {
-    general: IconName.ACCOUNT,
+    edit: IconName.ACCOUNT,
     change_password: IconName.ID,
     reviews: IconName.MASSAGE_TYPING,
     favorites: IconName.HEART_NONE,
