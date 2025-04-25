@@ -144,7 +144,8 @@ const RegisterPage = () => {
         phone: data.phone.trim(),
         city: data.city,
         address: data.address,
-        abilities: JSON.stringify(data.sport),
+        abilities: data.sport,
+        // abilities: JSON.stringify(data.sport),
       }),
     };
     console.log('registerData -> ', registerData);
@@ -238,8 +239,8 @@ const RegisterPage = () => {
       {/* ??? */}
       <Container maxWidth="375px">
         <Image
-          srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
-          src="/public/assets/images/logo@1.png"
+          srcSet="/assets/images/logo@1.png 1x, /assets/images/logo@2.png 2x"
+          src="/assets/images/logo@1.png"
           alt="Logo"
         />
         <TitleWrapper>
