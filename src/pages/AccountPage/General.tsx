@@ -39,8 +39,8 @@ const General: FC = () => {
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UserProfileFormData>({
-      defaultValues: userData?.userProfile || {}, // Використовуємо дані з бекенду
-      shouldUnregister: false, // Не видаляємо значення після розмонтування
+      defaultValues: userData?.userProfile || {},
+      shouldUnregister: false,
     });
 
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
