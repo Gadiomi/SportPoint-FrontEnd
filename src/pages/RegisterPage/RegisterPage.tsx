@@ -37,7 +37,6 @@ import {
 
 // --- - ---
 import { cityOptions } from './tempData';
-// import { useDeleteAccountMutation } from '@/redux/auth/authApi';
 // --- / - ---
 
 const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
@@ -72,8 +71,6 @@ const RegisterPage = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterMutation();
-  // const [deleteAccount, { isLoading: isLoadingDel, isSuccess, isError }] =
-  //   useDeleteAccountMutation();
 
   const contentRef = useRef<HTMLDivElement>(null);
   const sportRef = useRef<HTMLDivElement>(null);
@@ -152,22 +149,21 @@ const RegisterPage = () => {
     try {
       const response: any = await registerUser(registerData).unwrap();
       console.log(' - response ->', response);
-      if (response.token && response.refreshToken) {
-        Cookies.set(CookiesKey.TOKEN, response.token, {
-          expires: 7,
-          secure: true,
-          sameSite: 'Strict',
-        });
-        Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
-          expires: 7,
-          secure: true,
-          sameSite: 'Strict',
-        });
-        localStorage.setItem('userEmail', response.email);
-      }
+      // if (response.token && response.refreshToken) {
+      //   Cookies.set(CookiesKey.TOKEN, response.token, {
+      //     expires: 7,
+      //     secure: true,
+      //     sameSite: 'Strict',
+      //   });
+      //   Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+      //     expires: 7,
+      //     secure: true,
+      //     sameSite: 'Strict',
+      //   });
+      //   localStorage.setItem('userEmail', response.email);
+      // }
       reset();
       setIsModalOpen(true);
-      // navigate('/profile');
       // navigate('/');
     } catch (err) {
       console.error('Registration failed:', err);
@@ -215,24 +211,6 @@ const RegisterPage = () => {
         ? 'Місце роботи'
         : 'Адреса клубу';
   };
-  // ---------
-  // const deleteHandler = async () => {
-  //   console.log('delete account');
-  //   try {
-  //     const response: any = await deleteAccount('').unwrap();
-  //     console.log(' - response ->', response);
-  //     //  if (response.token && response.refreshToken) {
-  //     Cookies.remove(CookiesKey.TOKEN, { path: '' });
-  //     Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '' });
-  //     localStorage.clear();
-  //     //  }
-  //     //  setIsModalOpen(true);
-  //     // navigate('/profile');
-  //     // navigate('/');
-  //   } catch (err) {
-  //     console.error('Не вдалося видалити акаунт: ', err);
-  //   }
-  // };
 
   return (
     <Section>
@@ -506,19 +484,6 @@ const RegisterPage = () => {
         </CallToActionWrapper>
 
         <LocalModal isModalOpen={isModalOpen} handleClose={handleCloseModal} />
-        {/* --- -- --- */}
-        {/* <button
-          style={{
-            margin: '16px auto',
-            padding: '8px 12px',
-            border: '1px solid red',
-            color: 'red',
-          }}
-          onClick={() => deleteHandler()}
-        >
-          delete account
-        </button> */}
-        {/* --- - / - --- */}
       </Container>
     </Section>
   );

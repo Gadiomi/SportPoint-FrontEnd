@@ -29,12 +29,12 @@ export const AccountCont = styled.div`
   padding-top: 6px;
 `;
 
-export const AccountName = styled.div`
+export const AccountName = styled.div<{ paddingTop?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 13px;
+  padding-top: ${({ paddingTop }) => paddingTop ?? '13px'};
   padding-bottom: 16px;
   border-bottom: 1px solid #b7b7b9;
   & img {
