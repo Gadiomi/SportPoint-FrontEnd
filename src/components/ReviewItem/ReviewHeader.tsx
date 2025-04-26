@@ -25,7 +25,8 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
 
   const handleRightIconClick = () => {
     if (rightIcon === IconName.ARROW_LEFT) {
-      if (onCancel) onCancel();
+      // if (onCancel) onCancel();
+      navigate('/profile'); // Temp!!!
     }
   };
 

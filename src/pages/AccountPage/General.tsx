@@ -12,6 +12,7 @@ import { useLogoutMutation } from '@/redux/auth/authApi';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
 import { AccountName } from './styles';
+import ProfileButton from './ProfileButton';
 
 interface UserProfileFormData {
   avatar: string | File;
@@ -96,7 +97,7 @@ const General: FC = () => {
   if (isLoading) return <div>Loading profile...</div>;
   return (
     <div className={css.generalCont}>
-      <Button
+      {/* <Button
         onClick={() => navigate('/profile')}
         title={t(`account_page.general`)}
         appearance={ButtonAppearance.PRIMARY}
@@ -120,9 +121,12 @@ const General: FC = () => {
             name={IconName.ACCOUNT}
           />
         }
-      />
+      /> */}
+      {/* --- - --- */}
+      <ProfileButton title={'general'} arrowDirection={'left'} />
+      {/* --- / - --- */}
 
-      <AccountName>
+      <AccountName paddingTop={'45px'}>
         <img
           src={
             selectedAvatar ||

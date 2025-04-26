@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Icon, IconName, ButtonAppearance } from '@/kit';
+import { Button, ButtonAppearance } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { useGetUserProfileQuery } from '@/redux/user/userApi';
@@ -72,7 +72,7 @@ const AccountPage: FC = () => {
         <ProfileButton title={'reviews'} />
         <ProfileButton title={'online-appointment'} />
         <Line margin={'16px 0'} />
-        <ProfileButton title={'edit/general'} />
+        <ProfileButton title={'general'} />
         <ProfileButton title={'change-password'} />
       </AccountCont>
 
