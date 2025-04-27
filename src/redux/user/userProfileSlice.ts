@@ -22,7 +22,7 @@ export const userSlice = createSlice({
   reducers: {
     setUserProfile: (state, action) => {
       state.user = action.payload;
-      state.userCommentId = action.payload.userCommentId;
+      state.userCommentId = action.payload.userCommentId ?? undefined;
     },
   },
   extraReducers: builder => {
@@ -34,7 +34,8 @@ export const userSlice = createSlice({
         userApi.endpoints.getUserProfile.matchFulfilled,
         (state, action) => {
           state.user = action.payload.userProfile;
-          state.userCommentId = action.payload.userProfile.userCommentId;
+          state.userCommentId =
+            action.payload.userProfile?.userCommentId ?? undefined;
           state.isLoading = false;
         },
       );
@@ -46,7 +47,8 @@ export const userSlice = createSlice({
         userApi.endpoints.updateUserProfile.matchFulfilled,
         (state, action) => {
           state.user = action.payload.userProfile;
-          state.userCommentId = action.payload.userProfile.userCommentId;
+          state.userCommentId =
+            action.payload.userProfile?.userCommentId ?? undefined;
           state.isLoading = false;
         },
       )
