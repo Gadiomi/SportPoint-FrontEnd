@@ -85,3 +85,25 @@ export const AccountDeleteCont = styled.div`
     color: #b7b7b9;
   }
 `;
+export const SportButtonsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  border: 0.5px solid #b7b7b9;
+  border-radius: 6px;
+  padding: 8px;
+`;
+export const SportButton = styled.button<{ isSelected: boolean }>`
+  background-color: ${({ isSelected }) =>
+    isSelected ? '#494949' : 'transparent'};
+  color: #b7b7b9;
+  border: 1px solid #494949;
+  border-radius: 60px;
+  font-size: 14px;
+  padding: 6px 12px;
+  margin: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ isSelected }) =>
+      isSelected ? '#494949' : 'transparent'};
+  }
+`;

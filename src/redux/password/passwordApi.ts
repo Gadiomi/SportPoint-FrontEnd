@@ -25,7 +25,7 @@ export const passwordApi = createApi({
     }),
     verifyCode: builder.mutation<
       VerifyCodeResponse,
-      { password: string; code: string }
+      { password: string; code: number }
     >({
       query: ({ password, code }) => ({
         url: '/auth/verify',
