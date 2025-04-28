@@ -18,10 +18,12 @@ interface UserProfileFormData {
   avatar: string | File;
   firstName?: string;
   lastName: string;
-  phone?: string;
   email: string;
-  age?: string;
   sport: string[];
+  description: {
+    phone?: string;
+    age?: string;
+  };
 }
 
 const General: FC = () => {
@@ -40,7 +42,15 @@ const General: FC = () => {
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UserProfileFormData>({
-      defaultValues: userData?.userProfile || {},
+      defaultValues: {
+        avatar: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        sport: [],
+        description: { phone: '', age: '' },
+        ...userData?.userProfile,
+      },
       shouldUnregister: false,
     });
 
@@ -60,7 +70,14 @@ const General: FC = () => {
 
   useEffect(() => {
     if (userData?.userProfile) {
-      reset(userData.userProfile);
+      reset({
+        avatar: userData.userProfile.avatar || '',
+        firstName: userData.userProfile.firstName || '',
+        lastName: userData.userProfile.lastName || '',
+        email: userData.userProfile.email || '',
+        sport: userData.userProfile.sport || [],
+        description: userData.userProfile.description || { phone: '', age: '' },
+      });
       setSelectedAvatar(userData.userProfile.avatar || null);
       localStorage.setItem('userProfile', JSON.stringify(userData.userProfile));
     }
@@ -111,9 +128,14 @@ const General: FC = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('firstName', formData.firstName ?? '');
       formDataToSend.append('lastName', formData.lastName ?? '');
-      formDataToSend.append('phone', formData.phone ?? '');
+      formDataToSend.append(
+        'description',
+        JSON.stringify({
+          phone: formData.description?.phone ?? '',
+          age: formData.description?.age ?? '',
+        }),
+      );
       formDataToSend.append('email', formData.email ?? '');
-      formDataToSend.append('age', formData.age ?? '');
       formDataToSend.append('sport', JSON.stringify(selectedSports));
 
       if (avatar) {
@@ -202,16 +224,16 @@ const General: FC = () => {
           <Input
             testId="phone"
             label="Phone"
-            value={watch('phone') || ''}
-            {...register('phone')}
-            onChange={e => setValue('phone', e.target.value)}
+            value={watch('description.phone') || ''}
+            {...register('description.phone')}
+            onChange={e => setValue('description.phone', e.target.value)}
           />
           <Input
             testId="age"
             label="Age"
-            value={watch('age') || ''}
-            {...register('age')}
-            onChange={e => setValue('age', e.target.value)}
+            value={watch('description.age') || ''}
+            {...register('description.age')}
+            onChange={e => setValue('description.age', e.target.value)}
           />
         </div>
 
