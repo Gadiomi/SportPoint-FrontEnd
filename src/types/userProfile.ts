@@ -41,6 +41,7 @@ export interface Description {
   email?: string;
 }
 export interface UserProfile {
+  _id: string;
   userId: string;
   userCommentId?: string;
   countReview: number;

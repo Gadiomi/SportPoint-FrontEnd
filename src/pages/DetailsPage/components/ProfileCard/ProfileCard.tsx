@@ -66,10 +66,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const path = location.pathname;
 
     const hideIcons =
-      path.includes('account-trainer') || path.includes('account-admin-club');
+      path.includes('profile') || path.includes('account-admin-club');
     setShowButtons(!hideIcons);
     const showEdit =
-      path.includes('account-trainer') || path.includes('account-admin-club');
+      path.includes('profile') || path.includes('account-admin-club');
     setShowEditButton(showEdit);
   }, [location.pathname]);
 

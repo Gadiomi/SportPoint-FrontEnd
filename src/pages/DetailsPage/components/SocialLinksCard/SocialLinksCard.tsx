@@ -30,9 +30,7 @@ const SocialLinks: React.FC<{
   const theme = useTheme();
   const location = useLocation();
 
-  const isCoachOrClubAccount =
-    location.pathname.includes('/account-trainer/') ||
-    location.pathname.includes('/account-admin-club/');
+  const showButtonGetInTouch = location.pathname.includes('/profile');
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -97,7 +95,7 @@ const SocialLinks: React.FC<{
           );
         })}
       </ImgContainer>
-      {!isCoachOrClubAccount && <ButtonGetInTouch onClick={handleOpenModal} />}
+      {!showButtonGetInTouch && <ButtonGetInTouch onClick={handleOpenModal} />}
       <StyledHr />
       {isLoggedIn ? (
         <ModalGetInTouch

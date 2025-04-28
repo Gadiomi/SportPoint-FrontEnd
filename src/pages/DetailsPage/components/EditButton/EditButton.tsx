@@ -22,7 +22,7 @@ const EditButton: React.FC<EditButtonProps> = ({ _id, role }) => {
     console.log('Кнопку натиснуто!');
     console.log('ID тренера або клубу:', _id);
     console.log('ROLE тренера або клубу:', role);
-    navigate(`/profile`);
+    navigate(`edit`);
   };
 
   return (
