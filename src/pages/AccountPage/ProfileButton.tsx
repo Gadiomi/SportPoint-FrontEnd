@@ -6,33 +6,38 @@ import { AccountButton } from './styles';
 
 type Props = {
   title: string;
+  arrowDirection?: string;
 };
 
 type TIconName = {
   [ttl: string]: IconName;
 };
 
-const ProfileButton: FC<Props> = ({ title }) => {
+const ThisIconName: TIconName = {
+  general: IconName.ACCOUNT,
+  change_password: IconName.ID,
+  reviews: IconName.MASSAGE_TYPING,
+  favorites: IconName.HEART_NONE,
+  online_appointment: IconName.EDIT_CONTAINED, // TEMP!!!
+};
+
+const ProfileButton: FC<Props> = ({ title, arrowDirection = 'right' }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const ThisIconName: TIconName = {
-    general: IconName.ACCOUNT,
-    change_password: IconName.ID,
-    reviews: IconName.MASSAGE_TYPING,
-    favorites: IconName.HEART_NONE,
-    online_appointment: IconName.EDIT_CONTAINED, // TEMP!!!
-  };
 
   const correctedTitle = (ttl: string) => {
     return ttl.includes('-') ? ttl.replace('-', '_') : ttl;
   };
 
-  console.log('ThisIconName -> ', ThisIconName[title]);
+  // console.log('ThisIconName -> ', ThisIconName[correctedTitle(title)]);
 
   return (
     <AccountButton
-      onClick={() => navigate(`/profile/${title}`)}
+      onClick={() =>
+        navigate(
+          arrowDirection === 'right' ? `/profile/edit/${title}` : '/profile',
+        )
+      }
       title={t(`account_page.${title}`)}
       appearance={ButtonAppearance.PRIMARY}
       testId={`${title}`}
@@ -42,7 +47,11 @@ const ProfileButton: FC<Props> = ({ title }) => {
             color: 'currentColor',
             fill: 'transparent',
           }}
-          name={IconName.ARROW_RIGHT}
+          name={
+            arrowDirection === 'right'
+              ? IconName.ARROW_RIGHT
+              : IconName.ARROW_LEFT
+          }
         />
       }
       prependChild={

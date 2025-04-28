@@ -27,9 +27,10 @@ const ClubCard: FC<Props> = ({ clubData }) => {
             <p>{clubData.description}</p>
           </div>
           <Icon
-            name={IconName.HEART_FILL}
+            // name={IconName.HEART_FILL}
+            name={IconName.HEART_NONE}
             styles={{
-              fill: '#EC4033',
+              // fill: '#EC4033',
               color: '#EC4033',
             }}
           />

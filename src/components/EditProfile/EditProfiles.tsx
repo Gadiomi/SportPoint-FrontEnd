@@ -10,7 +10,7 @@ const EditProfile = () => {
     <SectionStyled>
       {/* {userProfile?.role === 'adminClub' && < />} */}
       {userProfile?.role === 'coach' && <EditCoach />}
-      {userProfile?.role === 'costumer' && <AccountPage />}
+      {userProfile?.role === 'customer' && <AccountPage />}
       <Outlet />
     </SectionStyled>
   );

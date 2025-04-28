@@ -5,8 +5,19 @@ export const List = styled.ul`
   flex-direction: column;
   gap: 16px;
 
-  li:nth-of-type(2n) {
+  li:nth-of-type(2n):not(:last-child) {
     margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 0.5px;
+      background-color: rgba(183, 183, 185, 0.6);
+    }
   }
 `;
 export const AccountName = styled.div`
