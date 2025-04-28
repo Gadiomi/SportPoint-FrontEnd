@@ -20,10 +20,6 @@ const ProfileRoute = lazy(() => import('../pages/AccountPage/ProfileRoute'));
 const TrainerPage = lazy(
   () => import('../pages/DetailsPage/TrainerPage/TrainerPage'),
 );
-const AccountAdminClub = lazy(
-  () =>
-    import('../pages/DetailsPage/AccountAdminClubPage/AccountAdminClubPage'),
-);
 
 const Club = lazy(() => import('../pages/DetailsPage/ClubPage/ClubPage'));
 const Favorites = lazy(() => import('../pages/FavoritesPage/FavoritesPage'));
@@ -44,12 +40,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/result" element={<ResultSearch />} />
           <Route path="/trainers" element={<TrainersPage />} />
-          <Route path="trainer/:id" element={<TrainerPage />} />
+          <Route path="trainers/trainer/:id" element={<TrainerPage />} />
           <Route path="/clubs" element={<ClubsPage />} />
+          <Route path="clubs/club/:id" element={<Club />} />
           <Route path="/register" element={<Register />} />
           <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
-          <Route path="club/:id" element={<Club />} />
-          <Route path="account-admin-club/:id" element={<AccountAdminClub />} />
+
           {/* <Route path={PublicRouteName.FAVORITS} element={<Favorites />} /> */}
           {/* <Route element={<PrivateRoute />}> */}
           <Route path="/profile" element={<AccountLayout />}>

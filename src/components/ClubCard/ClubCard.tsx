@@ -80,7 +80,7 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
           width: '100%',
           padding: theme.pxs.x1_5,
         }}
-        onClick={() => navigate(`/details/club/:${_id}`)}
+        onClick={() => navigate(`club/${_id}`)}
       />
     </ClubCardBox>
   );

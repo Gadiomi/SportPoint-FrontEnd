@@ -10,7 +10,9 @@ const ProfileRoute = () => {
   return (
     <>
       {userProfile?.role === 'coach' && <AccountTrainer id={userProfile._id} />}
-      {userProfile?.role === 'adminClub' && <AccountAdminClub />}
+      {userProfile?.role === 'adminClub' && (
+        <AccountAdminClub id={userProfile._id} />
+      )}
       {userProfile?.role === 'customer' && <AccountPage />}
       <Outlet />
     </>
