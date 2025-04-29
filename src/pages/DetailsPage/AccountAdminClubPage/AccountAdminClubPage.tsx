@@ -1,9 +1,6 @@
 import { FC } from 'react';
-import { useParams } from 'react-router-dom';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { IconName } from '@/kit';
-import { Container, Section } from '@/components/ContainerAndSection';
-import { Logo } from '@/components/Logo/Logo';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
@@ -21,25 +18,27 @@ import { CookiesKey } from '@/constants';
 
 import { StyledProfileCard } from './styles';
 
-const AdminClubPage: FC = () => {
-  const { id } = useParams<{ id?: string }>();
+interface AdminClubProps {
+  id: string;
+}
+
+const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
+  console.log('ID:', id);
 
   const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
     skip: !id,
   });
-
-  // const userRole = Cookies.get('userRole');
-  // console.log('userRole', userRole);
 
   const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
 
   const userId = Cookies.get('userId');
   console.log('userId:', userId);
 
-  const token = Cookies.get(CookiesKey.TOKEN);
-  console.log('Token:', token);
-
   console.log('Отримані дані з бекенду:', data);
+
+  if (!id) {
+    return <div>Ідентифікатор не переданий!</div>;
+  }
 
   if (isLoading) {
     return <div>Завантаження...</div>;
@@ -61,6 +60,9 @@ const AdminClubPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
+  const token = Cookies.get(CookiesKey.TOKEN);
+  console.log('Token:', token);
+
   const title = '';
 
   const coachTest = {
@@ -80,72 +82,69 @@ const AdminClubPage: FC = () => {
   const cleanliness = 3.7;
 
   return (
-    <Section>
-      <Container>
-        <Logo />
-        <StyledProfileCard>
-          <ProfileCard
-            _id={_id}
-            role={role}
-            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
-            firstName={firstName}
-            avatar={avatar}
-            city={city}
-            address={address}
-          />
-        </StyledProfileCard>
-        <ReviewCard
-          iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
-          counts={[
-            countReview ?? 0,
-            Array.isArray(coachTest) && coachTest.length > 0
-              ? coachTest.length
-              : 0,
-            roundedRating,
-          ]}
-          labels={['Відгуки', 'Тренери', 'Рейтинг']}
+    <>
+      <StyledProfileCard>
+        <ProfileCard
+          _id={_id}
+          role={role}
+          iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
+          firstName={firstName}
+          avatar={avatar}
+          city={city}
+          address={address}
         />
-        {social_links && social_links.length > 0 && (
-          <SocialLinks
-            socialLinks={social_links || []}
-            isLoggedIn={isLoggedIn}
-            title={title}
-          />
-        )}
-        {images && images.length > 0 && <GalleryCard images={images} />}
-        <OurHallsCard />
-        {price && price.length > 0 && <PriceCard prices={price || []} />}
-        {schedule && schedule.length > 0 && (
-          <WorkingHoursCard schedules={schedule || []} />
-        )}
-        <OurCoachCard
-          iconNames={[IconName.STAR_DEFAULT]}
-          rating={coachTest.rating}
-          counts={[countReview ?? 0]}
-          avatar={coachTest.avatar}
-          firstName={coachTest.firstName}
-          lastName={coachTest.lastName}
-          price={coachTest.price}
+      </StyledProfileCard>
+      <ReviewCard
+        iconNames={[IconName.LIKE, IconName.CLUB, IconName.STAR_DEFAULT]}
+        counts={[
+          countReview ?? 0,
+          Array.isArray(coachTest) && coachTest.length > 0
+            ? coachTest.length
+            : 0,
+          roundedRating,
+        ]}
+        labels={['Відгуки', 'Тренери', 'Рейтинг']}
+      />
+      {social_links && social_links.length > 0 && (
+        <SocialLinks
+          socialLinks={social_links || []}
+          isLoggedIn={isLoggedIn}
+          title={title}
         />
-        <LocationCard />
+      )}
+      {images && images.length > 0 && <GalleryCard images={images} />}
+      <OurHallsCard />
+      {price && price.length > 0 && <PriceCard prices={price || []} />}
+      {schedule && schedule.length > 0 && (
+        <WorkingHoursCard schedules={schedule || []} />
+      )}
+      <OurCoachCard
+        iconNames={[IconName.STAR_DEFAULT]}
+        rating={coachTest.rating}
+        counts={[countReview ?? 0]}
+        avatar={coachTest.avatar}
+        firstName={coachTest.firstName}
+        lastName={coachTest.lastName}
+        price={coachTest.price}
+      />
+      <LocationCard />
 
-        <ReviewDetailsCard
-          iconNames={[IconName.STAR_DEFAULT]}
-          rating={coachTest.rating}
-          counts={[countReview ?? 0]}
-          clientService={clientService}
-          serviceQuality={serviceQuality}
-          priceQuality={priceQuality}
-          location={location}
-          cleanliness={cleanliness}
-          avatar={coachTest.avatar}
-          firstName={coachTest.firstName}
-          lastName={coachTest.lastName}
-        />
-        <HrButton />
-        <Contacts />
-      </Container>
-    </Section>
+      <ReviewDetailsCard
+        iconNames={[IconName.STAR_DEFAULT]}
+        rating={coachTest.rating}
+        counts={[countReview ?? 0]}
+        clientService={clientService}
+        serviceQuality={serviceQuality}
+        priceQuality={priceQuality}
+        location={location}
+        cleanliness={cleanliness}
+        avatar={coachTest.avatar}
+        firstName={coachTest.firstName}
+        lastName={coachTest.lastName}
+      />
+      <HrButton />
+      <Contacts />
+    </>
   );
 };
 
