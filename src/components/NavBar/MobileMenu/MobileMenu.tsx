@@ -10,7 +10,8 @@ import {
 import { NavBox } from '../styles';
 import { Button, Icon, IconName } from '@/kit';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '@/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { setIsLogin } from '@/redux/auth/loginSlice';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -20,6 +21,8 @@ interface MobileMenuProps {
 const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { isLogin } = useAppSelector(state => state.setLogin);
+  const dispatch = useAppDispatch();
+
   if (!isOpen) return null;
 
   return (
@@ -52,7 +55,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                navigate('/');
+                navigate('favorites');
                 onClose();
               }}
             >
@@ -83,6 +86,8 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               }}
               onClick={() => {
                 localStorage.removeItem('token');
+                localStorage.removeItem('refreshToken');
+                dispatch(setIsLogin(false));
                 navigate('/');
                 onClose();
               }}
