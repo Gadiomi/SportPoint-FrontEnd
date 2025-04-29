@@ -73,7 +73,8 @@ const LogInPage: FC = () => {
         dispatch(setIsLogin(true));
         setIsIncorrectData(false);
         console.log('Login Success:', response);
-        navigate('/profile');
+        navigate('/');
+        //  navigate('/profile');
       } else {
         setIsIncorrectData(true);
       }

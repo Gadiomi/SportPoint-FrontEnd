@@ -1,18 +1,19 @@
-import { Input } from '@/kit';
+import React, { FC, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Button, Icon, IconName, Input } from '@/kit';
 import {
   useSendRecoveryCodeMutation,
   useVerifyCodeMutation,
 } from '@/redux/password/passwordApi';
-import React, { useEffect, useState } from 'react';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { FontFamily } from '@/kit';
-import { useSearchParams } from 'react-router-dom';
+import { BackWrapper, FirstWrapper } from './styles';
 
-// interface RestoreModalProps {
-//   onClose: () => void;
-// }
+interface RestoreModalProps {
+  onClose: () => void;
+}
 
-const PasswordRecovery = () => {
+const PasswordRecovery: FC<RestoreModalProps> = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -58,10 +59,25 @@ const PasswordRecovery = () => {
   };
 
   return (
-    <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
-      {/* <button onClick={onClose}>Закрити</button> */}
+    <Section
+      styles={{
+        fontFamily: `${FontFamily}`,
+        minHeight: '100vh',
+        paddingTop: '12px',
+      }}
+    >
+      <BackWrapper>
+        <Icon
+          styles={{
+            color: 'currentColor',
+            fill: 'transparent',
+          }}
+          name={IconName.ARROW_LEFT}
+        />
+        <button onClick={onClose}>Повернутись назад</button>
+      </BackWrapper>
       {step === 1 && (
-        <div>
+        <FirstWrapper>
           <h2>Відновлення паролю</h2>
           <p>Введіть електронну пошту для відновлення акаунта</p>
           <Input
@@ -71,10 +87,29 @@ const PasswordRecovery = () => {
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
-          <button onClick={handleSendCode} disabled={sendingCode}>
+          {/* <button onClick={handleSendCode} disabled={sendingCode}>
             Надіслати код
-          </button>
-        </div>
+          </button> */}
+          <Button
+            testId="register_page.submit_button"
+            // title={t('register_page.submit_button')}
+            title={'Надіслати код'}
+            // type="submit"
+            style={{ width: '100%' }}
+            // disabled={!isValid || isLoading}
+            disabled={!email}
+            // appendChild={
+            //   isSubmitting || isLoading ? (
+            //     <Loader
+            //       size={'16px'}
+            //       stroke={'#0f0f0f'}
+            //       strokeWidth={'1'}
+            //       style={{ marginLeft: '4px' }}
+            //     />
+            //   ) : null
+            // }
+          />
+        </FirstWrapper>
       )}
 
       {/* {step === 2 && (
