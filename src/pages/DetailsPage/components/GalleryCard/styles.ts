@@ -8,8 +8,8 @@ export const StyledGalleryCard = styled.div`
 `;
 
 export const SwiperImg = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 140px;
+  height: 100px;
   object-fit: cover;
   border-radius: 6px;
 `;
