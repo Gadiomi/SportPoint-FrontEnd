@@ -10,6 +10,7 @@ import {
 import { NavBox } from '../styles';
 import { Button, Icon, IconName } from '@/kit';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@/hooks/hooks';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ interface MobileMenuProps {
 
 const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const { isLogin } = useAppSelector(state => state.setLogin);
   if (!isOpen) return null;
 
   return (
@@ -72,7 +73,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               <Descr>Змінити мову</Descr>
             </MenuItem>
           </MenuList>
-          {isAuthenticated ? (
+          {isLogin ? (
             <Button
               testId="exit-button"
               title="Вийти"
