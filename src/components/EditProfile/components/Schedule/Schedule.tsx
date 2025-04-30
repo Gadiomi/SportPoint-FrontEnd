@@ -32,6 +32,7 @@ import { uk } from 'date-fns/locale';
 import { useAddScheduleMutation } from '@/redux/schedule/scheduleApi';
 import ScheduleCard from './components/ScheduleCard/ScheduleCard';
 import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
+import Calendar from './components/Calendar/Calendar';
 
 const locales = {
   uk: uk,
@@ -266,50 +267,14 @@ const Schedule = () => {
             <Icon name={IconName.ACCOUNT} styles={{ color: 'currentColor' }} />
           }
         />
-        <StyledCalendar
-          onNavigate={handleNavigate}
-          culture="uk"
+        <Calendar
+          handleNavigate={handleNavigate}
           localizer={localizer}
-          messages={uaMessages}
-          date={selectedDay || new Date()}
+          selectedDay={selectedDay}
           view={view}
-          onView={setView}
-          selectable
-          onDrillDown={handleDrillDown}
-          onSelecting={preventViewChange}
-          dayPropGetter={date => {
-            const isSelected =
-              selectedDay &&
-              date.getDate() === selectedDay.getDate() &&
-              date.getMonth() === selectedDay.getMonth() &&
-              date.getFullYear() === selectedDay.getFullYear();
-
-            return {
-              style: {
-                backgroundColor: isSelected ? '#ed772f' : 'transparent',
-                borderRadius: isSelected ? '8px' : undefined,
-              },
-            };
-          }}
-          components={{
-            toolbar: props => (
-              <CustomContainer>
-                <CustomToolbar
-                  onView={props.onView}
-                  schedule={schedule}
-                  activeView={view}
-                />
-                <CustomHeader
-                  date={props.date}
-                  view={props.view}
-                  onNavigate={props.onNavigate}
-                />
-              </CustomContainer>
-            ),
-            week: {
-              header: CustomDateCellWrapper,
-            },
-          }}
+          setView={setView}
+          handleDrillDown={handleDrillDown}
+          preventViewChange={preventViewChange}
         />
       </ScheduleContainer>
       <FormStyled onSubmit={handleSubmit(onSubmit)}>

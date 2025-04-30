@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Label,
-  DropdownContainer,
   DropdownItem,
   DropdownToggle,
   DropdownContent,
   DropdownLabel,
-  DropdownInput,
 } from './Selection.styled';
-import { Icon, IconName, Input } from '@/kit';
+import { Icon, IconName } from '@/kit';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 interface SelectionProps {

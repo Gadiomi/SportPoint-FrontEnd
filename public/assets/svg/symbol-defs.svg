@@ -157,5 +157,7 @@
 <symbol id="icon-delete" viewBox="0 0 29 32">
 <path stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="4" stroke-width="3.2" d="M1.6 6.682h25.6M9.6 1.6h9.6M20 30.4h-11.2c-1.767 0-3.2-1.517-3.2-3.388l-0.731-18.565c-0.038-0.962 0.689-1.765 1.599-1.765h15.864c0.91 0 1.636 0.802 1.599 1.765l-0.731 18.565c0 1.871-1.433 3.388-3.2 3.388z"></path>
 </symbol>
-</defs>
+<symbol id="icon-angle-down" viewBox="0 0 48 32">
+<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="8" d="M4 6l20.003 18.32 19.997-18.32"></path>
+</symbol></defs>
 </svg>
