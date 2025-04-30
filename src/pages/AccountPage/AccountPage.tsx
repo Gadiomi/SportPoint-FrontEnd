@@ -83,6 +83,7 @@ const AccountPage: FC = () => {
           appearance={ButtonAppearance.UNDERLINED}
           testId="delete"
           onClick={() => deleteHandler()}
+          textStyle={{ color: '#ED772F' }}
         ></Button>
       </AccountDeleteCont>
     </div>
