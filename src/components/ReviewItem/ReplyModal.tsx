@@ -2,46 +2,43 @@ import React, { useState } from 'react';
 import ReviewHeader from './ReviewHeader';
 import StyledHr from '../StyledHr/StyledHr';
 import ReviewUserInfo from './ReviwUserInfo';
-import styled from 'styled-components';
-import { IconName } from '@/kit';
-import { Icon } from '@/kit';
+import { IconName, Icon } from '@/kit';
 import { TextArea } from '@/pages/ReviewsPage/styles';
-import { ButtonGroup, DeleteButton, ActionButton } from './styles';
+import { useTheme } from 'styled-components';
+import {
+  ButtonGroup,
+  DeleteButton,
+  ActionButton,
+  Overlay,
+  ModalContainer,
+  Stars,
+  Avatar,
+  Name,
+  StyledDate,
+  Div,
+  UserInfo,
+  UserInfoReply,
+} from './styles';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (replyText: string) => void;
-  reviewId: string;
   createdAt: string;
+  avatar: string;
+  firstName: string;
+  lastName: string;
+  rating: number;
 }
-
-const Overlay = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'isOpen',
-})<{ isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-`;
-
-const ModalContainer = styled.div`
-  background: #1c1b20;
-  border-radius: 12px;
-  padding: 12px;
-`;
 
 const ReplyModal: React.FC<Props> = ({
   isOpen,
   onClose,
   onSubmit,
-  reviewId,
+  avatar,
+  firstName,
+  lastName,
+  rating,
   createdAt,
 }) => {
   const [text, setText] = useState('');
@@ -51,6 +48,8 @@ const ReplyModal: React.FC<Props> = ({
     setText('');
   };
 
+  const theme = useTheme();
+
   return (
     <Overlay isOpen={isOpen}>
       <ModalContainer>
@@ -58,8 +57,44 @@ const ReplyModal: React.FC<Props> = ({
           title="Відповісти на відгук"
           leftIcon={IconName.EDIT_CONTAINED}
         />
-        <ReviewUserInfo userId={reviewId} createdAt={createdAt} />
+        <UserInfoReply>
+          <UserInfo>
+            <Avatar src={avatar} alt={`${firstName} ${lastName}`} />
+            <Div>
+              <Name>
+                {firstName} {lastName}
+              </Name>
+              <Stars>
+                {[1, 2, 3, 4, 5].map(star => (
+                  <Icon
+                    key={`star-${star}`}
+                    name={IconName.STAR_DEFAULT}
+                    styles={{
+                      fill:
+                        star <= Math.round(rating ?? 0)
+                          ? theme.colors.mainOrange
+                          : theme.colors.darkGray,
+                      color: 'transparent',
+                    }}
+                    size={16}
+                  />
+                ))}
+              </Stars>
+            </Div>
+            <StyledDate>
+              {' '}
+              {createdAt
+                ? new Date(createdAt).toLocaleDateString('en-US', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  })
+                : 'Дата не вказана'}
+            </StyledDate>
+          </UserInfo>
+        </UserInfoReply>
         <StyledHr />
+        <p>Відповісти на відгук</p>
         <TextArea
           value={text}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>

@@ -12,14 +12,16 @@ type ReviewHeaderProps = {
   leftIconStyles?: React.CSSProperties;
   onClick?: () => void;
   onCancel?: () => void;
+  userRole?: string;
 };
 
 const ReviewHeader: React.FC<ReviewHeaderProps> = ({
   onCancel,
-  title = 'МОЇ ВІДГУКИ',
+  title,
   leftIcon = IconName.MASSAGE_TYPING,
   rightIcon = IconName.ARROW_LEFT,
   leftIconStyles = {},
+  userRole = 'Customer',
 }) => {
   const navigate = useNavigate();
 
@@ -29,13 +31,15 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
     }
   };
 
+  const finalTitle =
+    title ?? (userRole === 'Customer' ? 'ВІДГУКИ' : 'МОЇ ВІДГУКИ');
   return (
     <ReviewHeaderContainer>
       <Header>
         {leftIcon && (
           <Icon name={leftIcon} styles={{ fill: 'none', ...leftIconStyles }} />
         )}
-        {title}
+        {finalTitle}
       </Header>
       {rightIcon && (
         <IconDiv onClick={handleRightIconClick}>

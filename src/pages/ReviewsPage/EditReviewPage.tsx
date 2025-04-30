@@ -4,18 +4,16 @@ import { saveReview } from '@/redux/reviews/reviewsApi';
 import { Review } from '@/types/Review';
 import UserInfo from '@/components/ReviewItem/ReviwUserInfo';
 import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
-import FeedbackSection from '@/components/ReviewItem/FeedbackSection';
 import StyledHr from '@/components/StyledHr/StyledHr';
-import { IconName } from '@/kit';
-import { Icon } from '@/kit';
+import { IconName, Icon } from '@/kit';
 import styled from 'styled-components';
+import { useTheme } from 'styled-components';
 import {
   HeaderEdit,
   RatingSection,
   Starsedit,
   StarIcon,
   TextArea,
-  CancelButton,
   SaveButton,
   RatingRow,
   Label,
@@ -35,7 +33,6 @@ interface EditReviewPageProps {
   onCancel: () => void;
   onSave?: (updatedReview: Review) => void;
 }
-
 const mapBackendRatings = (backendRatings: any) => ({
   attitude: backendRatings.clientService || 0,
   service: backendRatings.serviceQuality || 0,
@@ -48,43 +45,75 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   onCancel,
   onSave,
 }) => {
+  const theme = useTheme();
   const reduxUserId = useAppSelector(state => state.user.user?.userCommentId);
   console.log('reduxUserId', reduxUserId);
-  const userCommentId = review.userCommentId || reduxUserId;
+  const userCommentId = review.userCommentId || '68051125a3b591135617fdbf'; //reduxUserId
   // const userCommentId = useAppSelector((state) => state.user.user?.userCommentId);
   // const [userCommentId, setuserCommentId] = useState(review.userCommentId);
-  console.log('userCommentId', userCommentId);
+  // console.log('userCommentId', userCommentId);
   const [comment, setComment] = useState(review?.comment || '');
-  const [ratings, setRatings] = useState(() =>
-    review.ratings
-      ? mapBackendRatings(review.ratings)
-      : {
-          attitude: 0,
-          service: 0,
-          price: 0,
-          cleanliness: 0,
-        },
-  );
+  const [ratings, setRatings] = useState({
+    attitude: review?.ratings?.cleanliness || 0,
+    service: review?.ratings?.clientService || 0,
+    price: review?.ratings?.priceQuality || 0,
+    cleanliness: review?.ratings?.serviceQuality || 0,
+  });
+  // const [ratings, setRatings] = useState(() =>
+  //   review.ratings
+  //     ? mapBackendRatings(review.ratings)
+  //     : {
+  //         attitude: 0,
+  //         service: 0,
+  //         price: 0,
+  //         cleanliness: 0,
+  //       },
+  // );
+
+  //   // Debug: перевірка чи приходять рейтинги
+  // useEffect(() => {
+  //   console.log('review.ratings', review.ratings);
+  // }, [review.ratings]);
+
+  // // 🔄 Оновлення рейтингу при зміні review
+  // useEffect(() => {
+  //   if (review?.ratings) {
+  //     setRatings(mapBackendRatings(review.ratings));
+  //   }
+  // }, [review]);
+
+  console.log('review:', review);
 
   // Стан для перевірки змін у формі
   const [isEdited, setIsEdited] = useState(false);
   const [hasComment, setHasComment] = useState(!!review.comment);
   const [averageRating, setAverageRating] = useState(review.averageRating || 0);
 
+  useEffect(() => {
+    if (review?.ratings) {
+      const mapped = mapBackendRatings(review.ratings);
+      setRatings(mapped);
+      const avg = calculateAverage(mapped);
+      setAverageRating(avg);
+    }
+    setComment(review.comment || '');
+    setHasComment(!!review.comment);
+  }, [review]);
+
   // Визначаємо, чи відбулися зміни
   useEffect(() => {
     const initialRatings = {
-      attitude: 0,
-      service: 0,
-      price: 0,
-      cleanliness: 0,
+      attitude: review?.ratings?.cleanliness || 0,
+      service: review?.ratings?.clientService || 0,
+      price: review?.ratings?.priceQuality || 0,
+      cleanliness: review?.ratings?.serviceQuality || 0,
     };
     const hasRatingChanged =
       JSON.stringify(ratings) !== JSON.stringify(initialRatings);
     const hasCommentChanged = comment !== review.comment;
 
     setIsEdited(hasRatingChanged || hasCommentChanged);
-  }, [comment, ratings, review.comment]);
+  }, [comment, ratings, review]);
 
   const handleRatingChange = (key: keyof typeof ratings, value: number) => {
     setRatings(prev => ({ ...prev, [key]: value }));
@@ -106,7 +135,6 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
 
       const isEditing = !!review.comment;
       const reviewId = isEditing ? review.id : null;
-      console.log('!!!!!!!!!!!!!!!!!!!', reviewId);
 
       const targetType = review.userRole === 'coach' ? 'trainer' : 'club';
 
@@ -195,6 +223,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
               firstName={review.name}
               lastName={review.surname}
               role={review.userRole}
+              sport={review.sport}
               createdAt={review.createdAt}
               updatedAt={review.updatedAt}
             />
@@ -212,12 +241,12 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
                     styles={{
                       fill:
                         review.totalReviews > 0 && i < Math.round(averageRating)
-                          ? '#ED772F'
+                          ? theme.color.mainOrange
                           : 'none',
                       color:
                         review.totalReviews > 0 && i < Math.round(averageRating)
-                          ? '#ED772F'
-                          : '#494949',
+                          ? theme.color.mainOrange
+                          : theme.color.secWhite,
                     }}
                   />
                 </StarIcon>
@@ -254,12 +283,12 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
                         styles={{
                           fill:
                             index < ratings[key as keyof typeof ratings]
-                              ? '#ED772F'
+                              ? theme.color.mainOrange
                               : 'none',
                           color:
                             index < ratings[key as keyof typeof ratings]
-                              ? '#ED772F'
-                              : '#494949',
+                              ? theme.color.mainOrange
+                              : theme.color.secWhite,
                         }}
                       />
                     </StarIcon>
@@ -276,14 +305,15 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
               setComment(e.target.value)
             }
           />
-
           <ButtonGroupEdit>
             <DeleteButton onClick={onCancel}>Назад</DeleteButton>
             <SaveButton
               onClick={handleSave}
               style={{
-                backgroundColor: isEdited ? '#ED772F' : '#1C1B20',
-                border: `2px solid ${isEdited ? '#ED772F' : '#494949'}`,
+                backgroundColor: isEdited
+                  ? theme.color.mainOrange
+                  : theme.color.background,
+                border: `2px solid ${isEdited ? theme.color.mainOrange : theme.color.darkGray}`,
               }}
             >
               <Icon name={IconName.CHECK_CONTAINED} />
