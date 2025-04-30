@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { IconName } from '@/kit';
+import { useAppSelector } from '@/hooks/hooks';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
@@ -13,8 +14,6 @@ import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
-import Cookies from 'js-cookie';
-import { CookiesKey } from '@/constants';
 
 import { StyledProfileCard } from './styles';
 
@@ -24,15 +23,12 @@ interface AdminClubProps {
 
 const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
   console.log('ID:', id);
+  const { isLogin } = useAppSelector(state => state.setLogin);
+  console.log(' Користувач залогінився', isLogin);
 
   const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
     skip: !id,
   });
-
-  const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
-
-  const userId = Cookies.get('userId');
-  console.log('userId:', userId);
 
   console.log('Отримані дані з бекенду:', data);
 
@@ -60,9 +56,6 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
-  const token = Cookies.get(CookiesKey.TOKEN);
-  console.log('Token:', token);
-
   const title = '';
 
   const coachTest = {
@@ -87,6 +80,7 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
         <ProfileCard
           _id={_id}
           role={role}
+          isLogin={isLogin}
           iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
           firstName={firstName}
           avatar={avatar}
@@ -108,7 +102,7 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
       {social_links && social_links.length > 0 && (
         <SocialLinks
           socialLinks={social_links || []}
-          isLoggedIn={isLoggedIn}
+          isLogin={isLogin}
           title={title}
         />
       )}

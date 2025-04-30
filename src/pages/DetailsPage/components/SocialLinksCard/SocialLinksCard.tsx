@@ -23,8 +23,8 @@ interface SocialLink {
 const SocialLinks: React.FC<{
   socialLinks: SocialLink[];
   title: string;
-  isLoggedIn: boolean;
-}> = ({ socialLinks, title, isLoggedIn }) => {
+  isLogin: boolean;
+}> = ({ socialLinks, title, isLogin }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const theme = useTheme();
@@ -52,7 +52,7 @@ const SocialLinks: React.FC<{
 
           return (
             iconSrc &&
-            (isLoggedIn ? (
+            (isLogin ? (
               <a
                 key={link.name}
                 href={link.url}
@@ -97,7 +97,7 @@ const SocialLinks: React.FC<{
       </ImgContainer>
       {!showButtonGetInTouch && <ButtonGetInTouch onClick={handleOpenModal} />}
       <StyledHr />
-      {isLoggedIn ? (
+      {isLogin ? (
         <ModalGetInTouch
           isOpen={isModalOpen}
           onClose={handleCloseModal}

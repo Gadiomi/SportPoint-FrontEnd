@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { IconName } from '@/kit';
+import { useAppSelector } from '@/hooks/hooks';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
@@ -17,21 +18,16 @@ import HrButton from '../components/StyledHrButton/StyledHrButton';
 import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
 import Cookies from 'js-cookie';
-import { CookiesKey } from '@/constants';
-
 import { StyledProfileCard } from './styles';
 
 const ClubPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
+  const { isLogin } = useAppSelector(state => state.setLogin);
+  console.log(' Користувач залогінився', isLogin);
 
   const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
     skip: !id,
   });
-
-  // const userRole = Cookies.get('userRole');
-  // console.log('userRole', userRole);
-
-  const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
 
   const userId = Cookies.get('userId');
   console.log('userId:', userId);
@@ -58,7 +54,7 @@ const ClubPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
-  const title = isLoggedIn
+  const title = isLogin
     ? 'Введіть дані, і адміністратор з вами зв’яжеться'
     : 'Тільки авторизовані користувачі можуть зв’язатися з адміністратором';
 
@@ -86,6 +82,7 @@ const ClubPage: FC = () => {
           <ProfileCard
             _id={_id}
             role={role}
+            isLogin={isLogin}
             iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             avatar={avatar}
@@ -107,7 +104,7 @@ const ClubPage: FC = () => {
         {social_links && social_links.length > 0 && (
           <SocialLinks
             socialLinks={social_links || []}
-            isLoggedIn={isLoggedIn}
+            isLogin={isLogin}
             title={title}
           />
         )}
