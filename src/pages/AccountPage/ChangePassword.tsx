@@ -17,6 +17,7 @@ import ProfileButton from './ProfileButton';
 import BackSaveButtons from './BackSaveButtons';
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import { useTheme } from '@/hooks';
+import MessageModal from '@/components/MessageModal/MessageModal';
 
 interface ChangePasswordFormData {
   currentPassword: string;
@@ -40,6 +41,13 @@ const ChangePassword: FC = () => {
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
+  const [isResponseModalOpen, setIsResponseModalOpen] =
+    useState<boolean>(false);
+  const [backResponse, setBackResponse] = useState<string>('No message');
+
+  const handleCloseResponseModal = () => {
+    setIsResponseModalOpen(false);
+  };
 
   const toggleVisibilityPassword = () => {
     setIsVisiblePassword(prev => !prev);
@@ -62,12 +70,13 @@ const ChangePassword: FC = () => {
       }).unwrap();
       console.log(' -- response -> ', response);
       reset();
-      // setIsModalOpen(true);
-      //   alert('Пароль успішно змінено!');
-      //   navigate('/profile');
-    } catch (err) {
-      alert('Помилка зміни пароля: ');
+      setBackResponse(response.message);
+      // setIsResponseModalOpen(true);
+    } catch (error) {
+      console.error('Помилка зміни пароля: ', error);
+      setBackResponse('Помилка зміни пароля!');
     }
+    setIsResponseModalOpen(true);
   };
 
   return (
@@ -202,6 +211,15 @@ const ChangePassword: FC = () => {
             </ModalContent>
           </ModalOverlay>
         )}
+        {/* --- - --- */}
+        <MessageModal
+          isModalOpen={isResponseModalOpen}
+          handleClose={handleCloseResponseModal}
+          nextRoute={'/profile'}
+        >
+          <p>{backResponse}</p>
+        </MessageModal>
+        {/* --- / - --- */}
       </FormContPassw>
     </>
   );

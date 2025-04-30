@@ -17,7 +17,7 @@ const PasswordRecovery: FC<RestoreModalProps> = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
 
   const [searchParams] = useSearchParams();
   const codeFromUrl = searchParams.get('code');

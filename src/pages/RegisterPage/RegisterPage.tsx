@@ -13,7 +13,7 @@ import CitySelect from './components/CitySelect';
 import AddressWidget from './components/AddressWidget/AddressWidget';
 import SocialNetButton from './components/SocialNetButton/SocialNetButton';
 import SportsListChoice from './components/SportsList/SportsList';
-import LocalModal from './components/LocalModal/LocalModal';
+import MessageModal from '../../components/MessageModal/MessageModal';
 import { Button, ButtonAppearance, Input, Loader } from '@/kit';
 import { useTheme } from '@/hooks';
 import { RegisterFormData } from '@/types';
@@ -21,8 +21,6 @@ import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
 import { useClubsInfo } from './getData';
 import { OptionType } from './components/types';
 import {
-  // AddressWrapper,
-  // PlaceWrapper,
   CallToActionWrapper,
   Form,
   Image,
@@ -34,7 +32,6 @@ import {
   Title,
   TitleWrapper,
 } from './styles';
-
 // --- - ---
 import { cityOptions } from './tempData';
 // --- / - ---
@@ -483,7 +480,16 @@ const RegisterPage = () => {
           />
         </CallToActionWrapper>
 
-        <LocalModal isModalOpen={isModalOpen} handleClose={handleCloseModal} />
+        <MessageModal
+          isModalOpen={isModalOpen}
+          handleClose={handleCloseModal}
+          nextRoute={'/login'}
+        >
+          <>
+            <p>Перейдіть за посиланням, яке надіслано листом на Ваш email.</p>
+            <p>Потім натисніть кнопку "Далі", щоб перейти у Ваш акаунт.</p>
+          </>
+        </MessageModal>
       </Container>
     </Section>
   );

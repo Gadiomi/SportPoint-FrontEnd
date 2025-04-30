@@ -1,25 +1,32 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { fonts } from '@/theme/fonts';
 import { Button, Icon, IconName } from '@/kit';
 import {
   Backdrop,
   ModalContainer,
-  ModalContent,
   ModalHeader,
   CloseButton,
+  ModalContent,
 } from './styles';
-interface ILocalModal {
+import { fonts } from '@/theme/fonts';
+import { useNavigate } from 'react-router-dom';
+
+interface IMessageModal {
   isModalOpen: boolean;
   handleClose: () => void;
+  nextRoute: string;
+  children: React.ReactNode;
 }
 
-const LocalModal: FC<ILocalModal> = ({ isModalOpen, handleClose }) => {
+const MessageModal: FC<IMessageModal> = ({
+  isModalOpen,
+  handleClose,
+  nextRoute,
+  children,
+}) => {
   const navigate = useNavigate();
   const onClickHandler = async () => {
-    handleClose;
-    navigate('/login');
-    // navigate('/profile');
+    handleClose();
+    navigate(nextRoute ?? -1);
   };
 
   return (
@@ -32,11 +39,7 @@ const LocalModal: FC<ILocalModal> = ({ isModalOpen, handleClose }) => {
                 <Icon name={IconName.X} />
               </CloseButton>
             </ModalHeader>
-
-            <ModalContent>
-              <p>Перейдіть за посиланням, яке надіслано листом на Ваш email.</p>
-              <p>Потім натисніть кнопку "Далі", щоб перейти у Ваш акаунт.</p>
-            </ModalContent>
+            <ModalContent>{children}</ModalContent>
             <Button
               testId="Далі"
               title={'Далі'}
@@ -55,4 +58,4 @@ const LocalModal: FC<ILocalModal> = ({ isModalOpen, handleClose }) => {
   );
 };
 
-export default LocalModal;
+export default MessageModal;

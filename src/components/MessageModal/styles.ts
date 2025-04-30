@@ -26,14 +26,6 @@ export const ModalContainer = styled.div`
   background-color: ${({ theme }) => theme.color.background};
 `;
 
-export const ModalContent = styled.div`
-  padding: ${({ theme }) => theme.pxs.x2_5}px;
-  & p {
-    margin-bottom: ${({ theme }) => theme.pxs.x2}px;
-    text-align: center;
-  }
-`;
-
 export const ModalHeader = styled.div`
   display: flex;
   align-items: center;
@@ -47,4 +39,12 @@ export const CloseButton = styled.button`
   position: absolute;
   right: ${({ theme }) => theme.pxs.x0}px;
   top: ${({ theme }) => theme.pxs.x0}px;
+`;
+
+export const ModalContent = styled.div`
+  padding: ${({ theme }) => theme.pxs.x2_5}px;
+  & p {
+    margin-bottom: ${({ theme }) => theme.pxs.x2}px;
+    text-align: center;
+  }
 `;
