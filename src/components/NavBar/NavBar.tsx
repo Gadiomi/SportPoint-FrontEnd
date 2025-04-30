@@ -5,15 +5,20 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MobileMenu from './MobileMenu/MobileMenu';
 import SearchModal from './SearchModal/SearchModal';
+import { useAppSelector } from '@/hooks/hooks';
 
 const NavBar = () => {
   const theme = useTheme();
   const location = useLocation();
-
+  const { isLogin } = useAppSelector(state => state.setLogin);
   const navItems = [
     { to: '/trainers', icon: IconName.TRAINER, descr: 'Тренери' },
     { to: '/clubs', icon: IconName.CLUB, descr: 'Спортклуби' },
-    { to: '/profile', icon: IconName.ACCOUNT, descr: 'Профіль' },
+    {
+      to: isLogin ? '/profile' : '/login',
+      icon: IconName.ACCOUNT,
+      descr: 'Профіль',
+    },
     { to: '/search', icon: IconName.SEARCH, descr: 'Пошук' },
     { to: '/menu', icon: IconName.MENU, descr: 'Меню' },
   ];

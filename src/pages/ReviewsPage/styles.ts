@@ -136,7 +136,7 @@ export const StarIcon = styled(Star).withConfig({
   shouldForwardProp: prop => prop !== 'filled',
 })<{ $filled: boolean }>`
   cursor: pointer;
-  color: ${({ $filled }) => ($filled ? '#ED772F' : '#494949')};
+  color: ${({ $filled }) => ($filled ? '#ED772F' : '#B7B7B9')};
   transition: color 0.2s;
 
   &:hover {
@@ -147,17 +147,24 @@ export const StarIcon = styled(Star).withConfig({
 export const TextArea = styled.textarea`
   width: 100%;
   min-height: 170px;
+  resize: vertical;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
   background: ${({ theme }) => theme.color.background};
   color: white;
   border: 1px solid ${({ theme }) => theme.color.secWhite};
   border-radius: 6px;
   padding: 12px 16px;
+  margin-bottom: 64px;
 `;
 
 export const ButtonGroupEdit = styled.div`
   display: flex;
   gap: 8px;
   margin-top: 10px;
+  justify-content: space-evenly;
 `;
 
 export const CancelButton = styled.button`

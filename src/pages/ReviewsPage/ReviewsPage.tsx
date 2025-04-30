@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { ReviewCard } from '@/components/ReviewItem/styles';
 import { Div, ButtonMore, ContainerButtonMore } from './styles';
 import { fetchReviewsByOwner, deleteReview } from '@/redux/reviews/reviewsApi';
+import { Roles } from '@/constants';
 
 interface Review {
   id: string;
@@ -19,6 +20,7 @@ interface Review {
   name: string;
   surname: string;
   avatar: string;
+  sport?: string[];
   comment: string;
   createdAt: string;
   updatedAt: string;
@@ -61,7 +63,7 @@ const ReviewsPage = () => {
     setReviews(prev =>
       prev.map(r => (r.id === updatedReview.id ? updatedReview : r)),
     );
-    fetchReviews(); // просто онови весь список
+    fetchReviews();
     setIsEditing(false);
   };
 
@@ -72,7 +74,7 @@ const ReviewsPage = () => {
       const response = await fetchReviewsByOwner(user.userId);
       const reviewsData = response.data;
       console.log('reviewsData', reviewsData);
-      // setReviews(reviewsData);
+      setReviews(reviewsData);
 
       if (!Array.isArray(reviewsData)) {
         throw new Error('Некоректний формат даних від сервера');
@@ -89,6 +91,7 @@ const ReviewsPage = () => {
             name: userProfile.firstName ?? '',
             surname: userProfile.lastName ?? '',
             avatar: userProfile.avatar ?? '',
+            sport: userProfile.sport ?? '',
             comment: item.comment ?? '',
             createdAt: item.createdAt ?? '',
             updatedAt: item.updatedAt ?? '',
@@ -163,12 +166,13 @@ const ReviewsPage = () => {
         <>
           {!isCreatingReview && <ReviewHeader />}
 
-          <ReviewTabsSwitcher
-            tabs={['Клуби', 'Тренери']}
-            selectedTab={selectedTab}
-            onSelectTab={tab => setSelectedTab(tab)}
-          />
-
+          {user?.role !== Roles.COACH && user?.role !== Roles.ADMIN_CLUB && (
+            <ReviewTabsSwitcher
+              tabs={['Клуби', 'Тренери']}
+              selectedTab={selectedTab}
+              onSelectTab={tab => setSelectedTab(tab)}
+            />
+          )}
           <ReviewStats />
 
           {loading ? (
@@ -177,11 +181,11 @@ const ReviewsPage = () => {
             <p>{error}</p>
           ) : (
             <>
-              {reviewsToShow.map(review => {
+              {reviewsToShow.map((review, index) => {
                 const reviewDateToShow = review.updatedAt || review.createdAt;
 
                 return (
-                  <ReviewCard key={review.id}>
+                  <ReviewCard key={review.id} isEven={index % 2 === 0}>
                     <ReviewItem review={review} />
 
                     <ReviewActions

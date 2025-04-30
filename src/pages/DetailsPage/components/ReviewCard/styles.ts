@@ -20,6 +20,7 @@ export const StyledReview = styled.div`
 export const IconWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  text-align: center;
   gap: ${({ theme }) => `${theme.pxs.x0_5}px`};
   width: auto;
 
