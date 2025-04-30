@@ -29,12 +29,27 @@ export const IconDiv = styled.button`
   width: 24px;
 `;
 
-export const ReviewCard = styled.div`
-  background-color: ${props => props.theme.inputBar};
-  box-shadow: 1px 1px 8px rgba(43, 54, 149, 0.9);
+// export const ReviewCard = styled.div`
+//   background-color: ${({ theme }) => theme.color.inputBar};
+//   box-shadow: 1px 1px 10px rgba(43, 54, 149, 0.9);
+//   color: white;
+//   padding: 8px;
+//   margin: 16px 0;
+//   border-radius: 6px;
+
+// `;
+
+interface ReviewCardProps {
+  isEven: boolean;
+}
+
+export const ReviewCard = styled.div<ReviewCardProps>`
+  background-color: ${({ theme, isEven }) =>
+    isEven ? theme.color.darkGray : theme.color.inputBar};
+  box-shadow: 1px 1px 10px rgba(43, 54, 149, 0.9);
   color: white;
-  padding: 12px 20px;
-  margin: 10px 0;
+  padding: 8px;
+  margin: 16px 0;
   border-radius: 6px;
 `;
 
@@ -43,6 +58,14 @@ export const UserInfo = styled.div`
   align-items: stretch;
   flex-wrap: nowrap;
   gap: 10px;
+`;
+
+export const UserInfoReply = styled.div`
+  padding: 8px;
+  background-color: ${({ theme }) => theme.color.inputBar};
+  border-radius: 6px;
+  box-shadow: 1px 1px 10px rgba(43, 54, 149, 0.9);
+  margin-bottom: 32px;
 `;
 
 export const Avatar = styled.img`
@@ -176,22 +199,37 @@ export const InitialsAvatar = styled.div`
 export const ButtonGroupTab = styled.div`
   display: flex;
   justify-content: center;
+  border-radius: 6px;
+  overflow: hidden;
   padding-bottom: 32px;
 `;
 
-export const TabButton = styled.button<{ active: boolean }>`
-  padding: 8px 41px;
-  background-color: ${props => (props.active ? '#ED772F' : '#303030')};
-  border: 0.5px solid ${({ theme }) => theme.color.inputBar};
+export const TabButton = styled.button<{
+  active?: boolean;
+  position: 'left' | 'right';
+}>`
+  padding: 8px 48px;
   border-radius: 6px;
+  background-color: ${({ active, theme }) =>
+    active ? theme.color.mainBlue : theme.color.inputBar};
+  color: ${({ active, theme }) =>
+    active ? theme.color.white : theme.color.secWhite};
+  border: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.color.mainWhite};
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s;
+
+  ${({ position }) =>
+    position === 'left'
+      ? 'border-top-right-radius: 0; border-bottom-right-radius: 0;'
+      : 'border-top-left-radius: 0; border-bottom-left-radius: 0;'}
+
+  &:last-child {
+    border-right: none;
+  }
 
   &:hover {
-    background-color: #ff7f00;
-    color: white;
+    background-color: ${({ active, theme }) =>
+      active ? theme.color.mainBlue : theme.color.inputBar};
   }
 `;
 
@@ -250,6 +288,37 @@ export const CountReviews = styled.p`
   color: ${({ theme }) => theme.color.secWhite};
 `;
 
+export const SportListEdit = styled.div`
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+`;
+
+export const SportTagEdit = styled.span`
+  background-color: transparent;
+  border: 0.5px solid ${({ theme }) => theme.color.mainBlue};
+  color: ${({ theme }) => theme.color.secWhite};
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 60px;
+`;
+
+export const SportList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+`;
+
+export const SportTag = styled.span`
+  background-color: transparent;
+  border: 0.5px solid ${({ theme }) => theme.color.secWhite};
+  color: ${({ theme }) => theme.color.secWhite};
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 60px;
+`;
+
 export const Loading = styled.p`
   text-align: center;
   font-size: 16px;
@@ -260,4 +329,34 @@ export const ErrorText = styled.p`
   text-align: center;
   font-size: 16px;
   color: red;
+`;
+
+export const Overlay = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isOpen',
+})<{ isOpen: boolean }>`
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+export const ModalContainer = styled.div`
+  max-width: 375px;
+  height: 95%;
+  background: ${({ theme }) => theme.color.background};
+  border-radius: 12px;
+  padding: 12px;
+`;
+
+export const ReplyContainer = styled.div`
+  margin-top: 8px;
+  padding: '12px';
+  color: '#fff';
+  backgroundcolor: transparent;
 `;

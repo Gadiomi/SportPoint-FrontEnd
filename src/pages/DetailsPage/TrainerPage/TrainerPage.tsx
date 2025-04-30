@@ -29,9 +29,6 @@ const TrainerPage: FC = () => {
     skip: !id,
   });
 
-  // const userRole = Cookies.get('userRole');
-  // console.log('userRole', userRole);
-
   const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
 
   const userId = Cookies.get('userId');
@@ -74,6 +71,7 @@ const TrainerPage: FC = () => {
   const title = token
     ? 'Введіть дані, і тренер з вами зв’яжеться'
     : 'Тільки авторизовані користувачі можуть зв’язатися з тренером';
+  const numericExperience = Number(experience);
 
   // ТЕСТ
   const coachTest = {
@@ -120,7 +118,11 @@ const TrainerPage: FC = () => {
             IconName.LIGHTNING_FILLED,
             IconName.STAR_DEFAULT,
           ]}
-          counts={[countReview ?? 0, experience ?? '0', roundedRating]}
+          counts={[
+            countReview ?? 0,
+            !isNaN(numericExperience) ? numericExperience : 0,
+            roundedRating,
+          ]}
           labels={['Відгуки', 'Досвід', 'Рейтинг']}
         />
         {short_desc && (

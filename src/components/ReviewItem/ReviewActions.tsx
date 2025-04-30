@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import {
-  saveReview,
-  reportReview,
-  replyToReview,
-} from '@/redux/reviews/reviewsApi';
+import React from 'react';
+
+import { saveReview, reportReview } from '@/redux/reviews/reviewsApi';
 import { Icon } from '@/kit';
 import { IconName } from '@/kit';
 import { ButtonGroup, ActionButton, DeleteButton } from './styles';
-import ReplyModal from './ReplyModal';
 
 interface ReviewActionsProps {
   reviewId: string;
   userCommentId: string;
-  onDelete: (id: string) => void;
-  onEdit: () => void;
-  userRole: 'customer' | 'coach' | 'adminClub';
+  onDelete?: (id: string) => void;
+  onEdit?: () => void;
+  onReply?: () => void;
+  userRole: string;
   isFirstReview: boolean;
+  adminReply?: string;
+  firstName?: string;
+  lastName?: string;
+  rating?: number;
   createdAt: string;
   ownerId: string; // ID власника відгуку
   currentUserId: string; // ID поточного користувача
@@ -26,128 +26,156 @@ const ReviewActions: React.FC<ReviewActionsProps> = ({
   reviewId,
   onDelete,
   onEdit,
-  userRole,
-  isFirstReview,
-  createdAt,
+  onReply,
   ownerId,
-  userCommentId,
   currentUserId,
+  userRole,
+  adminReply = '',
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const isOwner = currentUserId === ownerId;
 
-  // const isCustomer = userRole === 'customer';
-  // const isAdminOrCoach = userRole === 'coach' || userRole === 'adminClub';
+  // Власник або якщо є adminReply → можна редагувати і видаляти
+  const canEditAndDelete = isOwner || !!adminReply;
 
-  let actionText = isOwner ? 'Редагувати' : 'Відповісти';
+  const actionIcon = canEditAndDelete ? IconName.EDIT_CONTAINED : IconName.MAIL;
+  const actionText = canEditAndDelete ? 'Редагувати' : 'Відповісти';
 
-  if (!isOwner && isFirstReview) {
-    actionText = 'Зберігти';
-  }
-
-  // Визначаємо іконку для кнопки редагування/відповіді
-  let actionIcon = IconName.EDIT_CONTAINED; // Стандартна іконка редагування
-  if (!isOwner) {
-    actionIcon = IconName.MAIL; // Якщо перший відгук, то іконка для публікації
-  }
-
-  //   Функція для обробки натискання на кнопку "Відповісти" або "Опублікувати"
   const handleAction = async () => {
-    if (isOwner) {
-      // Якщо користувач клієнт, ми викликаємо редагування
-      onEdit();
-    } else if (isFirstReview) {
-      // Якщо це перший відгук і користувач не клієнт (тренер чи адміністратор)
-      try {
-        const response = await saveReview(
-          null,
-          '',
-          {
-            attitude: 5,
-            service: 5,
-            price: 5,
-            cleanliness: 5,
-          },
-          reviewId,
-          userCommentId,
-        );
-
-        console.log('Відгук успішно опубліковано', response);
-        alert('Відгук опубліковано!');
-      } catch (error) {
-        console.error('Помилка при публікації відгуку:', error);
-        alert('Не вдалося опублікувати відгук');
-      }
+    if (canEditAndDelete) {
+      if (onEdit) onEdit();
     } else {
-      setIsModalOpen(true); // Відкрити модалку відповіді
+      if (onReply) onReply();
     }
   };
 
-  // Функція для обробки натискання на кнопку "Поскаржитись"
   const handleReport = async () => {
     try {
-      const response = await reportReview(reviewId);
+      await reportReview(reviewId);
       alert('Скарга надіслана!');
     } catch (error) {
       alert('Не вдалося надіслати скаргу');
     }
   };
 
-  // Якщо користувач тренер чи адміністратор — надсилаємо відповідь
-  const handleSubmitReply = async (replyText: string) => {
-    try {
-      const response = await replyToReview(reviewId, replyText);
-      console.log('Відповідь успішно надіслана', response.data);
-      alert('Відповідь надіслана!');
-    } catch (error) {
-      console.error('Помилка при надсиланні відповіді:', error);
-      alert('Не вдалося надіслати відповідь');
-    }
-  };
-
   return (
-    <>
-      <ButtonGroup>
-        {isOwner ? (
-          <DeleteButton onClick={() => onDelete(reviewId)}>
-            Видалити
-          </DeleteButton>
-        ) : (
-          <DeleteButton onClick={handleReport}>Поскаржитись</DeleteButton>
-        )}
-        {isOwner && (
-          <ActionButton onClick={handleAction}>
-            <Icon
-              name={actionIcon}
-              styles={{ fill: 'none', stroke: 'none' }}
-              size={24}
-            />
-            {actionText}
-          </ActionButton>
-        )}
+    <ButtonGroup>
+      {canEditAndDelete ? (
+        <DeleteButton onClick={() => onDelete?.(reviewId)}>
+          Видалити
+        </DeleteButton>
+      ) : (
+        <DeleteButton onClick={handleReport}>Поскаржитись</DeleteButton>
+      )}
 
-        {/* Кнопка Відповісти доступна тільки для тренера або адміністратора */}
-        {!isOwner && !isFirstReview && (
-          <ActionButton onClick={() => setIsModalOpen(true)}>
-            <Icon
-              name={IconName.MAIL}
-              styles={{ fill: 'none', stroke: 'none' }}
-              size={24}
-            />
-            Відповісти
-          </ActionButton>
-        )}
-      </ButtonGroup>
-
-      <ReplyModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleSubmitReply}
-        reviewId={reviewId}
-        createdAt={createdAt}
-      />
-    </>
+      <ActionButton onClick={handleAction}>
+        <Icon
+          name={actionIcon}
+          styles={{ fill: 'none', stroke: 'none' }}
+          size={24}
+        />
+        {actionText}
+      </ActionButton>
+    </ButtonGroup>
   );
 };
 
 export default ReviewActions;
+
+// import React from 'react';
+
+// import {
+//   saveReview,
+//   reportReview,
+// } from '@/redux/reviews/reviewsApi';
+// import { Icon } from '@/kit';
+// import { IconName } from '@/kit';
+// import { ButtonGroup, ActionButton, DeleteButton } from './styles';
+
+// interface ReviewActionsProps {
+//   reviewId: string;
+//   userCommentId: string;
+//   onDelete?: (id: string) => void;
+//   onEdit?: () => void;
+//   onReply?: () => void;
+//   userRole: string;
+//   isFirstReview: boolean;
+//   adminReply?: string;
+//   firstName?: string;
+//   lastName?: string;
+//   rating?: number;
+//   createdAt: string;
+//   ownerId: string; // ID власника відгуку
+//   currentUserId: string; // ID поточного користувача
+// }
+
+// const ReviewActions: React.FC<ReviewActionsProps> = ({
+//   reviewId,
+//   onDelete,
+//   onEdit,
+//   onReply,
+//   ownerId,
+//   currentUserId,
+//   userRole,
+//   adminReply = false,
+// }) => {
+//   const isOwner = currentUserId === ownerId;
+//   console.log(isOwner);
+
+//   const role = userRole;
+//   console.log(role);
+//   const showEditControls = adminReply; // якщо є відповідь - редагувати/видалити
+//   console.log(showEditControls);
+//   const showReplyControls = !adminReply; // якщо немає відповіді - поскаржитись/відповісти
+
+//   const actionIcon = showEditControls ? IconName.EDIT_CONTAINED : IconName.MAIL;
+
+//   let actionText = '';
+//   if (showEditControls) {
+//     actionText = 'Редагувати';
+//   } else if (showReplyControls) {
+//     actionText = 'Відповісти';
+//   }
+
+//   const handleAction = async () => {
+//     if (showEditControls) {
+//       if (onEdit) onEdit();
+//     } else if (showReplyControls) {
+//       if (onReply) onReply();
+//     }
+//   };
+
+//   const handleReport = async () => {
+//     try {
+//       await reportReview(reviewId);
+//       alert('Скарга надіслана!');
+//     } catch (error) {
+//       alert('Не вдалося надіслати скаргу');
+//     }
+//   };
+
+//   return (
+//     <ButtonGroup>
+//       {showEditControls && isOwner ? (
+//           <DeleteButton onClick={() => onDelete?.(reviewId)}>
+//             Видалити
+//           </DeleteButton>
+
+//       ) : (
+//         <DeleteButton onClick={handleReport}>Поскаржитись</DeleteButton>
+//       )}
+
+//       {(showEditControls || showReplyControls) && (
+//         <ActionButton onClick={handleAction}>
+//           <Icon
+//             name={actionIcon}
+//             styles={{ fill: 'none', stroke: 'none' }}
+//             size={24}
+//           />
+//           {actionText}
+//         </ActionButton>
+//       )}
+//     </ButtonGroup>
+//   );
+// };
+
+// export default ReviewActions;

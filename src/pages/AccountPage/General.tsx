@@ -11,16 +11,19 @@ import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '@/redux/auth/authApi';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
-import { AccountName } from './styles';
+import { AccountName, SportButton, SportButtonsContainer } from './styles';
+import ProfileButton from './ProfileButton';
 
 interface UserProfileFormData {
   avatar: string | File;
   firstName?: string;
   lastName: string;
-  phone?: string;
   email: string;
-  age?: string;
-  sport?: string;
+  sport: string[];
+  description: {
+    phone?: string;
+    age?: string;
+  };
 }
 
 const General: FC = () => {
@@ -39,22 +42,74 @@ const General: FC = () => {
 
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<UserProfileFormData>({
-      defaultValues: userData?.userProfile || {}, // Використовуємо дані з бекенду
-      shouldUnregister: false, // Не видаляємо значення після розмонтування
+      defaultValues: {
+        avatar: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        sport: [],
+        description: { phone: '', age: '' },
+        ...userData?.userProfile,
+      },
+      shouldUnregister: false,
     });
 
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
     userData?.userProfile?.avatar || null,
   );
   const [avatar, setAvatar] = useState<File | null>(null);
+  const [selectedSports, setSelectedSports] = useState<string[]>([]);
+
+  useEffect(() => {
+    const storedSports = localStorage.getItem('selectedSports');
+    console.log('Stored sports from localStorage:', storedSports);
+    if (storedSports) {
+      setSelectedSports(JSON.parse(storedSports));
+    }
+  }, []);
 
   useEffect(() => {
     if (userData?.userProfile) {
-      reset(userData.userProfile);
+      reset({
+        avatar: userData.userProfile.avatar || '',
+        firstName: userData.userProfile.firstName || '',
+        lastName: userData.userProfile.lastName || '',
+        email: userData.userProfile.email || '',
+        sport: userData.userProfile.sport || [],
+        description: userData.userProfile.description || { phone: '', age: '' },
+      });
       setSelectedAvatar(userData.userProfile.avatar || null);
       localStorage.setItem('userProfile', JSON.stringify(userData.userProfile));
     }
   }, [userData, reset]);
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('userEmail');
+    if (storedEmail) {
+      setValue('email', storedEmail);
+    }
+  }, [setValue]);
+
+  // useEffect(() => {
+  //   setValue('sport', selectedSports);
+  // }, [selectedSports, setValue]);
+
+  const handleSportToggle = (sport: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setSelectedSports(prevState => {
+      let updatedSports: string[];
+
+      if (prevState.includes(sport)) {
+        updatedSports = prevState.filter(item => item !== sport);
+      } else {
+        updatedSports = [...prevState, sport];
+      }
+
+      // Оновлюємо selectedSports в localStorage
+      localStorage.setItem('selectedSports', JSON.stringify(updatedSports));
+      return updatedSports;
+    });
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -66,63 +121,47 @@ const General: FC = () => {
 
   const onSubmit = async (formData: UserProfileFormData) => {
     try {
+      const selectedSports = JSON.parse(
+        localStorage.getItem('selectedSports') || '[]',
+      );
+      console.log('Selected sports before sending to server:', selectedSports);
       const formDataToSend = new FormData();
-      formDataToSend.append('firstName', formData.firstName || '');
-      formDataToSend.append('lastName', formData.lastName);
-      formDataToSend.append('phone', formData.phone || '');
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('age', formData.age || '');
-      formDataToSend.append('sport', formData.sport || '');
+      formDataToSend.append('firstName', formData.firstName ?? '');
+      formDataToSend.append('lastName', formData.lastName ?? '');
+      formDataToSend.append(
+        'description',
+        JSON.stringify({
+          phone: formData.description?.phone ?? '',
+          age: formData.description?.age ?? '',
+        }),
+      );
+      formDataToSend.append('email', formData.email ?? '');
+      formDataToSend.append('sport', JSON.stringify(selectedSports));
 
       if (avatar) {
-        formDataToSend.append('avatar', avatar); // Додаємо файл аватара
+        formDataToSend.append('avatar', avatar);
       }
 
       const response = await updateUserProfile(formDataToSend).unwrap();
-      console.log('Profile updated:', response);
+      console.log('Profile updated:', response.updatedProfile);
+      // localStorage.setItem('selectedSports', JSON.stringify(selectedSports));
+      // localStorage.setItem('userProfile', JSON.stringify(formData));
     } catch (error) {
       console.error('Update failed:', error);
     }
   };
 
-  useEffect(() => {
-    const storedEmail = localStorage.getItem('userEmail');
-    if (storedEmail) {
-      console.log('User email:', storedEmail);
-      setValue('email', storedEmail);
-    }
-  }, [setValue]);
+  const allSports = ['Стреччинг', 'TRX', 'Кросфіт', 'Фітнес', 'Йога', 'Кардіо'];
 
   if (isLoading) return <div>Loading profile...</div>;
+
   return (
     <div className={css.generalCont}>
-      <Button
-        onClick={() => navigate('/profile')}
-        title={t(`account_page.general`)}
-        appearance={ButtonAppearance.PRIMARY}
-        testId="general"
-        className={css.generalToAccBtn}
-        appendChild={
-          <Icon
-            styles={{
-              color: 'currentColor',
-              fill: 'transparent',
-            }}
-            name={IconName.ARROW_LEFT}
-          />
-        }
-        prependChild={
-          <Icon
-            styles={{
-              color: 'currentColor',
-              fill: 'transparent',
-            }}
-            name={IconName.ACCOUNT}
-          />
-        }
-      />
+      {/* --- - --- */}
+      <ProfileButton title={'general'} arrowDirection={'left'} />
+      {/* --- / - --- */}
 
-      <AccountName>
+      <AccountName paddingTop={'45px'}>
         <img
           src={
             selectedAvatar ||
@@ -185,33 +224,31 @@ const General: FC = () => {
           <Input
             testId="phone"
             label="Phone"
-            value={watch('phone') || ''}
-            {...register('phone')}
-            onChange={e => setValue('phone', e.target.value)}
+            value={watch('description.phone') || ''}
+            {...register('description.phone')}
+            onChange={e => setValue('description.phone', e.target.value)}
           />
           <Input
             testId="age"
             label="Age"
-            value={watch('age') || ''}
-            {...register('age')}
-            onChange={e => setValue('age', e.target.value)}
+            value={watch('description.age') || ''}
+            {...register('description.age')}
+            onChange={e => setValue('description.age', e.target.value)}
           />
         </div>
 
-        <p className={css.generalTypeSp}>Вид спорту</p>
-        <Input
-          testId="sport"
-          label="Sport"
-          value={userData?.userProfile.sport || ''}
-          {...register('sport')}
-          onChange={e => setValue('sport', e.target.value)}
-        />
-        <Input
-          testId="sport"
-          label="Sport"
-          value={userData?.userProfile.sport || ''}
-          {...register('sport')}
-        />
+        <p className={css.generalTypeSp}>Види спорту</p>
+        <SportButtonsContainer>
+          {allSports.map(sport => (
+            <SportButton
+              key={sport}
+              isSelected={selectedSports.includes(sport)} // Передаємо статус вибору
+              onClick={e => handleSportToggle(sport, e)}
+            >
+              {sport}
+            </SportButton>
+          ))}
+        </SportButtonsContainer>
 
         <div className={css.generalBtns}>
           <Button

@@ -1,9 +1,6 @@
 import { FC } from 'react';
-import { useParams } from 'react-router-dom';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { useTranslation } from 'react-i18next';
-import { Container, Section } from '@/components/ContainerAndSection';
-import { Logo } from '@/components/Logo/Logo';
 import { IconName } from '@/kit';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
@@ -20,16 +17,16 @@ import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
 import { StyledProfileCard } from './styles';
 
-const AccountTrainerPage: FC = () => {
-  const { id } = useParams<{ id?: string }>();
+interface AccountTrainerProps {
+  id: string;
+}
+
+const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
     skip: !id,
   });
-
-  // const userRole = Cookies.get('userRole');
-  // console.log('userRole', userRole);
 
   const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
 
@@ -65,10 +62,11 @@ const AccountTrainerPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
-  const token = localStorage.getItem('accessToken');
+  const token = Cookies.get(CookiesKey.TOKEN);
   console.log('Token:', token);
 
   const title = '';
+  const numericExperience = Number(experience);
 
   const coachTest = {
     avatar:
@@ -90,77 +88,77 @@ const AccountTrainerPage: FC = () => {
   const cleanliness = 3.7;
 
   return (
-    <Section>
-      <Container>
-        <Logo />
-        <StyledProfileCard>
-          <ProfileCard
-            _id={_id}
-            role={role}
-            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
-            firstName={firstName}
-            lastName={lastName}
-            avatar={avatar}
-            city={city}
-            age={age}
-            sport={sport}
-          />
-        </StyledProfileCard>
-        <ReviewCard
-          iconNames={[
-            IconName.LIKE,
-            IconName.LIGHTNING_FILLED,
-            IconName.STAR_DEFAULT,
-          ]}
-          counts={[countReview ?? 0, experience ?? '0', roundedRating]}
-          labels={['Відгуки', 'Досвід', 'Рейтинг']}
+    <>
+      <StyledProfileCard>
+        <ProfileCard
+          _id={_id}
+          role={role}
+          iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
+          firstName={firstName}
+          lastName={lastName}
+          avatar={avatar}
+          city={city}
+          age={age}
+          sport={sport}
         />
-        {short_desc && (
-          <ShortDescriptionCard
-            short_desc={short_desc}
-            title={t('details_page.read_more')}
-          />
-        )}
-        {certificates && certificates.length > 0 && (
-          <CertificatesCard certificates={certificates} />
-        )}
-        {social_links && social_links.length > 0 && (
-          <SocialLinks
-            socialLinks={social_links || []}
-            isLoggedIn={isLoggedIn}
-            title={title}
-          />
-        )}
-        {price && price.length > 0 && <PriceCard prices={price || []} />}
-        {schedule && schedule.length > 0 && (
-          <WorkingHoursCard schedules={schedule || []} />
-        )}
+      </StyledProfileCard>
+      <ReviewCard
+        iconNames={[
+          IconName.LIKE,
+          IconName.LIGHTNING_FILLED,
+          IconName.STAR_DEFAULT,
+        ]}
+        counts={[
+          countReview ?? 0,
+          !isNaN(numericExperience) ? numericExperience : 0,
+          roundedRating,
+        ]}
+        labels={['Відгуки', 'Досвід', 'Рейтинг']}
+      />
+      {short_desc && (
+        <ShortDescriptionCard
+          short_desc={short_desc}
+          title={t('details_page.read_more')}
+        />
+      )}
+      {certificates && certificates.length > 0 && (
+        <CertificatesCard certificates={certificates} />
+      )}
+      {social_links && social_links.length > 0 && (
+        <SocialLinks
+          socialLinks={social_links || []}
+          isLoggedIn={isLoggedIn}
+          title={title}
+        />
+      )}
+      {price && price.length > 0 && <PriceCard prices={price || []} />}
+      {schedule && schedule.length > 0 && (
+        <WorkingHoursCard schedules={schedule || []} />
+      )}
 
-        {coachData?.club && coachData.club.length > 0 && (
-          <WorksInCard
-            // key={club._id}
-            clubs={coachData?.club || []}
-            iconNames={[IconName.LOCATION, IconName.CLOCK]}
-            labels={['1,5 км', '24/7']}
-          />
-        )}
-        <ReviewDetailsCard
-          iconNames={[IconName.STAR_DEFAULT]}
-          rating={coachTest.rating}
-          counts={[countReview ?? 0]}
-          clientService={clientService}
-          serviceQuality={serviceQuality}
-          priceQuality={priceQuality}
-          location={location}
-          cleanliness={cleanliness}
-          avatar={coachTest.avatar}
-          firstName={coachTest.firstName}
-          lastName={coachTest.lastName}
+      {coachData?.club && coachData.club.length > 0 && (
+        <WorksInCard
+          clubs={coachData?.club || []}
+          iconNames={[IconName.LOCATION, IconName.CLOCK]}
+          labels={['1,5 км', '24/7']}
         />
-        <HrButton />
-        <Contacts />
-      </Container>
-    </Section>
+      )}
+      <ReviewDetailsCard
+        iconNames={[IconName.STAR_DEFAULT]}
+        rating={coachTest.rating}
+        counts={[countReview ?? 0]}
+        clientService={clientService}
+        serviceQuality={serviceQuality}
+        priceQuality={priceQuality}
+        location={location}
+        cleanliness={cleanliness}
+        avatar={coachTest.avatar}
+        firstName={coachTest.firstName}
+        lastName={coachTest.lastName}
+      />
+      <HrButton />
+      <Contacts />
+    </>
   );
 };
 

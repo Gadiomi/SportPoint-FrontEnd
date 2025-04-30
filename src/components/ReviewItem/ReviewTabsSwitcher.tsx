@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
 import { ButtonGroupTab, TabButton } from './styles';
 
 interface TabsSwitcherProps {
@@ -18,9 +16,11 @@ const ReviewTabsSwitcher: React.FC<TabsSwitcherProps> = ({
     <ButtonGroupTab>
       {tabs.map((tabLabel, index) => {
         const value = tabLabel === 'Клуби' ? 'adminClub' : 'coach';
+        const position = index === 0 ? 'left' : 'right';
         return (
           <TabButton
             key={index}
+            position={position}
             active={selectedTab === value}
             onClick={() => onSelectTab(value as 'coach' | 'adminClub')}
           >
