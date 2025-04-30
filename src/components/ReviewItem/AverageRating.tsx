@@ -1,6 +1,5 @@
 import React from 'react';
-import { Icon } from '@/kit';
-import { IconName } from '@/kit';
+import { Icon, IconName } from '@/kit';
 import { Summary, CountReviews } from './styles';
 
 interface AverageRatingProps {

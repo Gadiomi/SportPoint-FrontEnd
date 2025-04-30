@@ -1,26 +1,6 @@
-import axios from 'axios';
 import { axiosInstance } from '@/redux/auth/axios';
-
-// Отримати профіль користувача за userId
-export const fetchUserProfileByUserId = async (userId: string) => {
-  try {
-    const { data } = await axiosInstance.get(`/users/profile/${userId}`);
-    return data.userProfile;
-  } catch (error) {
-    console.error('Не вдалося отримати профіль користувача', error);
-    throw error;
-  }
-};
-
-const getUserIdFromBackend = async (userCommentId: string) => {
-  try {
-    const response = await axiosInstance.get(`/reviews/${userCommentId}`); // Запит до бекенду для отримання даних користувача
-    return response.data.userCommentId;
-  } catch (error) {
-    console.error('Не вдалося отримати ID користувача', error);
-    throw error;
-  }
-};
+import { useDispatch } from 'react-redux';
+import { setReviewReply } from '@/redux/reviews/reviewSlice';
 
 // Отримати всі відгуки про конкретного користувача (userCommentId)
 export const fetchReviewsByUserCommentId = async (userCommentId: string) => {
@@ -31,6 +11,37 @@ export const fetchReviewsByUserCommentId = async (userCommentId: string) => {
     console.error('Помилка при завантаженні відгуків про користувача:', error);
     throw error;
   }
+};
+
+// ⚡ Отримуємо всіх користувачів
+export const fetchAllUsers = async () => {
+  const allUsers: any[] = [];
+  let page = 1;
+  let hasMore = true;
+
+  try {
+    while (hasMore) {
+      const response = await axiosInstance.get(`/cards?page=${page}`);
+      const users = response.data.data.data;
+
+      if (!users || users.length === 0) {
+        hasMore = false;
+      } else {
+        allUsers.push(...users);
+        page++;
+      }
+    }
+  } catch (error) {
+    console.error('Помилка при завантаженні всіх користувачів:', error);
+  }
+
+  return allUsers;
+};
+
+export const fetchUserById = async (id: string) => {
+  const { data } = await axiosInstance.get(`/cards/${id}`);
+  if (!data) throw new Error('Не вдалося отримати користувача');
+  return data;
 };
 
 // Зберегти або оновити відгук
@@ -90,12 +101,23 @@ export const reportReview = async (reviewId: string) => {
 };
 
 // Надіслати відповідь на відгук
-export const replyToReview = async (reviewId: string, replyText: string) => {
-  const { data } = await axiosInstance.post(`/reviews/${reviewId}/reply`, {
-    reviewId,
-    replyText,
-  });
-  return data;
+export const replyToReview = async (reviewId: string, adminReply: string) => {
+  // const dispatch = useDispatch();
+  console.log('replyToReview викликано з:', reviewId, adminReply);
+  try {
+    const response = await axiosInstance.patch(`/reviews/${reviewId}/reply`, {
+      adminReply,
+    });
+    console.log('Сервер відповів:', response);
+
+    return response;
+  } catch (error: any) {
+    console.error('Помилка при надсиланні відповіді:', error);
+    if (error.response) {
+      console.error('Деталі відповіді з сервера:', error.response.data);
+    }
+    throw error;
+  }
 };
 
 // Видалити відгук
@@ -115,19 +137,3 @@ export const fetchReviewsByOwner = async (ownerId: string) => {
   const { data } = await axiosInstance.get(`/reviews/owner/${ownerId}`);
   return data;
 };
-
-// сторінка ReviewStats
-export const fetchReviewsByCardId = async (id: string) => {
-  const { data } = await axiosInstance.get(`/cards/${id}`);
-  return data.data;
-};
-
-// Розділити відгуки на клуби та тренерів
-// export const fetchSeparatedMyReviews = async () => {
-// //   const allReviews = await fetchMyReviews();
-
-// //   const clubReviews = allReviews.filter((review: any) => review.userRole === 'adminClub');
-// //   const coachReviews = allReviews.filter((review: any) => review.userRole === 'coach');
-
-//   return { clubReviews, coachReviews };
-// };

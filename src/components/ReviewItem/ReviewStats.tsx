@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '@/redux/reviews/reviewsSelector';
-import { fetchReviewsByUserCommentId } from '@/redux/reviews/reviewsApi';
+import {
+  fetchReviewsByUserCommentId,
+  fetchAllUsers,
+  replyToReview,
+} from '@/redux/reviews/reviewsApi';
 import FeedbackSection from '@/components/ReviewItem/FeedbackSection';
 import styled from 'styled-components';
 import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
 import EditReviewPage from '@/pages/ReviewsPage/EditReviewPage';
+import ReviewActions from '@/components/ReviewItem/ReviewActions';
+import StyledHr from '../StyledHr/StyledHr';
 import AverageRating from './AverageRating';
-import { Icon } from '@/kit';
-import { IconName } from '@/kit';
+import ReplyModal from './ReplyModal';
+import { Icon, IconName } from '@/kit';
+import { useTheme } from 'styled-components';
 import { ContainerButtonMore, ButtonMore } from '@/pages/ReviewsPage/styles';
 import {
   Avatar,
@@ -19,19 +26,30 @@ import {
   Bar,
   RatingBar,
   RatingContainer,
+  SportList,
+  SportTag,
   Loading,
   ErrorText,
   StyledDate,
   Div,
+  ReplyContainer,
 } from './styles';
+
+interface User {
+  userId: string;
+  avatar?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: string;
+}
 
 interface CommentData {
   _id: string;
-  ownerAvatar?: string;
-  ownerFirstName?: string;
-  ownerLastName?: string;
   average: number;
+  owner: string;
   comment: string;
+  adminReply?: string;
+  sport?: [];
   ratings?: {
     [key: string]: number;
   };
@@ -50,8 +68,10 @@ const CommentText = styled.div`
 `;
 
 const ReviewStats: React.FC = () => {
+  const theme = useTheme();
   const user = useAppSelector(state => state.user.user);
-  // console.log('ReviewStat',user)
+  const currentUser = user;
+  console.log('ReviewStat', user);
   const [ratings, setRatings] = useState<{ [key: number]: number }>({
     5: 0,
     4: 0,
@@ -66,23 +86,39 @@ const ReviewStats: React.FC = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [firstComment, setFirstComment] = useState<any>(null);
   const [trainerData, setTrainerData] = useState<any>(null);
+  const [authorProfiles, setAuthorProfiles] = useState<Record<string, any>>({});
   //  const [firstComment, setFirstComment] = useState<CommentData | null>(null);
   const [allComments, setAllComments] = useState<CommentData[]>([]);
   const [showAll, setShowAll] = useState(false);
+  const [replyModalData, setReplyModalData] = useState<{
+    isOpen: boolean;
+    author?: User;
+    comment?: CommentData;
+  } | null>(null);
+
   const reviewsToShow = showAll ? allComments : allComments.slice(0, 2);
+  // const reviews = useSelector((state: RootState) => state.reviews.reviews);
+  // console.log(reviews);
 
   const fetchReviews = async () => {
-    const userCommentId = user?.user_comments?.[0]?.userCommentId;
-    if (!userCommentId) return;
+    const isTrainerOrClub = user?.role === 'trainer' || user?.role === 'club';
+    const userCommentId = isTrainerOrClub
+      ? user?.userId
+      : user?.user_comments?.[0]?.userCommentId;
     console.log(userCommentId);
+    if (!userCommentId) {
+      console.error('Не знайдено userCommentId');
+      return;
+    }
     try {
       const response = await fetchReviewsByUserCommentId(userCommentId);
       const commentsArray = Array.isArray(response.data)
         ? response.data
         : [response.data];
-      const reversetComments = [...commentsArray].reverse();
+      const reversedComments = [...commentsArray].reverse();
+      console.log('reversedComments', reversedComments);
 
-      const withAverages = reversetComments.map(comment => {
+      const withAverages = reversedComments.map(comment => {
         const ratings = comment.ratings || {};
         const values = Object.values(ratings).filter(
           r => typeof r === 'number',
@@ -90,24 +126,29 @@ const ReviewStats: React.FC = () => {
         const average = values.length
           ? values.reduce((sum, r) => sum + r, 0) / values.length
           : 0;
-
-        return {
-          ...comment,
-          average, // Додаємо обчислене поле
-        };
+        return { ...comment, average };
       });
-      setAllComments(withAverages);
-      console.log('ReviewStats', response);
 
-      // Пошук першого коментаря користувача (можна замінити на авторизованого)
-      // const commentsArray = Array.isArray(allRaiting ) ? allRaiting  : [allRaiting];
-      const userComment = reversetComments[0]; // TODO: замінити на фільтр по userId
-      setFirstComment(userComment);
+      const uniqueOwnerIds = Array.from(
+        new Set(withAverages.map(c => c.owner)),
+      );
+      // console.log('uniqueOwnerIds',uniqueOwnerIds);
+
+      const allUsers = await fetchAllUsers();
+      const profilesMap: Record<string, any> = {};
+
+      uniqueOwnerIds.forEach(ownerId => {
+        // const reviewedUserId = firstComment?.trainer || firstComment?.club;
+        const user = allUsers.find((u: User) => u.userId === ownerId);
+        if (user) profilesMap[ownerId] = user;
+        console.log('user', user);
+      });
+
+      setAllComments(withAverages);
+      setAuthorProfiles(profilesMap);
+      setFirstComment(reversedComments[0]);
 
       setTrainerData({
-        name: user.firstName,
-        surname: user.lastName,
-        avatar: user.avatar,
         userRole: response.role || '',
         sport: response.sport || [],
       });
@@ -141,8 +182,8 @@ const ReviewStats: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchReviews(); // Викликаємо fetch при зміні user.userId
-  }, [user?.userId]); // Перезапускаємо fetchData при зміні userId
+    fetchReviews();
+  }, [user?.userId]);
 
   const handleFeedback = (id: string, type: 'like' | 'dislike') => {
     setAllComments(prev =>
@@ -159,11 +200,56 @@ const ReviewStats: React.FC = () => {
     );
   };
 
+  const handleOpenReplyModal = (comment: CommentData) => {
+    const author = authorProfiles[comment.owner];
+    setReplyModalData({
+      isOpen: true,
+      author,
+      comment,
+    });
+  };
+
+  const handleCloseReplyModal = () => {
+    setReplyModalData(null);
+  };
+
+  const handleReplySubmit = async (replyText: string) => {
+    console.log('Виклик handleReplySubmit з текстом:', replyText);
+    const commentId = replyModalData?.comment?._id;
+    console.log('replyModalData.comment', replyModalData?.comment);
+    console.log('commentId', commentId);
+    if (!commentId) {
+      alert('Не вдалося знайти ID користувача');
+      return;
+    }
+    try {
+      const response = await replyToReview(commentId, replyText);
+      console.log('Отримана відповідь від сервера:', response);
+
+      // Оновлюємо коментарі з новою відповіддю
+      const updatedComments = allComments.map(comment => {
+        if (comment._id === commentId) {
+          return { ...comment, adminReply: replyText }; // Додаємо нову відповідь до коментаря
+        }
+        return comment;
+      });
+      console.log('updatedComments', updatedComments);
+
+      setAllComments(updatedComments);
+
+      handleCloseReplyModal();
+      alert('Відповідь надіслана!');
+    } catch (error) {
+      alert('Не вдалося надіслати відповідь');
+    }
+  };
+
   if (loading) return <Loading>Завантаження...</Loading>;
   if (error) return <ErrorText>{error}</ErrorText>;
 
   const maxRatingCount = Math.max(...Object.values(ratings), 1); // щоб уникнути ділення на 0
   const targetId = firstComment?.trainer || firstComment?.club || '';
+  const isClientProfile = user?.role === 'customer';
 
   return (
     <div>
@@ -185,7 +271,6 @@ const ReviewStats: React.FC = () => {
             averageRating={averageRating}
             totalReviews={totalReviews}
           />
-          {/* <Date>{review.date ?? 'Дата не вказана'}</Date> */}
         </div>
       </RatingContainer>
       <div onClick={() => setIsEditing(true)}>
@@ -199,15 +284,22 @@ const ReviewStats: React.FC = () => {
 
       {/* Карточки всіх відгуків */}
       <>
-        {trainerData &&
-          reviewsToShow.map(comment => (
-            <ReviewCard key={comment._id}>
+        {reviewsToShow.map((comment, index) => {
+          const author = authorProfiles[comment.owner];
+          // console.log('author',author);
+          const avatarSrc =
+            author?.avatar ||
+            '../../../public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg';
+          const fullName = author
+            ? `${author.firstName} ${author.lastName}`
+            : 'Профіль видалено';
+
+          return (
+            <ReviewCard key={comment._id} isEven={index % 2 === 0}>
               <UserInfo>
-                <Avatar src={trainerData.avatar} />
+                <Avatar src={avatarSrc} />
                 <Div>
-                  <Name>
-                    {trainerData.name} {trainerData.surname}
-                  </Name>
+                  <Name>{fullName} </Name>
                   <Stars>
                     {[1, 2, 3, 4, 5].map(star => (
                       <Icon
@@ -216,8 +308,8 @@ const ReviewStats: React.FC = () => {
                         styles={{
                           fill:
                             star <= Math.round(comment.average ?? 0) // Перевірка на undefined
-                              ? '#ED772F'
-                              : '#494949',
+                              ? theme.color.mainOrange
+                              : theme.color.secWhite,
                           color: 'transparent',
                         }}
                         size={16}
@@ -239,18 +331,72 @@ const ReviewStats: React.FC = () => {
                 </StyledDate>
               </UserInfo>
               <CommentText>{comment.comment}</CommentText>
-              <FeedbackSection
-                reviewId={comment._id}
-                likes={comment.likes ?? 0}
-                dislikes={comment.dislikes ?? 0}
-                onLike={handleFeedback}
-                onDislike={handleFeedback}
-              />
+              {isClientProfile && (
+                <FeedbackSection
+                  reviewId={comment._id}
+                  likes={comment.likes ?? 0}
+                  dislikes={comment.dislikes ?? 0}
+                  onLike={handleFeedback}
+                  onDislike={handleFeedback}
+                />
+              )}
+              {comment.adminReply && (
+                <>
+                  <StyledHr />
+
+                  <UserInfo>
+                    <Avatar
+                      src={
+                        currentUser?.avatar ||
+                        '../../../public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
+                      }
+                    />
+                    <Div>
+                      <Name>
+                        {currentUser?.firstName} {currentUser?.lastName}
+                      </Name>
+                      {/* Блок з видами спорту */}
+                      <SportList>
+                        {currentUser?.sport?.map(sport => (
+                          <SportTag key={sport}>{sport}</SportTag>
+                        ))}
+                      </SportList>
+                    </Div>
+                  </UserInfo>
+                  <ReplyContainer>{comment.adminReply}</ReplyContainer>
+                  <StyledDate>
+                    {comment.updatedAt
+                      ? new Date(comment.updatedAt).toLocaleDateString(
+                          'en-US',
+                          {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                          },
+                        )
+                      : 'Дата не вказана'}
+                  </StyledDate>
+                </>
+              )}
+              {!isClientProfile && (
+                <ReviewActions
+                  reviewId={comment._id}
+                  userCommentId={user?.userId || ''}
+                  userRole={user?.role ?? ''}
+                  adminReply={comment.adminReply || ''}
+                  isFirstReview={index === 0}
+                  createdAt={comment.createdAt ?? ''}
+                  currentUserId={currentUser?.userId ?? ''}
+                  ownerId={comment.owner}
+                  onReply={() => handleOpenReplyModal(comment)}
+                />
+              )}
             </ReviewCard>
-          ))}
+          );
+        })}
 
         <ContainerButtonMore>
-          {allComments.length > 2 && (
+          {allComments.length > 1 && (
             <ButtonMore onClick={() => setShowAll(prev => !prev)}>
               {showAll ? 'Приховати' : 'Побачити більше'}
             </ButtonMore>
@@ -282,6 +428,23 @@ const ReviewStats: React.FC = () => {
             isFirstReview: firstComment.isFirstReview ?? false,
           }}
           onCancel={() => setIsEditing(false)} // Кнопка для скасування редагування
+          onSave={fetchReviews}
+        />
+      )}
+
+      {replyModalData?.isOpen && replyModalData.comment && (
+        <ReplyModal
+          isOpen={replyModalData.isOpen}
+          onClose={handleCloseReplyModal}
+          onSubmit={handleReplySubmit}
+          avatar={
+            replyModalData.author?.avatar ||
+            '../../../public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
+          }
+          firstName={replyModalData.author?.firstName || ''}
+          lastName={replyModalData.author?.lastName || ''}
+          rating={replyModalData.comment.average || 0}
+          createdAt={replyModalData.comment.createdAt || ''}
         />
       )}
     </div>

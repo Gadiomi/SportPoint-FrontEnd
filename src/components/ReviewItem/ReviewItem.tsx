@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import ReviewTabsSwitcher from './ReviewTabsSwitcher';
+import React from 'react';
+import { useTheme } from 'styled-components';
 import {
   UserInfo,
   Avatar,
@@ -11,7 +11,6 @@ import {
   Div,
 } from './styles';
 import { Icon, IconName } from '@/kit';
-import { colorsLight } from '@/theme/colors';
 import styled from 'styled-components';
 
 interface Review {
@@ -32,6 +31,7 @@ interface ReviewItemProps {
 }
 
 const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
+  const theme = useTheme();
   // Вибір аватара залежно від того, чи є він на сервері і ролі
   const getAvatar = (
     avatar: string | null,
@@ -67,6 +67,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
               ? `${review.name} ${review.surname}`
               : 'Анонімний користувач'}
           </Name>
+
           <Stars>
             {[...Array(5)].map((_, index) => (
               <Icon
@@ -75,8 +76,8 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
                 styles={{
                   fill:
                     index < Number(review.rating ?? 0) // Перевірка на undefined
-                      ? colorsLight.mainOrange
-                      : '#494949',
+                      ? theme.color.mainOrange
+                      : theme.color.secWhite,
                   color: 'transparent',
                 }}
                 size={16}
