@@ -102,7 +102,7 @@ const ClubPage: FC = () => {
               : 0,
             roundedRating,
           ]}
-          labels={['Відгуки', 'Тренери', 'Рейтинг']}
+          labels={['Відгуки', 'Зали', 'Рейтинг']}
         />
         {social_links && social_links.length > 0 && (
           <SocialLinks

@@ -66,6 +66,7 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
   console.log('Token:', token);
 
   const title = '';
+  const numericExperience = Number(experience);
 
   const coachTest = {
     avatar:
@@ -107,7 +108,11 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
           IconName.LIGHTNING_FILLED,
           IconName.STAR_DEFAULT,
         ]}
-        counts={[countReview ?? 0, experience ?? '0', roundedRating]}
+        counts={[
+          countReview ?? 0,
+          !isNaN(numericExperience) ? numericExperience : 0,
+          roundedRating,
+        ]}
         labels={['Відгуки', 'Досвід', 'Рейтинг']}
       />
       {short_desc && (
