@@ -13,6 +13,9 @@ import { Icon, IconName } from '@/kit';
 import { ButtonsHiddenText } from '../CustomHeader/CustomHeader.styled';
 import { useDeleteScheduleMutation } from '@/redux/schedule/scheduleApi';
 import { ScheduleEntry } from '../../types/schedule';
+import { useAppDispatch } from '@/hooks/hooks';
+import { setScheduleId } from '@/redux/globalsStates/globalsStates';
+import { useNavigate } from 'react-router-dom';
 
 export interface ScheduleCardProps {
   savedSchedule: ScheduleEntry[];
@@ -23,7 +26,15 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
   savedSchedule,
   setSavedSchedule,
 }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const [deleteSchedule] = useDeleteScheduleMutation();
+
+  const handleEdit = (id: string) => {
+    dispatch(setScheduleId(id));
+    navigate('slot');
+  };
 
   const handleDelete = async (id: string) => {
     try {
@@ -53,7 +64,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
                 </AccentSpan>
               </TimeAndDateStyle>
               <ButtonsContainer>
-                <button>
+                <button onClick={() => handleEdit(entry._id ?? '')}>
                   <Icon name={IconName.EDIT} width="20px" />
                   <ButtonsHiddenText>Edit</ButtonsHiddenText>
                 </button>
