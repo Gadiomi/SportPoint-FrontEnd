@@ -54,11 +54,12 @@ function App() {
               <Route index element={<EditProfile />} />
               <Route path="reviews" element={<Reviews />} />
               <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
+
               <Route
                 path={PublicRouteName.CHANGEPASSWORD}
                 element={<ChangePassword />}
               />
-              <Route path="schedule" element={<Schedule />} />
+              <Route path="schedule" element={<Schedule />}></Route>
               <Route path="general" element={<EditAllGeneral />} />
             </Route>
             <Route path="reviews" element={<Reviews />} />

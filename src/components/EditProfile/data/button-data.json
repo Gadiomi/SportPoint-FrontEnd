@@ -1,8 +1,13 @@
 [
+  { "name": "РОЗКЛАД ЗАНЯТЬ", "icon": "EDIT_CONTAINED", "route": "edit/class-schedule" },
+  { "name": "ОНЛАЙН ЗАПИС", "icon": "EDIT_CONTAINED", "route": "edit/online-booking" },
+
   { "name": "ВІДГУКИ", "icon": "EDIT_CONTAINED", "route": "edit/reviews" },
+  { "name": "МОЇ ПОСЛУГИ", "icon": "HELP", "route": "edit/servers" },
   { "name": "СТАТИСТИКА", "icon": "SMILEY_HAPPY", "route": "edit/statistic" },
+
   { "name": "РОЗКЛАД РОБОТИ", "icon": "EDIT_CONTAINED", "route": "edit/schedule" },
-  { "name": "ПОСЛУГИ", "icon": "HELP", "route": "edit/servers" },
-  { "name": "ЗАГАЛЬНЕ", "icon": "ACCOUNT", "route": "edit/general" },
+
+  { "name": "РЕДАГУВАТИ ПРОФІЛЬ", "icon": "ACCOUNT", "route": "edit/general" },
   { "name": "ЗМІНИТИ ПАРОЛЬ", "icon": "ID", "route": "change-password" }
 ]

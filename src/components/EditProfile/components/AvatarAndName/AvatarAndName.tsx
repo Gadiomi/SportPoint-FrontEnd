@@ -4,12 +4,13 @@ import { AvatarName, HiddenInput } from '../EditGeneral/EditGeneral.styled';
 import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
 import { UserProfile } from '@/types/userProfile';
 import { AvatarImg } from './AvatarAndName.styled';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface AvatarAndNameProps {
   selectedAvatar: string | null;
   userProfile: UserProfile | null;
-  t: (key: string) => string;
-  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  t?: (key: string) => string;
+  handleFileChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const AvatarAndName: React.FC<AvatarAndNameProps> = ({
@@ -18,6 +19,9 @@ const AvatarAndName: React.FC<AvatarAndNameProps> = ({
   t,
   handleFileChange,
 }) => {
+  const location = useLocation();
+  const isEditGeneralPage = location.pathname === '/profile/edit/general';
+
   return (
     <AccountName>
       <AvatarName>
@@ -38,28 +42,33 @@ const AvatarAndName: React.FC<AvatarAndNameProps> = ({
               : 'Імʼя відсутнє'}
         </NameTitle>
       </AvatarName>
-      <Button
-        onClick={() => document.getElementById('avatarInput')?.click()}
-        title={t('account_page.change-profile-photo')}
-        appearance={ButtonAppearance.PRIMARY}
-        styles={{ padding: '6px 16px', gap: '8px' }}
-        testId="general"
-        prependChild={
-          <Icon
-            styles={{
-              color: 'currentColor',
-              fill: 'transparent',
-            }}
-            name={IconName.ARROW_REFRESH}
+
+      {isEditGeneralPage && (
+        <>
+          <Button
+            onClick={() => document.getElementById('avatarInput')?.click()}
+            title={t ? t('account_page.change-profile-photo') : 'Змінити фото'}
+            appearance={ButtonAppearance.PRIMARY}
+            styles={{ padding: '6px 16px', gap: '8px' }}
+            testId="general"
+            prependChild={
+              <Icon
+                styles={{
+                  color: 'currentColor',
+                  fill: 'transparent',
+                }}
+                name={IconName.ARROW_REFRESH}
+              />
+            }
           />
-        }
-      />
-      <HiddenInput
-        type="file"
-        id="avatarInput"
-        accept="image/*"
-        onChange={handleFileChange}
-      />
+          <HiddenInput
+            type="file"
+            id="avatarInput"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </>
+      )}
     </AccountName>
   );
 };

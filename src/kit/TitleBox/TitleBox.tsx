@@ -1,13 +1,13 @@
 import React from 'react';
 import { Icon, IconName, Title } from '@/kit';
-import styled, { useTheme } from 'styled-components';
+import styled, { CSSObject, useTheme } from 'styled-components';
 
 interface TitleBoxProps {
   iconName?: IconName;
   title: string;
   iconColor?: string;
   iconSize?: string;
-  iconStyles?: React.CSSProperties;
+  iconStyles?: CSSObject;
   boxStyle?: React.CSSProperties;
 }
 
@@ -25,7 +25,7 @@ export function TitleBox({
       <Icon
         name={iconName || IconName.ARROW_RIGHT}
         size={iconSize || theme.pxs.x8}
-        styles={iconStyles}
+        styles={iconStyles || {}}
       />
       <Title>{title}</Title>
     </StyledTitleBox>

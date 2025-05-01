@@ -14,6 +14,7 @@ import { favoritesApi } from './details/favoritesApi';
 import { loginReducer } from './auth/loginSlice';
 import { searchApi } from './search/searchApi';
 import reviewReducer from './reviews/reviewSlice';
+import { globalsStatesReducer } from './globalsStates/globalsStates';
 
 // Store
 export const store = configureStore({
@@ -30,6 +31,7 @@ export const store = configureStore({
     [passwordApi.reducerPath]: passwordApi.reducer,
     [cardIdApi.reducerPath]: cardIdApi.reducer,
     [favoritesApi.reducerPath]: favoritesApi.reducer,
+    globalsStates: globalsStatesReducer,
     setLogin: loginReducer,
     reviews: reviewReducer,
   },

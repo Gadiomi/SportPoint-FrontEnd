@@ -1,7 +1,6 @@
 import {
   Container,
   Label,
-  SelectArrow,
   SelectedItem,
   SelectedItems,
   SelectStyled,

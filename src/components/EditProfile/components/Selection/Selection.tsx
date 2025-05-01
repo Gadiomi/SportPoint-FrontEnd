@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Label,
-  DropdownContainer,
   DropdownItem,
   DropdownToggle,
   DropdownContent,
   DropdownLabel,
-  DropdownInput,
 } from './Selection.styled';
-import { Icon, IconName, Input } from '@/kit';
+import { Icon, IconName } from '@/kit';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { ButtonsHiddenText } from '../Schedule/components/CustomHeader/CustomHeader.styled';
 
 interface SelectionProps {
   content: string[];
@@ -84,12 +83,15 @@ const Selection: React.FC<SelectionProps> = ({
                         : IconName.CHECK_SQUARE_CONTAINED
                     }
                   />
-                  <input
-                    type="checkbox"
-                    value={conte}
-                    checked={selectedSports.includes(conte)}
-                    onChange={() => handleCheckboxChange(conte)}
-                  />
+                  <label>
+                    <ButtonsHiddenText>selected</ButtonsHiddenText>
+                    <input
+                      type="checkbox"
+                      value={conte}
+                      checked={selectedSports.includes(conte)}
+                      onChange={() => handleCheckboxChange(conte)}
+                    />
+                  </label>
                   <span> {conte}</span>
                 </DropdownLabel>
               </DropdownItem>
