@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { useTranslation } from 'react-i18next';
 import { IconName } from '@/kit';
+import { useAppSelector } from '@/hooks/hooks';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
@@ -22,16 +23,13 @@ interface AccountTrainerProps {
 }
 
 const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
+  const { isLogin } = useAppSelector(state => state.setLogin);
+  console.log(' Користувач залогінився', isLogin);
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
     skip: !id,
   });
-
-  const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
-
-  const userId = Cookies.get('userId');
-  console.log('userId:', userId);
 
   console.log('Отримані дані з бекенду:', data);
 
@@ -93,6 +91,7 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
         <ProfileCard
           _id={_id}
           role={role}
+          isLogin={isLogin}
           iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
           firstName={firstName}
           lastName={lastName}
@@ -127,7 +126,7 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
       {social_links && social_links.length > 0 && (
         <SocialLinks
           socialLinks={social_links || []}
-          isLoggedIn={isLoggedIn}
+          isLogin={isLogin}
           title={title}
         />
       )}
@@ -138,6 +137,8 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
 
       {coachData?.club && coachData.club.length > 0 && (
         <WorksInCard
+          _id={_id}
+          role={role}
           clubs={coachData?.club || []}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
