@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { CookiesKey } from '@/constants';
 import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { fonts } from '@/theme/fonts';
 import { IconName } from '@/kit';
+import { ButtonAppearance } from '@/kit';
 import {
   useAddToFavoritesMutation,
   useGetFavoritesQuery,
@@ -27,6 +26,7 @@ import {
 interface ProfileCardProps {
   _id: string | undefined;
   role: string;
+  isLogin: boolean;
   iconNames: IconName[];
   firstName: string | undefined;
   lastName?: string | undefined;
@@ -40,6 +40,7 @@ interface ProfileCardProps {
 const ProfileCard: React.FC<ProfileCardProps> = ({
   _id,
   role,
+  isLogin,
   firstName,
   lastName,
   avatar,
@@ -83,8 +84,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   }, [favoritesData, _id]);
 
   const handleToggleFavorite = async () => {
-    const token = Cookies.get(CookiesKey.TOKEN);
-    if (!token) {
+    if (!isLogin) {
       openChooseModal();
       return;
     }
@@ -177,6 +177,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
         {showButtons && (
           <ButtonProfileIcon
+            appearance={ButtonAppearance.PRIMARY}
             iconName={isFavorite ? IconName.HEART_FILL : IconName.HEART_NONE}
             text={t('details_page.choose')}
             onClick={handleToggleFavorite}

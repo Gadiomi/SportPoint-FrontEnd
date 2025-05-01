@@ -17,7 +17,6 @@ export const SelectedItems = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   gap: 5px;
-  margin-bottom: 5px;
 `;
 
 export const SelectedItem = styled.span`

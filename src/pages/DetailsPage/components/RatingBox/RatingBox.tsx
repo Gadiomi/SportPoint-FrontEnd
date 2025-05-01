@@ -13,8 +13,8 @@ import {
 
 interface RatingBoxProps {
   iconNames: IconName[];
-  rating: number | undefined;
-  counts: number[] | undefined;
+  rating?: number | undefined;
+  counts?: number[] | undefined;
   containerStyles?: React.CSSProperties;
   ratingStyles?: React.CSSProperties;
   iconWrapperStyles?: React.CSSProperties;

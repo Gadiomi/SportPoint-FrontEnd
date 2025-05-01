@@ -1,39 +1,34 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, ButtonAppearance, Icon, IconName, Input, Modal } from '@/kit';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { View, dateFnsLocalizer } from 'react-big-calendar';
-
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {
-  Container,
   FormStyled,
   InputsBeginEnd,
   ScheduleContainer,
   TimeAndDateContainer,
-} from './Schedule.styled';
-import { useAppSelector } from '@/hooks/hooks';
-import SearchWork from '../SearchWork/SearchWork';
+} from '../../Schedule.styled';
+import GeneralsBtn from '../../../GeneralsBtn/GeneralsBtn';
+import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
+import SearchWork from '../../../SearchWork/SearchWork';
+import { format, getDay, parse, startOfWeek } from 'date-fns';
+import { SectionTitle } from '../../../EditGeneral/EditGeneral.styled';
+import Calendar from '../Calendar/Calendar';
+import { Container } from 'lucide-react';
+import { WorkoutPlan } from '@/types/userProfile';
+import { useForm } from 'react-hook-form';
+import { Profile, ScheduleEntry, SearchResults } from '../../types/schedule';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
 import { debounce } from 'lodash';
-import { WorkoutPlan } from '@/types/userProfile';
-import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
-import { SectionTitle } from '../EditGeneral/EditGeneral.styled';
-import { parse, startOfWeek, getDay, format } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { useAppSelector } from '@/hooks/hooks';
 import { useAddScheduleMutation } from '@/redux/schedule/scheduleApi';
-import ScheduleCard from './components/ScheduleCard/ScheduleCard';
-import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
-import Calendar from './components/Calendar/Calendar';
-import EditScheduleCard from './components/EditScheduleCard/EditScheduleCard';
-import { type } from '../../../../theme/types';
+import { useNavigate } from 'react-router-dom';
+import { dateFnsLocalizer, View } from 'react-big-calendar';
+import { uk } from 'date-fns/locale';
 
 const locales = {
   uk: uk,
 };
 
-const Schedule = () => {
+const EditScheduleCard = () => {
   const localizer = useMemo(
     () =>
       dateFnsLocalizer({
@@ -46,7 +41,8 @@ const Schedule = () => {
     [],
   );
 
-  const userProfile = useAppSelector(state => state.user.user);
+  const userProfile = useAppSelector(state => state.globalsStates.editId);
+  console.log(userProfile);
   const [addSchedule] = useAddScheduleMutation();
   const navigate = useNavigate();
   const [view, setView] = useState<View>('week');
@@ -60,54 +56,6 @@ const Schedule = () => {
   const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
   const [localSearchResults, setLocalSearchResults] =
     useState<SearchResults | null>(null);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (userProfile?.description.schedule) {
-      const transformed = userProfile.description.schedule.map(item => ({
-        day: new Date(item.date.startTime),
-        begin: format(new Date(item.date.startTime), 'HH:mm'),
-        end: format(new Date(item.date.endTime), 'HH:mm'),
-        _id: item._id,
-        profile: {
-          firstName: item.selectedGym,
-          lastName: '',
-          address: item.selection.address,
-          city: item.selection.city,
-          avatar: item.selection.avatar,
-          id: item._id || 'default-id',
-        },
-        weekday: format(new Date(item.date.startTime), 'EEEE', { locale: uk }),
-        monthShort: format(new Date(item.date.startTime), 'MMM', {
-          locale: uk,
-        }),
-      }));
-
-      setSavedSchedule(prev => {
-        const getDateWithoutTime = (date: Date) =>
-          new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-          ).getTime();
-
-        const existingDates = new Set(
-          prev.map(e => getDateWithoutTime(new Date(e.day))),
-        );
-
-        const filtered = transformed.filter(e => {
-          const entryProfile = e.profile;
-          if (!entryProfile.id) {
-            entryProfile.id = 'default-id';
-          }
-
-          return !existingDates.has(getDateWithoutTime(new Date(e.day)));
-        });
-
-        return [...filtered, ...prev];
-      });
-    }
-  }, [userProfile]);
 
   const { t } = useTranslation();
 
@@ -243,16 +191,13 @@ const Schedule = () => {
     setSelectedProfile([]);
     setSearchTerm('');
   };
-  const closeModal = () => {
-    setOpen(false);
-  };
 
   return (
     <Container>
       <ScheduleContainer>
         <Button
           onClick={() => navigate('/profile/edit')}
-          title="РОЗКЛАД РОБОТИ"
+          title=""
           appearance={ButtonAppearance.PRIMARY}
           testId="general"
           style={{ width: '100%', padding: '8px 18px' }}
@@ -261,9 +206,6 @@ const Schedule = () => {
               name={IconName.ARROW_LEFT}
               styles={{ color: 'currentColor' }}
             />
-          }
-          prependChild={
-            <Icon name={IconName.ACCOUNT} styles={{ color: 'currentColor' }} />
           }
         />
         <Calendar
@@ -323,20 +265,10 @@ const Schedule = () => {
           onClick={addNewScheduleEntry}
         />
 
-        {savedSchedule.length > 0 && (
-          <ScheduleCard
-            setOpen={setOpen}
-            savedSchedule={savedSchedule}
-            setSavedSchedule={setSavedSchedule}
-          />
-        )}
         <GeneralsBtn t={t} />
       </FormStyled>
-      <Modal isOpen={open} onClose={closeModal}>
-        <EditScheduleCard />
-      </Modal>
     </Container>
   );
 };
 
-export default Schedule;
+export default EditScheduleCard;

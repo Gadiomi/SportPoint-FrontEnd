@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
+import { IconName } from '@/kit';
+import { useAppSelector } from '@/hooks/hooks';
 import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
-import { IconName } from '@/kit';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
@@ -23,19 +24,16 @@ import { CookiesKey } from '@/constants';
 
 const TrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
+  const { isLogin } = useAppSelector(state => state.setLogin);
+  console.log(' Користувач залогінився', isLogin);
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
     skip: !id,
   });
 
-  const isLoggedIn = !!Cookies.get(CookiesKey.TOKEN);
-
   const userId = Cookies.get('userId');
   console.log('userId:', userId);
-
-  const token = Cookies.get(CookiesKey.TOKEN);
-  console.log('Token:', token);
 
   console.log('Отримані дані з бекенду:', data);
   console.log('ID користувача:', data?._id);
@@ -68,7 +66,7 @@ const TrainerPage: FC = () => {
 
   const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
-  const title = token
+  const title = isLogin
     ? 'Введіть дані, і тренер з вами зв’яжеться'
     : 'Тільки авторизовані користувачі можуть зв’язатися з тренером';
   const numericExperience = Number(experience);
@@ -103,6 +101,7 @@ const TrainerPage: FC = () => {
           <ProfileCard
             _id={_id}
             role={role}
+            isLogin={isLogin}
             iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
             firstName={firstName}
             lastName={lastName}
@@ -137,7 +136,7 @@ const TrainerPage: FC = () => {
         {social_links && social_links.length > 0 && (
           <SocialLinks
             socialLinks={social_links || []}
-            isLoggedIn={isLoggedIn}
+            isLogin={isLogin}
             title={title}
           />
         )}
@@ -149,6 +148,8 @@ const TrainerPage: FC = () => {
         {coachData?.club && coachData.club.length > 0 && (
           <WorksInCard
             // key={club._id}
+            _id={_id}
+            role={role}
             clubs={coachData?.club || []}
             iconNames={[IconName.LOCATION, IconName.CLOCK]}
             labels={['1,5 км', '24/7']}

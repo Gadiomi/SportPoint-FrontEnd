@@ -49,4 +49,5 @@ export enum IconName {
   EDIT = 'icon-edit',
   DELETE = 'icon-delete',
   SCHEDULE = 'icon-schedule',
+  DOWN_ANGLE_QUOTE = 'icon-angle-down',
 }

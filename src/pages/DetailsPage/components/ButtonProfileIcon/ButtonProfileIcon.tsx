@@ -9,6 +9,8 @@ interface ButtonProfileIconProps {
   iconStyle?: React.CSSProperties;
   onClick: () => void;
   text: string;
+  style?: React.CSSProperties;
+  appearance?: ButtonAppearance;
 }
 
 const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
@@ -16,6 +18,7 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
   iconStyle,
   onClick,
   text,
+  appearance,
 }) => {
   const theme = useTheme();
 
@@ -36,7 +39,7 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
           height: `${theme.pxs.x10}px`,
           borderRadius: `${theme.pxs.x5}px`,
         }}
-        appearance={ButtonAppearance.PRIMARY}
+        appearance={appearance}
         onClick={onClick}
         appendChild={
           <Icon

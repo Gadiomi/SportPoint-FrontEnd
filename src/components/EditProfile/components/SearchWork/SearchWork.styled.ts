@@ -16,11 +16,19 @@ export const SearchWorkItems = styled.li`
 export const CitySpan = styled.span`
   display: flex;
   gap: 4px;
+  overflow-x: auto;
+  white-space: nowrap;
+  align-items: center;
+  span {
+    flex-shrink: 0;
+  }
 `;
+
 export const NameSpan = styled.span`
   flex-shrink: 0;
   width: max-content;
 `;
+
 export const DescSpan = styled.span`
   display: flex;
   flex-grow: 1;
@@ -28,4 +36,16 @@ export const DescSpan = styled.span`
   overflow: scroll;
   text-overflow: ellipsis;
   gap: 4px;
+`;
+
+export const ContainerDropdown = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const IconDown = styled.span`
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 12px;
 `;

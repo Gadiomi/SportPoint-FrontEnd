@@ -138,7 +138,6 @@ const EditGeneral: FC = () => {
   const handleSocialChange = (
     selectedItems: { name: string; url: string }[],
   ) => {
-    console.log(selectedItems);
     dispatch(setSelectedSocial(selectedItems));
   };
 
@@ -226,7 +225,7 @@ const EditGeneral: FC = () => {
   return (
     <Container>
       <Button
-        onClick={() => navigate('/profile')}
+        onClick={() => navigate('/profile/edit')}
         title={t('account_page.general')}
         appearance={ButtonAppearance.PRIMARY}
         testId="general"
@@ -305,14 +304,22 @@ const EditGeneral: FC = () => {
             />
             <Input
               testId="age"
-              label="Вік"
+              type="text"
+              label="Дата народження"
+              placeholder="ДД/ММ/РРРР"
               value={watch('description.age') || ''}
               {...register('description.age')}
-              onChange={e => setValue('description.age', e.target.value)}
+              onChange={e => {
+                const formattedValue = e.target.value
+                  .replace(/\D/g, '')
+                  .slice(0, 8)
+                  .replace(/(\d{2})(\d{2})(\d{0,4})/, '$1/$2/$3');
+                setValue('description.age', formattedValue);
+              }}
             />
             <Input
               testId="experience"
-              label="Досвід"
+              label="Досвід роботи тренером (в роках)"
               type="number"
               value={watch('description.experience')?.toString() || ''}
               {...register('description.experience')}

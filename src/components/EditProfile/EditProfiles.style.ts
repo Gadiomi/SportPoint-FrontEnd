@@ -4,8 +4,9 @@ export const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-bottom: 32px;
 
-  li:nth-of-type(2n):not(:last-child) {
+  li:nth-of-type(3n + 2):not(:last-child) {
     margin-bottom: 16px;
     display: flex;
     flex-direction: column;
@@ -20,6 +21,7 @@ export const List = styled.ul`
     }
   }
 `;
+
 export const AccountName = styled.div`
   display: flex;
   flex-direction: column;

@@ -56,8 +56,8 @@ const ReviewsPage = () => {
   const [showAll, setShowAll] = useState(false);
   const reviewsToShow = showAll ? reviews : reviews.slice(0, 2);
 
-  const { t } = useTranslation();
-  const { theme } = useTheme();
+  // const { t } = useTranslation();
+  // const { theme } = useTheme();
 
   const handleReviewUpdate = (updatedReview: Review) => {
     setReviews(prev =>

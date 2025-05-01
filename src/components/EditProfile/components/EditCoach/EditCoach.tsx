@@ -1,14 +1,35 @@
 import buttonContent from '../../data/button-data.json';
-import { AccountName, List, NameTitle } from '../../EditProfiles.style';
+import { List } from '../../EditProfiles.style';
 import { Button, ButtonAppearance, IconName, Icon } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/EditGeneral/EditGeneral.styled';
 import { useAppSelector } from '@/hooks/hooks';
+import { AccountDeleteCont } from '@/pages/AccountPage/styles';
+import { useDeleteAccountMutation } from '@/redux/auth/authApi';
+import { CookiesKey } from '@/constants';
+import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
+import AvatarAndName from '../AvatarAndName/AvatarAndName';
 
 const EditCoach = () => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const userProfile = useAppSelector(state => state.user.user);
   const isLoading = useAppSelector(state => state.user.isLoading);
+  const [deleteAccount] = useDeleteAccountMutation();
+
+  const deleteHandler = async () => {
+    try {
+      await deleteAccount('').unwrap();
+      Cookies.remove(CookiesKey.TOKEN, { path: '' });
+      Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '' });
+      localStorage.clear();
+      navigate('/');
+    } catch (err) {
+      console.error('Не вдалося видалити акаунт: ', err);
+    }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -42,22 +63,12 @@ const EditCoach = () => {
           />
         }
       />
-      <AccountName>
-        <img
-          src={
-            userProfile?.avatar ||
-            '/public/assets/images/png-transparent-neon-silver-pic-miscellaneous-cdr-angle-thumbnail.png'
-          }
-          alt=""
-        />
-        <NameTitle>
-          {userProfile?.firstName && userProfile?.lastName
-            ? `${userProfile.firstName} ${userProfile.lastName}`
-            : userProfile?.description?.email
-              ? userProfile.description.email.split('@')[0]
-              : 'Імʼя відсутнє'}
-        </NameTitle>
-      </AccountName>
+
+      <AvatarAndName
+        selectedAvatar={userProfile?.avatar ? userProfile?.avatar : null}
+        userProfile={userProfile}
+      />
+
       <List>
         {buttonContent.map((content, index) => {
           const iconName =
@@ -74,8 +85,14 @@ const EditCoach = () => {
                 title={content.name}
                 appearance={ButtonAppearance.PRIMARY}
                 testId="general"
-                styles={{ width: '100%', padding: '8px 18px' }}
+                styles={{
+                  width: '100%',
+                  padding: '8px 16px',
+                }}
                 textStyle={{
+                  lineHeight: '22px',
+                  fontWeight: '600',
+                  fontSize: '16px',
                   width: '100%',
                   paddingLeft: '8px',
                   textAlign: 'start',
@@ -103,6 +120,15 @@ const EditCoach = () => {
           );
         })}
       </List>
+      <AccountDeleteCont>
+        <h4>{t(`account_page.zone`)}</h4>
+        <Button
+          title={t(`account_page.delete`)}
+          appearance={ButtonAppearance.UNDERLINED}
+          testId="delete"
+          onClick={() => deleteHandler()}
+        ></Button>
+      </AccountDeleteCont>
     </Container>
   );
 };
