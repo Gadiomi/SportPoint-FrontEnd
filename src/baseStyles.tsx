@@ -30,7 +30,7 @@ body {
     place-items: center;
     justify-content: center;
     font-family: "Roboto", sans-serif;
-    color: var(--main);
+
     line-height: 1.5;
     overflow-x: hidden;
 }

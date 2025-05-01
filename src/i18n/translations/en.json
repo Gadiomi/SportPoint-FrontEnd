@@ -6,9 +6,11 @@
   "coachs": "Coachs",
   "clubs-list": "Sports clubs",
   "clubs": "Clubs",
+  "profile": "Profile",
   "more_details": "More details",
   "show_more": "Show more",
   "resultBack": "Search results",
+  "uah": "uah",
   "login_page": {
     "title": "Log in to account",
     "description": "Select your role to get started",
@@ -108,5 +110,39 @@
     "price": "Price",
     "classification": "Classification",
     "resultFilter": "Show result"
+  },
+  "filters": {
+    "kyiv": "Kyiv",
+    "new": "New",
+    "price_asc": "Price to growth",
+    "popular": "Popular",
+    "price_dec": "Price descending",
+    "stretching": "Stretching",
+    "cardio": "Cardio",
+    "yoga": "Yoga",
+    "crossfit": "Crossfit",
+    "trx": "TRX",
+    "fitness": "Fitness",
+    "from": "from",
+    "to": "to"
+  },
+  "footer": {
+    "sendEmail": "Send an email",
+    "provideAnswer": "We will respond as soon as possible.",
+    "confidentiality": "Privacy Policy",
+    "ruleCookie": "Cookie policy",
+    "changeCookie": "Change cookie settings",
+    "webSite": "Website structure"
+  },
+  "nav_bar": {
+    "search": "Search",
+    "menu": "Menu",
+    "support": "Support service",
+    "aboutUs": "About us",
+    "fav": "Favorites",
+    "lang": "Change the language",
+    "modalFav": "Only authorized users can view `Favorites`",
+    "questLogIn": "Would you like to log in?",
+    "chooseLang": "Choose your preferred language"
   }
 }

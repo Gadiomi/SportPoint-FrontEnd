@@ -3,7 +3,7 @@ import { ButtonAppearance, Icon, IconName } from '@/kit';
 import { FiltersModal } from '../FiltersModal/FiltersModal';
 import { StyledButton } from '@/pages/HomePage/components/Filters/styles';
 import { FilterParams } from '@/types';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface FiltersProps {
   getFilteredCards: (filters: FilterParams) => void;
@@ -14,7 +14,7 @@ export const Filters: React.FC<FiltersProps> = ({
   getFilteredCards,
 }) => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
-
+  const { t } = useTranslation();
   const handleOpenModal = () => {
     setIsFiltersModalOpen(true);
   };
