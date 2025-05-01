@@ -26,12 +26,12 @@ export const CustomFilterCheckbox: React.FC<CustomFilterCheckboxProps> = ({
     </CheckboxWrapper>
   );
 };
-export const CheckboxWrapper = styled.div(({ theme }) => ({
+export const CheckboxWrapper = styled.div({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
   width: 'auto',
-}));
+});
 export const CheckboxInput = styled.input({
   display: 'none',
 });

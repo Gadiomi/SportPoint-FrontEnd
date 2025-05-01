@@ -50,9 +50,9 @@ export const MenuItem = styled.li(({ theme }) => ({
   borderRadius: theme.pxs.x1_5,
   padding: `${theme.pxs.x1}px ${theme.pxs.x2}px`,
   '&:hover': {
-    backgroundColor: theme.color.mainOrange, // фон при ховері
+    backgroundColor: theme.color.mainOrange,
     cursor: 'pointer',
-    transition: 'background-color 0.3s ease, color 0.3s ease', // плавний перехід
+    transition: 'background-color 0.3s ease, color 0.3s ease',
   },
 }));
 export const Descr = styled.p(({ theme }) => ({
@@ -77,9 +77,9 @@ export const LangButton = styled.button(({ theme }) => ({
   padding: theme.pxs.x2,
   width: theme.pxs.x11,
   '&:hover': {
-    backgroundColor: theme.color.mainOrange, // фон при ховері
-    color: theme.color.white, // колір тексту при ховері
+    backgroundColor: theme.color.mainOrange,
+    color: theme.color.white,
 
-    transition: 'background-color 0.3s ease, color 0.3s ease', // плавний перехід
+    transition: 'background-color 0.3s ease, color 0.3s ease',
   },
 }));

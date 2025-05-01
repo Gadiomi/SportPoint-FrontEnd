@@ -88,15 +88,7 @@
     "forgot": "Forgot password?",
     "restore": "Restore"
   },
-  "register_page": {
-    "title": "Create an Account",
-    "confirm_password": "confirm password",
-    "submit_button": "Register",
-    "name": "First name",
-    "second_name": "Second name",
-    "club_name": "Club's name",
-    "phone": "Phone"
-  },
+
   "home_page": {
     "homeDescr": "Discover the best sports clubs and professional trainers in your area.",
     "motivation": "BE SPORTY",
