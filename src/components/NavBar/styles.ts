@@ -36,3 +36,8 @@ export const Descr = styled.p(({ theme }) => ({
   ...fonts.smallText,
   lineHeight: `${theme.pxs.x3_5}px`,
 }));
+export const StyledBtnLink = styled.button({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+});

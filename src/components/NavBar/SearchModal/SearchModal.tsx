@@ -13,6 +13,7 @@ import {
 import { Icon, IconName, Input } from '@/kit';
 import { useTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ const SearchModal: FC<SearchModalProps> = ({ isOpen, onClose }) => {
   const [history, setHistory] = useState<string[]>([]);
   const theme = useTheme();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const savedHistory = JSON.parse(
@@ -73,7 +75,7 @@ const SearchModal: FC<SearchModalProps> = ({ isOpen, onClose }) => {
             label={
               <CustomLabel>
                 <Icon name={IconName.SEARCH} size={24} />
-                Пошук
+                {t('nav_bar.search')}
               </CustomLabel>
             }
             containerStyles={{
@@ -85,7 +87,7 @@ const SearchModal: FC<SearchModalProps> = ({ isOpen, onClose }) => {
           />
 
           <LabelHistory>
-            <History>Історія пошуку</History>
+            <History>{t('nav_bar.history')}</History>
             <Rubbish onClick={clearHistory}>
               <Icon name={IconName.TRASH} size={24} />
             </Rubbish>

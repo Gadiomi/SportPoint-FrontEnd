@@ -1,4 +1,12 @@
-import { Descr, Nav, NavBox, NavItem, NavList, StyledNavLink } from './styles';
+import {
+  Descr,
+  Nav,
+  NavBox,
+  NavItem,
+  NavList,
+  StyledBtnLink,
+  StyledNavLink,
+} from './styles';
 import { useTheme } from 'styled-components';
 import { Icon, IconName, Modal } from '@/kit';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -28,10 +36,12 @@ const NavBar = () => {
     { to: '/search', icon: IconName.SEARCH, descr: t('nav_bar.search') },
     { to: '/menu', icon: IconName.MENU, descr: t('nav_bar.menu') },
   ];
+
   useEffect(() => {
     closeMenu();
     closeSearch();
   }, [location.pathname]);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const toggleMenu = () => {
@@ -83,7 +93,7 @@ const NavBar = () => {
               return (
                 <NavItem key={to}>
                   {isButton ? (
-                    <button
+                    <StyledBtnLink
                       onClick={() => {
                         if (icon === IconName.SEARCH) toggleSearch();
                         else if (icon === IconName.MENU) toggleMenu();
@@ -110,7 +120,7 @@ const NavBar = () => {
                       >
                         {descr}
                       </Descr>
-                    </button>
+                    </StyledBtnLink>
                   ) : (
                     <StyledNavLink to={to}>
                       <Icon
@@ -142,7 +152,7 @@ const NavBar = () => {
       {isProfileModalOpen && (
         <Modal
           isOpen={isProfileModalOpen}
-          type={t('nav_bar.modalFav')}
+          type={t('nav_bar.modalAuth')}
           onClose={closeProfileModal}
         >
           <Question>{t('nav_bar.questLogIn')}</Question>

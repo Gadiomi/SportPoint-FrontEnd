@@ -136,12 +136,15 @@
   },
   "nav_bar": {
     "search": "Search",
+    "history": "Search history",
+
     "menu": "Menu",
     "support": "Support service",
     "aboutUs": "About us",
     "fav": "Favorites",
     "lang": "Change the language",
     "modalFav": "Only authorized users can view `Favorites`",
+    "modalAuth": "Only authorized users can have their own profile.",
     "questLogIn": "Would you like to log in?",
     "chooseLang": "Choose your preferred language"
   }
