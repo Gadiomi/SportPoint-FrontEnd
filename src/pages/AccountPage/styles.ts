@@ -1,3 +1,5 @@
+import { useGetUserProfileQuery } from '@/redux/user/userApi';
+import { FileUpload } from './../../kit/FileUpload/FileUpload';
 import { Button } from '@/kit';
 import styled from 'styled-components';
 
@@ -88,10 +90,12 @@ export const AccountDeleteCont = styled.div`
 export const SportButtonsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding: 8px;
+  margin-bottom: 64px;
   border: 0.5px solid #b7b7b9;
   border-radius: 6px;
-  padding: 8px;
 `;
+
 export const SportButton = styled.button<{ isSelected: boolean }>`
   background-color: ${({ isSelected }) =>
     isSelected ? '#494949' : 'transparent'};
@@ -106,4 +110,81 @@ export const SportButton = styled.button<{ isSelected: boolean }>`
     background-color: ${({ isSelected }) =>
       isSelected ? '#494949' : 'transparent'};
   }
+`;
+
+export const ChangePasswCont = styled.div`
+  padding-top: 8px;
+`;
+
+export const FormContPassw = styled.div`
+  padding-top: 32px;
+  padding-bottom: 78px;
+  & form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  & h4 {
+    padding-bottom: 32px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    color: #f8f7f4;
+  }
+`;
+
+export const RestoreCont = styled.div`
+  display: flex;
+  padding-top: 16px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 48px;
+
+  & h5 {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 30px;
+    color: #b7b7b9;
+  }
+`;
+
+export const GeneralBtnsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+
+  & button:first-of-type {
+    width: 145px;
+    height: 36px;
+    border: 1px solid #ed772f;
+  }
+
+  & button:last-of-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 143px;
+    height: 36px;
+  }
+`;
+
+export const GeneralWrapper = styled.div`
+  width: 100 %;
+  padding-top: 8px;
+  padding-bottom: 85px;
+`;
+
+export const GeneralInFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+`;
+
+export const GeneralSports = styled.p`
+  padding-top: 32px;
+  font-weight: 400;
 `;

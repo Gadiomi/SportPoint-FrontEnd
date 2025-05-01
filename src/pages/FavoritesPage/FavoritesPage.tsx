@@ -16,23 +16,25 @@ import CoachCard from '../../components/CoachCard/CoachCard';
 import ClubCard from './ClubCard/ClubCard';
 import { IClubData, ICoachData } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import ProfileButton from '../AccountPage/ProfileButton';
 
 // --- TEMP!!! ---
 const coachsData: ICoachData[] = [
   {
+    _id: '67feb570b02fe7b237c35f80',
     userId: '65f2dc3b8a7e8e3e3b5a3a1b',
-    firstLastName: 'Андрій К.',
-    avatar: '../../../../public/assets/images/tempCoach.jpg',
+    firstName: 'Андрій',
+    lastName: 'К.',
+    avatar: '/public/assets/svg/no_image.svg',
     countReview: 26,
     rating: 4.9,
     description: {
       abilities: ['Йога', 'Фітнес'],
-      price: [
-        {
-          name: '60-хв заняття',
-          amount: '550',
-        },
-      ],
+      price: {
+        name: '60-хв заняття',
+        amount: '550',
+        description: 'yoga',
+      },
     },
   },
 ];
@@ -81,44 +83,7 @@ const FavoritesPage = () => {
       {/* ??? */}
       <Container maxWidth="375px">
         <FavoritesPageWrapper>
-          <Button
-            onClick={() => navigate('/profile')}
-            testId="ОБРАНІ"
-            title={t('chosen')}
-            type="submit"
-            style={{
-              justifyContent: 'flex-start',
-              width: '100%',
-              position: 'relative',
-              height: '40px',
-              paddingLeft: '40px',
-              fontFamily: `${FontFamily}`,
-              fontWeight: `${FontWeights.BOLD}`,
-              lineHeight: ` ${LineHeights.X_LARGE}`,
-            }}
-            prependChild={
-              <Icon
-                name={IconName.HEART_NONE}
-                styles={{
-                  color: '#F8F7F4',
-                  fill: 'transparent',
-                  position: 'absolute',
-                  left: '8',
-                }}
-              />
-            }
-            appendChild={
-              <Icon
-                name={IconName.ARROW_LEFT}
-                styles={{
-                  color: '#F8F7F4',
-                  fill: 'transparent',
-                  position: 'absolute',
-                  right: '18',
-                }}
-              />
-            }
-          />
+          <ProfileButton title={'favorites'} arrowDirection={'left'} />
           <ToggleWrapper>
             <Button
               testId="Тренери"

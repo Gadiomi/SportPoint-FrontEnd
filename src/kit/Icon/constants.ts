@@ -48,5 +48,6 @@ export enum IconName {
   RIGHT_ANGLE_QUOTE = 'icon-right-angle-quote',
   EDIT = 'icon-edit',
   DELETE = 'icon-delete',
+  SCHEDULE = 'icon-schedule',
   DOWN_ANGLE_QUOTE = 'icon-angle-down',
 }

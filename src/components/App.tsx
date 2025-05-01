@@ -31,6 +31,9 @@ const Reviews = lazy(() => import('../pages/ReviewsPage/ReviewsPage'));
 const ResultSearch = lazy(
   () => import('../pages/ResultSearchPage/ResultSearchPage'),
 );
+// --- TEMP! ---
+const Helper = lazy(() => import('../pages/HelperPage/HelperPage'));
+// --- TEMP! ---
 
 function App() {
   return (
@@ -70,6 +73,7 @@ function App() {
           </Route>
         </Route>
         {/* </Route> */}
+        <Route path="/helper" element={<Helper />} /> {/* TEMP!!! */}
       </Routes>
       <ToastProvider />
     </Suspense>

@@ -18,7 +18,7 @@ const ThisIconName: TIconName = {
   change_password: IconName.ID,
   reviews: IconName.MASSAGE_TYPING,
   favorites: IconName.HEART_NONE,
-  online_appointment: IconName.EDIT_CONTAINED, // TEMP!!!
+  online_appointment: IconName.SCHEDULE,
 };
 
 const ProfileButton: FC<Props> = ({ title, arrowDirection = 'right' }) => {

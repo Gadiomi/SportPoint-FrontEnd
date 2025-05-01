@@ -1,12 +1,15 @@
 type TCoachPrice = {
   name: string;
   amount: string;
+  description: string;
 };
 
 type TCoachDescription = {
   abilities: string[];
-  price: TCoachPrice[];
+  price: TCoachPrice;
+  // price: TCoachPrice[];
 };
+
 type Props = {
   userId: string;
   firstLastName: string;

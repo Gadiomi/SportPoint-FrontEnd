@@ -6,13 +6,21 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import css from './AccountPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '@/redux/auth/authApi';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
-import { AccountName, SportButton, SportButtonsContainer } from './styles';
+import {
+  AccountName,
+  GeneralBtnsWrapper,
+  GeneralInFormWrapper,
+  GeneralSports,
+  GeneralWrapper,
+  SportButton,
+  SportButtonsContainer,
+} from './styles';
 import ProfileButton from './ProfileButton';
+import BackSaveButtons from './BackSaveButtons';
 
 interface UserProfileFormData {
   avatar: string | File;
@@ -156,10 +164,8 @@ const General: FC = () => {
   if (isLoading) return <div>Loading profile...</div>;
 
   return (
-    <div className={css.generalCont}>
-      {/* --- - --- */}
+    <GeneralWrapper>
       <ProfileButton title={'general'} arrowDirection={'left'} />
-      {/* --- / - --- */}
 
       <AccountName paddingTop={'45px'}>
         <img
@@ -199,7 +205,7 @@ const General: FC = () => {
       </AccountName>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={css.generalForm}>
+        <GeneralInFormWrapper>
           <Input
             testId="firstName"
             label="First Name"
@@ -235,9 +241,9 @@ const General: FC = () => {
             {...register('description.age')}
             onChange={e => setValue('description.age', e.target.value)}
           />
-        </div>
+        </GeneralInFormWrapper>
 
-        <p className={css.generalTypeSp}>Види спорту</p>
+        <GeneralSports>Види спорту</GeneralSports>
         <SportButtonsContainer>
           {allSports.map(sport => (
             <SportButton
@@ -249,22 +255,20 @@ const General: FC = () => {
             </SportButton>
           ))}
         </SportButtonsContainer>
-
-        <div className={css.generalBtns}>
+        <BackSaveButtons />
+        {/* <GeneralBtnsWrapper>
           <Button
             type="button"
             title={t(`account_page.back`)}
             appearance={ButtonAppearance.SECONDARY}
             testId="back"
             onClick={() => navigate('/profile')}
-            className={css.generalBtnBack}
-          ></Button>
+          />
           <Button
             type="submit"
             title={t(`account_page.save`)}
             appearance={ButtonAppearance.SECONDARY}
             testId="save"
-            className={css.generalBtnSave}
             prependChild={
               <Icon
                 styles={{
@@ -274,8 +278,8 @@ const General: FC = () => {
                 name={IconName.CHECK_CONTAINED}
               />
             }
-          ></Button>
-        </div>
+          />
+        </GeneralBtnsWrapper> */}
       </form>
       {/* <Button
         type="button"
@@ -284,7 +288,7 @@ const General: FC = () => {
         testId="logout"
         onClick={handleLogout}
       ></Button> */}
-    </div>
+    </GeneralWrapper>
   );
 };
 export default General;

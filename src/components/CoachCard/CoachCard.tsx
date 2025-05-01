@@ -32,7 +32,7 @@ const CoachCard: FC<Props> = ({ coachData }) => {
         <CoachImage src={coachData?.avatar || NO_IMAGE} alt="coach image" />
         <CoachInfoBlock>
           <NameBlock>
-            <h2>{`${coachData?.firstName} ${coachData?.lastName}`}</h2>
+            <h2>{`${coachData?.firstName ?? 'No name'} ${coachData?.lastName ?? 'No name'}`}</h2>
             <Icon
               // name={IconName.HEART_FILL}
               name={IconName.HEART_NONE}
@@ -44,8 +44,10 @@ const CoachCard: FC<Props> = ({ coachData }) => {
           </NameBlock>
           <ConditionsBlock>
             <div>
-              <h2>{`${coachData?.description?.price[0]?.amount || '-'} грн`}</h2>
-              <span>{coachData?.description?.price[0]?.name}</span>
+              <h2>{`${coachData?.description?.price?.amount ?? '-'} грн`}</h2>
+              <span>{coachData?.description?.price?.name}</span>
+              {/* <h2>{`${coachData?.description?.price[0]?.amount ?? '-'} грн`}</h2>
+              <span>{coachData?.description?.price[0]?.name}</span> */}
             </div>
             <Rating>
               <div>
