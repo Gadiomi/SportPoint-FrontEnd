@@ -18,6 +18,7 @@ import { setScheduleId } from '@/redux/globalsStates/globalsStates';
 import { useNavigate } from 'react-router-dom';
 
 export interface ScheduleCardProps {
+  setOpen: (value: boolean) => void;
   savedSchedule: ScheduleEntry[];
   setSavedSchedule: React.Dispatch<React.SetStateAction<ScheduleEntry[]>>;
 }
@@ -25,15 +26,15 @@ export interface ScheduleCardProps {
 const ScheduleCard: React.FC<ScheduleCardProps> = ({
   savedSchedule,
   setSavedSchedule,
+  setOpen,
 }) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const [deleteSchedule] = useDeleteScheduleMutation();
 
   const handleEdit = (id: string) => {
     dispatch(setScheduleId(id));
-    navigate('slot');
+    setOpen(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -75,7 +76,14 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
               </ButtonsContainer>
             </TitleAndButtons>
             <GymStyle>
-              <img src={entry.profile.avatar} alt="avatar" />
+              <img
+                src={
+                  entry.profile.avatar
+                    ? entry.profile.avatar
+                    : '/public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
+                }
+                alt="avatar"
+              />
 
               <span>
                 {entry.profile.firstName} {entry.profile.lastName}

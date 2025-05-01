@@ -6,7 +6,6 @@ import {
   TimeAndDateContainer,
 } from '../../Schedule.styled';
 import GeneralsBtn from '../../../GeneralsBtn/GeneralsBtn';
-import ScheduleCard from '../ScheduleCard/ScheduleCard';
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
 import SearchWork from '../../../SearchWork/SearchWork';
 import { format, getDay, parse, startOfWeek } from 'date-fns';

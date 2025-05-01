@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
+import { Button, ButtonAppearance, Icon, IconName, Input, Modal } from '@/kit';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { View, dateFnsLocalizer } from 'react-big-calendar';
 
@@ -26,6 +26,8 @@ import { useAddScheduleMutation } from '@/redux/schedule/scheduleApi';
 import ScheduleCard from './components/ScheduleCard/ScheduleCard';
 import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
 import Calendar from './components/Calendar/Calendar';
+import EditScheduleCard from './components/EditScheduleCard/EditScheduleCard';
+import { type } from '../../../../theme/types';
 
 const locales = {
   uk: uk,
@@ -58,6 +60,7 @@ const Schedule = () => {
   const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
   const [localSearchResults, setLocalSearchResults] =
     useState<SearchResults | null>(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (userProfile?.description.schedule) {
@@ -240,10 +243,12 @@ const Schedule = () => {
     setSelectedProfile([]);
     setSearchTerm('');
   };
+  const closeModal = () => {
+    setOpen(false);
+  };
 
   return (
     <Container>
-      <Outlet />
       <ScheduleContainer>
         <Button
           onClick={() => navigate('/profile/edit')}
@@ -320,12 +325,16 @@ const Schedule = () => {
 
         {savedSchedule.length > 0 && (
           <ScheduleCard
+            setOpen={setOpen}
             savedSchedule={savedSchedule}
             setSavedSchedule={setSavedSchedule}
           />
         )}
         <GeneralsBtn t={t} />
       </FormStyled>
+      <Modal isOpen={open} onClose={closeModal}>
+        <EditScheduleCard />
+      </Modal>
     </Container>
   );
 };
