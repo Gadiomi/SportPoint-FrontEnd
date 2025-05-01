@@ -41,14 +41,6 @@ export const CallToActionWrapper = styled.div`
   justify-content: center;
 `;
 
-export const Line = styled.div<{ margin?: string }>`
-  width: 100%;
-  height: 1px;
-  margin-bottom: ${({ theme }) => theme.pxs.x8}px;
-  background-color: ${({ theme }) => theme.color.secWhite};
-  margin: ${({ margin }) => margin};
-`;
-
 export const AbilitiesWrapper = styled.div`
   padding-top: 10px;
   & > div {

@@ -8,9 +8,9 @@ import { useLoginMutation, useRegisterMutation } from '@/redux/auth';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
 import { useDeleteAccountMutation } from '@/redux/auth/authApi';
-import { Line } from '../RegisterPage/styles';
 import ProfileButton from './ProfileButton';
 import { AccountCont, AccountDeleteCont, AccountName } from './styles';
+import Line from '@/kit/Line/Line';
 
 const AccountPage: FC = () => {
   const { t } = useTranslation();
@@ -71,7 +71,7 @@ const AccountPage: FC = () => {
         <ProfileButton title={'favorites'} />
         <ProfileButton title={'reviews'} />
         <ProfileButton title={'online-appointment'} />
-        <Line margin={'16px 0'} />
+        <Line $top={'16px'} $bottom={'16px'} />
         <ProfileButton title={'general'} />
         <ProfileButton title={'change-password'} />
       </AccountCont>

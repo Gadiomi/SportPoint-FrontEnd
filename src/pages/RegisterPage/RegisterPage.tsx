@@ -24,7 +24,6 @@ import {
   CallToActionWrapper,
   Form,
   Image,
-  Line,
   SimpleInput,
   // SportsList,
   Subtitle,
@@ -34,6 +33,7 @@ import {
 } from './styles';
 // --- - ---
 import { cityOptions } from './tempData';
+import Line from '@/kit/Line/Line';
 // --- / - ---
 
 const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
@@ -386,7 +386,6 @@ const RegisterPage = () => {
           {currentRole !== Roles.CUSTOMER ? (
             <>
               <Line />
-
               <AddressWidget
                 handler={addressHandler}
                 isOpen={isOpenAddress}
