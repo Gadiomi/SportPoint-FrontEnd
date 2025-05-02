@@ -7,18 +7,18 @@ export const PriceFilterWrapper = styled.div(({ theme }) => ({
   alignItems: 'center',
   gap: theme.pxs.x3,
 }));
-export const InputWrapper = styled.div(({ theme }) => ({
+export const InputWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
-}));
+});
 export const Label = styled.label(({ theme }) => ({
   ...theme.fonts.smallText,
   marginBottom: theme.pxs.x0_5,
   color: theme.color.disabled,
 }));
-export const InputContainer = styled.div(({ theme }) => ({
+export const InputContainer = styled.div({
   position: 'relative',
-}));
+});
 
 export const StyledInput = styled.input(({ theme }) => ({
   ...theme.fonts.mainButton,

@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { CustomFilterCheckbox } from '../../CustomFilterCheckbox/CustomFilterCheckbox';
 import { WrapperFilterCheckbox } from '../SortBy/styles';
+import { useTranslation } from 'react-i18next';
 
 interface ClassificationProps {
   classification: string[];
@@ -20,15 +21,15 @@ export const Classification: React.FC<ClassificationProps> = ({
     },
     [classification, onChange],
   );
-
+  const { t } = useTranslation();
   const options = useMemo(
     () => [
-      { value: 'stretching', label: 'Стреччинг' },
-      { value: 'cardio', label: 'Кардіо' },
-      { value: 'yoga', label: 'Йога' },
-      { value: 'crossfit', label: 'Кросфіт' },
-      { value: 'TRX', label: 'TRX' },
-      { value: 'fitness', label: 'Фітнес' },
+      { value: 'stretching', label: t('filters.stretching') },
+      { value: 'cardio', label: t('filters.cardio') },
+      { value: 'yoga', label: t('filters.yoga') },
+      { value: 'crossfit', label: t('filters.crossfit') },
+      { value: 'TRX', label: t('filters.trx') },
+      { value: 'fitness', label: t('filters.fitness') },
     ],
     [],
   );

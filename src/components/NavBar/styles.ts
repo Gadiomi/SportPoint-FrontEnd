@@ -2,7 +2,7 @@ import { fonts } from '@/theme/fonts';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const Box = styled.div(({ theme }) => ({}));
+export const Box = styled.div({});
 export const NavBox = styled.div(({ theme }) => ({
   position: 'fixed',
   zIndex: 501,
@@ -27,12 +27,17 @@ export const NavItem = styled.li(({ theme }) => ({
   color: theme.color.mainOrange,
 }));
 
-export const StyledNavLink = styled(NavLink)(({ theme }) => ({
+export const StyledNavLink = styled(NavLink)({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-}));
+});
 export const Descr = styled.p(({ theme }) => ({
   ...fonts.smallText,
   lineHeight: `${theme.pxs.x3_5}px`,
 }));
+export const StyledBtnLink = styled.button({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+});

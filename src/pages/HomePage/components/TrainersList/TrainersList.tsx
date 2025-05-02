@@ -7,11 +7,13 @@ import CoachCard from '@/components/CoachCard/CoachCard';
 import { FilterParams, ICoachData } from '@/types';
 import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 import { ButtonAppearance, Icon, IconName } from '@/kit';
-import { t } from 'i18next';
+
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const TrainersList: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [filters, setFilters] = useState<FilterParams>({
     address: '',
     minPrice: null,

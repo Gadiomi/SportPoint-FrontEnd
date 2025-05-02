@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ModalType } from './constants';
+import { ModalEnum, ModalType } from './constants';
+import { Icon, IconName } from '../Icon';
 
 interface ModalProps {
   type: ModalType;
@@ -17,9 +18,9 @@ export const Modal = ({ type, isOpen, onClose, children }: ModalProps) => {
       <ModalContainer onClick={e => e.stopPropagation()}>
         <ModalHeader>{getModalTitle(type)}</ModalHeader>
         <ModalContent>{children}</ModalContent>
-        <ModalFooter>
-          <button onClick={onClose}>Close</button>
-        </ModalFooter>
+        <CloseButton onClick={onClose}>
+          <Icon name={IconName.X} size="24px" />
+        </CloseButton>
       </ModalContainer>
     </Backdrop>
   );
@@ -27,14 +28,14 @@ export const Modal = ({ type, isOpen, onClose, children }: ModalProps) => {
 
 const getModalTitle = (type: ModalType) => {
   switch (type) {
-    case ModalType.CONFIRMATION:
+    case ModalEnum.CONFIRMATION:
       return 'Confirmation';
-    case ModalType.INFO:
+    case ModalEnum.INFO:
       return 'Information';
-    case ModalType.ERROR:
+    case ModalEnum.ERROR:
       return 'Error';
     default:
-      return 'Modal';
+      return type;
   }
 };
 
@@ -48,22 +49,34 @@ const Backdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 `;
 
-const ModalContainer = styled.div`
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 100%;
-`;
+const ModalContainer = styled.div(({ theme }) => ({
+  position: 'relative',
+  backgroundColor: theme.color.background,
+  padding: theme.pxs.x5,
+  borderRadius: theme.pxs.x2,
+  width: '70%',
+  maxWidth: '375px',
+  minHeight: '200px',
+}));
 
-const ModalHeader = styled.h2``;
-
+const ModalHeader = styled.h2(({ theme }) => ({
+  ...theme.fonts.names,
+  paddingRight: theme.pxs.x8,
+}));
 const ModalContent = styled.div`
   margin: 20px 0;
 `;
 
-const ModalFooter = styled.div`
-  text-align: right;
-`;
+const CloseButton = styled.button(({ theme }) => ({
+  position: 'absolute',
+  top: theme.pxs.x5,
+  right: theme.pxs.x5,
+  transition: 'transform 0.6s ease',
+
+  '&:hover': {
+    transform: 'rotate(180deg)',
+  },
+}));

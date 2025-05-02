@@ -6,9 +6,11 @@ import { Footer } from './Footer';
 import { EmailBox, SupportLink } from './styles';
 import { Icon, IconName, Light, Small } from '@/kit';
 import { SocialCards } from './SocialCards';
+import { useTranslation } from 'react-i18next';
 
 export const Contacts: React.FC = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   return (
     <Container
       styles={{
@@ -19,19 +21,19 @@ export const Contacts: React.FC = () => {
         iconStyles={{
           color: theme.color.mainOrange,
         }}
-        title="КОНТАКТИ"
+        title={t('details_page.contacts_text')}
         boxStyle={{ marginBottom: theme.pxs.x6 }}
       />
       <EmailBox>
         <Icon name={IconName.MAIL} size={theme.pxs.x6} />
         <Light>
           <SupportLink href="mailto:support@example.com">
-            Надіслати електронного листа
+            {t('footer.sendEmail')}
           </SupportLink>
         </Light>
       </EmailBox>
       <Small style={{ marginBottom: theme.pxs.x5 }}>
-        Ми надамо відповідь якомога швидше
+        {t('footer.provideAnswer')}
       </Small>
       <SocialCards />
       <Footer />

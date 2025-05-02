@@ -24,10 +24,13 @@ type Props = {
 
 export const ClubCard: FC<Props> = ({ clubData }) => {
   const { avatar, _id, firstName, description, countReview, rating } = clubData;
-  const shortDays = description.schedule
-    .flatMap(item => item.days.split(','))
-    .map(day => day.trim().slice(0, 2))
-    .join(', ');
+  console.log('clubData', clubData);
+  const shortDays = description?.schedule
+    ? description.schedule
+        .flatMap(item => item.days.split(','))
+        .map(day => day.trim().slice(0, 2))
+        .join(', ')
+    : '-';
   const navigate = useNavigate();
   const theme = useTheme();
   return (
@@ -73,7 +76,7 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
         </IconWrap>
       </ClubDetail>
       <Button
-        testId="Детальніше"
+        testId="details"
         title={t('more_details')}
         style={{
           ...fonts.secondManrope,
