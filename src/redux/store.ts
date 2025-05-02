@@ -53,6 +53,13 @@ export const store = configureStore({
     ),
 });
 
+store.subscribe(() => {
+  if (typeof window !== 'undefined') {
+    const state = store.getState();
+    localStorage.setItem('isLogin', String(state.setLogin.isLogin));
+  }
+});
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

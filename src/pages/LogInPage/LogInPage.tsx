@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { LogInFormSchema } from '@/constants/validationSchemas/auth';
 
-import { Button, Icon, IconName, Input, Loader, ButtonAppearance } from '@/kit';
+import { Button, Input, Loader, ButtonAppearance } from '@/kit';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
 import { CookiesKey, Roles } from '@/constants';
@@ -74,7 +74,6 @@ const LogInPage: FC = () => {
         setIsIncorrectData(false);
         console.log('Login Success:', response);
         navigate('/');
-        //  navigate('/profile');
       } else {
         setIsIncorrectData(true);
       }

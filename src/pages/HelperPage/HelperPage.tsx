@@ -3,29 +3,26 @@ import { Icon, IconName } from '@/kit';
 import { IconBlock, IconList } from './styles';
 
 const HelperPage = () => {
-  const iconNameList = Object.keys(IconName);
-  const iconValuesList = Object.values(IconName);
-  console.log(' iconNameList -> ', iconNameList);
+  const iconNameList = Object.entries(IconName);
+  // console.log(' iconNameList -> ', iconNameList);
   return (
     <Section>
       {/* ??? */}
       <Container maxWidth="1440px">
         <h1>Helper page</h1>
-        <h2>Icons</h2>
+        <h2>Icons {`(name={IconName. ...)`}</h2>
         <IconList>
-          {iconValuesList.map(item => (
+          {iconNameList.map(item => (
             <IconBlock>
               <Icon
                 styles={{
                   color: 'currentColor',
                   fill: 'transparent',
                 }}
-                name={item}
-                // name={IconName.ARROW_LEFT}
+                name={item[1]}
               />
-              <p>
-                <span>name</span>: {item}
-              </p>
+              <p>{item[0]}</p>
+              <p>'{item[1]}'</p>
             </IconBlock>
           ))}
         </IconList>

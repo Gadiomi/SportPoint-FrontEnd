@@ -25,7 +25,7 @@ const refreshAccessToken = async () => {
 
     const { accessToken, newRefreshToken } = response.data;
     Cookies.set(CookiesKey.TOKEN, accessToken, {
-      expires: 1,
+      expires: 7,
       path: '/',
       sameSite: 'Strict',
     });
@@ -70,8 +70,8 @@ axiosInstance.interceptors.response.use(
         const newAccessToken = await refreshAccessToken();
         console.log('[Retry] Повторний запит з токеном:', newAccessToken);
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-        return axios(originalRequest);
-        // return axiosInstance(originalRequest);
+        return await axios(originalRequest);
+        // return await axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error(
           '[Response] Помилка під час повторної авторизації:',
