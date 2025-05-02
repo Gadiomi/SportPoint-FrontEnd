@@ -1,20 +1,25 @@
-import React, { FC, useEffect, useState } from 'react';
+import {
+  FC,
+  // useEffect, useState
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonAppearance } from '@/kit';
 import { useNavigate } from 'react-router-dom';
-import { Container, Section } from '@/components/ContainerAndSection';
 import { useGetUserProfileQuery } from '@/redux/user/userApi';
-import { useLoginMutation, useRegisterMutation } from '@/redux/auth';
+// import { useLoginMutation, useRegisterMutation } from '@/redux/auth';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
 import { useDeleteAccountMutation } from '@/redux/auth/authApi';
 import ProfileButton from './ProfileButton';
 import { AccountCont, AccountDeleteCont, AccountName } from './styles';
 import Line from '@/kit/Line/Line';
+import { useAppDispatch } from '@/hooks/hooks';
+import { setIsLogin } from '@/redux/auth/loginSlice';
 
 const AccountPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { data: userData } = useGetUserProfileQuery(undefined);
 
   // const [login, { data: userData, isLoading, isError, error }] =
@@ -42,6 +47,7 @@ const AccountPage: FC = () => {
     try {
       const response: any = await deleteAccount('').unwrap();
       // console.log(' - response ->', response);
+      dispatch(setIsLogin(false));
       Cookies.remove(CookiesKey.TOKEN, { path: '' });
       Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '' });
       localStorage.clear();
