@@ -1,15 +1,16 @@
-import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Container, Section } from '@/components/ContainerAndSection';
-import { useTheme } from '@/hooks';
 import { Logo } from '@/components/Logo/Logo';
 import { FontFamily } from '@/kit';
 import ProfileProvider from '@/utils/ProfileProvider';
 import { useForm } from 'react-hook-form';
+import { useAppSelector } from '@/hooks/hooks';
 
 const AccountLayout = () => {
-  const { theme } = useTheme();
   const methods = useForm();
+  const navigate = useNavigate();
+  const { isLogin } = useAppSelector(state => state.setLogin);
+  !isLogin && navigate('/login');
 
   return (
     <ProfileProvider methods={methods}>
@@ -24,9 +25,3 @@ const AccountLayout = () => {
 };
 
 export default AccountLayout;
-
-// const StyledImage = styled.img(({ theme }) => ({
-//   margin: 'auto',
-//   marginBottom: theme.pxs.x5,
-//   marginTop: theme.pxs.x2,
-// }));

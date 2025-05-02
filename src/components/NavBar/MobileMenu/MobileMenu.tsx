@@ -85,7 +85,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 width: '100%',
               }}
               onClick={() => {
-                localStorage.removeItem('token');
+                localStorage.removeItem('token'); // ?? може Cookies.remove(CookiesKey.TOKEN, { path: '' });
                 localStorage.removeItem('refreshToken');
                 dispatch(setIsLogin(false));
                 navigate('/');
