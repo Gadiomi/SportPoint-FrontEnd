@@ -4,11 +4,13 @@ import { Icon, IconName, Light, Title } from '@/kit';
 import { useTheme } from 'styled-components';
 import { LinkItem, LinkList, StyledLink } from './styles';
 import { TitleBox } from '@/kit/TitleBox';
-import { t } from 'i18next';
+
 import { SwiperNav } from './SwiperNav';
+import { useTranslation } from 'react-i18next';
 
 export const TypeNavigation: React.FC = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   return (
     <Container
       styles={{

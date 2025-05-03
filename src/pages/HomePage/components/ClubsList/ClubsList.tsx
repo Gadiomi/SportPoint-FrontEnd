@@ -60,7 +60,7 @@ export const ClubsList: React.FC = () => {
               ))}
             </StyledClubsList>
           ) : (
-            <Loading>Немає даних для відображення</Loading>
+            <Loading>{t('home_page.noResult')}</Loading>
           )}
           <Pagination
             currentPage={currentPage}
@@ -69,7 +69,7 @@ export const ClubsList: React.FC = () => {
           />
         </>
       )}
-      {error ? <p>Помилка завантаження даних</p> : null}
+      {error ? <p>{t('home_page.error')}</p> : null}
     </Container>
   );
 };

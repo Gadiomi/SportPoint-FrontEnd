@@ -6,6 +6,7 @@ import {
   ClubDetail,
   ClubImage,
   ClubInfo,
+  HeartButton,
   IconWrap,
   IconWrapRating,
   InfoWrap,
@@ -24,7 +25,7 @@ type Props = {
 
 export const ClubCard: FC<Props> = ({ clubData }) => {
   const { avatar, _id, firstName, description, countReview, rating } = clubData;
-  console.log('clubData', clubData);
+
   const shortDays = description?.schedule
     ? description.schedule
         .flatMap(item => item.days.split(','))
@@ -36,10 +37,13 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
   return (
     <ClubCardBox>
       <ClubImage image={avatar} />
+      <HeartButton>
+        <Icon name={IconName.HEART_NONE} size={24} />
+      </HeartButton>
       <ClubInfo>
         <InfoWrap>
           <Main style={{ fontWeight: '500' }}>{firstName}</Main>
-          <LightText style={{ fontWeight: '400' }}>Тренажерна зала</LightText>
+          <LightText style={{ fontWeight: '400' }}>{t('gym')}</LightText>
         </InfoWrap>
         <InfoWrapReviews>
           <IconWrapRating>
