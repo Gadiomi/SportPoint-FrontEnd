@@ -10,6 +10,7 @@
   "more_details": "More details",
   "show_more": "Show more",
   "resultBack": "Search results",
+  "gym": "Gym",
   "uah": "uah",
   "login_page": {
     "title": "Log in to account",
@@ -101,7 +102,9 @@
     "sortBy": "Sort by",
     "price": "Price",
     "classification": "Classification",
-    "resultFilter": "Show result"
+    "resultFilter": "Show result",
+    "noResult": "No data to display",
+    "error": "Data loading error"
   },
   "filters": {
     "kyiv": "Kyiv",
@@ -113,6 +116,7 @@
     "cardio": "Cardio",
     "yoga": "Yoga",
     "crossfit": "Crossfit",
+    "pool": "Pool",
     "trx": "TRX",
     "fitness": "Fitness",
     "from": "from",
