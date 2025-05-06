@@ -4,21 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { SportName, StyledImage } from './styles';
+import { useTranslation } from 'react-i18next';
 
 export const SwiperNav: React.FC = () => {
+  const { t } = useTranslation();
   const images = [
     {
-      name: 'Басейн',
+      name: t('filters.pool'),
       image: '/assets/images/homePage/pool.png',
       sportType: 'pool',
     },
     {
-      name: 'Йога',
+      name: t('filters.yoga'),
       image: '/assets/images/homePage/yoga.png',
       sportType: 'yoga',
     },
     {
-      name: 'Стрейчинг',
+      name: t('filters.stretching'),
       image: '/assets/images/homePage/stretch.png',
       sportType: 'stretching',
     },

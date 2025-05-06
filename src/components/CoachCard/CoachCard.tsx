@@ -14,6 +14,7 @@ import {
 import { ICoachData } from '../../types';
 import { fixEnding } from '@/helpers/fixEnding';
 import { fonts } from '@/theme/fonts';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   coachData: ICoachData;
@@ -22,9 +23,7 @@ type Props = {
 const NO_IMAGE = '../../../../public/assets/svg/no_image.svg'; //TEMP!!!
 
 const CoachCard: FC<Props> = ({ coachData }) => {
-  const detailsHandler = () => {
-    console.log('detailsHandler!!!'); //Temp !!!
-  };
+  const navigate = useNavigate();
 
   return (
     <CoachCardWrapper>
@@ -74,7 +73,7 @@ const CoachCard: FC<Props> = ({ coachData }) => {
       <Button
         testId="Детальніше"
         title={t('more_details')}
-        onClick={detailsHandler}
+        onClick={() => navigate(`trainer/${coachData._id}`)}
         style={{
           ...fonts.secondManrope,
           padding: '6px',
