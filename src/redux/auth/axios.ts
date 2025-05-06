@@ -10,9 +10,8 @@ export const axiosInstance = axios.create({
 const refreshAccessToken = async () => {
   try {
     const refreshToken = Cookies.get(CookiesKey.REFRESH_TOKEN);
-    if (!refreshToken) throw new Error('No refresh token available');
-
     console.log('[Refresh] RefreshToken:', refreshToken);
+    if (!refreshToken) throw new Error('No refresh token available');
 
     const response = await axios.get(
       'https://sportpoint-backend.onrender.com/auth/refresh/current',
@@ -22,7 +21,7 @@ const refreshAccessToken = async () => {
         },
       },
     );
-
+    console.log('Response in RefreshToken:', response);
     const { accessToken, newRefreshToken } = response.data;
     Cookies.set(CookiesKey.TOKEN, accessToken, {
       expires: 7,

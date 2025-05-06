@@ -31,12 +31,12 @@ export const AccountCont = styled.div`
   padding-top: 6px;
 `;
 
-export const AccountName = styled.div<{ paddingTop?: string }>`
+export const AccountName = styled.div<{ $paddingTop?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: ${({ paddingTop }) => paddingTop ?? '13px'};
+  padding-top: ${({ $paddingTop }) => $paddingTop ?? '13px'};
   padding-bottom: 16px;
   border-bottom: 1px solid #b7b7b9;
   & img {
@@ -96,9 +96,9 @@ export const SportButtonsContainer = styled.div`
   border-radius: 6px;
 `;
 
-export const SportButton = styled.button<{ isSelected: boolean }>`
-  background-color: ${({ isSelected }) =>
-    isSelected ? '#494949' : 'transparent'};
+export const SportButton = styled.button<{ $isSelected: boolean }>`
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? '#494949' : 'transparent'};
   color: #b7b7b9;
   border: 1px solid #494949;
   border-radius: 60px;
@@ -107,8 +107,8 @@ export const SportButton = styled.button<{ isSelected: boolean }>`
   margin: 5px;
   cursor: pointer;
   &:hover {
-    background-color: ${({ isSelected }) =>
-      isSelected ? '#494949' : 'transparent'};
+    background-color: ${({ $isSelected }) =>
+      $isSelected ? '#494949' : 'transparent'};
   }
 `;
 

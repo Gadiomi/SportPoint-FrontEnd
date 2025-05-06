@@ -167,7 +167,7 @@ const General: FC = () => {
     <GeneralWrapper>
       <ProfileButton title={'general'} arrowDirection={'left'} />
 
-      <AccountName paddingTop={'45px'}>
+      <AccountName $paddingTop={'45px'}>
         <img
           src={
             selectedAvatar ||
@@ -248,7 +248,7 @@ const General: FC = () => {
           {allSports.map(sport => (
             <SportButton
               key={sport}
-              isSelected={selectedSports.includes(sport)} // Передаємо статус вибору
+              $isSelected={selectedSports.includes(sport)} // Передаємо статус вибору
               onClick={e => handleSportToggle(sport, e)}
             >
               {sport}

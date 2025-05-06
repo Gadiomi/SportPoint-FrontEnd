@@ -11,7 +11,10 @@ const loadLoginState = (): boolean => {
     // const token = Cookies.get(CookiesKey.TOKEN);
     // const refreshToken = Cookies.get(CookiesKey.REFRESH_TOKEN);
     // console.log(' - token: ', token, ', refreshToken: ', refreshToken);
-    // if (!token || !refreshToken) return false;
+    const tokenFront = Cookies.get(CookiesKey.TOKEN_F);
+    const refreshTokenFront = Cookies.get(CookiesKey.REFRESH_TOKEN_F);
+    // console.log('tokenFront:', tokenFront, ' refreshTokenFront:', refreshTokenFront);
+    if (!tokenFront || !refreshTokenFront) return false;
     return localStorage.getItem('isLogin') === 'true';
   }
   return false;
