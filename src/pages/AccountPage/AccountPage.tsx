@@ -1,42 +1,17 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonAppearance } from '@/kit';
 import { useGetUserProfileQuery } from '@/redux/user/userApi';
-import { useDeleteAccountMutation } from '@/redux/auth/authApi';
-import { setIsLogin } from '@/redux/auth/loginSlice';
-import Cookies from 'js-cookie';
-import { CookiesKey } from '@/constants';
-import ProfileButton from './ProfileButton';
-import { AccountCont, AccountDeleteCont, AccountName } from './styles';
+import DeleteAccountBlock from '@/components/DeleteAccountBlock/DeleteAccountBlock';
 import Line from '@/kit/Line/Line';
-import { useAppDispatch } from '@/hooks/hooks';
+import ProfileButton from './ProfileButton';
+import { AccountCont, AccountName, AccountWrapper } from './styles';
 
 const AccountPage: FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const { data: userData } = useGetUserProfileQuery(undefined);
-  const [deleteAccount, { isLoading: isLoadingDel }] =
-    useDeleteAccountMutation();
 
-  const deleteHandler = async () => {
-    try {
-      const response: any = await deleteAccount('').unwrap();
-      // console.log(' - response ->', response);
-      dispatch(setIsLogin(false));
-      Cookies.remove(CookiesKey.TOKEN, { path: '/' });
-      Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '/' });
-      Cookies.remove(CookiesKey.TOKEN_F, { path: '/' });
-      Cookies.remove(CookiesKey.REFRESH_TOKEN_F, { path: '/' });
-      localStorage.clear();
-      navigate('/');
-    } catch (err) {
-      console.error('Не вдалося видалити акаунт: ', err);
-    }
-  };
   return (
-    <div>
+    <AccountWrapper>
       <AccountName>
         <img
           src={
@@ -51,7 +26,6 @@ const AccountPage: FC = () => {
               : 'No Name')}
         </h3>
       </AccountName>
-
       <AccountCont>
         <ProfileButton title={'favorites'} />
         <ProfileButton title={'reviews'} />
@@ -61,17 +35,8 @@ const AccountPage: FC = () => {
         <ProfileButton title={'change-password'} />
       </AccountCont>
 
-      <AccountDeleteCont>
-        <h4>{t(`account_page.zone`)}</h4>
-        <Button
-          title={t(`account_page.delete`)}
-          appearance={ButtonAppearance.UNDERLINED}
-          testId="delete"
-          onClick={() => deleteHandler()}
-          textStyle={{ color: '#ED772F' }}
-        ></Button>
-      </AccountDeleteCont>
-    </div>
+      <DeleteAccountBlock t={t} />
+    </AccountWrapper>
   );
 };
 

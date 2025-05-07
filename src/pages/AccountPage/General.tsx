@@ -6,13 +6,9 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '@/redux/auth/authApi';
-import Cookies from 'js-cookie';
-import { CookiesKey } from '@/constants';
 import {
   AccountName,
-  GeneralBtnsWrapper,
   GeneralInFormWrapper,
   GeneralSports,
   GeneralWrapper,
@@ -21,6 +17,7 @@ import {
 } from './styles';
 import ProfileButton from './ProfileButton';
 import BackSaveButtons from './BackSaveButtons';
+import BigLoader from '@/components/BigLoader/BigLoader';
 
 interface UserProfileFormData {
   avatar: string | File;
@@ -35,7 +32,6 @@ interface UserProfileFormData {
 }
 
 const General: FC = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [logout] = useLogoutMutation();
   const { data: userData, isLoading } = useGetUserProfileQuery(undefined, {
@@ -161,7 +157,10 @@ const General: FC = () => {
 
   const allSports = ['Стреччинг', 'TRX', 'Кросфіт', 'Фітнес', 'Йога', 'Кардіо'];
 
-  if (isLoading) return <div>Loading profile...</div>;
+  if (isLoading) {
+    // return <div>Loading...</div>;
+    return <BigLoader isLoading={isLoading} />;
+  }
 
   return (
     <GeneralWrapper>
@@ -255,31 +254,7 @@ const General: FC = () => {
             </SportButton>
           ))}
         </SportButtonsContainer>
-        <BackSaveButtons />
-        {/* <GeneralBtnsWrapper>
-          <Button
-            type="button"
-            title={t(`account_page.back`)}
-            appearance={ButtonAppearance.SECONDARY}
-            testId="back"
-            onClick={() => navigate('/profile')}
-          />
-          <Button
-            type="submit"
-            title={t(`account_page.save`)}
-            appearance={ButtonAppearance.SECONDARY}
-            testId="save"
-            prependChild={
-              <Icon
-                styles={{
-                  color: 'currentColor',
-                  fill: 'transparent',
-                }}
-                name={IconName.CHECK_CONTAINED}
-              />
-            }
-          />
-        </GeneralBtnsWrapper> */}
+        <BackSaveButtons t={t} />
       </form>
       {/* <Button
         type="button"

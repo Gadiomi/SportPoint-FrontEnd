@@ -15,20 +15,21 @@ const AccountLayout = () => {
   const { isLogin } = useAppSelector(state => state.setLogin);
   // --- - ---
   useEffect(() => {
+    const tokenFront = Cookies.get(CookiesKey.TOKEN_F);
+    const refreshTokenFront = Cookies.get(CookiesKey.REFRESH_TOKEN_F);
+    // console.log(' - tokenFront: ', tokenFront);
+    // console.log(' -- refreshTokenFront: ', refreshTokenFront);
+    if (!tokenFront || !refreshTokenFront || !isLogin) {
+      navigate('/login');
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isLogin) {
       navigate('/login');
     }
   }, [isLogin]);
 
-  useEffect(() => {
-    const tokenFront = Cookies.get(CookiesKey.TOKEN_F);
-    const refreshTokenFront = Cookies.get(CookiesKey.REFRESH_TOKEN_F);
-    // console.log(' - tokenFront: ', tokenFront);
-    // console.log(' -- refreshTokenFront: ', refreshTokenFront);
-    if (!tokenFront || !refreshTokenFront) {
-      navigate('/login');
-    }
-  }, []);
   // --- / - ---
   return (
     <ProfileProvider methods={methods}>
