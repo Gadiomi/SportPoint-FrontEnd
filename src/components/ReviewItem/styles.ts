@@ -123,7 +123,7 @@ export const StyledDate = styled.div`
 
 export const ButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   gap: 8px;
   margin-top: 10px;
 `;
@@ -173,13 +173,8 @@ export const UserInfoEdit = styled.div`
 `;
 
 export const Badge = styled.div`
-  background-color: #ed772f;
-  color: white;
-  border-radius: 12px;
-  padding: 4px 10px;
+  color: ${({ theme }) => theme.color.secWhite};
   font-size: 12px;
-  display: inline-block;
-  margin-top: 4px;
 `;
 
 export const InitialsAvatar = styled.div`
@@ -239,7 +234,7 @@ export const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+
   padding -top: 16px;
   padding-bottom:24px;
 `;
@@ -249,7 +244,7 @@ export const Title = styled.h3`
   align-items: center;
   gap: 8px;
   font-size: 18px;
-  padding-top: 32px;
+  font-size: 24px;
 `;
 export const CustomHeader = styled.h2``;
 
@@ -263,7 +258,7 @@ export const RatingBar = styled.div`
 export const Bar = styled.div<{ width: number }>`
   background: ${({ theme }) => theme.color.darkGray};
   height: 8px;
-  width: 196px;
+  width: 176px;
   border-radius: 2px;
   overflow: hidden;
 
@@ -281,11 +276,17 @@ export const Summary = styled.div`
   align-items: center;
   gap: 8px;
   font-size: 24px;
+  justify-content: flex-end;
 `;
 
 export const CountReviews = styled.p`
   font-size: 12px;
+  text-align: end;
   color: ${({ theme }) => theme.color.secWhite};
+`;
+
+export const NameIcon = styled.div`
+  display: flex;
 `;
 
 export const SportListEdit = styled.div`
@@ -359,4 +360,108 @@ export const ReplyContainer = styled.div`
   padding: '12px';
   color: '#fff';
   backgroundcolor: transparent;
+`;
+
+// ********************ReportModal**************88
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+export const ModalContent = styled.div`
+  background: #121212;
+  color: white;
+  width: 90%;
+  max-width: 400px;
+  padding: 24px;
+  border-radius: 16px;
+`;
+
+export const TitleR = styled.h2`
+  font-size: 18px;
+  margin-bottom: 20px;
+`;
+
+export const RadioGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const RadioOption = styled.label<{ selected: boolean }>`
+  padding: 12px;
+  border: 1px solid #ed772f;
+  // border: 1px solid ${({ selected }) => (selected ? '#FFA500' : '#333')};
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1a1a1a;
+
+  input[type='radio'] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: black;
+    position: relative;
+
+    &:checked::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+    }
+  }
+`;
+
+export const TextArea = styled.textarea`
+  width: 100%;
+  margin-top: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  background: #1e1e1e;
+  color: white;
+  resize: none;
+`;
+
+export const SubmitButton = styled.button<{ disabled?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 32px;
+  width: 100%;
+  height: 36px;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: ${({ disabled }) => (disabled ? '#B7B7B9' : '#ED772F')};
+  color: ${({ theme }) => theme.color.background};
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+`;
+
+export const BackButton = styled.button`
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 8px;
+  cursor: pointer;
 `;

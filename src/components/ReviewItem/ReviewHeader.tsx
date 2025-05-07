@@ -1,8 +1,8 @@
 import React from 'react';
 import { ReviewHeaderContainer, Header } from './styles';
-import { Icon } from '@/kit';
-import { IconName } from '@/kit';
+import { Icon, IconName } from '@/kit';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { IconDiv } from './styles';
 
 type ReviewHeaderProps = {
@@ -10,6 +10,7 @@ type ReviewHeaderProps = {
   leftIcon?: IconName | null;
   rightIcon?: IconName | null;
   leftIconStyles?: React.CSSProperties;
+  rightIconStyles?: React.CSSProperties;
   onClick?: () => void;
   onCancel?: () => void;
   userRole?: string;
@@ -18,22 +19,31 @@ type ReviewHeaderProps = {
 const ReviewHeader: React.FC<ReviewHeaderProps> = ({
   onCancel,
   title,
-  leftIcon = IconName.MASSAGE_TYPING,
+  leftIcon = IconName.Icon_message_chat_01,
   rightIcon = IconName.ARROW_LEFT,
   leftIconStyles = {},
-  userRole = 'Customer',
+  rightIconStyles = {},
+  userRole,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const translate: (key: string, options?: Record<string, any>) => string = t;
 
   const handleRightIconClick = () => {
     if (rightIcon === IconName.ARROW_LEFT) {
-      // if (onCancel) onCancel();
-      navigate('/profile'); // Temp!!!
+      if (onCancel) {
+        onCancel();
+      } else {
+        navigate('/profile'); // Інакше — на профіль
+      }
     }
   };
 
   const finalTitle =
-    title ?? (userRole === 'Customer' ? 'ВІДГУКИ' : 'МОЇ ВІДГУКИ');
+    title ??
+    (userRole === 'сustomer'
+      ? translate('account_page.reviews')
+      : translate('details_page.reviews'));
   return (
     <ReviewHeaderContainer>
       <Header>
@@ -46,7 +56,10 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
         <IconDiv onClick={handleRightIconClick}>
           {' '}
           {/* Wrapping the Icon in a div */}
-          <Icon name={rightIcon} styles={{ fill: 'none' }} />
+          <Icon
+            name={rightIcon}
+            styles={{ fill: 'none', ...rightIconStyles }}
+          />
         </IconDiv>
       )}
     </ReviewHeaderContainer>
