@@ -3,16 +3,16 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://sportpoint-backend.onrender.com',
+  // baseURL: 'https://sportpoint-backend.onrender.com',
+  baseURL: import.meta.env.VITE_BASE_URL,
   withCredentials: true,
 });
 
 const refreshAccessToken = async () => {
   try {
     const refreshToken = Cookies.get(CookiesKey.REFRESH_TOKEN);
-    if (!refreshToken) throw new Error('No refresh token available');
-
     console.log('[Refresh] RefreshToken:', refreshToken);
+    if (!refreshToken) throw new Error('No refresh token available');
 
     const response = await axios.get(
       'https://sportpoint-backend.onrender.com/auth/refresh/current',
@@ -22,10 +22,10 @@ const refreshAccessToken = async () => {
         },
       },
     );
-
+    console.log('Response in RefreshToken:', response);
     const { accessToken, newRefreshToken } = response.data;
     Cookies.set(CookiesKey.TOKEN, accessToken, {
-      expires: 1,
+      expires: 7,
       path: '/',
       sameSite: 'Strict',
     });
@@ -70,8 +70,8 @@ axiosInstance.interceptors.response.use(
         const newAccessToken = await refreshAccessToken();
         console.log('[Retry] Повторний запит з токеном:', newAccessToken);
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-        return axios(originalRequest);
-        // return axiosInstance(originalRequest);
+        return await axios(originalRequest);
+        // return await axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error(
           '[Response] Помилка під час повторної авторизації:',

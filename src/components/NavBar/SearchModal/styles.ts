@@ -28,7 +28,7 @@ export const History = styled.p(({ theme }) => ({
   color: theme.color.disabled,
 }));
 
-export const Rubbish = styled.button(({ theme }) => ({}));
+export const Rubbish = styled.button({});
 
 export const HistoryBox = styled.div(({ theme }) => ({
   display: 'flex',

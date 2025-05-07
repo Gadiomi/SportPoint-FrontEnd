@@ -1,22 +1,24 @@
 import React from 'react';
-import { FooterContainer, FooterLink, FooterLinks, FooterText } from './styles';
+import { FooterContainer, FooterLink, FooterLinks } from './styles';
 import { Light, Small } from '@/kit';
+import { useTranslation } from 'react-i18next';
 
 export const Footer: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <FooterContainer>
       <FooterLinks>
         <FooterLink href="/">
-          <Small>Політика конфіденційності</Small>
+          <Small>{t('footer.confidentiality')}</Small>
         </FooterLink>
         <FooterLink href="/">
-          <Small>Політика використання cookie</Small>
+          <Small>{t('footer.ruleCookie')}</Small>
         </FooterLink>
         <FooterLink href="/">
-          <Small>Змінити налаштування cookie</Small>
+          <Small>{t('footer.changeCookie')}</Small>
         </FooterLink>
         <FooterLink href="/">
-          <Small>Структура веб-сайту</Small>
+          <Small>{t('footer.webSite')}</Small>
         </FooterLink>
       </FooterLinks>
       <Light

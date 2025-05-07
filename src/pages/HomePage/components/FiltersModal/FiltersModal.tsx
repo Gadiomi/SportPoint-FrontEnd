@@ -16,7 +16,7 @@ import SortPrice from './SortPrice/SortPrice';
 import { Classification } from './Classification/Classification';
 import { Logo } from '@/components/Logo/Logo';
 import { FilterParams } from '@/types';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface PropsFiltersModal {
   isFiltersModalOpen: boolean;
@@ -44,7 +44,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
   });
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [classification, setClassification] = useState<string[]>([]);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (isFiltersModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -130,7 +130,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
             options={cityOptions}
             value={select}
             onChange={setSelect}
-            placeholder="Київ"
+            placeholder={t('filters.kyiv')}
             padding={`${theme.pxs.x1_5}px`}
           />
           <StyledHr

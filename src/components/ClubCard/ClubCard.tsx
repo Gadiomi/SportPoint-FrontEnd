@@ -6,6 +6,7 @@ import {
   ClubDetail,
   ClubImage,
   ClubInfo,
+  HeartButton,
   IconWrap,
   IconWrapRating,
   InfoWrap,
@@ -24,19 +25,25 @@ type Props = {
 
 export const ClubCard: FC<Props> = ({ clubData }) => {
   const { avatar, _id, firstName, description, countReview, rating } = clubData;
-  const shortDays = description.schedule
-    .flatMap(item => item.days.split(','))
-    .map(day => day.trim().slice(0, 2))
-    .join(', ');
+
+  const shortDays = description?.schedule
+    ? description.schedule
+        .flatMap(item => item.days.split(','))
+        .map(day => day.trim().slice(0, 2))
+        .join(', ')
+    : '-';
   const navigate = useNavigate();
   const theme = useTheme();
   return (
     <ClubCardBox>
       <ClubImage image={avatar} />
+      <HeartButton>
+        <Icon name={IconName.HEART_NONE} size={24} />
+      </HeartButton>
       <ClubInfo>
         <InfoWrap>
           <Main style={{ fontWeight: '500' }}>{firstName}</Main>
-          <LightText style={{ fontWeight: '400' }}>Тренажерна зала</LightText>
+          <LightText style={{ fontWeight: '400' }}>{t('gym')}</LightText>
         </InfoWrap>
         <InfoWrapReviews>
           <IconWrapRating>
@@ -73,7 +80,7 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
         </IconWrap>
       </ClubDetail>
       <Button
-        testId="Детальніше"
+        testId="details"
         title={t('more_details')}
         style={{
           ...fonts.secondManrope,

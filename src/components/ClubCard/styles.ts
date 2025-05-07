@@ -31,18 +31,26 @@ export const LightText = styled.p(({ theme }) => ({
   color: theme.color.disabled,
   marginLeft: theme.pxs.x0_5,
 }));
-export const ClubInfo = styled.div(({ theme }) => ({
+export const ClubInfo = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-}));
-export const InfoWrap = styled.div(({ theme }) => ({
+});
+export const InfoWrap = styled.div({
   width: 'auto',
-}));
-export const InfoWrapReviews = styled.div(({ theme }) => ({
+});
+export const InfoWrapReviews = styled.div({
   width: 'auto',
-}));
+});
 
+export const HeartButton = styled.button(({ theme }) => ({
+  position: 'absolute',
+  top: theme.pxs.x2,
+  right: theme.pxs.x2,
+  '& svg': {
+    color: '#EC4033',
+  },
+}));
 export const ClubDetail = styled.div(({ theme }) => ({
   display: 'flex',
   gap: theme.pxs.x2,
@@ -61,7 +69,7 @@ export const IconWrapRating = styled(IconWrap)(({ theme }) => ({
   marginBottom: theme.pxs.x0_5,
   alignItems: 'normal',
 }));
-export const RatingText = styled.p(({ theme }) => ({
+export const RatingText = styled.p({
   ...fonts.mainButton,
   fontWeight: '500',
-}));
+});

@@ -49,7 +49,37 @@ export const MenuItem = styled.li(({ theme }) => ({
   border: `0.50px solid ${theme.color.mainOrange}`,
   borderRadius: theme.pxs.x1_5,
   padding: `${theme.pxs.x1}px ${theme.pxs.x2}px`,
+  '&:hover': {
+    backgroundColor: theme.color.mainOrange,
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease, color 0.3s ease',
+  },
 }));
 export const Descr = styled.p(({ theme }) => ({
   ...theme.fonts.aboutText,
+}));
+export const ButtonBox = styled.div(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  gap: theme.pxs.x4,
+  paddingTop: theme.pxs.x8,
+}));
+export const Question = styled.h3(({ theme }) => ({
+  ...theme.fonts.secondManrope,
+  textAlign: 'center',
+}));
+
+export const LangButton = styled.button(({ theme }) => ({
+  ...theme.fonts.mainButton,
+  color: theme.color.white,
+  borderRadius: theme.pxs.x3,
+  border: `${theme.pxs.x0_5}px solid ${theme.color.mainOrange}`,
+  padding: theme.pxs.x2,
+  width: theme.pxs.x11,
+  '&:hover': {
+    backgroundColor: theme.color.mainOrange,
+    color: theme.color.white,
+
+    transition: 'background-color 0.3s ease, color 0.3s ease',
+  },
 }));

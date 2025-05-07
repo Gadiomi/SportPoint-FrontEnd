@@ -10,11 +10,11 @@ import { useGetCardsQuery } from '@/redux/cards/cardsApi';
 import { Loading, StyledButtonBack } from '../TrainersList/styles';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ButtonAppearance, Icon, IconName } from '@/kit';
-
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export const ClubsList: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const abilityFromUrl = searchParams.get('abilities') || '';
   const [filters, setFilters] = useState<FilterParams>({
@@ -60,7 +60,7 @@ export const ClubsList: React.FC = () => {
               ))}
             </StyledClubsList>
           ) : (
-            <Loading>Немає даних для відображення</Loading>
+            <Loading>{t('home_page.noResult')}</Loading>
           )}
           <Pagination
             currentPage={currentPage}
@@ -69,7 +69,7 @@ export const ClubsList: React.FC = () => {
           />
         </>
       )}
-      {error ? <p>Помилка завантаження даних</p> : null}
+      {error ? <p>{t('home_page.error')}</p> : null}
     </Container>
   );
 };

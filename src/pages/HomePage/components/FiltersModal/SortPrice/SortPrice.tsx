@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import {
   Currency,
   InputContainer,
@@ -8,6 +7,7 @@ import {
   PriceFilterWrapper,
   StyledInput,
 } from './style';
+import { useTranslation } from 'react-i18next';
 
 interface PriceFilterProps {
   priceRange: {
@@ -33,10 +33,11 @@ const SortPrice: React.FC<PriceFilterProps> = ({
       onFilterChange(priceRange.from, value);
     }
   };
+  const { t } = useTranslation();
   return (
     <PriceFilterWrapper>
       <InputWrapper>
-        <Label>від</Label>
+        <Label>{t('filters.from')}</Label>
         <InputContainer>
           <StyledInput
             type="number"
@@ -45,12 +46,12 @@ const SortPrice: React.FC<PriceFilterProps> = ({
             placeholder="0"
             min="0"
           />
-          <Currency>грн</Currency>
+          <Currency>{t('uah')}</Currency>
         </InputContainer>
       </InputWrapper>
 
       <InputWrapper>
-        <Label>до</Label>
+        <Label>{t('filters.to')}</Label>
         <InputContainer>
           <StyledInput
             type="number"
@@ -59,7 +60,7 @@ const SortPrice: React.FC<PriceFilterProps> = ({
             placeholder="1000"
             min="0"
           />
-          <Currency>грн</Currency>
+          <Currency>{t('uah')}</Currency>
         </InputContainer>
       </InputWrapper>
     </PriceFilterWrapper>
