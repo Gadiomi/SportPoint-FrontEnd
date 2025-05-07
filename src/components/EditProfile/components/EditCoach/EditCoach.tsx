@@ -4,12 +4,10 @@ import { Button, ButtonAppearance, IconName, Icon } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../../components/EditGeneral/EditGeneral.styled';
 import { useAppSelector } from '@/hooks/hooks';
-import { AccountDeleteCont } from '@/pages/AccountPage/styles';
-import { useDeleteAccountMutation } from '@/redux/auth/authApi';
-import { CookiesKey } from '@/constants';
-import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 import AvatarAndName from '../AvatarAndName/AvatarAndName';
+import DeleteAccountBlock from '@/components/DeleteAccountBlock/DeleteAccountBlock';
+import BigLoader from '@/components/BigLoader/BigLoader';
 
 const EditCoach = () => {
   const { t } = useTranslation();
@@ -17,23 +15,12 @@ const EditCoach = () => {
   const navigate = useNavigate();
   const userProfile = useAppSelector(state => state.user.user);
   const isLoading = useAppSelector(state => state.user.isLoading);
-  const [deleteAccount] = useDeleteAccountMutation();
-
-  const deleteHandler = async () => {
-    try {
-      await deleteAccount('').unwrap();
-      Cookies.remove(CookiesKey.TOKEN, { path: '' });
-      Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '' });
-      localStorage.clear();
-      navigate('/');
-    } catch (err) {
-      console.error('Не вдалося видалити акаунт: ', err);
-    }
-  };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    // return <div>Loading...</div>;
+    return <BigLoader isLoading={isLoading} />;
   }
+
   return (
     <Container>
       <Button
@@ -120,15 +107,7 @@ const EditCoach = () => {
           );
         })}
       </List>
-      <AccountDeleteCont>
-        <h4>{t(`account_page.zone`)}</h4>
-        <Button
-          title={t(`account_page.delete`)}
-          appearance={ButtonAppearance.UNDERLINED}
-          testId="delete"
-          onClick={() => deleteHandler()}
-        ></Button>
-      </AccountDeleteCont>
+      <DeleteAccountBlock t={t} />
     </Container>
   );
 };

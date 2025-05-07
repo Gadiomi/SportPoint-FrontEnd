@@ -124,6 +124,8 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 onClick={() => {
                   Cookies.remove(CookiesKey.TOKEN, { path: '/' });
                   Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '/' });
+                  Cookies.remove(CookiesKey.TOKEN_F, { path: '/' });
+                  Cookies.remove(CookiesKey.REFRESH_TOKEN_F, { path: '/' });
                   dispatch(setIsLogin(false));
                   navigate('/');
                   onClose();

@@ -1,11 +1,13 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
 import { GeneralBtnsWrapper } from './styles';
 
-const BackSaveButtons: FC = () => {
-  const { t } = useTranslation();
+interface IGeneralBtnsProps {
+  t: (key: string) => string;
+}
+
+const BackSaveButtons: FC<IGeneralBtnsProps> = ({ t }) => {
   const navigate = useNavigate();
 
   return (
@@ -13,9 +15,9 @@ const BackSaveButtons: FC = () => {
       <Button
         type="button"
         title={t(`account_page.back`)}
-        appearance={ButtonAppearance.SECONDARY}
+        appearance={ButtonAppearance.PRIMARY}
         testId="back"
-        onClick={() => navigate('/profile')}
+        onClick={() => navigate(-1)}
       />
       <Button
         type="submit"
