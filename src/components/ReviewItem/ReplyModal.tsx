@@ -5,6 +5,7 @@ import ReviewUserInfo from './ReviwUserInfo';
 import { IconName, Icon } from '@/kit';
 import { TextArea } from '@/pages/ReviewsPage/styles';
 import { useTheme } from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import {
   ButtonGroup,
   DeleteButton,
@@ -41,6 +42,8 @@ const ReplyModal: React.FC<Props> = ({
   rating,
   createdAt,
 }) => {
+  const { t } = useTranslation();
+  const translate: (key: string, options?: Record<string, any>) => string = t;
   const [text, setText] = useState('');
 
   const handleSave = () => {
@@ -54,8 +57,8 @@ const ReplyModal: React.FC<Props> = ({
     <Overlay isOpen={isOpen}>
       <ModalContainer>
         <ReviewHeader
-          title="Відповісти на відгук"
-          leftIcon={IconName.EDIT_CONTAINED}
+          title={translate('details_page.reply-to-review')}
+          leftIcon={IconName.Icon_send_02}
         />
         <UserInfoReply>
           <UserInfo>
@@ -72,8 +75,8 @@ const ReplyModal: React.FC<Props> = ({
                     styles={{
                       fill:
                         star <= Math.round(rating ?? 0)
-                          ? theme.colors.mainOrange
-                          : theme.colors.darkGray,
+                          ? theme.color.mainOrange
+                          : theme.color.darkGray,
                       color: 'transparent',
                     }}
                     size={16}
@@ -89,18 +92,18 @@ const ReplyModal: React.FC<Props> = ({
                     month: 'short',
                     year: 'numeric',
                   })
-                : 'Дата не вказана'}
+                : ''}
             </StyledDate>
           </UserInfo>
         </UserInfoReply>
         <StyledHr />
-        <p>Відповісти на відгук</p>
+        <p>{translate('details_page.reply-to-review')}</p>
         <TextArea
           value={text}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setText(e.target.value)
           }
-          placeholder="Дякую за відгук, чекаю знов на занятті"
+          placeholder={translate('details_page.thanks-for-feedback')}
           style={{
             minHeight: '51px',
             padding: '16px 8px',
@@ -108,14 +111,16 @@ const ReplyModal: React.FC<Props> = ({
           }}
         />
         <ButtonGroup>
-          <DeleteButton onClick={onClose}>Назад</DeleteButton>
+          <DeleteButton onClick={onClose}>
+            {translate('account_page.back')}
+          </DeleteButton>
           <ActionButton onClick={handleSave}>
             <Icon
               name={IconName.CHECK_CONTAINED}
               styles={{ fill: 'none', stroke: 'none' }}
               size={24}
             />
-            Зберегти
+            {translate('account_page.save')}
           </ActionButton>
         </ButtonGroup>
       </ModalContainer>

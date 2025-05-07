@@ -12,6 +12,7 @@ import {
 } from './styles';
 import RatingBox from '../RatingBox/RatingBox';
 import ReviewsBox from '../ReviewBox/ReviewBox';
+import ReviewStats from '@/components/ReviewItem/ReviewStats';
 import { ProgressBar } from '@/kit/ProgressBar';
 
 interface ReviewDetailsCardProps {
@@ -47,7 +48,7 @@ const ReviewDetailsCard: React.FC<ReviewDetailsCardProps> = ({
 
   return (
     <StyledReviewDetailsCard>
-      <TitleContainer titleKey="details_page.reviews" />
+      {/* <TitleContainer titleKey="details_page.reviews" />
       <ProgressBarBox>
         <ProgressBarContainer>
           <ProgressBarWrapper>
@@ -135,14 +136,15 @@ const ReviewDetailsCard: React.FC<ReviewDetailsCardProps> = ({
           }}
           spanStyles={fonts.mainTitle}
         />
-      </ProgressBarBox>
-      <ReviewsBox
+      </ProgressBarBox> */}
+      <ReviewStats />
+      {/* <ReviewsBox
         avatar={avatar}
         firstName={firstName}
         lastName={lastName}
         iconNames={[IconName.STAR_FILL]}
         rating={rating}
-      />
+      /> */}
     </StyledReviewDetailsCard>
   );
 };

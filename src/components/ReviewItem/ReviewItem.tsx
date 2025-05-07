@@ -93,10 +93,10 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
                 month: 'short',
                 year: 'numeric',
               })
-            : 'Дата не вказана'}
+            : ''}
         </StyledDate>
       </UserInfo>
-      <Comment>{review.comment ?? 'Немає коментаря'}</Comment>
+      <Comment>{review.comment}</Comment>
       <Footer></Footer>
     </Div>
   );

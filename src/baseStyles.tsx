@@ -94,7 +94,8 @@ input {
     width: 100%;
     border: 1px solid rgba(18, 20, 23, 0.1);
     border-radius: 12px;
-    padding: 16px 18px;
+    // padding: 16px 18px;
+    padding: 5px 6px;
     font-weight: 400;
     font-size: 16px;
     line-height: 137%;

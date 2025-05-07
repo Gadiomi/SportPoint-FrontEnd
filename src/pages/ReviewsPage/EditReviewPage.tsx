@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/reviews/reviewsSelector';
 import { saveReview } from '@/redux/reviews/reviewsApi';
 import { Review } from '@/types/Review';
@@ -45,6 +46,8 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   onCancel,
   onSave,
 }) => {
+  const { t } = useTranslation();
+  const translate: (key: string, options?: Record<string, any>) => string = t;
   const theme = useTheme();
   const reduxUserId = useAppSelector(state => state.user.user?.userCommentId);
   console.log('reduxUserId', reduxUserId);
@@ -182,16 +185,37 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   const ratingLabels =
     review.userRole === 'coach'
       ? [
-          { label: 'Професійні навики', key: 'attitude' },
-          { label: 'Особисті якості', key: 'service' },
-          { label: 'Уважність та безпека', key: 'price' },
-          { label: 'Організаційні моменти', key: 'cleanliness' },
+          {
+            label: translate('account_page.professional-skills'),
+            key: 'attitude',
+          },
+          {
+            label: translate('account_page.personal-qualities'),
+            key: 'service',
+          },
+          {
+            label: translate('account_page.mindfulness-and-safety'),
+            key: 'price',
+          },
+          {
+            label: translate('account_page.organizational-moments'),
+            key: 'cleanliness',
+          },
         ]
       : [
-          { label: 'Умови та зручності', key: 'attitude' },
-          { label: 'Робота персоналу', key: 'service' },
-          { label: 'Доступність та зручність', key: 'price' },
-          { label: 'Додаткові послуги', key: 'cleanliness' },
+          {
+            label: translate('account_page.conditions-and-facilities'),
+            key: 'attitude',
+          },
+          { label: translate('account_page.staff-work'), key: 'service' },
+          {
+            label: translate('account_page.accessibility-and-convenience'),
+            key: 'price',
+          },
+          {
+            label: translate('account_page.additional-services'),
+            key: 'cleanliness',
+          },
         ];
 
   const reviewDateToShow = review.updatedAt
@@ -205,14 +229,14 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
           <HeaderEdit>
             {hasComment ? (
               <ReviewHeader
-                title="РЕДАГУВАТИ ВІДГУК"
+                title={translate('ediet-review')}
                 leftIcon={IconName.EDIT_CONTAINED}
                 onCancel={onCancel}
               />
             ) : (
               <HeaderEdit onClick={onCancel}>
                 <Icon name={IconName.ARROW_LEFT} styles={{ fill: 'none' }} />
-                НАЗАД
+                {translate('account_page.back')}
               </HeaderEdit>
             )}
           </HeaderEdit>
@@ -230,8 +254,10 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
           )}
           <OverallRatingSection>
             <OverallTitle>
-              Загальна оцінка{' '}
-              {review.userRole === 'coach' ? 'тренера' : 'клубу'}
+              {translate('account_page.overall-assessment')}{' '}
+              {review.userRole === 'coach'
+                ? translate('account_page.coach')
+                : translate('account_page.club')}
             </OverallTitle>
             <StarsDisplay>
               {Array.from({ length: 5 }, (_, i) => (
@@ -263,7 +289,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
                   <Label>{label}</Label>
                   <Icon
                     name={IconName.ALERT_CIRCLE}
-                    styles={{ color: '#B7B7B9' }}
+                    styles={{ color: theme.color.secWhite }}
                   />
                 </RatingLabels>
                 <Starsedit>
@@ -297,16 +323,18 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
               </RatingRow>
             ))}
           </RatingSection>
-          <span>Залиште відгук (за бажанням)</span>
+          <span>{translate('account_page.leave-review-optional')}</span>
           <TextArea
-            placeholder="Ваш відгук:"
+            placeholder={translate('account_page.your-review')}
             value={comment}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setComment(e.target.value)
             }
           />
           <ButtonGroupEdit>
-            <DeleteButton onClick={onCancel}>Назад</DeleteButton>
+            <DeleteButton onClick={onCancel}>
+              {translate('account_page.back')}
+            </DeleteButton>
             <SaveButton
               onClick={handleSave}
               style={{
@@ -317,7 +345,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
               }}
             >
               <Icon name={IconName.CHECK_CONTAINED} />
-              {hasComment} Зберігти
+              {hasComment} {translate('account_page.save')}
             </SaveButton>
           </ButtonGroupEdit>
         </ModalContent>

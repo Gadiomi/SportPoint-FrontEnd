@@ -14,7 +14,7 @@ const AccountLayout = () => {
   return (
     <ProfileProvider methods={methods}>
       <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
-        <Container maxWidth="320px">
+        <Container>
           <Logo />
           <Outlet />
         </Container>

@@ -1,6 +1,7 @@
 // FeedbackSection.tsx
 import React from 'react';
 import { Feedback, FeedbackButton } from './styles'; // Якщо FeedbackButton стилізовано в окремому файлі
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 interface FeedbackSectionProps {
@@ -18,14 +19,20 @@ const FeedbackSection: React.FC<FeedbackSectionProps> = ({
   onLike,
   onDislike,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Feedback>
-      <Text>Чи корисний цей коментар? </Text>
+      <Text>{t('details_page.is_comment_helpful')}</Text>
       <FeedbackButton onClick={() => onLike(reviewId, 'like')}>
-        <Text> Так ({likes ?? 0})</Text>
+        <Text>
+          {t('details_page.yes')} ({likes ?? 0})
+        </Text>
       </FeedbackButton>{' '}
       <FeedbackButton onClick={() => onDislike(reviewId, 'dislike')}>
-        <Text>Ні ({dislikes ?? 0})</Text>
+        <Text>
+          {t('details_page.no')} ({dislikes ?? 0})
+        </Text>
       </FeedbackButton>
     </Feedback>
   );
