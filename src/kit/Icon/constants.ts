@@ -50,4 +50,7 @@ export enum IconName {
   DELETE = 'icon-delete',
   SCHEDULE = 'icon-schedule',
   DOWN_ANGLE_QUOTE = 'icon-angle-down',
+  SERVICES = 'icon-services',
+  STATISTICS = 'icon-statistics',
+  CALENDAR = 'icon-calendar',
 }

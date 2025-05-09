@@ -200,47 +200,6 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         </Modal>
       )}
     </>
-              <Icon
-                name={IconName.GLOBE}
-                size={24}
-                styles={{ fill: 'white' }}
-              />
-              <Descr>Змінити мову</Descr>
-            </MenuItem>
-          </MenuList>
-          {isLogin ? (
-            <Button
-              testId="exit-button"
-              title="Вийти"
-              prependChild={<Icon name={IconName.LOGOUT_01} />}
-              style={{
-                width: '100%',
-              }}
-              onClick={() => {
-                localStorage.removeItem('token'); // ?? може Cookies.remove(CookiesKey.TOKEN, { path: '' });
-                localStorage.removeItem('refreshToken');
-                dispatch(setIsLogin(false));
-                navigate('/');
-                onClose();
-              }}
-            />
-          ) : (
-            <Button
-              testId="exit-button"
-              title="Увійти"
-              prependChild={<Icon name={IconName.LOGOUT_02} />}
-              style={{
-                width: '100%',
-              }}
-              onClick={() => {
-                navigate('/login');
-                onClose();
-              }}
-            />
-          )}
-        </MenuContent>
-      </MenuWrapper>
-    </NavBox>
   );
 };
 

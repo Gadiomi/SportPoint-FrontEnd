@@ -18,7 +18,6 @@ import { setScheduleId } from '@/redux/globalsStates/globalsStates';
 import { useNavigate } from 'react-router-dom';
 
 export interface ScheduleCardProps {
-  setOpen: (value: boolean) => void;
   savedSchedule: ScheduleEntry[];
   setSavedSchedule: React.Dispatch<React.SetStateAction<ScheduleEntry[]>>;
 }
@@ -26,15 +25,15 @@ export interface ScheduleCardProps {
 const ScheduleCard: React.FC<ScheduleCardProps> = ({
   savedSchedule,
   setSavedSchedule,
-  setOpen,
 }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [deleteSchedule] = useDeleteScheduleMutation();
 
   const handleEdit = (id: string) => {
     dispatch(setScheduleId(id));
-    setOpen(true);
+    navigate('/profile/edit/edit-schedule');
   };
 
   const handleDelete = async (id: string) => {
