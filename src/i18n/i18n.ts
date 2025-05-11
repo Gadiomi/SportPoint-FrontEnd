@@ -6,6 +6,11 @@ import { Languages } from './constants';
 import en from './translations/en.json';
 import ua from './translations/ua.json';
 
+export const resources = {
+  [Languages.EN]: { translation: en },
+  [Languages.UA]: { translation: ua },
+} as const;
+
 i18next
 
   .use(LanguageDetector)
@@ -13,12 +18,9 @@ i18next
   .init({
     fallbackLng: Languages.UA,
     supportedLngs: [Languages.EN, Languages.UA],
+    defaultNS: 'translation',
     debug: true,
-    resources: {
-      [Languages.EN]: { translation: en },
-      [Languages.UA]: { translation: ua },
-    },
-
+    resources,
     backend: {
       loadPath: '/translations/{{lng}}.json',
     },

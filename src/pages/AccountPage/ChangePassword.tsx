@@ -1,14 +1,12 @@
-import { Button, ButtonAppearance, Icon, IconName, Input, Loader } from '@/kit';
 import { FC, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useChangePasswordMutation } from '@/redux/user/userApi';
+import { Button, ButtonAppearance, Input } from '@/kit';
 import PasswordRecovery from '@/components/PasswordRecovery/PasswordRecovery';
 import {
   ChangePasswCont,
   FormContPassw,
-  GeneralBtnsWrapper,
   ModalContent,
   ModalOverlay,
   RestoreCont,
@@ -16,7 +14,6 @@ import {
 import ProfileButton from './ProfileButton';
 import BackSaveButtons from './BackSaveButtons';
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
-import { useTheme } from '@/hooks';
 import MessageModal from '@/components/MessageModal/MessageModal';
 
 interface ChangePasswordFormData {
@@ -26,9 +23,7 @@ interface ChangePasswordFormData {
 }
 
 const ChangePassword: FC = () => {
-  const { theme } = useTheme();
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [changePassword, { isLoading, error }] = useChangePasswordMutation();
 
   const {
@@ -167,7 +162,7 @@ const ChangePassword: FC = () => {
             />
           </RestoreCont>
 
-          <BackSaveButtons />
+          <BackSaveButtons t={t} />
           {/* <GeneralBtnsWrapper>
             <Button
               type="button"

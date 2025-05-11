@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Avatar, Name } from '@/components/ReviewItem/styles';
 import {
   UserInfoEdit,
@@ -30,6 +31,8 @@ const UserInfo: React.FC<UserInfoProps> = ({
   updatedAt,
   rating,
 }) => {
+  const { t } = useTranslation();
+  const translate: (key: string, options?: Record<string, any>) => string = t;
   const roleLabel =
     role === 'coach' ? 'Тренер' : role === 'adminClub' ? 'Клуб' : 'Користувач';
 
@@ -49,21 +52,23 @@ const UserInfo: React.FC<UserInfoProps> = ({
   // Генерація URL до аватарки
   const generatedAvatar = `https://ui-avatars.com/api/?name=${initials}&background=${backgroundColor}&color=fff`;
   const reviewDateToShow = updatedAt || createdAt || new Date().toISOString();
-  console.log(
-    'UserInfo sport:',
-    sport,
-    'Тип:',
-    typeof sport,
-    'isArray:',
-    Array.isArray(sport),
-  );
+  // console.log(
+  //   'UserInfo sport:',
+  //   sport,
+  //   'Тип:',
+  //   typeof sport,
+  //   'isArray:',
+  //   Array.isArray(sport),
+  // );
 
   return (
     <UserInfoEdit>
       <Avatar src={avatar || generatedAvatar} />
       <div>
         <Name>{`${fullName}`}</Name>
-        {sport && Array.isArray(sport) ? (
+        {role === 'adminClub' ? (
+          <Badge>{translate('account_page.sports-club')}</Badge>
+        ) : sport && Array.isArray(sport) ? (
           <SportListEdit>
             {sport.map(s => (
               <SportTagEdit key={s}>{s}</SportTagEdit>
@@ -80,7 +85,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
               month: 'short',
               year: 'numeric',
             })
-          : 'Дата не вказана'}
+          : ''}
       </StyledDate>
     </UserInfoEdit>
   );

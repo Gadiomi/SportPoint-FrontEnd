@@ -36,6 +36,7 @@ import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
 import SearchWork from '../SearchWork/SearchWork';
 import AvatarAndName from '../AvatarAndName/AvatarAndName';
 import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
+import BigLoader from '@/components/BigLoader/BigLoader';
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
@@ -220,7 +221,10 @@ const EditGeneral: FC = () => {
     }
   };
 
-  if (isLoading) return <div>Loading ...</div>;
+  if (isLoading) {
+    // return <div>Loading...</div>;
+    return <BigLoader isLoading={isLoading} />;
+  }
 
   return (
     <Container>

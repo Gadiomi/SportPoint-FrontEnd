@@ -9,7 +9,7 @@ import ReviewTabsSwitcher from '@/components/ReviewItem/ReviewTabsSwitcher';
 import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { ReviewCard } from '@/components/ReviewItem/styles';
+import { ReviewCard, Loading, ErrorText } from '@/components/ReviewItem/styles';
 import { Div, ButtonMore, ContainerButtonMore } from './styles';
 import { fetchReviewsByOwner, deleteReview } from '@/redux/reviews/reviewsApi';
 import { Roles } from '@/constants';
@@ -56,7 +56,8 @@ const ReviewsPage = () => {
   const [showAll, setShowAll] = useState(false);
   const reviewsToShow = showAll ? reviews : reviews.slice(0, 2);
 
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
+  const translate: (key: string, options?: Record<string, any>) => string = t;
   // const { theme } = useTheme();
 
   const handleReviewUpdate = (updatedReview: Review) => {
@@ -114,7 +115,7 @@ const ReviewsPage = () => {
 
       setReviews(filteredByTab);
     } catch (err) {
-      console.error('Помилка при отриманні відгуків:', err);
+      // console.error('Помилка при отриманні відгуків:', err);
     } finally {
       setLoading(false);
     }
@@ -134,14 +135,14 @@ const ReviewsPage = () => {
         await deleteReview(id); // Викликаємо функцію для видалення
         setReviews(prev => prev.filter(review => review.id !== id));
       } catch (err) {
-        console.error('Помилка при видаленні:', err);
-        setError('Не вдалося видалити відгук');
+        // console.error('Помилка при видаленні:', err);
+        setError('Failed to delete feedback');
       }
     }
   };
 
   const handleEdit = (review: Review) => {
-    console.log('Редагуємо відгук з id:', review.id);
+    //  console.log('Редагуємо відгук з id:', review.id);
     setCurrentReview(review);
     setIsEditing(true);
   };
@@ -149,6 +150,9 @@ const ReviewsPage = () => {
   const handleCreateReview = () => {
     setIsCreatingReview(true);
   };
+
+  // if (loading) return <Loading>{translate('loading') }</Loading>;
+  // if (error) return <ErrorText>{error}</ErrorText>;
 
   return (
     <Div>
@@ -168,17 +172,16 @@ const ReviewsPage = () => {
 
           {user?.role !== Roles.COACH && user?.role !== Roles.ADMIN_CLUB && (
             <ReviewTabsSwitcher
-              tabs={['Клуби', 'Тренери']}
+              tabs={[translate('clubs'), translate('coachs')]}
               selectedTab={selectedTab}
               onSelectTab={tab => setSelectedTab(tab)}
             />
           )}
-          <ReviewStats />
-
+          {user?.role === Roles.COACH && <ReviewStats />}
           {loading ? (
-            <p>Завантаження...</p>
+            <Loading>{translate('loading')}</Loading>
           ) : error ? (
-            <p>{error}</p>
+            <ErrorText>{error}</ErrorText>
           ) : (
             <>
               {reviewsToShow.map((review, index) => {
@@ -205,7 +208,7 @@ const ReviewsPage = () => {
               <ContainerButtonMore>
                 {reviews.length > 2 && (
                   <ButtonMore onClick={() => setShowAll(prev => !prev)}>
-                    {showAll ? 'Приховати' : 'Побачити більше'}
+                    {showAll ? translate('hide') : translate('show_more')}
                   </ButtonMore>
                 )}
               </ContainerButtonMore>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/reviews/reviewsSelector';
 import {
   fetchReviewsByUserCommentId,
@@ -33,6 +35,8 @@ import {
   StyledDate,
   Div,
   ReplyContainer,
+  NameIcon,
+  Badge,
 } from './styles';
 
 interface User {
@@ -69,9 +73,12 @@ const CommentText = styled.div`
 
 const ReviewStats: React.FC = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
+  const translate: (key: string, options?: Record<string, any>) => string = t;
   const user = useAppSelector(state => state.user.user);
   const currentUser = user;
-  console.log('ReviewStat', user);
+  // console.log('ReviewStat', user);
+  const location = useLocation();
   const [ratings, setRatings] = useState<{ [key: number]: number }>({
     5: 0,
     4: 0,
@@ -105,7 +112,7 @@ const ReviewStats: React.FC = () => {
     const userCommentId = isTrainerOrClub
       ? user?.userId
       : user?.user_comments?.[0]?.userCommentId;
-    console.log(userCommentId);
+    // console.log(userCommentId);
     if (!userCommentId) {
       console.error('Не знайдено userCommentId');
       return;
@@ -141,7 +148,7 @@ const ReviewStats: React.FC = () => {
         // const reviewedUserId = firstComment?.trainer || firstComment?.club;
         const user = allUsers.find((u: User) => u.userId === ownerId);
         if (user) profilesMap[ownerId] = user;
-        console.log('user', user);
+        // console.log('user', user);
       });
 
       setAllComments(withAverages);
@@ -175,7 +182,7 @@ const ReviewStats: React.FC = () => {
       setTotalReviews(commentsArray.length);
       setAverageRating(total > 0 ? sum / total : 0);
     } catch (error) {
-      setError('Помилка завантаження рейтингу');
+      setError(translate('account_page.error_loading'));
     } finally {
       setLoading(false);
     }
@@ -217,7 +224,7 @@ const ReviewStats: React.FC = () => {
     console.log('Виклик handleReplySubmit з текстом:', replyText);
     const commentId = replyModalData?.comment?._id;
     console.log('replyModalData.comment', replyModalData?.comment);
-    console.log('commentId', commentId);
+    // console.log('commentId', commentId);
     if (!commentId) {
       alert('Не вдалося знайти ID користувача');
       return;
@@ -244,8 +251,8 @@ const ReviewStats: React.FC = () => {
     }
   };
 
-  if (loading) return <Loading>Завантаження...</Loading>;
-  if (error) return <ErrorText>{error}</ErrorText>;
+  // if (loading) return <Loading>Завантаження...</Loading>;
+  // if (error) return <ErrorText>{error}</ErrorText>;
 
   const maxRatingCount = Math.max(...Object.values(ratings), 1); // щоб уникнути ділення на 0
   const targetId = firstComment?.trainer || firstComment?.club || '';
@@ -253,35 +260,41 @@ const ReviewStats: React.FC = () => {
 
   return (
     <div>
-      <Title>
-        <Icon name={IconName.ARROW_RIGHT} />
-        ВІДГУКИ
-      </Title>
-      <RatingContainer>
-        <div>
-          {[5, 4, 3, 2, 1].map(star => (
-            <RatingBar key={star}>
-              <span>{star}</span>
-              <Bar width={((ratings[star] || 0) / maxRatingCount) * 100} />
-            </RatingBar>
-          ))}
-        </div>
-        <div>
-          <AverageRating
-            averageRating={averageRating}
-            totalReviews={totalReviews}
-          />
-        </div>
-      </RatingContainer>
-      <div onClick={() => setIsEditing(true)}>
-        <ReviewHeader
-          title="Залишити відгук"
-          leftIcon={IconName.ARROW_CORNER}
-          rightIcon={IconName.ARROW_CORNER}
-          leftIconStyles={{ opacity: 0 }}
-        />
-      </div>
-
+      {location.pathname !== '/profile/edit/reviews' && (
+        <>
+          <Title>
+            <Icon name={IconName.ARROW_RIGHT} />
+            {translate('details_page.reviews')}
+          </Title>
+          <RatingContainer>
+            <div>
+              {[5, 4, 3, 2, 1].map(star => (
+                <RatingBar key={star}>
+                  <span>{star}</span>
+                  <Bar width={((ratings[star] || 0) / maxRatingCount) * 100} />
+                </RatingBar>
+              ))}
+            </div>
+            <div>
+              <AverageRating
+                averageRating={averageRating}
+                totalReviews={totalReviews}
+              />
+            </div>
+          </RatingContainer>
+          <div onClick={() => setIsEditing(true)}>
+            {isClientProfile && (
+              <ReviewHeader
+                title={translate('account_page.leave_review')}
+                leftIcon={IconName.Icon_message_chat_01}
+                rightIcon={IconName.ARROW_CORNER}
+                leftIconStyles={{ opacity: 0 }}
+                rightIconStyles={{ width: '32px', height: '32px' }}
+              />
+            )}
+          </div>
+        </>
+      )}
       {/* Карточки всіх відгуків */}
       <>
         {reviewsToShow.map((comment, index) => {
@@ -292,7 +305,7 @@ const ReviewStats: React.FC = () => {
             '../../../public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg';
           const fullName = author
             ? `${author.firstName} ${author.lastName}`
-            : 'Профіль видалено';
+            : translate('account_page.profile-deleted');
 
           return (
             <ReviewCard key={comment._id} isEven={index % 2 === 0}>
@@ -327,11 +340,11 @@ const ReviewStats: React.FC = () => {
                         month: 'short',
                         year: 'numeric',
                       })
-                    : 'Дата не вказана'}
+                    : ''}
                 </StyledDate>
               </UserInfo>
               <CommentText>{comment.comment}</CommentText>
-              {isClientProfile && (
+              {location.pathname !== '/profile/edit/reviews' && (
                 <FeedbackSection
                   reviewId={comment._id}
                   likes={comment.likes ?? 0}
@@ -343,7 +356,6 @@ const ReviewStats: React.FC = () => {
               {comment.adminReply && (
                 <>
                   <StyledHr />
-
                   <UserInfo>
                     <Avatar
                       src={
@@ -352,14 +364,21 @@ const ReviewStats: React.FC = () => {
                       }
                     />
                     <Div>
-                      <Name>
-                        {currentUser?.firstName} {currentUser?.lastName}
-                      </Name>
+                      <NameIcon>
+                        <Name>
+                          {currentUser?.firstName} {currentUser?.lastName}
+                        </Name>
+                        <Icon name={IconName.Icon_ICON} size={12} />
+                      </NameIcon>
                       {/* Блок з видами спорту */}
                       <SportList>
-                        {currentUser?.sport?.map(sport => (
-                          <SportTag key={sport}>{sport}</SportTag>
-                        ))}
+                        {currentUser?.role === 'adminClub' ? (
+                          <Badge>{translate('account_page.sports-club')}</Badge>
+                        ) : (
+                          currentUser?.sport?.map(sport => (
+                            <SportTag key={sport}>{sport}</SportTag>
+                          ))
+                        )}
                       </SportList>
                     </Div>
                   </UserInfo>
@@ -398,7 +417,7 @@ const ReviewStats: React.FC = () => {
         <ContainerButtonMore>
           {allComments.length > 1 && (
             <ButtonMore onClick={() => setShowAll(prev => !prev)}>
-              {showAll ? 'Приховати' : 'Побачити більше'}
+              {showAll ? translate('hide') : translate('show_more')}
             </ButtonMore>
           )}
         </ContainerButtonMore>

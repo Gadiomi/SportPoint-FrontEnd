@@ -17,6 +17,8 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { setIsLogin } from '@/redux/auth/loginSlice';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
+import { CookiesKey } from '@/constants';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -120,8 +122,10 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                   width: '100%',
                 }}
                 onClick={() => {
-                  localStorage.removeItem('token');
-                  localStorage.removeItem('refreshToken');
+                  Cookies.remove(CookiesKey.TOKEN, { path: '/' });
+                  Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '/' });
+                  Cookies.remove(CookiesKey.TOKEN_F, { path: '/' });
+                  Cookies.remove(CookiesKey.REFRESH_TOKEN_F, { path: '/' });
                   dispatch(setIsLogin(false));
                   navigate('/');
                   onClose();

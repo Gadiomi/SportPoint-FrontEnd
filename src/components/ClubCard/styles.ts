@@ -43,6 +43,14 @@ export const InfoWrapReviews = styled.div({
   width: 'auto',
 });
 
+export const HeartButton = styled.button(({ theme }) => ({
+  position: 'absolute',
+  top: theme.pxs.x2,
+  right: theme.pxs.x2,
+  '& svg': {
+    color: '#EC4033',
+  },
+}));
 export const ClubDetail = styled.div(({ theme }) => ({
   display: 'flex',
   gap: theme.pxs.x2,

@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -12,7 +13,6 @@ import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
 import { CookiesKey, Roles } from '@/constants';
 import { useLoginMutation } from '@/redux/auth/authApi';
-import { useNavigate } from 'react-router-dom';
 import SocialNetButton from '../RegisterPage/components/SocialNetButton/SocialNetButton';
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
@@ -36,6 +36,7 @@ const LogInPage: FC = () => {
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
   const [isIncorrectData, setIsIncorrectData] = useState<boolean>(false);
   const navigate = useNavigate();
+
   const {
     handleSubmit,
     reset,
@@ -55,18 +56,39 @@ const LogInPage: FC = () => {
         password: data.password,
       });
 
+      console.log(' - response: ', response);
+
       if (!response.error && response?.data?.status === 200) {
-        if (response.token && response.refreshToken) {
-          Cookies.set(CookiesKey.TOKEN, response.token, {
+        if (response.data.token && response.data.refreshToken) {
+          // console.log(' - response.data: ', response.data);
+          Cookies.set(CookiesKey.TOKEN_F, response.data.token, {
             expires: 7,
-            secure: true,
-            sameSite: 'Strict',
+            secure: false,
+            sameSite: 'Lax',
+            path: '/',
           });
-          Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+          Cookies.set(CookiesKey.REFRESH_TOKEN_F, response.data.refreshToken, {
             expires: 7,
-            secure: true,
-            sameSite: 'Strict',
+            secure: false,
+            sameSite: 'Lax',
+            path: '/',
           });
+          // Cookies.set(CookiesKey.TOKEN, response.token, {
+          //   expires: 7,
+          //   secure: true,
+          //   // sameSite: 'Strict',
+          //   sameSite: 'Lax',
+          //   path: '/',
+          //   domain: 'http://localhost:5173/', // ???
+          // });
+          // Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
+          //   expires: 7,
+          //   secure: true,
+          //   // sameSite: 'Strict',
+          //   sameSite: 'Lax',
+          //   path: '/',
+          //   domain: 'http://localhost:5173/', //  ???
+          // });
         }
         localStorage.setItem('userEmail', data.email);
         reset();

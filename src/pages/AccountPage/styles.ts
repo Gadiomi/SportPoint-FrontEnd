@@ -1,5 +1,3 @@
-import { useGetUserProfileQuery } from '@/redux/user/userApi';
-import { FileUpload } from './../../kit/FileUpload/FileUpload';
 import { Button } from '@/kit';
 import styled from 'styled-components';
 
@@ -22,6 +20,11 @@ export const ModalContent = styled.div`
   width: 100%;
 `;
 
+export const AccountWrapper = styled.div`
+  width: 100%;
+  padding-bottom: 85px;
+`;
+
 export const AccountCont = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,12 +34,12 @@ export const AccountCont = styled.div`
   padding-top: 6px;
 `;
 
-export const AccountName = styled.div<{ paddingTop?: string }>`
+export const AccountName = styled.div<{ $paddingTop?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: ${({ paddingTop }) => paddingTop ?? '13px'};
+  padding-top: ${({ $paddingTop }) => $paddingTop ?? '13px'};
   padding-bottom: 16px;
   border-bottom: 1px solid #b7b7b9;
   & img {
@@ -72,21 +75,6 @@ export const AccountButton = styled(Button)`
   }
 `;
 
-export const AccountDeleteCont = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-bottom: 94px;
-  text-align: center;
-  & h4 {
-    color: #b7b7b9;
-    font-size: 12px;
-    font-weight: 300;
-  }
-  & button {
-    color: #b7b7b9;
-  }
-`;
 export const SportButtonsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -96,9 +84,9 @@ export const SportButtonsContainer = styled.div`
   border-radius: 6px;
 `;
 
-export const SportButton = styled.button<{ isSelected: boolean }>`
-  background-color: ${({ isSelected }) =>
-    isSelected ? '#494949' : 'transparent'};
+export const SportButton = styled.button<{ $isSelected: boolean }>`
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? '#494949' : 'transparent'};
   color: #b7b7b9;
   border: 1px solid #494949;
   border-radius: 60px;
@@ -107,8 +95,8 @@ export const SportButton = styled.button<{ isSelected: boolean }>`
   margin: 5px;
   cursor: pointer;
   &:hover {
-    background-color: ${({ isSelected }) =>
-      isSelected ? '#494949' : 'transparent'};
+    background-color: ${({ $isSelected }) =>
+      $isSelected ? '#494949' : 'transparent'};
   }
 `;
 
@@ -152,12 +140,16 @@ export const RestoreCont = styled.div`
 export const GeneralBtnsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 8px;
-  font-size: 14px;
+  gap: 16px;
+
+  & button {
+    width: 50%;
+    height: 36px;
+    font-size: 16px;
+    font-weight: 600;
+  }
 
   & button:first-of-type {
-    width: 145px;
-    height: 36px;
     border: 1px solid #ed772f;
   }
 
@@ -166,15 +158,11 @@ export const GeneralBtnsWrapper = styled.div`
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 143px;
-    height: 36px;
   }
 `;
 
-export const GeneralWrapper = styled.div`
-  width: 100 %;
+export const GeneralWrapper = styled(AccountWrapper)`
   padding-top: 8px;
-  padding-bottom: 85px;
 `;
 
 export const GeneralInFormWrapper = styled.div`
