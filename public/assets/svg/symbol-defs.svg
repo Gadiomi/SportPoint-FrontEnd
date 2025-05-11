@@ -164,6 +164,16 @@
 <path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="8" d="M4 6l20.003 18.32 19.997-18.32"></path>
 </symbol>
 
+<symbol id="icon-services" viewBox="0 0 32 32">
+<path fill="none" stroke="#f8f7f4" style="stroke: var(--color1, #f8f7f4)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.9091" d="M22.331 9.677l-0.009-0M26.94 2.693l-8.437-0.649c-0.748-0.058-1.484 0.215-2.014 0.745l-13.702 13.702c-1.004 1.004-1.004 2.631 0 3.634l9.086 9.086c1.004 1.004 2.631 1.004 3.634 0l13.702-13.702c0.531-0.53 0.803-1.266 0.745-2.014l-0.649-8.437c-0.097-1.264-1.101-2.268-2.365-2.365z"></path>
+</symbol>
+<symbol id="icon-statistics" viewBox="0 0 32 32">
+<path fill="none" stroke="#f8f7f4" style="stroke: var(--color1, #f8f7f4)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.9091" d="M22.98 22.982v-8.727M15.998 22.982v-13.964M9.016 22.982v-3.491M5.525 29.964c-1.928 0-3.491-1.563-3.491-3.491v-20.945c0-1.928 1.563-3.491 3.491-3.491h20.945c1.928 0 3.491 1.563 3.491 3.491v20.945c0 1.928-1.563 3.491-3.491 3.491h-20.945z"></path>
+</symbol>
+<symbol id="icon-calendar" viewBox="0 0 29 32">
+<path fill="none" stroke="#f8f7f4" style="stroke: var(--color1, #f8f7f4)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.9091" d="M7.754 9.621h14.718M7.090 1.455v2.664M7.090 4.119l15.454-0M7.090 4.119c-2.561 0-4.636 2.111-4.636 4.716l0.001 15.721c0 2.605 2.076 4.716 4.636 4.716h15.454c2.561 0 4.636-2.112 4.636-4.717l-0.001-15.721c-0-2.605-2.076-4.716-4.636-4.716M22.545 1.455v2.664M11.728 23.77v-9.433l-3.091 2.358M20.227 23.77v-9.433l-3.091 2.358"></path>
+
+
 <symbol id="icon-Icon" viewBox="0 0 32 32">
 <path fill="none" stroke="#b7b7b9" style="stroke: var(--color1, #b7b7b9)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="4.5714" d="M27.879 11.297l-8.098-8.098M19.781 3.2l-8.098 8.098M19.781 3.2v16.457c0 5.049-4.093 9.143-9.143 9.143h-6.531"></path>
 </symbol>
@@ -178,6 +188,7 @@
 </symbol>
 <symbol id="icon-share" viewBox="0 0 33 32">
 <path fill="none" stroke="#f8f7f4" style="stroke: var(--color2, #f8f7f4)" stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="2.6667" d="M28.667 15.278l-12.8-8.479v4.8c-11.2 2.4-11.2 13.6-11.2 13.6s4.8-6.4 11.2-5.6v4.96l12.8-9.281z"></path>
+
 </symbol>
 </defs>
 </svg>
