@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export const axiosInstance = axios.create({
-  // baseURL: 'https://sportpoint-backend.onrender.com',
+  //baseURL: 'https://sportpoint-backend.onrender.com',
   baseURL: import.meta.env.VITE_BASE_URL,
   withCredentials: true,
 });
