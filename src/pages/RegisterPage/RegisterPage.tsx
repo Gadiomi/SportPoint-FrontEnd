@@ -11,7 +11,7 @@ import { Container, Section } from '@/components/ContainerAndSection';
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import CitySelect from './components/CitySelect';
 import AddressWidget from './components/AddressWidget/AddressWidget';
-import SocialNetButton from './components/SocialNetButton/SocialNetButton';
+import SocialNetButton from '../../components/AuthWrapper/SocialNetButton/SocialNetButton';
 import SportsListChoice from './components/SportsList/SportsList';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import { Button, ButtonAppearance, Input, Loader } from '@/kit';

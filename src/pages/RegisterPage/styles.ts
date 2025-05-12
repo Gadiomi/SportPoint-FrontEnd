@@ -16,11 +16,16 @@ export const TitleWrapper = styled.div`
 export const Title = styled.h2(({ theme }) => ({
   ...theme.fonts.secondTitle,
   color: theme.color.mainWhite,
+  fontSize: '18px',
+  fontWeight: 700,
+  lineHeight: '22px',
 }));
 
 export const Subtitle = styled.p(({ theme }) => ({
   ...theme.fonts.lightManrope,
-  color: theme.color.secWhite,
+  fontWeight: 400,
+  // color: theme.color.secWhite,
+  color: '#B7B7B9',
 }));
 
 export const TabsWrapper = styled.div`

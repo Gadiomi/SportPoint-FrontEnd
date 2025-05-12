@@ -17,9 +17,9 @@ const SocialNetButton = ({ name, act }: { name: string; act: string }) => {
         marginBottom: theme.pxs.x4,
       }}
       textStyle={{
-        fontSize: theme.pxs.x3,
-        lineHeight: '16px',
-        fontWeight: '300',
+        fontSize: theme.pxs.x4,
+        lineHeight: '22px',
+        fontWeight: '500',
         color: theme.color.white,
       }}
       prependChild={
