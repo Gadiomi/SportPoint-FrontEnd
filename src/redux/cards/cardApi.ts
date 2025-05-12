@@ -7,8 +7,8 @@ export const cardApi = createApi({
   tagTypes: ['Card'],
   endpoints: builder => ({
     getCards: builder.query({
-      query: ({ page, perPage, role }) => ({
-        url: `cards?page=${page}&perPage=${perPage}&role=${role}`,
+      query: ({ city, role }) => ({
+        url: `cards?address=${city}&role=${role} `,
         method: 'GET',
       }),
     }),

@@ -7,14 +7,19 @@ export type OptionType = {
   label: string;
 };
 
-export type CitySelectProps = {
-  options: OptionType[];
-  field: ControllerRenderProps<RegisterFormData>;
-  // field: ControllerRenderProps<RegisterFormData, 'address'>;
+export interface CitySelectProps {
+  field: ControllerRenderProps<any, any>;
+  options: {
+    value: string;
+    label: string;
+    profile?: any;
+  }[];
   placeholder: string;
-  onMenuOpen: () => void;
-  onMenuClose: () => void;
-};
+  onMenuOpen?: () => void;
+  onMenuClose?: () => void;
+  onChange?: (option: any) => void;
+  onInputChange?: () => void;
+}
 
 export interface IGroupTitleProps {
   handler: () => void;

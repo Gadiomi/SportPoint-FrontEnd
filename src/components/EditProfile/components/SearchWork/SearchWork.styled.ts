@@ -1,16 +1,24 @@
 import styled from 'styled-components';
 
 export const SearchWorkList = styled.ul`
+  /* position: absolute; */
   border: 1px solid #ccc;
   padding: 10px;
   max-height: 200px;
   overflow-y: auto;
+  /* z-index: 9999;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 84%; */
+  background-color: rgba(248, 247, 244, 1);
+  border-radius: 6px;
 `;
 
 export const SearchWorkItems = styled.li`
   cursor: pointer;
-  padding: 5px;
+  padding: 10px;
   list-style: none;
+  border-bottom: 1px solid rgba(28, 27, 32, 0.28);
 `;
 
 export const CitySpan = styled.span`
@@ -48,4 +56,10 @@ export const IconDown = styled.span`
   top: 50%;
   transform: translate(0, -50%);
   right: 12px;
+`;
+
+export const WorksWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;

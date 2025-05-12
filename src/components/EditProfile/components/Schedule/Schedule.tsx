@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Button, ButtonAppearance, Icon, IconName, Input, Modal } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { View, dateFnsLocalizer } from 'react-big-calendar';
@@ -12,13 +18,12 @@ import {
   TimeAndDateContainer,
 } from './Schedule.styled';
 import { useAppSelector } from '@/hooks/hooks';
-import SearchWork from '../SearchWork/SearchWork';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
 import { debounce } from 'lodash';
 import { WorkoutPlan } from '@/types/userProfile';
 import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { SectionTitle } from '../EditGeneral/EditGeneral.styled';
 import { parse, startOfWeek, getDay, format } from 'date-fns';
 import { uk } from 'date-fns/locale';
@@ -28,6 +33,14 @@ import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
 import Calendar from './components/Calendar/Calendar';
 import Services from './components/Services/Services';
 import TimeInput from './components/TimeInput/TimeInput';
+import CitySelect from '@/pages/RegisterPage/components/CitySelect';
+import AddressWidget from '@/pages/RegisterPage/components/AddressWidget/AddressWidget';
+import { cityOptions } from '@/pages/RegisterPage/tempData';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { RegisterFormData } from '@/types';
+import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
+import MergedAddressSearchWidget from '../SearchWork/SearchWork';
+import Map from './components/Map/Map';
 
 const locales = {
   uk: uk,
@@ -60,6 +73,26 @@ const Schedule = () => {
   const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
   const [localSearchResults, setLocalSearchResults] =
     useState<SearchResults | null>(null);
+  const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
+  const [height, setHeight] = useState<string>('0px');
+
+  const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
+  const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
+  const contentsRef = useRef<HTMLDivElement>(null);
+
+  const updateHeight = useCallback(() => {
+    if (contentsRef.current) {
+      const scrollHeight = contentsRef.current.scrollHeight;
+      setHeight(`${scrollHeight}px`);
+    }
+  }, []);
+  useEffect(() => {
+    if (isOpenAddress) {
+      !isCityOpen && !isClubOpen ? setHeight('110px') : updateHeight();
+    } else {
+      setHeight('0px');
+    }
+  }, [isOpenAddress, isCityOpen, isClubOpen]);
 
   useEffect(() => {
     if (userProfile?.description.schedule) {
@@ -117,6 +150,7 @@ const Schedule = () => {
       }, 300),
     [],
   );
+  console.log(debouncedSearchTerm);
 
   const { data: searchResults, isFetching } = useGetByNameQuery(
     {
@@ -242,6 +276,9 @@ const Schedule = () => {
     setSelectedProfile([]);
     setSearchTerm('');
   };
+  const addressHandler = () => {
+    setIsOpenAddress(prev => !prev);
+  };
 
   return (
     <Container>
@@ -299,18 +336,27 @@ const Schedule = () => {
           Вид послуги
           <Services />
         </div>
-        <SearchWork
+
+        <MergedAddressSearchWidget
           searchTerm={searchTerm}
           handleSearchChange={handleSearchChange}
           isFetching={isFetching}
           searchResults={localSearchResults}
           setSelectedProfile={handleSelectProfile}
           selectedProfile={selectedProfile}
-          title={'Обрати клуб'}
           view={true}
           label="Пошук клубів"
+          handler={addressHandler}
+          isOpen={isOpenAddress}
+          contentRef={contentsRef}
+          height={height}
+          title={'Оберіть місце проведення'}
+          setIsCityOpen={setIsCityOpen}
+          setIsClubOpen={setIsClubOpen}
+          setSearchTerm={debouncedSearch}
         />
 
+        <Map />
         <Button
           type="button"
           testId="add"
