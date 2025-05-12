@@ -8,7 +8,7 @@ const SocialNetButton = ({ name, act }: { name: string; act: string }) => {
   return (
     <Button
       type="submit"
-      testId="login_page.signup_google"
+      testId="login_page.register_google"
       title={t(`login_page.${act}_${name}`)}
       appearance={ButtonAppearance.SECONDARY}
       style={{

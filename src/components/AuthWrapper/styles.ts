@@ -41,8 +41,13 @@ export const SocialNetButtonWrapper = styled.div({
   marginBottom: '48px',
 });
 
-export const CallToActionWrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
+export const CallToActionWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Form = styled.form`
+  margin-bottom: 64px;
+  width: 100%;
+`;

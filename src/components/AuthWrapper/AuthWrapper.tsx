@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Container, Section } from '../ContainerAndSection';
@@ -16,20 +16,48 @@ import {
   Title,
 } from './styles';
 
-interface IAuthWrapperProps {
-  title: string;
-  children: React.ReactNode;
+type ActionType = 'login' | 'register';
+
+interface IActionData {
+  nextRoute: string;
+  subtitle: string;
+  buttonTitle: string;
 }
 
-const AuthWrapper: FC<IAuthWrapperProps> = ({ children }) => {
+interface IAuthWrapperProps {
+  action: ActionType;
+  children: React.ReactNode;
+  currentRole: string;
+  setCurrentRole: (role: string) => void;
+}
+
+const AuthWrapper: FC<IAuthWrapperProps> = ({
+  children,
+  action,
+  currentRole,
+  setCurrentRole,
+}) => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const [currentRole, setCurrentRole] = useState<string>(Roles.CUSTOMER);
+
+  const actionDataMap: Record<ActionType, IActionData> = {
+    login: {
+      nextRoute: '/register',
+      subtitle: 'login_page.have_not_yet',
+      buttonTitle: 'login_page.button_title_reg',
+    },
+    register: {
+      nextRoute: '/login',
+      subtitle: 'login_page.already_have',
+      buttonTitle: 'login_page.button_title',
+    },
+  };
+
+  const actionData = actionDataMap[action] || actionDataMap['login'];
 
   return (
     <Section>
-      {/* <Container styles={{ maxWidth: '375px' }}> */}
       <Container maxWidth={'375px'}>
         <Image
           srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
@@ -37,7 +65,9 @@ const AuthWrapper: FC<IAuthWrapperProps> = ({ children }) => {
           alt="Logo"
         />
         <TextWrapper>
-          <Title>{t('login_page.title')}</Title>
+          <Title>
+            {t(action === 'login' ? 'login_page.title' : 'register_page.title')}
+          </Title>
           <Subtitle>{t('login_page.description')}</Subtitle>
         </TextWrapper>
         <TabsWrapper>
@@ -62,96 +92,18 @@ const AuthWrapper: FC<IAuthWrapperProps> = ({ children }) => {
           ))}
         </TabsWrapper>
         {children}
-        {/* <Form onSubmit={handleSubmit(onSubmitForm)}>
-            <Controller
-              name={'email'}
-              control={control}
-              render={({ field, fieldState }) => {
-                return (
-                  <Input
-                    {...field}
-                    label={t('login_page.form.email') + '*'}
-                    testId="login_page.form.email"
-                    errorMessage={fieldState.error?.message}
-                    containerStyles={{ marginBottom: theme.pxs.x4 }}
-                    inputStyles={{ fontSize: '14px', fontWeight: 400 }}
-                    autoFocus
-                  />
-                );
-              }}
-            />
-            <Controller
-              name={'password'}
-              control={control}
-              render={({ field, fieldState }) => {
-                return (
-                  <Input
-                    {...field}
-                    label={t('login_page.form.password') + '*'}
-                    testId="login_page.form.password"
-                    errorMessage={fieldState.error?.message}
-                    containerStyles={{
-                      marginBottom: theme.pxs.x8,
-                      alignItems: 'center',
-                    }}
-                    inputStyles={{ fontSize: '14px', fontWeight: 400 }}
-                    type={isVisiblePassword ? 'text' : 'password'}
-                    appendChild={
-                      <EyeForPassword
-                        isVisiblePassword={isVisiblePassword}
-                        toggleVisibilityPassword={toggleVisibilityPassword}
-                      />
-                    }
-                  />
-                );
-              }}
-            />
-           
-            {isIncorrectData ? (
-              <WrongDataMessage>
-                Невірно введено email або пароль
-              </WrongDataMessage>
-            ) : null}
-            
-            <CallToActionWrapper style={{ marginBottom: theme.pxs.x8 }}>
-              <Text>{t('login_page.forgott_pass')}</Text>
-              <Button
-                testId="login_page.forgott_button"
-                title={t('login_page.forgott_button')}
-                appearance={ButtonAppearance.UNDERLINED}
-                style={{ fontWeight: 500 }}
-              />
-            </CallToActionWrapper>
-            <Button
-              testId="login_page.form.submit_button"
-              title={t('login_page.form.submit_button')}
-              type="submit"
-              style={{ width: '100%', height: '32px' }}
-              disabled={!isValid || isLoading}
-              appendChild={
-                isSubmitting || isLoading ? (
-                  <Loader
-                    size={'16px'}
-                    stroke={'#f0f0f0'}
-                    strokeWidth={'1'}
-                    style={{ marginLeft: '4px' }}
-                  />
-                ) : null
-              }
-            />
-          </Form> */}
         <SocialNetButtonWrapper>
-          <SocialNetButton name={'google'} act={'login'} />
-          <SocialNetButton name={'facebook'} act={'login'} />
+          <SocialNetButton name={'google'} act={action} />
+          <SocialNetButton name={'facebook'} act={action} />
         </SocialNetButtonWrapper>
         <CallToActionWrapper>
-          <Subtitle>{t('login_page.have_not_yet')}</Subtitle>
+          <Subtitle>{t(actionData.subtitle)}</Subtitle>
           <Button
-            testId="login_page.have_not_yet"
-            title={t('login_page.button_title_reg')}
+            testId={`${actionData.buttonTitle}`}
+            title={t(actionData.buttonTitle)}
             appearance={ButtonAppearance.UNDERLINED}
             style={{ fontWeight: 500 }}
-            onClick={() => navigate('/register')}
+            onClick={() => navigate(actionData.nextRoute)}
           />
         </CallToActionWrapper>
       </Container>
