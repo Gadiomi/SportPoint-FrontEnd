@@ -36,6 +36,7 @@ export const TrainersList: React.FC = () => {
 
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
+      {error ? <Loading>{t('home_page.error')}</Loading> : null}
       {isLoading ? (
         <Loading>{t('home_page.loading')}...</Loading>
       ) : (
@@ -69,7 +70,6 @@ export const TrainersList: React.FC = () => {
           />
         </>
       )}
-      {error ? <p>Помилка завантаження даних!</p> : null}
     </Container>
   );
 };

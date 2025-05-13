@@ -138,6 +138,10 @@
   },
   "filters": {
     "kyiv": "Kyiv",
+    "lviv": "Lviv",
+    "odesa": "Odessa",
+    "kharkiv": "Kharkiv",
+    "uzhhorod": "Uzhhorod",
     "new": "New",
     "price_asc": "Price to growth",
     "popular": "Popular",

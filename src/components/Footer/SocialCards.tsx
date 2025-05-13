@@ -16,7 +16,7 @@ export const SocialCards: React.FC = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img src="/public/assets/images/icon_tik_tok.png" alt="Tik_tok" />
+        <img src="/assets/images/icon_tik_tok.png" alt="Tik_tok" />
       </SocialLink>
       <SocialLink
         href="https://facebook.com"
@@ -30,7 +30,7 @@ export const SocialCards: React.FC = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img src="/public/assets/images/icon_x.png" alt="Twitter" />
+        <img src="/assets/images/icon_x.png" alt="Twitter" />
       </SocialLink>
     </SocialContainer>
   );
