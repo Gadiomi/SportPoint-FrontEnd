@@ -31,8 +31,11 @@ export interface ICoachData {
 }
 
 export interface IClubData {
-  name: string;
-  description: string;
+  _id: string;
+  firstName: string;
+  avatar: string;
+  // description: string;
+  description: DescriptionClub;
   distance: string;
   workTime: string;
 }

@@ -55,4 +55,6 @@ export enum IconName {
   Icon_send_01 = 'icon-send-01',
   Icon_send_02 = 'icon-send-02',
   Icon_share = 'icon-Icon2',
+  SORT_VERTICAL_02 = 'sort-vertical-02',
+  SORT_VERTICAL_021 = 'sort-vertical-021',
 }

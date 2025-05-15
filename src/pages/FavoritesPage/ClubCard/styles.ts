@@ -7,7 +7,7 @@ export const ClubCardWrapper = styled.li`
   justify-content: center;
   width: 100%;
   height: auto;
-  padding: 9px;
+  padding: 8px;
   margin-bottom: 16px;
   background-color: ${({ theme }) => theme.color.inputBar};
   border-radius: 6px;
@@ -16,17 +16,32 @@ export const ClubCardWrapper = styled.li`
 
 export const ClubInfoWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   gap: 8px;
   width: 100%;
   margin-bottom: 8px;
+`;
+
+export const ClubImage = styled.img`
+  width: 96px;
+  min-width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+export const ClubInfoBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 100%;
 `;
 
 export const ClubNameBlock = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 34px;
   font-family: ${FontFamily};
   & h2 {
     font-size: ${FontSizes.LARGE};
@@ -37,7 +52,7 @@ export const ClubNameBlock = styled.div`
   & p {
     font-size: ${FontSizes.MEDIUM};
     font-weight: ${FontWeights.REGULAR};
-    line-height: ${LineHeights.LARGE};
+    line-height: ${LineHeights.MEDIUM};
     color: ${({ theme }) => theme.color.secWhite};
   }
 `;
@@ -45,16 +60,17 @@ export const ClubNameBlock = styled.div`
 export const ClubConditionsBlock = styled.div`
   display: flex;
   justify-content: start;
-  gap: 8px;
+  gap: 4px;
   & div {
     display: flex;
     align-items: center;
     gap: 2px;
+    width: fit-content;
 
     & span {
       font-size: ${FontSizes.MEDIUM};
-      font-weight: ${FontWeights.LIGHT};
-      line-height: ${LineHeights.LARGE};
+      font-weight: ${FontWeights.REGULAR};
+      line-height: ${LineHeights.MEDIUM};
       color: ${({ theme }) => theme.color.secWhite};
     }
   }

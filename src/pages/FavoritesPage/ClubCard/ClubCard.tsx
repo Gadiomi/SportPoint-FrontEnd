@@ -1,9 +1,13 @@
 import { FC } from 'react';
-import { Button, Icon, IconName } from '@/kit';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
+import { Button, Icon, IconName } from '@/kit';
+import { fonts } from '@/theme/fonts';
 import {
   ClubCardWrapper,
   ClubConditionsBlock,
+  ClubImage,
+  ClubInfoBlock,
   ClubInfoWrapper,
   ClubNameBlock,
 } from './styles';
@@ -13,55 +17,75 @@ type Props = {
   clubData: IClubData;
 };
 
+const NO_IMAGE = '/assets/svg/no_image.svg'; //TEMP!!!
+
 const ClubCard: FC<Props> = ({ clubData }) => {
-  const detailsHandler = () => {
-    console.log('detailsHandler!!!'); //Temp !!!
-  };
+  const navigate = useNavigate();
 
   return (
     <ClubCardWrapper>
       <ClubInfoWrapper>
-        <ClubNameBlock>
-          <div>
-            <h2>{clubData.name}</h2>
-            <p>{clubData.description}</p>
-          </div>
-          <Icon
-            // name={IconName.HEART_FILL}
-            name={IconName.HEART_NONE}
-            styles={{
-              // fill: '#EC4033',
-              color: '#EC4033',
-            }}
-          />
-        </ClubNameBlock>
-        <ClubConditionsBlock>
-          <div>
+        <ClubImage src={clubData?.avatar || NO_IMAGE} alt="club image" />
+        <ClubInfoBlock>
+          <ClubNameBlock>
+            <div>
+              <h2>{clubData.firstName}</h2>
+              {/* <p>{clubData.description}</p> */}
+              <p>No info yet</p>
+            </div>
             <Icon
-              name={IconName.LOCATION}
+              // name={IconName.HEART_FILL}
+              name={IconName.HEART_NONE}
               styles={{
-                color: '#b7b7b9',
-                fill: 'transparent',
+                // fill: '#EC4033',
+                color: '#EC4033',
               }}
             />
-            <span>{clubData.distance}</span>
-          </div>
-          <div>
-            <Icon
-              name={IconName.CLOCK}
-              styles={{
-                color: '#b7b7b9',
-                fill: '#b7b7b9',
-              }}
-            />
-            <span>{clubData.workTime}</span>
-          </div>
-        </ClubConditionsBlock>
+          </ClubNameBlock>
+          <ClubConditionsBlock>
+            <div>
+              <Icon
+                name={IconName.LOCATION}
+                styles={{
+                  color: '#b7b7b9',
+                  fill: 'transparent',
+                }}
+              />
+              {/* <span>{clubData.distance}</span> */}
+              <span>Біля 3 км</span>
+            </div>
+            <div>
+              <Icon
+                name={IconName.CLOCK}
+                styles={{
+                  color: '#b7b7b9',
+                  fill: '#b7b7b9',
+                }}
+              />
+              {/* <span>{clubData.workTime}</span> */}
+              <span>
+                {clubData?.description?.schedule
+                  ? clubData?.description?.schedule[0]?.days
+                  : '-'}
+              </span>
+              /
+              <span>
+                {clubData?.description?.schedule
+                  ? clubData?.description?.schedule[0]?.hours
+                  : '-'}
+              </span>
+            </div>
+          </ClubConditionsBlock>
+        </ClubInfoBlock>
       </ClubInfoWrapper>
       <Button
         testId="Детальніше"
         title={t('more_details')}
-        onClick={detailsHandler}
+        onClick={() => navigate(`/clubs/club/${clubData._id}`)}
+        style={{
+          ...fonts.secondManrope,
+          padding: '6px',
+        }}
       />
     </ClubCardWrapper>
   );
