@@ -1,2 +1,2 @@
-export { ModalType } from './constants';
+// export { ModalType } from './constants';
 export { Modal } from './Modal';

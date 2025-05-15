@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, ButtonAppearance, Icon, IconName, Input, Modal } from '@/kit';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { View, dateFnsLocalizer } from 'react-big-calendar';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -26,8 +26,8 @@ import { useAddScheduleMutation } from '@/redux/schedule/scheduleApi';
 import ScheduleCard from './components/ScheduleCard/ScheduleCard';
 import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
 import Calendar from './components/Calendar/Calendar';
-import EditScheduleCard from './components/EditScheduleCard/EditScheduleCard';
-import { type } from '../../../../theme/types';
+import Services from './components/Services/Services';
+import TimeInput from './components/TimeInput/TimeInput';
 
 const locales = {
   uk: uk,
@@ -60,7 +60,6 @@ const Schedule = () => {
   const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
   const [localSearchResults, setLocalSearchResults] =
     useState<SearchResults | null>(null);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (userProfile?.description.schedule) {
@@ -243,9 +242,6 @@ const Schedule = () => {
     setSelectedProfile([]);
     setSearchTerm('');
   };
-  const closeModal = () => {
-    setOpen(false);
-  };
 
   return (
     <Container>
@@ -285,25 +281,24 @@ const Schedule = () => {
             containerStyles={{ marginBottom: '8px' }}
           />
           <InputsBeginEnd>
-            <Input
+            <TimeInput
               testId="begin"
               value={beginTime}
-              type="time"
-              label="Початок"
-              title="Початок"
+              label="з"
               onChange={handleBeginChange}
             />
-            <Input
+            <TimeInput
               testId="end"
               value={endTime}
-              type="time"
-              label="Кінець"
-              title="Кінець"
+              label="до"
               onChange={handleEndChange}
             />
           </InputsBeginEnd>
         </TimeAndDateContainer>
-
+        <div>
+          Вид послуги
+          <Services />
+        </div>
         <SearchWork
           searchTerm={searchTerm}
           handleSearchChange={handleSearchChange}
@@ -325,16 +320,12 @@ const Schedule = () => {
 
         {savedSchedule.length > 0 && (
           <ScheduleCard
-            setOpen={setOpen}
             savedSchedule={savedSchedule}
             setSavedSchedule={setSavedSchedule}
           />
         )}
         <GeneralsBtn t={t} />
       </FormStyled>
-      <Modal isOpen={open} onClose={closeModal}>
-        <EditScheduleCard />
-      </Modal>
     </Container>
   );
 };

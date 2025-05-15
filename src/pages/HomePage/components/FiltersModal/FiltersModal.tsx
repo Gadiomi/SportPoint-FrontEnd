@@ -7,6 +7,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  StyledButton,
 } from './styles';
 import { useTheme } from 'styled-components';
 import { CustomSelect } from '@/kit/Select';
@@ -58,11 +59,11 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
   if (!isFiltersModalOpen) return null;
 
   const cityOptions = [
-    { value: 'kyiv', label: 'Київ' },
-    { value: 'lviv', label: 'Львів' },
-    { value: 'odesa', label: 'Одеса' },
-    { value: 'kharkiv', label: 'Харків' },
-    { value: 'uzhhorod', label: 'Ужгород' },
+    { value: 'kyiv', label: t('filters.kyiv') },
+    { value: 'lviv', label: t('filters.lviv') },
+    { value: 'odesa', label: t('filters.odesa') },
+    { value: 'kharkiv', label: t('filters.kharkiv') },
+    { value: 'uzhhorod', label: t('filters.uzhhorod') },
   ];
 
   const handleClose = () => {
@@ -167,7 +168,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
           />
         </ModalContent>
         <ModalFooter>
-          <Button
+          <StyledButton
             title={t('home_page.resultFilter')}
             appearance={ButtonAppearance.PRIMARY}
             testId="submit-filters-button"

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  Container,
   FormStyled,
   InputsBeginEnd,
   ScheduleContainer,
@@ -11,7 +12,6 @@ import SearchWork from '../../../SearchWork/SearchWork';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import { SectionTitle } from '../../../EditGeneral/EditGeneral.styled';
 import Calendar from '../Calendar/Calendar';
-import { Container } from 'lucide-react';
 import { WorkoutPlan } from '@/types/userProfile';
 import { useForm } from 'react-hook-form';
 import { Profile, ScheduleEntry, SearchResults } from '../../types/schedule';
@@ -52,7 +52,7 @@ const EditScheduleCard = () => {
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [beginTime, setBeginTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
-  const [savedSchedule, setSavedSchedule] = useState<ScheduleEntry[]>([]);
+  // const [savedSchedule, setSavedSchedule] = useState<ScheduleEntry[]>([]);
   const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
   const [localSearchResults, setLocalSearchResults] =
     useState<SearchResults | null>(null);
@@ -185,7 +185,7 @@ const EditScheduleCard = () => {
     };
 
     setBackendSchedule(prev => [...prev, newEntry]);
-    setSavedSchedule(prev => [...prev, newEntry]);
+    // setSavedSchedule(prev => [...prev, newEntry]);
     setBeginTime('');
     setEndTime('');
     setSelectedProfile([]);
@@ -196,16 +196,17 @@ const EditScheduleCard = () => {
     <Container>
       <ScheduleContainer>
         <Button
-          onClick={() => navigate('/profile/edit')}
+          onClick={() => navigate('/profile/edit/schedule')}
           title=""
-          appearance={ButtonAppearance.PRIMARY}
+          appearance={ButtonAppearance.UNDERLINED}
           testId="general"
-          style={{ width: '100%', padding: '8px 18px' }}
+          styles={{
+            width: '100%',
+            padding: '8px 18px',
+            justifyContent: 'start',
+          }}
           appendChild={
-            <Icon
-              name={IconName.ARROW_LEFT}
-              styles={{ color: 'currentColor' }}
-            />
+            <Icon name={IconName.ARROW_LEFT} styles={{ color: 'white' }} />
           }
         />
         <Calendar

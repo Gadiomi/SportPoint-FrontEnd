@@ -15,6 +15,7 @@ import { loginReducer } from './auth/loginSlice';
 import { searchApi } from './search/searchApi';
 import reviewReducer from './reviews/reviewSlice';
 import { globalsStatesReducer } from './globalsStates/globalsStates';
+import { coachServicesApi } from './coachServices/coachServicesApi';
 
 // Store
 export const store = configureStore({
@@ -34,6 +35,7 @@ export const store = configureStore({
     globalsStates: globalsStatesReducer,
     setLogin: loginReducer,
     reviews: reviewReducer,
+    [coachServicesApi.reducerPath]: coachServicesApi.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -50,6 +52,7 @@ export const store = configureStore({
       cardIdApi.middleware,
       favoritesApi.middleware,
       searchApi.middleware,
+      coachServicesApi.middleware,
     ),
 });
 
