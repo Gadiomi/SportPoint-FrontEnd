@@ -33,8 +33,8 @@ export interface ICoachData {
 export interface IClubData {
   _id: string;
   firstName: string;
+  lastName?: string;
   avatar: string;
-  // description: string;
   description: DescriptionClub;
   distance: string;
   workTime: string;
@@ -71,6 +71,7 @@ export interface DescriptionClub {
   experience?: string;
   schedule?: ScheduleClub[];
   price?: TCoachPrice[];
+  short_desc?: string;
 }
 export interface ScheduleClub {
   days: string;

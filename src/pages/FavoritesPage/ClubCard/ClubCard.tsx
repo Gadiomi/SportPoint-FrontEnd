@@ -29,9 +29,10 @@ const ClubCard: FC<Props> = ({ clubData }) => {
         <ClubInfoBlock>
           <ClubNameBlock>
             <div>
-              <h2>{clubData.firstName}</h2>
-              {/* <p>{clubData.description}</p> */}
-              <p>No info yet</p>
+              <h2>
+                {clubData.firstName} {clubData?.lastName}
+              </h2>
+              <p>{clubData?.description?.short_desc}</p>
             </div>
             <Icon
               // name={IconName.HEART_FILL}
@@ -52,7 +53,7 @@ const ClubCard: FC<Props> = ({ clubData }) => {
                 }}
               />
               {/* <span>{clubData.distance}</span> */}
-              <span>Біля 3 км</span>
+              <span>3 км</span>
             </div>
             <div>
               <Icon

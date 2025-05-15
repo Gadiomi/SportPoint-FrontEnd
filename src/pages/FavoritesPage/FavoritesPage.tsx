@@ -39,7 +39,6 @@ const coachsData1: ICoachData[] = [
 const clubsData1: IClubData[] = [
   {
     firstName: 'Sport Life',
-    // description: 'Спортивний клуб',
     description: {
       schedule: [
         {
@@ -117,9 +116,9 @@ const FavoritesPage = () => {
     page: 1,
     ...filters,
   });
-  console.log(' - isActive -> ', isActive);
-  console.log('data -> ', data);
-  console.log('datadata?.data?.data -> ', data?.data?.data);
+  // console.log(' - isActive -> ', isActive);
+  // console.log('data -> ', data);
+  // console.log('datadata?.data?.data -> ', data?.data?.data);
 
   // const coachsData: ICoachData[] = isActive ? data?.data?.data : coachsData1;
   // const clubsData: IClubData[] = isActive ? clubsData1 : data?.data?.data;
