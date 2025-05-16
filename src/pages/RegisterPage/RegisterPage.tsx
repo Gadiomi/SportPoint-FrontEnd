@@ -1,39 +1,31 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useRegisterMutation } from '@/redux/auth';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { t } from 'i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { CookiesKey, Roles } from '@/constants';
-import { Container, Section } from '@/components/ContainerAndSection';
+import {
+  // CookiesKey,
+  Roles,
+} from '@/constants';
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import CitySelect from './components/CitySelect';
 import AddressWidget from './components/AddressWidget/AddressWidget';
-import SocialNetButton from './components/SocialNetButton/SocialNetButton';
 import SportsListChoice from './components/SportsList/SportsList';
 import MessageModal from '../../components/MessageModal/MessageModal';
-import { Button, ButtonAppearance, Input, Loader } from '@/kit';
+import { Button, Input, Loader } from '@/kit';
 import { useTheme } from '@/hooks';
 import { RegisterFormData } from '@/types';
 import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
 import { useClubsInfo } from './getData';
 import { OptionType } from './components/types';
-import {
-  CallToActionWrapper,
-  Form,
-  Image,
-  SimpleInput,
-  // SportsList,
-  Subtitle,
-  TabsWrapper,
-  Title,
-  TitleWrapper,
-} from './styles';
+import { SimpleInput } from './styles';
 // --- - ---
 import { cityOptions } from './tempData';
 import Line from '@/kit/Line/Line';
+import AuthWrapper from '@/components/AuthWrapper/AuthWrapper';
+import { Form } from '@/components/AuthWrapper/styles';
 // --- / - ---
 
 const initClubsList = [{ value: 'No club yet', label: 'No club yet' }];
@@ -66,7 +58,6 @@ const RegisterPage = () => {
   });
 
   const { theme } = useTheme();
-  const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterMutation();
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -161,7 +152,6 @@ const RegisterPage = () => {
       // }
       reset();
       setIsModalOpen(true);
-      // navigate('/');
     } catch (err) {
       console.error('Registration failed:', err);
     }
@@ -210,287 +200,254 @@ const RegisterPage = () => {
   };
 
   return (
-    <Section>
-      {/* ??? */}
-      <Container maxWidth="375px">
-        <Image
-          srcSet="/assets/images/logo@1.png 1x, /assets/images/logo@2.png 2x"
-          src="/assets/images/logo@1.png"
-          alt="Logo"
-        />
-        <TitleWrapper>
-          <Title>{t('register_page.title')}</Title>
-          <Subtitle>{t('login_page.description')}</Subtitle>
-        </TitleWrapper>
-        <TabsWrapper>
-          {Object.values(Roles).map(role => (
-            <Button
-              key={role}
-              title={t(`login_page.tabs.${role}`)}
-              testId={role}
-              onClick={() => {
-                changeRole(role);
+    <AuthWrapper
+      action={'register'}
+      currentRole={currentRole}
+      setCurrentRole={setCurrentRole}
+    >
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        {currentRole === Roles.ADMIN_CLUB ? (
+          <>
+            <Controller
+              name="club_name"
+              control={control}
+              render={({ field, fieldState }) => {
+                return (
+                  <Input
+                    {...field}
+                    label={t('register_page.club_name') + '*'}
+                    testId="register_page.club_name"
+                    errorMessage={fieldState.error?.message}
+                    containerStyles={{ marginBottom: theme.pxs.x4 }}
+                    autoFocus
+                  />
+                );
               }}
-              {...(currentRole !== role
-                ? { style: { backgroundColor: theme.color.inputBar } }
-                : {})}
             />
-          ))}
-        </TabsWrapper>
+
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field, fieldState }) => {
+                return (
+                  <Input
+                    {...field}
+                    label={t('register_page.phone') + '*'}
+                    testId="register_page.phone"
+                    errorMessage={fieldState.error?.message}
+                    containerStyles={{ marginBottom: theme.pxs.x4 }}
+                  />
+                );
+              }}
+            />
+          </>
+        ) : null}
         {/* --- - --- */}
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          {currentRole === Roles.ADMIN_CLUB ? (
-            <>
+        {currentRole === Roles.COACH ? (
+          <>
+            <Controller
+              name="first_name"
+              control={control}
+              render={({ field, fieldState }) => {
+                return (
+                  <Input
+                    {...field}
+                    label={t('register_page.name') + '*'}
+                    testId="register_page.name"
+                    errorMessage={fieldState.error?.message}
+                    containerStyles={{ marginBottom: theme.pxs.x4 }}
+                    autoFocus
+                  />
+                );
+              }}
+            />
+
+            <Controller
+              name="second_name"
+              control={control}
+              render={({ field, fieldState }) => {
+                return (
+                  <Input
+                    {...field}
+                    label={t('register_page.second_name') + '*'}
+                    testId="register_page.second_name"
+                    errorMessage={fieldState.error?.message}
+                    containerStyles={{ marginBottom: theme.pxs.x4 }}
+                  />
+                );
+              }}
+            />
+          </>
+        ) : null}
+        {/* --- /- --- */}
+
+        <Controller
+          name="email"
+          control={control}
+          render={({ field, fieldState }) => {
+            return (
+              <Input
+                {...field}
+                label={t('login_page.form.email') + '*'}
+                testId="register_page.email"
+                errorMessage={fieldState.error?.message}
+                containerStyles={{ marginBottom: theme.pxs.x4 }}
+                autoFocus
+              />
+            );
+          }}
+        />
+
+        <Controller
+          name="password"
+          control={control}
+          render={({ field, fieldState }) => {
+            return (
+              <Input
+                {...field}
+                label={t('login_page.form.password') + '*'}
+                testId="register_page.password"
+                errorMessage={fieldState.error?.message}
+                containerStyles={{
+                  marginBottom: theme.pxs.x4,
+                  alignItems: 'center',
+                }}
+                type={isVisiblePassword ? 'text' : 'password'}
+                appendChild={
+                  <EyeForPassword
+                    isVisiblePassword={isVisiblePassword}
+                    toggleVisibilityPassword={toggleVisibilityPassword}
+                  />
+                }
+              />
+            );
+          }}
+        />
+
+        <Controller
+          name="confirm_password"
+          control={control}
+          render={({ field, fieldState }) => {
+            return (
+              <Input
+                {...field}
+                label={t('register_page.confirm_password') + '*'}
+                testId="register_page.confirm_password"
+                errorMessage={fieldState.error?.message}
+                containerStyles={{
+                  marginBottom:
+                    currentRole !== Roles.CUSTOMER ? '32px' : '64px',
+                  alignItems: 'center',
+                }}
+                type={isVisiblePassword ? 'text' : 'password'}
+                appendChild={
+                  <EyeForPassword
+                    isVisiblePassword={isVisiblePassword}
+                    toggleVisibilityPassword={toggleVisibilityPassword}
+                  />
+                }
+              />
+            );
+          }}
+        />
+
+        {currentRole !== Roles.CUSTOMER ? (
+          <>
+            <Line />
+            <AddressWidget
+              handler={addressHandler}
+              isOpen={isOpenAddress}
+              title={addressTitle()}
+              contentRef={contentRef}
+              height={height}
+            >
               <Controller
-                name="club_name"
+                name="city"
                 control={control}
                 render={({ field, fieldState }) => {
                   return (
-                    <Input
-                      {...field}
-                      label={t('register_page.club_name') + '*'}
-                      testId="register_page.club_name"
-                      errorMessage={fieldState.error?.message}
-                      containerStyles={{ marginBottom: theme.pxs.x4 }}
-                      autoFocus
+                    <CitySelect
+                      field={field}
+                      options={cityOptions}
+                      placeholder={'Оберіть місто'}
+                      onMenuOpen={() => setIsCityOpen(true)}
+                      onMenuClose={() => setIsCityOpen(false)}
                     />
                   );
                 }}
               />
-
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field, fieldState }) => {
-                  return (
-                    <Input
-                      {...field}
-                      label={t('register_page.phone') + '*'}
-                      testId="register_page.phone"
-                      errorMessage={fieldState.error?.message}
-                      containerStyles={{ marginBottom: theme.pxs.x4 }}
-                    />
-                  );
-                }}
-              />
-            </>
-          ) : null}
-          {/* --- - --- */}
-          {currentRole === Roles.COACH ? (
-            <>
-              <Controller
-                name="first_name"
-                control={control}
-                render={({ field, fieldState }) => {
-                  return (
-                    <Input
-                      {...field}
-                      label={t('register_page.name') + '*'}
-                      testId="register_page.name"
-                      errorMessage={fieldState.error?.message}
-                      containerStyles={{ marginBottom: theme.pxs.x4 }}
-                      autoFocus
-                    />
-                  );
-                }}
-              />
-
-              <Controller
-                name="second_name"
-                control={control}
-                render={({ field, fieldState }) => {
-                  return (
-                    <Input
-                      {...field}
-                      label={t('register_page.second_name') + '*'}
-                      testId="register_page.second_name"
-                      errorMessage={fieldState.error?.message}
-                      containerStyles={{ marginBottom: theme.pxs.x4 }}
-                    />
-                  );
-                }}
-              />
-            </>
-          ) : null}
-          {/* --- /- --- */}
-
-          <Controller
-            name="email"
-            control={control}
-            render={({ field, fieldState }) => {
-              return (
-                <Input
-                  {...field}
-                  label={t('login_page.form.email') + '*'}
-                  testId="register_page.email"
-                  errorMessage={fieldState.error?.message}
-                  containerStyles={{ marginBottom: theme.pxs.x4 }}
-                  autoFocus
-                />
-              );
-            }}
-          />
-
-          <Controller
-            name="password"
-            control={control}
-            render={({ field, fieldState }) => {
-              return (
-                <Input
-                  {...field}
-                  label={t('login_page.form.password') + '*'}
-                  testId="register_page.password"
-                  errorMessage={fieldState.error?.message}
-                  containerStyles={{
-                    marginBottom: theme.pxs.x4,
-                    alignItems: 'center',
-                  }}
-                  type={isVisiblePassword ? 'text' : 'password'}
-                  appendChild={
-                    <EyeForPassword
-                      isVisiblePassword={isVisiblePassword}
-                      toggleVisibilityPassword={toggleVisibilityPassword}
-                    />
-                  }
-                />
-              );
-            }}
-          />
-
-          <Controller
-            name="confirm_password"
-            control={control}
-            render={({ field, fieldState }) => {
-              return (
-                <Input
-                  {...field}
-                  label={t('register_page.confirm_password') + '*'}
-                  testId="register_page.confirm_password"
-                  errorMessage={fieldState.error?.message}
-                  containerStyles={{
-                    marginBottom: '32px',
-                    alignItems: 'center',
-                  }}
-                  type={isVisiblePassword ? 'text' : 'password'}
-                  appendChild={
-                    <EyeForPassword
-                      isVisiblePassword={isVisiblePassword}
-                      toggleVisibilityPassword={toggleVisibilityPassword}
-                    />
-                  }
-                />
-              );
-            }}
-          />
-
-          {currentRole !== Roles.CUSTOMER ? (
-            <>
-              <Line />
-              <AddressWidget
-                handler={addressHandler}
-                isOpen={isOpenAddress}
-                title={addressTitle()}
-                contentRef={contentRef}
-                height={height}
-              >
+              {currentRole === Roles.COACH ? (
                 <Controller
-                  name="city"
+                  name="address"
                   control={control}
                   render={({ field, fieldState }) => {
                     return (
                       <CitySelect
                         field={field}
-                        options={cityOptions}
-                        placeholder={'Оберіть місто'}
-                        onMenuOpen={() => setIsCityOpen(true)}
-                        onMenuClose={() => setIsCityOpen(false)}
+                        options={clubsList}
+                        placeholder={'Оберіть клуб'}
+                        onMenuOpen={() => setIsClubOpen(true)}
+                        onMenuClose={() => setIsClubOpen(false)}
                       />
                     );
                   }}
                 />
-                {currentRole === Roles.COACH ? (
-                  <Controller
-                    name="address"
-                    control={control}
-                    render={({ field, fieldState }) => {
-                      return (
-                        <CitySelect
-                          field={field}
-                          options={clubsList}
-                          placeholder={'Оберіть клуб'}
-                          onMenuOpen={() => setIsClubOpen(true)}
-                          onMenuClose={() => setIsClubOpen(false)}
-                        />
-                      );
-                    }}
-                  />
-                ) : (
-                  <SimpleInput
-                    type="text"
-                    placeholder="Ввести назву та адресу клубу"
-                    {...register('address')}
-                  />
-                )}
-              </AddressWidget>
-
-              <AddressWidget
-                handler={sportsHandler}
-                isOpen={isOpenSports}
-                title={sportsTitle()}
-                contentRef={sportRef}
-                height={'auto'}
-              >
-                <SportsListChoice
-                  isOpenSports={isOpenSports}
-                  selectedSports={selectedSports}
-                  register={register}
+              ) : (
+                <SimpleInput
+                  type="text"
+                  placeholder="Ввести назву та адресу клубу"
+                  {...register('address')}
                 />
-              </AddressWidget>
-            </>
-          ) : null}
+              )}
+            </AddressWidget>
 
-          <Button
-            testId="register_page.submit_button"
-            title={t('register_page.submit_button')}
-            type="submit"
-            style={{ width: '100%' }}
-            disabled={!isValid || isLoading}
-            appendChild={
-              isSubmitting || isLoading ? (
-                <Loader
-                  size={'16px'}
-                  stroke={'#0f0f0f'}
-                  strokeWidth={'1'}
-                  style={{ marginLeft: '4px' }}
-                />
-              ) : null
-            }
-          />
-        </Form>
-        <SocialNetButton name={'google'} act={'signup'} />
-        <SocialNetButton name={'facebook'} act={'signup'} />
-        <CallToActionWrapper>
-          <Subtitle>{t('login_page.already_have')}</Subtitle>
-          <Button
-            testId="login_page.already_have"
-            title={t('login_page.button_title')}
-            appearance={ButtonAppearance.UNDERLINED}
-            onClick={() => navigate('/login')}
-          />
-        </CallToActionWrapper>
-
-        <MessageModal
-          isModalOpen={isModalOpen}
-          handleClose={handleCloseModal}
-          nextRoute={'/login'}
-        >
-          <>
-            <p>Перейдіть за посиланням, яке надіслано листом на Ваш email.</p>
-            <p>Потім натисніть кнопку "Далі", щоб перейти у Ваш акаунт.</p>
+            <AddressWidget
+              handler={sportsHandler}
+              isOpen={isOpenSports}
+              title={sportsTitle()}
+              contentRef={sportRef}
+              height={'auto'}
+              $marginBottom={'64px'}
+            >
+              <SportsListChoice
+                isOpenSports={isOpenSports}
+                selectedSports={selectedSports}
+                register={register}
+              />
+            </AddressWidget>
           </>
-        </MessageModal>
-      </Container>
-    </Section>
+        ) : null}
+
+        <Button
+          testId="register_page.submit_button"
+          title={t('register_page.submit_button')}
+          type="submit"
+          style={{ width: '100%' }}
+          disabled={!isValid || isLoading}
+          appendChild={
+            isSubmitting || isLoading ? (
+              <Loader
+                size={'16px'}
+                stroke={'#0f0f0f'}
+                strokeWidth={'1'}
+                style={{ marginLeft: '4px' }}
+              />
+            ) : null
+          }
+        />
+      </Form>
+
+      <MessageModal
+        isModalOpen={isModalOpen}
+        handleClose={handleCloseModal}
+        nextRoute={'/login'}
+      >
+        <>
+          <p>Перейдіть за посиланням, яке надіслано листом на Ваш email.</p>
+          <p>Потім натисніть кнопку "Далі", щоб перейти у Ваш акаунт.</p>
+        </>
+      </MessageModal>
+    </AuthWrapper>
   );
 };
 

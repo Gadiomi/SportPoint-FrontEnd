@@ -9,10 +9,11 @@ const AddressWidget: FC<IAddressWidget> = ({
   title,
   contentRef,
   height,
+  $marginBottom,
   children,
 }) => {
   return (
-    <PlaceWrapper>
+    <PlaceWrapper $marginBottom={$marginBottom}>
       <GroupTitle handler={handler} isOpen={isOpen} title={title} />
       <AddressWrapper
         ref={contentRef}

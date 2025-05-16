@@ -34,8 +34,8 @@
     },
     "forgott_pass": "Forgot password?",
     "forgott_button": "Recover",
-    "signup_google": "Sign Up with Google",
-    "signup_facebook": "Sign Up with Facebook",
+    "register_google": "Sign Up with Google",
+    "register_facebook": "Sign Up with Facebook",
     "login_google": "Login with Google",
     "login_facebook": "Login with Facebook"
   },
@@ -118,7 +118,6 @@
     "forgot": "Forgot password?",
     "restore": "Restore"
   },
-
   "home_page": {
     "homeDescr": "Discover the best sports clubs and professional trainers in your area.",
     "motivation": "BE SPORTY",
@@ -167,7 +166,6 @@
   "nav_bar": {
     "search": "Search",
     "history": "Search history",
-
     "menu": "Menu",
     "support": "Support service",
     "aboutUs": "About us",

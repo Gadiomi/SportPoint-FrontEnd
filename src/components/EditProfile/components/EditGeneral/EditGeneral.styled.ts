@@ -47,7 +47,7 @@ export const SelectStyled = styled.select`
   width: 100%;
   padding: 6px 12px;
   border-radius: 6px;
-  border: 0.5px solid #b7b7b9;
+  border: 1px solid #b7b7b9;
   background-color: transparent;
   cursor: pointer;
   font-weight: 400;

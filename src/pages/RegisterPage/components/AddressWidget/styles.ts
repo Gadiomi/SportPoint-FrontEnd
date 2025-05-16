@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-export const PlaceWrapper = styled.div`
+export const PlaceWrapper = styled.div<{ $marginBottom?: string }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: auto;
-  margin-bottom: ${({ theme }) => theme.pxs.x4}px;
+  margin-bottom: ${({ $marginBottom }) => $marginBottom ?? '16px'};
   padding: 6px 12px;
   font-size: 14px;
   font-weight: 400;

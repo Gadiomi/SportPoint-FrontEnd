@@ -7,7 +7,7 @@ export const TextAreaContainer = styled.div`
 `;
 
 export const TextArea = styled.textarea`
-  border: 0.5px solid #b7b7b9;
+  border: 1px solid #b7b7b9;
   border-radius: 6px;
   padding: 6px 12px;
   width: 100%;
