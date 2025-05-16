@@ -13,7 +13,6 @@ export const StyledReview = styled.div`
   margin-bottom: ${({ theme }) => `${theme.pxs.x4}px`};
   background: ${({ theme }) => theme.color.inputBar};
   padding: ${({ theme }) => `${theme.pxs.x3}px ${theme.pxs.x6}px`};
-  gap: ${({ theme }) => `${theme.pxs.x8}px`};
   border-radius: ${({ theme }) => `${theme.pxs.x1_5}px`};
 `;
 

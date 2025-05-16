@@ -19,9 +19,6 @@ import HrButton from '../components/StyledHrButton/StyledHrButton';
 import { Contacts } from '../../../components/Footer/Contacts';
 import { StyledProfileCard } from './styles';
 
-import Cookies from 'js-cookie';
-import { CookiesKey } from '@/constants';
-
 const TrainerPage: FC = () => {
   const { id } = useParams<{ id?: string }>();
   const { isLogin } = useAppSelector(state => state.setLogin);
@@ -32,11 +29,6 @@ const TrainerPage: FC = () => {
     skip: !id,
   });
 
-  const userId = Cookies.get('userId');
-  console.log('userId:', userId);
-
-  console.log('Отримані дані з бекенду:', data);
-  console.log('ID користувача:', data?._id);
 
   if (isLoading) {
     return <div>Завантаження...</div>;
@@ -140,16 +132,24 @@ const TrainerPage: FC = () => {
             title={title}
           />
         )}
-        {price && price.length > 0 && <PriceCard prices={price || []} />}
+        {price && price.length > 0 && (
+          <PriceCard
+            prices={price}
+            titleKey="details_page.services"
+            defaultImage="/assets/images/DetailsPage/Services_no_photo.png"
+          />
+        )}
         {schedule && schedule.length > 0 && (
           <WorkingHoursCard schedules={schedule || []} />
         )}
 
         {coachData?.club && coachData.club.length > 0 && (
           <WorksInCard
-            // key={club._id}
             _id={_id}
             role={role}
+            isLogin={isLogin}
+            rating={rating}
+            counts={[countReview ?? 0]}
             clubs={coachData?.club || []}
             iconNames={[IconName.LOCATION, IconName.CLOCK]}
             labels={['1,5 км', '24/7']}

@@ -25,9 +25,13 @@ interface Price {
 
 interface PriceCardProps {
   prices: Price[];
+  titleKey: string;
+  defaultImage?: string;
 }
 
-const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
+const PriceCard: React.FC<PriceCardProps> = ({
+  prices, titleKey, defaultImage,
+}) => {
   const theme = useTheme();
   if (!prices || prices.length === 0) {
     return <div>Ціни не доступні</div>;
@@ -37,7 +41,7 @@ const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
 
   return (
     <StyledPriceCard>
-      <TitleContainer titleKey="details_page.price" />
+      <TitleContainer titleKey={titleKey} />
       <PriceContainer>
         {prices.map((price, index) => {
           if (!price || !price.name || !price.amount) {
@@ -49,7 +53,7 @@ const PriceCard: React.FC<PriceCardProps> = ({ prices }) => {
                 src={
                   price.image
                     ? price.image
-                    : '/assets/images/DetailsPage/Price_no_photo.png'
+                    : defaultImage 
                 }
                 alt={price.name}
                 style={fonts.priceName}

@@ -42,7 +42,8 @@
   "details_page": {
     "edit_button": "Налаштування профілю",
     "contacts_text": "КОНТАКТИ",
-    "price": "ПРАЙС",
+    "subscription": "АБОНЕМЕНТ",
+    "services": "ПОСЛУГИ",
     "gallery": "ГАЛЕРЕЯ",
     "working_hours": "ГРАФІК РОБОТИ",
     "location": "РОЗТАШУВАННЯ",
