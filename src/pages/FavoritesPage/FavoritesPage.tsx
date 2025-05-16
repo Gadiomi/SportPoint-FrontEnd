@@ -14,6 +14,7 @@ import {
 } from './styles';
 import { useGetCardsQuery } from '@/redux/cards/cardApi';
 import BigLoader from '@/components/BigLoader/BigLoader';
+import { useGetFavoritesQuery } from '@/redux/details/favoritesApi';
 
 // --- TEMP!!! ---
 const coachsData1: ICoachData[] = [
@@ -107,24 +108,30 @@ const FavoritesPage = () => {
   };
 
   // --- - ---
-  const {
-    data: data,
-    error,
-    isLoading,
-  } = useGetCardsQuery({
-    role: isActive ? 'coach' : 'adminClub',
-    page: 1,
-    ...filters,
-  });
-  // console.log(' - isActive -> ', isActive);
-  // console.log('data -> ', data);
-  // console.log('datadata?.data?.data -> ', data?.data?.data);
+  const role = isActive ? 'coach' : 'adminClub';
+  const { data, refetch, isLoading } = useGetFavoritesQuery({ role });
+  // console.log(' - favoritesData -> ', data.data);
+  // --- // - ---
+  // --- - ---
+  // const {
+  //   data: data,
+  //   error,
+  //   isLoading,
+  // } = useGetCardsQuery({
+  //   role: isActive ? 'coach' : 'adminClub',
+  //   page: 1,
+  //   ...filters,
+  // });
+  console.log(' - isActive -> ', isActive, ' -> ', role);
+  console.log('data -> ', data);
+  console.log('- data?.data -> ', data?.data);
+  // console.log('data?.data?.data -> ', data?.data?.data);
 
-  // const coachsData: ICoachData[] = isActive ? data?.data?.data : coachsData1;
-  // const clubsData: IClubData[] = isActive ? clubsData1 : data?.data?.data;
+  // const coachsData: ICoachData[] = isActive && data?.data?.data;
+  // const clubsData: IClubData[] = !isActive && data?.data?.data;
 
-  const coachsData: ICoachData[] = isActive && data?.data?.data;
-  const clubsData: IClubData[] = !isActive && data?.data?.data;
+  const coachsData: ICoachData[] = isActive && data?.data;
+  const clubsData: IClubData[] = !isActive && data?.data;
 
   return (
     <Section>

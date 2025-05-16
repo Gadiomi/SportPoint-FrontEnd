@@ -7,7 +7,6 @@ type TCoachPrice = {
 type TCoachDescription = {
   abilities: string[];
   price: TCoachPrice;
-  // price: TCoachPrice[];
 };
 
 type Props = {

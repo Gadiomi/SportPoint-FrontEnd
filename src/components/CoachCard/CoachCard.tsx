@@ -45,8 +45,6 @@ const CoachCard: FC<Props> = ({ coachData }) => {
             <div>
               <h2>{`${coachData?.description?.price?.amount ?? '-'} грн`}</h2>
               <span>{coachData?.description?.price?.name}</span>
-              {/* <h2>{`${coachData?.description?.price[0]?.amount ?? '-'} грн`}</h2>
-              <span>{coachData?.description?.price[0]?.name}</span> */}
             </div>
             <Rating>
               <div>
