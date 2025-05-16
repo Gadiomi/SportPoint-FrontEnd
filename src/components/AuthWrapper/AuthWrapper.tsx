@@ -28,14 +28,14 @@ interface IAuthWrapperProps {
   action: ActionType;
   children: React.ReactNode;
   currentRole: string;
-  setCurrentRole: (role: string) => void;
+  changeRole: (role: string) => void;
 }
 
 const AuthWrapper: FC<IAuthWrapperProps> = ({
   children,
   action,
   currentRole,
-  setCurrentRole,
+  changeRole,
 }) => {
   const { t } = useTranslation();
   const { theme } = useTheme();
@@ -78,7 +78,7 @@ const AuthWrapper: FC<IAuthWrapperProps> = ({
               testId={role}
               styles={{ borderRadius: '4px', fontWeight: 500 }}
               onClick={() => {
-                setCurrentRole(role);
+                changeRole(role);
               }}
               {...(currentRole !== role
                 ? {

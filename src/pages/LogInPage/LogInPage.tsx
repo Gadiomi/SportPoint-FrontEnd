@@ -59,7 +59,7 @@ const LogInPage: FC = () => {
         password: data.password,
       });
 
-      console.log(' - response: ', response);
+      // console.log(' - response: ', response);
 
       if (!response.error && response?.data?.status === 200) {
         if (response.data.token && response.data.refreshToken) {
@@ -76,28 +76,12 @@ const LogInPage: FC = () => {
             sameSite: 'Lax',
             path: '/',
           });
-          // Cookies.set(CookiesKey.TOKEN, response.token, {
-          //   expires: 7,
-          //   secure: true,
-          //   // sameSite: 'Strict',
-          //   sameSite: 'Lax',
-          //   path: '/',
-          //   domain: 'http://localhost:5173/', // ???
-          // });
-          // Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
-          //   expires: 7,
-          //   secure: true,
-          //   // sameSite: 'Strict',
-          //   sameSite: 'Lax',
-          //   path: '/',
-          //   domain: 'http://localhost:5173/', //  ???
-          // });
         }
         localStorage.setItem('userEmail', data.email);
         reset();
         dispatch(setIsLogin(true));
         setIsIncorrectData(false);
-        console.log('Login Success:', response);
+        // console.log('Login Success:', response);
         navigate('/');
       } else {
         setIsIncorrectData(true);
@@ -111,11 +95,19 @@ const LogInPage: FC = () => {
     setIsVisiblePassword(prev => !prev);
   };
 
+  const changeRole = (role: string) => {
+    setCurrentRole(role);
+    if (role !== currentRole) {
+      reset();
+      setIsVisiblePassword(false);
+    }
+  };
+
   return (
     <AuthWrapper
       action={'login'}
       currentRole={currentRole}
-      setCurrentRole={setCurrentRole}
+      changeRole={changeRole}
     >
       <Form onSubmit={handleSubmit(onSubmitForm)}>
         <Controller

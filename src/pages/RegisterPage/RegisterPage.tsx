@@ -72,6 +72,7 @@ const RegisterPage = () => {
   const [isOpenSports, setIsOpenSports] = useState<boolean>(false);
   const [clubsList, setClubsList] = useState<OptionType[]>(initClubsList);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<any>();
 
   const updateHeight = useCallback(() => {
     if (contentRef.current) {
@@ -107,6 +108,7 @@ const RegisterPage = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setErrorMessage(null);
   };
 
   const onSubmit = async (data: RegisterFormData) => {
@@ -136,24 +138,13 @@ const RegisterPage = () => {
     console.log('registerData -> ', registerData);
     try {
       const response: any = await registerUser(registerData).unwrap();
-      console.log(' - response ->', response);
-      // if (response.token && response.refreshToken) {
-      //   Cookies.set(CookiesKey.TOKEN, response.token, {
-      //     expires: 7,
-      //     secure: true,
-      //     sameSite: 'Strict',
-      //   });
-      //   Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
-      //     expires: 7,
-      //     secure: true,
-      //     sameSite: 'Strict',
-      //   });
-      //   localStorage.setItem('userEmail', response.email);
-      // }
+      // console.log(' - response ->', response);
       reset();
       setIsModalOpen(true);
     } catch (err) {
       console.error('Registration failed:', err);
+      setErrorMessage(err);
+      setIsModalOpen(true);
     }
   };
 
@@ -163,6 +154,7 @@ const RegisterPage = () => {
       reset();
       setIsOpenAddress(false);
       setIsOpenSports(false);
+      setIsVisiblePassword(false);
     }
   };
 
@@ -203,7 +195,7 @@ const RegisterPage = () => {
     <AuthWrapper
       action={'register'}
       currentRole={currentRole}
-      setCurrentRole={setCurrentRole}
+      changeRole={changeRole}
     >
       <Form onSubmit={handleSubmit(onSubmit)}>
         {currentRole === Roles.ADMIN_CLUB ? (
@@ -440,12 +432,16 @@ const RegisterPage = () => {
       <MessageModal
         isModalOpen={isModalOpen}
         handleClose={handleCloseModal}
-        nextRoute={'/login'}
+        nextRoute={errorMessage?.message ? '' : '/login'}
       >
-        <>
-          <p>Перейдіть за посиланням, яке надіслано листом на Ваш email.</p>
-          <p>Потім натисніть кнопку "Далі", щоб перейти у Ваш акаунт.</p>
-        </>
+        {errorMessage?.message ? (
+          <p>{errorMessage?.message}</p>
+        ) : (
+          <>
+            <p>Перейдіть за посиланням, яке надіслано листом на Ваш email.</p>
+            <p>Потім натисніть кнопку "Далі", щоб перейти у Ваш акаунт.</p>
+          </>
+        )}
       </MessageModal>
     </AuthWrapper>
   );
