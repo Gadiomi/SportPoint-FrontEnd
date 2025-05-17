@@ -42,7 +42,8 @@
   "details_page": {
     "edit_button": "Profile settings",
     "contacts_text": "CONTACTS",
-    "price": "PRICE",
+    "subscription": "SUBSCRIPTION",
+    "services": "SERVICES",
     "gallery": "GALLERY",
     "working_hours": "WORKING HOURS",
     "location": "LOCATION",
