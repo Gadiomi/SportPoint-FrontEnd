@@ -8,7 +8,7 @@ import ReviewCard from '../components/ReviewCard/ReviewCard';
 import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
-import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+// import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
@@ -58,7 +58,7 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
   const { social_links, price, schedule, experience, city, age, short_desc } =
     coachData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
 
   const token = Cookies.get(CookiesKey.TOKEN);
   console.log('Token:', token);
@@ -137,9 +137,9 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
           defaultImage="/assets/images/DetailsPage/Services_no_photo.png"
         />
       )}
-      {schedule && schedule.length > 0 && (
+      {/* {schedule && schedule.length > 0 && (
         <WorkingHoursCard schedules={schedule || []} />
-      )}
+      )} */}
 
       {coachData?.club && coachData.club.length > 0 && (
         <WorksInCard
