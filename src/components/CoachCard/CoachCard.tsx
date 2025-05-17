@@ -77,7 +77,7 @@ const CoachCard: FC<Props> = ({ coachData, refetchD }) => {
         }).unwrap();
       }
       console.log(' - response -> ', response);
-      await refetchD();
+      refetchD && (await refetchD());
     } catch (error) {
       console.error('Помилка при додаванні/видаленні з обраного:', error);
     }
