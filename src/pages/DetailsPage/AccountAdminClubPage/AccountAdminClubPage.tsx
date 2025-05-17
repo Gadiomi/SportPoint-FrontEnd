@@ -108,7 +108,13 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
       )}
       {images && images.length > 0 && <GalleryCard images={images} />}
       <OurHallsCard />
-      {price && price.length > 0 && <PriceCard prices={price || []} />}
+      {price && price.length > 0 && (
+        <PriceCard
+          prices={price}
+          titleKey="details_page.subscription"
+          defaultImage="/assets/images/DetailsPage/Subscription_no_photo.png"
+        />
+      )}
       {schedule && schedule.length > 0 && (
         <WorkingHoursCard schedules={schedule || []} />
       )}

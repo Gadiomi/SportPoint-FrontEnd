@@ -5,14 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { fonts } from '@/theme/fonts';
 import { IconName } from '@/kit';
 import { ButtonAppearance } from '@/kit';
-import {
-  useAddToFavoritesMutation,
-  useGetFavoritesQuery,
-  useRemoveFromFavoritesMutation,
-} from '../../../../redux/details/favoritesApi';
 import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
 import EditButton from '../../components/EditButton/EditButton';
 import ModalNotAnAuthorizedUser from '../ModalNotAnAuthorizedUser/ModalNotAnAuthorizedUser';
+import { useFavorites } from '@/hooks/useFavorites';
 
 import StyledHr from '../../../../components/StyledHr/StyledHr';
 import {
@@ -54,10 +50,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [showEditButton, setShowEditButton] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [addToFavorites] = useAddToFavoritesMutation();
-  const { data: favoritesData, refetch } = useGetFavoritesQuery({ role });
-  const [removeFromFavorites] = useRemoveFromFavoritesMutation();
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -73,46 +65,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       path.includes('profile') || path.includes('account-admin-club');
     setShowEditButton(showEdit);
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (!_id || !Array.isArray(favoritesData?.data)) return;
-
-    const isInFavorites = favoritesData.data.some(
-      (fav: any) => fav._id === _id,
-    );
-    setIsFavorite(isInFavorites);
-  }, [favoritesData, _id]);
-
-  const handleToggleFavorite = async () => {
-    if (!isLogin) {
-      openChooseModal();
-      return;
-    }
-
-    if (!_id || !role) {
-      return;
-    }
-
-    try {
-      if (!isFavorite) {
-        await addToFavorites({ id: _id, data: { role } }).unwrap();
-        setIsFavorite(true);
-      } else {
-        await removeFromFavorites({ id: _id }).unwrap();
-        setIsFavorite(false);
-      }
-
-      await refetch();
-    } catch (err: any) {
-      console.error(
-        'Помилка при обробці улюбленого:',
-        err?.response?.data || err,
-      );
-      if (err?.status === 409) {
-        alert('Ця картка вже є в улюблених');
-      }
-    }
-  };
 
   const getYearWord = (num: number): string => {
     const lastDigit = num % 10;
@@ -141,6 +93,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     setModalTitle('Тільки авторизовані користувачі можуть обирати');
     setIsModalOpen(true);
   };
+
+  const { isFavorite, toggleFavorite } = useFavorites(
+    _id,
+    role,
+    isLogin,
+    openChooseModal,
+  );
 
   const handleAvatarError = () => {
     setAvatarError(true);
@@ -180,7 +139,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             appearance={ButtonAppearance.PRIMARY}
             iconName={isFavorite ? IconName.HEART_FILL : IconName.HEART_NONE}
             text={t('details_page.choose')}
-            onClick={handleToggleFavorite}
+            onClick={toggleFavorite}
             iconStyle={{
               fill: isFavorite ? '#F8F7F4' : 'transparent',
             }}

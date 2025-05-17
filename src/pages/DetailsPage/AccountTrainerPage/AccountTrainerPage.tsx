@@ -130,7 +130,13 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
           title={title}
         />
       )}
-      {price && price.length > 0 && <PriceCard prices={price || []} />}
+      {price && price.length > 0 && (
+        <PriceCard
+          prices={price}
+          titleKey="details_page.services"
+          defaultImage="/assets/images/DetailsPage/Services_no_photo.png"
+        />
+      )}
       {schedule && schedule.length > 0 && (
         <WorkingHoursCard schedules={schedule || []} />
       )}
@@ -139,6 +145,9 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
         <WorksInCard
           _id={_id}
           role={role}
+          isLogin={isLogin}
+          rating={rating}
+          counts={[countReview ?? 0]}
           clubs={coachData?.club || []}
           iconNames={[IconName.LOCATION, IconName.CLOCK]}
           labels={['1,5 км', '24/7']}
