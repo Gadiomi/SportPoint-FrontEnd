@@ -6,6 +6,7 @@ import {
   ClubDetail,
   ClubImage,
   ClubInfo,
+  ClubInitial,
   HeartButton,
   IconWrap,
   IconWrapRating,
@@ -36,7 +37,10 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
   const theme = useTheme();
   return (
     <ClubCardBox>
-      <ClubImage image={avatar} />
+      <ClubImage image={avatar}>
+        {' '}
+        {!avatar && <ClubInitial>{firstName?.charAt(0)}</ClubInitial>}
+      </ClubImage>
       <HeartButton>
         <Icon name={IconName.HEART_NONE} size={24} />
       </HeartButton>

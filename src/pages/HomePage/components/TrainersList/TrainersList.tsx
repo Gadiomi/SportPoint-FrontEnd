@@ -15,7 +15,7 @@ export const TrainersList: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [filters, setFilters] = useState<FilterParams>({
-    address: '',
+    city: '',
     minPrice: null,
     maxPrice: null,
     abilities: '',

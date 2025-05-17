@@ -15,14 +15,28 @@ export const ClubImage = styled.div<{ image?: string }>(({ image, theme }) => ({
   width: '100%',
   borderTopLeftRadius: theme.pxs.x1_5,
   borderTopRightRadius: theme.pxs.x1_5,
-  backgroundImage: image
-    ? `url(${image})`
-    : `url('/public/assets/images/baseClub.png')`,
+  backgroundImage: image ? `url(${image})` : 'none',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   position: 'absolute',
   top: theme.pxs.x0,
   left: theme.pxs.x0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+export const ClubInitial = styled.span(({ theme }) => ({
+  width: '64px',
+  height: '64px',
+  borderRadius: '50%',
+  backgroundColor: theme.color.mainOrange,
+  color: theme.color.white,
+  fontSize: '32px',
+  fontWeight: 'bold',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
 }));
 
 export const LightText = styled.p(({ theme }) => ({
