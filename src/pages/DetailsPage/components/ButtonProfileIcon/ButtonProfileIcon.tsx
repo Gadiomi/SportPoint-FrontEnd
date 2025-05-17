@@ -18,6 +18,7 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
   iconStyle,
   onClick,
   text,
+  style,
   appearance,
 }) => {
   const theme = useTheme();
@@ -38,6 +39,7 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
           width: '62px',
           height: `${theme.pxs.x10}px`,
           borderRadius: `${theme.pxs.x5}px`,
+          color: style?.color,
         }}
         appearance={appearance}
         onClick={onClick}
@@ -45,7 +47,6 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
           <Icon
             styles={{
               color: 'currentColor',
-              fill: 'transparent',
               ...iconStyle,
             }}
             name={iconName}

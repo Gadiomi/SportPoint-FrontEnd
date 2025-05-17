@@ -65,7 +65,7 @@ const StyledSection = styled.div<{ padding?: string }>(
   ({ theme, padding }) => ({
     width: '100%',
     margin: '0 auto',
-    padding: padding || `${theme.pxs.x0}px ${theme.pxs.x3}px`,
+    padding: padding || `${theme.pxs.x0}px ${theme.pxs.x3}px 82px`,
     background: theme.color.background,
     color: theme.color.white,
     [theme.mediaRules.up(theme.breakpoints.tablet)]: {

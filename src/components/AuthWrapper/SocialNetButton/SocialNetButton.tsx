@@ -8,7 +8,7 @@ const SocialNetButton = ({ name, act }: { name: string; act: string }) => {
   return (
     <Button
       type="submit"
-      testId="login_page.signup_google"
+      testId="login_page.register_google"
       title={t(`login_page.${act}_${name}`)}
       appearance={ButtonAppearance.SECONDARY}
       style={{
@@ -17,9 +17,9 @@ const SocialNetButton = ({ name, act }: { name: string; act: string }) => {
         marginBottom: theme.pxs.x4,
       }}
       textStyle={{
-        fontSize: theme.pxs.x3,
-        lineHeight: '16px',
-        fontWeight: '300',
+        fontSize: theme.pxs.x4,
+        lineHeight: '22px',
+        fontWeight: '500',
         color: theme.color.white,
       }}
       prependChild={

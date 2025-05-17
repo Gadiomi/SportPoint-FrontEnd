@@ -15,7 +15,9 @@ import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
 import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
-import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
+import CoachCard from '@/components/CoachCard/CoachCard';
+import {ICoachData } from '@/types';
+// import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
 import Cookies from 'js-cookie';
 import { StyledProfileCard } from './styles';
@@ -110,11 +112,17 @@ const ClubPage: FC = () => {
         )}
         {images && images.length > 0 && <GalleryCard images={images} />}
         <OurHallsCard />
-        {price && price.length > 0 && <PriceCard prices={price || []} />}
+        {price && price.length > 0 && (
+          <PriceCard
+            prices={price}
+            titleKey="details_page.subscription"
+            defaultImage="/assets/images/DetailsPage/Subscription_no_photo.png"
+          />
+        )}
         {schedule && schedule.length > 0 && (
           <WorkingHoursCard schedules={schedule || []} />
         )}
-        <OurCoachCard
+        {/* <OurCoachCard
           iconNames={[IconName.STAR_DEFAULT]}
           rating={coachTest.rating}
           counts={[countReview ?? 0]}
@@ -124,7 +132,11 @@ const ClubPage: FC = () => {
           // sport={sport || []}
           sport={coachTest.sport}
           price={coachTest.price}
-        />
+        /> */}
+        {Array.isArray(adminClubData?.coaches) &&
+          adminClubData.coaches.map((coach: ICoachData) => (
+            <CoachCard key={coach._id} coachData={coach} />
+          ))}
         <LocationCard />
 
         <ReviewDetailsCard

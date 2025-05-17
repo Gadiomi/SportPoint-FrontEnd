@@ -38,6 +38,7 @@ export const ClubsList: React.FC = () => {
 
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
+      {error ? <Loading>{t('home_page.error')}</Loading> : null}
       {isLoading ? (
         <Loading>{t('home_page.loading')}...</Loading>
       ) : (
@@ -69,7 +70,6 @@ export const ClubsList: React.FC = () => {
           />
         </>
       )}
-      {error ? <p>{t('home_page.error')}</p> : null}
     </Container>
   );
 };

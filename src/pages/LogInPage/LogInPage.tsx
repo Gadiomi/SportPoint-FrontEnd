@@ -1,23 +1,26 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import Cookies from 'js-cookie';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { LogInFormSchema } from '@/constants/validationSchemas/auth';
 
 import { Button, Input, Loader, ButtonAppearance } from '@/kit';
-import { Container, Section } from '@/components/ContainerAndSection';
 import { useTheme } from '@/hooks';
 import { CookiesKey, Roles } from '@/constants';
 import { useLoginMutation } from '@/redux/auth/authApi';
-import SocialNetButton from '../RegisterPage/components/SocialNetButton/SocialNetButton';
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { setIsLogin } from '@/redux/auth/loginSlice';
 import { WrongDataMessage } from './styles';
+import AuthWrapper from '@/components/AuthWrapper/AuthWrapper';
+import {
+  CallToActionWrapper,
+  Form,
+  Subtitle,
+} from '@/components/AuthWrapper/styles';
 
 type logInFormInputs = {
   email: string;
@@ -28,11 +31,11 @@ const LogInPage: FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
-  const { isLogin } = useAppSelector(state => state.setLogin);
   // -- - --
+  const { isLogin } = useAppSelector(state => state.setLogin);
   console.log(' - * - isLogin: ', isLogin); // Example!
   // -- / - --
-  const [currentRole, setCurrentRole] = React.useState(Roles.CUSTOMER);
+  const [currentRole, setCurrentRole] = useState<string>(Roles.CUSTOMER);
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false);
   const [isIncorrectData, setIsIncorrectData] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -56,7 +59,7 @@ const LogInPage: FC = () => {
         password: data.password,
       });
 
-      console.log(' - response: ', response);
+      // console.log(' - response: ', response);
 
       if (!response.error && response?.data?.status === 200) {
         if (response.data.token && response.data.refreshToken) {
@@ -73,28 +76,12 @@ const LogInPage: FC = () => {
             sameSite: 'Lax',
             path: '/',
           });
-          // Cookies.set(CookiesKey.TOKEN, response.token, {
-          //   expires: 7,
-          //   secure: true,
-          //   // sameSite: 'Strict',
-          //   sameSite: 'Lax',
-          //   path: '/',
-          //   domain: 'http://localhost:5173/', // ???
-          // });
-          // Cookies.set(CookiesKey.REFRESH_TOKEN, response.refreshToken, {
-          //   expires: 7,
-          //   secure: true,
-          //   // sameSite: 'Strict',
-          //   sameSite: 'Lax',
-          //   path: '/',
-          //   domain: 'http://localhost:5173/', //  ???
-          // });
         }
         localStorage.setItem('userEmail', data.email);
         reset();
         dispatch(setIsLogin(true));
         setIsIncorrectData(false);
-        console.log('Login Success:', response);
+        // console.log('Login Success:', response);
         navigate('/');
       } else {
         setIsIncorrectData(true);
@@ -108,164 +95,98 @@ const LogInPage: FC = () => {
     setIsVisiblePassword(prev => !prev);
   };
 
+  const changeRole = (role: string) => {
+    setCurrentRole(role);
+    if (role !== currentRole) {
+      reset();
+      setIsVisiblePassword(false);
+    }
+  };
+
   return (
-    <Section>
-      <Container styles={{ maxWidth: '375px' }}>
-        <Image
-          srcSet="/public/assets/images/logo@1.png 1x, /public/assets/images/logo@2.png 2x"
-          src="/public/assets/images/logo@1.png"
-          alt="Logo"
+    <AuthWrapper
+      action={'login'}
+      currentRole={currentRole}
+      changeRole={changeRole}
+    >
+      <Form onSubmit={handleSubmit(onSubmitForm)}>
+        <Controller
+          name={'email'}
+          control={control}
+          render={({ field, fieldState }) => {
+            return (
+              <Input
+                {...field}
+                label={t('login_page.form.email') + '*'}
+                testId="login_page.form.email"
+                errorMessage={fieldState.error?.message}
+                containerStyles={{ marginBottom: theme.pxs.x4 }}
+                inputStyles={{ fontSize: '14px', fontWeight: 400 }}
+                autoFocus
+              />
+            );
+          }}
         />
-        <TextWrapper>
-          <Title>{t('login_page.title')}</Title>
-          <Text>{t('login_page.description')}</Text>
-        </TextWrapper>
-        <TabsWrapper>
-          {Object.values(Roles).map(role => (
-            <Button
-              key={role}
-              title={t(`login_page.tabs.${role}`)}
-              testId={role}
-              onClick={() => {
-                setCurrentRole(role);
-              }}
-              {...(currentRole !== role
-                ? { style: { backgroundColor: theme.color.inputBar } }
-                : {})}
-            />
-          ))}
-        </TabsWrapper>
-        <Form onSubmit={handleSubmit(onSubmitForm)}>
-          <Controller
-            name={'email'}
-            control={control}
-            render={({ field, fieldState }) => {
-              return (
-                <Input
-                  {...field}
-                  label={t('login_page.form.email') + '*'}
-                  testId="login_page.form.email"
-                  errorMessage={fieldState.error?.message}
-                  containerStyles={{ marginBottom: theme.pxs.x2 }}
-                  autoFocus
-                />
-              );
-            }}
-          />
-          <Controller
-            name={'password'}
-            control={control}
-            render={({ field, fieldState }) => {
-              return (
-                <Input
-                  {...field}
-                  label={t('login_page.form.password') + '*'}
-                  testId="login_page.form.password"
-                  errorMessage={fieldState.error?.message}
-                  containerStyles={{
-                    marginBottom: theme.pxs.x9,
-                    alignItems: 'center',
-                  }}
-                  type={isVisiblePassword ? 'text' : 'password'}
-                  appendChild={
-                    <EyeForPassword
-                      isVisiblePassword={isVisiblePassword}
-                      toggleVisibilityPassword={toggleVisibilityPassword}
-                    />
-                  }
-                />
-              );
-            }}
-          />
-          {/* --- - --- */}
-          {isIncorrectData ? (
-            <WrongDataMessage>
-              Невірно введено email або пароль
-            </WrongDataMessage>
-          ) : null}
-          {/* --- / - --- */}
-          <CallToActionWrapper style={{ marginBottom: theme.pxs.x12 }}>
-            <Text>{t('login_page.forgott_pass')}</Text>
-            <Button
-              testId="login_page.forgott_button"
-              title={t('login_page.forgott_button')}
-              appearance={ButtonAppearance.UNDERLINED}
-            />
-          </CallToActionWrapper>
+        <Controller
+          name={'password'}
+          control={control}
+          render={({ field, fieldState }) => {
+            return (
+              <Input
+                {...field}
+                label={t('login_page.form.password') + '*'}
+                testId="login_page.form.password"
+                errorMessage={fieldState.error?.message}
+                containerStyles={{
+                  marginBottom: theme.pxs.x8,
+                  alignItems: 'center',
+                }}
+                inputStyles={{ fontSize: '14px', fontWeight: 400 }}
+                type={isVisiblePassword ? 'text' : 'password'}
+                appendChild={
+                  <EyeForPassword
+                    isVisiblePassword={isVisiblePassword}
+                    toggleVisibilityPassword={toggleVisibilityPassword}
+                  />
+                }
+              />
+            );
+          }}
+        />
+        {/* --- - --- */}
+        {isIncorrectData ? (
+          <WrongDataMessage>Невірно введено email або пароль</WrongDataMessage>
+        ) : null}
+        {/* --- / - --- */}
+        <CallToActionWrapper style={{ marginBottom: theme.pxs.x8 }}>
+          <Subtitle>{t('login_page.forgott_pass')}</Subtitle>
           <Button
-            testId="login_page.form.submit_button"
-            title={t('login_page.form.submit_button')}
-            type="submit"
-            style={{ width: '100%' }}
-            disabled={!isValid || isLoading}
-            appendChild={
-              isSubmitting || isLoading ? (
-                <Loader
-                  size={'16px'}
-                  stroke={'#f0f0f0'}
-                  strokeWidth={'1'}
-                  style={{ marginLeft: '4px' }}
-                />
-              ) : null
-            }
-          />
-        </Form>
-        <SocialNetButton name={'google'} act={'login'} />
-        <SocialNetButton name={'facebook'} act={'login'} />
-        <CallToActionWrapper>
-          <Text>{t('login_page.have_not_yet')}</Text>
-          <Button
-            testId="login_page.have_not_yet"
-            title={t('login_page.button_title_reg')}
+            testId="login_page.forgott_button"
+            title={t('login_page.forgott_button')}
             appearance={ButtonAppearance.UNDERLINED}
-            onClick={() => navigate('/register')}
+            style={{ fontWeight: 500 }}
           />
         </CallToActionWrapper>
-      </Container>
-    </Section>
+        <Button
+          testId="login_page.form.submit_button"
+          title={t('login_page.form.submit_button')}
+          type="submit"
+          style={{ width: '100%', height: '32px' }}
+          disabled={!isValid || isLoading}
+          appendChild={
+            isSubmitting || isLoading ? (
+              <Loader
+                size={'16px'}
+                stroke={'#f0f0f0'}
+                strokeWidth={'1'}
+                style={{ marginLeft: '4px' }}
+              />
+            ) : null
+          }
+        />
+      </Form>
+    </AuthWrapper>
   );
 };
 
 export default LogInPage;
-
-const Image = styled.img(({ theme }) => ({
-  margin: 'auto',
-  marginBottom: theme.pxs.x5,
-  marginTop: theme.pxs.x2,
-}));
-
-const TextWrapper = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.pxs.x2,
-  marginBottom: theme.pxs.x3,
-}));
-
-const Title = styled.h2(({ theme }) => ({
-  ...theme.fonts.secondTitle,
-  color: theme.color.mainWhite,
-}));
-
-const Text = styled.p(({ theme }) => ({
-  ...theme.fonts.lightManrope,
-
-  color: theme.color.secWhite,
-}));
-
-const TabsWrapper = styled.div(({ theme }) => ({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gap: theme.pxs.x1_5,
-  marginBottom: theme.pxs.x4,
-}));
-
-const CallToActionWrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
-
-const Form = styled.form(({ theme }) => ({
-  marginBottom: theme.pxs.x6,
-  width: '100%',
-}));

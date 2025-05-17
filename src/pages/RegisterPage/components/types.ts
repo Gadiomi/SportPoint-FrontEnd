@@ -31,4 +31,5 @@ export interface IAddressWidget extends IGroupTitleProps {
   height: string;
   contentRef: Ref<HTMLDivElement> | undefined;
   children: React.ReactNode;
+  $marginBottom?: string;
 }

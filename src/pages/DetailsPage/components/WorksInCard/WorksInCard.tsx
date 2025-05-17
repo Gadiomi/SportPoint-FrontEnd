@@ -1,20 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { CookiesKey } from '@/constants';
 import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
 import { useTranslation } from 'react-i18next';
 import { IconName, ButtonAppearance } from '@/kit';
-import {
-  useAddToFavoritesMutation,
-  useGetFavoritesQuery,
-  useRemoveFromFavoritesMutation,
-} from '../../../../redux/details/favoritesApi';
 import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import RatingBox from '../RatingBox/RatingBox';
 import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
+import { useFavoritesMap } from '@/hooks/useFavoritesMap';
 
 import {
   StyledWorksInCard,
@@ -31,15 +25,16 @@ import {
 } from './styles';
 
 interface Club {
-  _id: string;
+  id: string;
   firstName: string;
   lastName: string;
 }
 
 interface WorksInCardProps {
   clubs: Club[];
-  _id: string | undefined;
+  _id: string;
   role: string;
+  isLogin: boolean;
   iconNames: IconName[];
   labels: string[];
   rating?: number;
@@ -48,76 +43,39 @@ interface WorksInCardProps {
 
 const WorksInCard: React.FC<WorksInCardProps> = ({
   clubs,
-  _id,
   role,
+  isLogin,
   iconNames = [],
   labels = [],
   rating,
   counts,
 }) => {
-  const [favoritesMap, setFavoritesMap] = useState<Record<string, boolean>>({});
-  const [addToFavorites] = useAddToFavoritesMutation();
-  const { data: favoritesData, refetch } = useGetFavoritesQuery({ role });
-  const [removeFromFavorites] = useRemoveFromFavoritesMutation();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
 
-  useEffect(() => {
-    if (!favoritesData?.data || !Array.isArray(clubs)) return;
-
-    const favMap: Record<string, boolean> = {};
-    clubs.forEach(club => {
-      favMap[club._id] = favoritesData.data.some(
-        (fav: any) => fav._id === club._id,
-      );
-    });
-    setFavoritesMap(favMap);
-  }, [favoritesData, clubs]);
-
-  const handleToggleFavorite = async (clubId: string) => {
-    console.log('Натиснули сердечко. ID клубу:', clubId);
-    if (!clubId || !role) return;
-    const isNowFavorite = favoritesMap[clubId];
-
-    try {
-      if (!isNowFavorite) {
-        await addToFavorites({ id: clubId, data: { role } }).unwrap();
-      } else {
-        await removeFromFavorites({ id: clubId }).unwrap();
-      }
-
-      setFavoritesMap(prev => ({
-        ...prev,
-        [clubId]: !isNowFavorite,
-      }));
-
-      await refetch();
-    } catch (err: any) {
-      console.error('Помилка при додаванні/видаленні з обраного:', err);
-      if (err?.status === 409) {
-        alert('Ця картка вже є в улюблених');
-      }
+  const handleMoreDetailsClick = (id: string) => {
+    if (id) {
+      navigate(`/clubs/club/${id}`);
     }
   };
 
-  // const handleMoreDetailsClick = () => {
-  //   if (club._id) {
-  //     navigate(`/club/${club._id}`);
-  //   }
-  // };
+  const ids = useMemo(() => clubs.map(club => club.id), [clubs]);
+
+  const { favoritesMap, toggleFavorite } = useFavoritesMap({
+    ids,
+    role,
+    isLogin,
+  });
 
   return (
     <StyledWorksInCard>
       <WorksInContainer>
         <TitleContainer titleKey="details_page.works_in" />
         {clubs.map(club => {
-          console.log('ID клубу:', club._id);
-          const isFavorite = favoritesData?.data?.some(
-            (fav: any) => fav.userId === club._id,
-          );
+          console.log('ID клубу:', club.id);
           return (
-            <WorksInWrapper key={club._id}>
+            <WorksInWrapper key={club.id}>
               <div
                 style={{
                   display: 'flex',
@@ -152,33 +110,21 @@ const WorksInCard: React.FC<WorksInCardProps> = ({
                     spanStyles={fonts.mainManrope}
                   />
                 </div>
-                {/* <button onClick={() => handleToggleFavorite(club._id)}>
-                  <Icon
-                    name={
-                      favoritesMap[club._id]
-                        ? IconName.HEART_FILL
-                        : IconName.HEART_NONE
-                    }
-                    styles={{
-                      fill: favoritesMap[club._id] ? '#F8F7F4' : 'transparent',
-                    }}
-                  />
-                </button> */}
                 <ButtonProfileIcon
                   appearance={ButtonAppearance.UNDERLINED}
                   style={{
                     width: '24px',
-                    color: favoritesMap[club._id] ? '#F8F7F4' : '#888888',
+                    color: '#EC4033',
                   }}
                   iconName={
-                    favoritesMap[club._id]
+                    favoritesMap[club.id]
                       ? IconName.HEART_FILL
                       : IconName.HEART_NONE
                   }
                   text=""
-                  onClick={() => handleToggleFavorite(club._id)}
+                  onClick={() => toggleFavorite(club.id)}
                   iconStyle={{
-                    fill: favoritesMap[club._id] ? '#F8F7F4' : 'transparent',
+                    fill: favoritesMap[club.id] ? '#EC4033' : 'transparent',
                   }}
                 />
               </div>
@@ -208,7 +154,7 @@ const WorksInCard: React.FC<WorksInCardProps> = ({
                 testId="details_page.edit_button"
                 title={t('details_page.more_details')}
                 appearance={ButtonAppearance.PRIMARY}
-                // onClick={() => handleMoreDetailsClick(club._id)}
+                onClick={() => handleMoreDetailsClick(club.id)}
                 textStyle={{ ...fonts.spanDetails, color: theme.color.white }}
               />
             </WorksInWrapper>

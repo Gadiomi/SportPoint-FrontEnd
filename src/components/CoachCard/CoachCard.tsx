@@ -1,6 +1,10 @@
 import { FC } from 'react';
-import { Button, Icon, IconName } from '@/kit';
+import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
+import { Button, Icon, IconName } from '@/kit';
+import { ICoachData } from '../../types';
+import { fixEnding } from '@/helpers/fixEnding';
+import { fonts } from '@/theme/fonts';
 import {
   CoachCardWrapper,
   CoachImage,
@@ -11,16 +15,12 @@ import {
   NameBlock,
   SpecializationBlock,
 } from './styles';
-import { ICoachData } from '../../types';
-import { fixEnding } from '@/helpers/fixEnding';
-import { fonts } from '@/theme/fonts';
-import { useNavigate } from 'react-router-dom';
 
 type Props = {
   coachData: ICoachData;
 };
 
-const NO_IMAGE = '../../../../public/assets/svg/no_image.svg'; //TEMP!!!
+const NO_IMAGE = 'assets/svg/no_image.svg'; //TEMP!!!
 
 const CoachCard: FC<Props> = ({ coachData }) => {
   const navigate = useNavigate();
@@ -45,8 +45,6 @@ const CoachCard: FC<Props> = ({ coachData }) => {
             <div>
               <h2>{`${coachData?.description?.price?.amount ?? '-'} грн`}</h2>
               <span>{coachData?.description?.price?.name}</span>
-              {/* <h2>{`${coachData?.description?.price[0]?.amount ?? '-'} грн`}</h2>
-              <span>{coachData?.description?.price[0]?.name}</span> */}
             </div>
             <Rating>
               <div>
@@ -73,7 +71,7 @@ const CoachCard: FC<Props> = ({ coachData }) => {
       <Button
         testId="Детальніше"
         title={t('more_details')}
-        onClick={() => navigate(`trainer/${coachData._id}`)}
+        onClick={() => navigate(`/trainers/trainer/${coachData._id}`)}
         style={{
           ...fonts.secondManrope,
           padding: '6px',
