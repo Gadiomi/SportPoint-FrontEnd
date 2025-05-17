@@ -30,7 +30,9 @@ interface PriceCardProps {
 }
 
 const PriceCard: React.FC<PriceCardProps> = ({
-  prices, titleKey, defaultImage,
+  prices,
+  titleKey,
+  defaultImage,
 }) => {
   const theme = useTheme();
   if (!prices || prices.length === 0) {
@@ -50,11 +52,7 @@ const PriceCard: React.FC<PriceCardProps> = ({
           return (
             <PriceDiv key={price._id || index}>
               <PricePhoto
-                src={
-                  price.image
-                    ? price.image
-                    : defaultImage 
-                }
+                src={price.image ? price.image : defaultImage}
                 alt={price.name}
                 style={fonts.priceName}
               />
