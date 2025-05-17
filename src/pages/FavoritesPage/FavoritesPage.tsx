@@ -209,7 +209,11 @@ const FavoritesPage = () => {
                     ? coachsData
                         .slice(0, (coachPageNumber + 1) * itemsPerPage)
                         .map(coach => (
-                          <CoachCard key={coach._id} coachData={coach} />
+                          <CoachCard
+                            key={coach._id}
+                            coachData={coach}
+                            refetchD={refetch}
+                          />
                         ))
                     : clubsData
                         .slice(

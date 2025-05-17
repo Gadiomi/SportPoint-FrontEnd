@@ -24,6 +24,7 @@ import { useGetUserProfileQuery } from '@/redux/user/userApi';
 
 type Props = {
   coachData: ICoachData;
+  refetchD?: () => void;
 };
 
 interface IFavoriteListInfo {
@@ -34,7 +35,7 @@ interface IFavoriteListInfo {
 
 const NO_IMAGE = 'assets/svg/no_image.svg'; //TEMP!!!
 
-const CoachCard: FC<Props> = ({ coachData }) => {
+const CoachCard: FC<Props> = ({ coachData, refetchD }) => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem('userRole');
   const [addToFavorites] = useAddToFavoritesMutation();
@@ -76,7 +77,7 @@ const CoachCard: FC<Props> = ({ coachData }) => {
         }).unwrap();
       }
       console.log(' - response -> ', response);
-      await refetch();
+      await refetchD();
     } catch (error) {
       console.error('Помилка при додаванні/видаленні з обраного:', error);
     }
