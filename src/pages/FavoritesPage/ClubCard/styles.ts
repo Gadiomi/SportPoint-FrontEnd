@@ -57,6 +57,10 @@ export const ClubNameBlock = styled.div`
   }
 `;
 
+export const HeartBlock = styled.div`
+  width: fit-content;
+`;
+
 export const ClubConditionsBlock = styled.div`
   display: flex;
   justify-content: start;

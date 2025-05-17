@@ -10,6 +10,7 @@ import {
   ClubInfoBlock,
   ClubInfoWrapper,
   ClubNameBlock,
+  HeartBlock,
 } from './styles';
 import { IClubData } from '../../../types';
 
@@ -21,6 +22,10 @@ const NO_IMAGE = '/assets/svg/no_image.svg'; //TEMP!!!
 
 const ClubCard: FC<Props> = ({ clubData }) => {
   const navigate = useNavigate();
+
+  const canselFavorite = () => {
+    console.log('canselFavorite');
+  };
 
   return (
     <ClubCardWrapper>
@@ -34,14 +39,16 @@ const ClubCard: FC<Props> = ({ clubData }) => {
               </h2>
               <p>{clubData?.description?.short_desc}</p>
             </div>
-            <Icon
-              // name={IconName.HEART_FILL}
-              name={IconName.HEART_NONE}
-              styles={{
-                // fill: '#EC4033',
-                color: '#EC4033',
-              }}
-            />
+            <HeartBlock onClick={() => canselFavorite()}>
+              <Icon
+                // name={IconName.HEART_FILL}
+                name={IconName.HEART_NONE}
+                styles={{
+                  // fill: '#EC4033',
+                  color: '#EC4033',
+                }}
+              />
+            </HeartBlock>
           </ClubNameBlock>
           <ClubConditionsBlock>
             <div>

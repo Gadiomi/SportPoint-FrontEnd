@@ -12,6 +12,7 @@ import Schedule from './EditProfile/components/Schedule/Schedule';
 import LayoutEdit from './EditProfile/components/LayoutEdit/LayoutEdit';
 import EditAllGeneral from './EditProfile/components/EditAllGeneral/EditAllGeneral';
 import EditScheduleCard from './EditProfile/components/Schedule/components/EditScheduleCard/EditScheduleCard';
+import BigLoader from './BigLoader/BigLoader';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -38,7 +39,8 @@ const Helper = lazy(() => import('../pages/HelperPage/HelperPage'));
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<BigLoader isLoading={true} />}>
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
