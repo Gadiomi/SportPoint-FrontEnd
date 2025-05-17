@@ -14,7 +14,7 @@ export const ReviewHeaderContainer = styled.div`
 
   &:hover {
     background: #bd510e;
-    border: 0.5px solid #bd510e;
+    border: 1px solid #bd510e;
   }
 `;
 
@@ -141,7 +141,7 @@ export const DeleteButton = styled.button`
 
   &:hover {
     background: #bd510e;
-    border: 0.5px solid #bd510e;
+    border: 1px solid #bd510e;
   }
 `;
 
@@ -149,7 +149,7 @@ export const ActionButton = styled.button`
   width: 140px;
   color: ${({ theme }) => theme.color.mainWhite};
   font-size: 16px;
-  border: 0.5px solid #ed772f;
+  border: 1px solid #ed772f;
   padding: 4px 12px;
   border-radius: 6px;
   display: flex;
@@ -298,7 +298,7 @@ export const SportListEdit = styled.div`
 
 export const SportTagEdit = styled.span`
   background-color: transparent;
-  border: 0.5px solid ${({ theme }) => theme.color.mainBlue};
+  border: 1px solid ${({ theme }) => theme.color.mainBlue};
   color: ${({ theme }) => theme.color.secWhite};
   font-size: 12px;
   padding: 2px 8px;
@@ -314,7 +314,7 @@ export const SportList = styled.div`
 
 export const SportTag = styled.span`
   background-color: transparent;
-  border: 0.5px solid ${({ theme }) => theme.color.secWhite};
+  border: 1px solid ${({ theme }) => theme.color.secWhite};
   color: ${({ theme }) => theme.color.secWhite};
   font-size: 12px;
   padding: 2px 8px;

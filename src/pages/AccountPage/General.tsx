@@ -6,7 +6,6 @@ import {
 import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLogoutMutation } from '@/redux/auth/authApi';
 import {
   AccountName,
   GeneralInFormWrapper,
@@ -33,13 +32,11 @@ interface UserProfileFormData {
 
 const General: FC = () => {
   const { t } = useTranslation();
-  const [logout] = useLogoutMutation();
   const { data: userData, isLoading } = useGetUserProfileQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
 
   const email = localStorage.getItem('userEmail');
-  // console.log('email:', email);
 
   const [updateUserProfile, { isLoading: isUpdating }] =
     useUpdateUserProfileMutation();
@@ -256,13 +253,6 @@ const General: FC = () => {
         </SportButtonsContainer>
         <BackSaveButtons t={t} />
       </form>
-      {/* <Button
-        type="button"
-        title={t(`account_page.logout`)}
-        appearance={ButtonAppearance.SECONDARY}
-        testId="logout"
-        onClick={handleLogout}
-      ></Button> */}
     </GeneralWrapper>
   );
 };

@@ -7,7 +7,6 @@ type TCoachPrice = {
 type TCoachDescription = {
   abilities: string[];
   price: TCoachPrice;
-  // price: TCoachPrice[];
 };
 
 type Props = {
@@ -31,8 +30,11 @@ export interface ICoachData {
 }
 
 export interface IClubData {
-  name: string;
-  description: string;
+  _id: string;
+  firstName: string;
+  lastName?: string;
+  avatar: string;
+  description: DescriptionClub;
   distance: string;
   workTime: string;
 }
@@ -68,6 +70,7 @@ export interface DescriptionClub {
   experience?: string;
   schedule?: ScheduleClub[];
   price?: TCoachPrice[];
+  short_desc?: string;
 }
 export interface ScheduleClub {
   days: string;

@@ -7,7 +7,7 @@ export const CoachCardWrapper = styled.li`
   justify-content: center;
   width: 100%;
   height: auto;
-  padding: 9px;
+  padding: 8px;
   margin-bottom: 16px;
   background-color: ${({ theme }) => theme.color.inputBar};
   border-radius: 6px;
@@ -19,13 +19,13 @@ export const CoachInfoWrapper = styled.div`
   justify-content: space-between;
   gap: 8px;
   width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 `;
 
 export const CoachImage = styled.img`
-  width: 90px;
-  min-width: 90px;
-  height: 90px;
+  width: 96px;
+  min-width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
 `;
@@ -46,7 +46,7 @@ export const CoachInfoBlock = styled.div`
     font-size: ${FontSizes.SMALL};
     font-weight: ${FontWeights.MEDIUM};
     font-family: ${FontFamily};
-    line-height: ${LineHeights.SMALL};
+    line-height: ${LineHeights.X_SMALL};
     color: ${({ theme }) => theme.color.secWhite};
   }
 `;
@@ -62,11 +62,15 @@ export const ConditionsBlock = styled.div`
   display: flex;
   justify-content: start;
   gap: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   & div {
     display: flex;
     flex-direction: column;
     gap: 1px;
+  }
+
+  & h2 {
+    font-weight: ${FontWeights.BOLD};
   }
 `;
 
@@ -91,6 +95,7 @@ export const SpecializationBlock = styled.div`
     font-size: ${FontSizes.MEDIUM};
     font-weight: ${FontWeights.REGULAR};
     line-height: ${LineHeights.X_LARGE};
+    color: ${({ theme }) => theme.color.white};
     padding: 0 10px;
     border: 1px solid ${({ theme }) => theme.color.mainBlue};
     border-radius: 10px;

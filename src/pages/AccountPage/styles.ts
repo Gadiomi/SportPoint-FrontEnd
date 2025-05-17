@@ -80,7 +80,7 @@ export const SportButtonsContainer = styled.div`
   flex-wrap: wrap;
   padding: 8px;
   margin-bottom: 64px;
-  border: 0.5px solid #b7b7b9;
+  border: 1px solid #b7b7b9;
   border-radius: 6px;
 `;
 

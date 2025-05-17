@@ -1,4 +1,5 @@
 import StyledHr from '@/components/StyledHr/StyledHr';
+import { Button } from '@/kit';
 import styled from 'styled-components';
 
 export const Backdrop = styled.div(({ theme }) => ({
@@ -46,3 +47,8 @@ export const ModalFooter = styled.div({
   display: 'flex',
   justifyContent: 'center',
 });
+export const StyledButton = styled(Button)(({ theme }) => ({
+  padding: `${theme.pxs.x2}px 0px`,
+  width: '100%',
+  p: { ...theme.fonts.secondManrope },
+}));

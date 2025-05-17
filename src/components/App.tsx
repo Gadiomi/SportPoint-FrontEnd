@@ -11,8 +11,12 @@ import MainLayout from './NavBar/MainLayout';
 import Schedule from './EditProfile/components/Schedule/Schedule';
 import LayoutEdit from './EditProfile/components/LayoutEdit/LayoutEdit';
 import EditAllGeneral from './EditProfile/components/EditAllGeneral/EditAllGeneral';
+
 import ReviewStats from './ReviewItem/ReviewStats';
 import ReviewsPage from '../pages/ReviewsPage/ReviewsPage';
+
+import EditScheduleCard from './EditProfile/components/Schedule/components/EditScheduleCard/EditScheduleCard';
+
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -60,11 +64,14 @@ function App() {
               <Route index element={<EditProfile />} />
               <Route path="reviews" element={<Reviews />} />
               <Route path={PublicRouteName.FAVORITS} element={<Favorites />} />
-
               <Route
                 path={PublicRouteName.CHANGEPASSWORD}
                 element={<ChangePassword />}
               />
+              <Route
+                path="edit-schedule"
+                element={<EditScheduleCard />}
+              ></Route>
               <Route path="schedule" element={<Schedule />}></Route>
               <Route path="general" element={<EditAllGeneral />} />
             </Route>
