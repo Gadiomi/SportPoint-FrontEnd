@@ -5,15 +5,19 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Button, ButtonAppearance, Icon, IconName, Input, Modal } from '@/kit';
+import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { View, dateFnsLocalizer } from 'react-big-calendar';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {
   Container,
+  CustomButtonContainer,
   FormStyled,
   InputsBeginEnd,
+  LocaleButtonsContainerStyled,
+  LocaleButtonsList,
+  LocaleButtonsListItem,
   ScheduleContainer,
   TimeAndDateContainer,
 } from './Schedule.styled';
@@ -23,7 +27,7 @@ import { debounce } from 'lodash';
 import { WorkoutPlan } from '@/types/userProfile';
 import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
 import { useTranslation } from 'react-i18next';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { SectionTitle } from '../EditGeneral/EditGeneral.styled';
 import { parse, startOfWeek, getDay, format } from 'date-fns';
 import { uk } from 'date-fns/locale';
@@ -33,14 +37,9 @@ import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
 import Calendar from './components/Calendar/Calendar';
 import Services from './components/Services/Services';
 import TimeInput from './components/TimeInput/TimeInput';
-import CitySelect from '@/pages/RegisterPage/components/CitySelect';
-import AddressWidget from '@/pages/RegisterPage/components/AddressWidget/AddressWidget';
-import { cityOptions } from '@/pages/RegisterPage/tempData';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { RegisterFormData } from '@/types';
-import { RegisterFormSchema } from '@/constants/validationSchemas/auth';
-import MergedAddressSearchWidget from '../SearchWork/SearchWork';
 import Map from './components/Map/Map';
+import localizeButtons from '../../data/all-buttons.json';
+import SearchWork from '../SearchWork/SearchWork';
 
 const locales = {
   uk: uk,
@@ -78,6 +77,11 @@ const Schedule = () => {
 
   const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
   const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
+  const [selectedKey, setSelectedKey] = useState('club');
+
+  const handleClick = (key: string) => {
+    setSelectedKey(key);
+  };
   const contentsRef = useRef<HTMLDivElement>(null);
 
   const updateHeight = useCallback(() => {
@@ -86,13 +90,18 @@ const Schedule = () => {
       setHeight(`${scrollHeight}px`);
     }
   }, []);
+
   useEffect(() => {
     if (isOpenAddress) {
-      !isCityOpen && !isClubOpen ? setHeight('110px') : updateHeight();
+      if (!isCityOpen && !isClubOpen) {
+        setHeight('110px');
+      } else {
+        updateHeight();
+      }
     } else {
       setHeight('0px');
     }
-  }, [isOpenAddress, isCityOpen, isClubOpen]);
+  }, [isOpenAddress, isCityOpen, isClubOpen, updateHeight]);
 
   useEffect(() => {
     if (userProfile?.description.schedule) {
@@ -150,7 +159,6 @@ const Schedule = () => {
       }, 300),
     [],
   );
-  console.log(debouncedSearchTerm);
 
   const { data: searchResults, isFetching } = useGetByNameQuery(
     {
@@ -198,7 +206,7 @@ const Schedule = () => {
     setEndTime(e.target.value);
   };
 
-  const { register, handleSubmit } = useForm<WorkoutPlan>({
+  const { handleSubmit } = useForm<WorkoutPlan>({
     defaultValues: {},
     shouldUnregister: false,
   });
@@ -237,6 +245,7 @@ const Schedule = () => {
       console.error('Update failed:', error);
     }
   };
+
   const preventViewChange = () => true;
 
   const handleDrillDown = (date: Date) => {
@@ -276,6 +285,7 @@ const Schedule = () => {
     setSelectedProfile([]);
     setSearchTerm('');
   };
+
   const addressHandler = () => {
     setIsOpenAddress(prev => !prev);
   };
@@ -285,7 +295,7 @@ const Schedule = () => {
       <ScheduleContainer>
         <Button
           onClick={() => navigate('/profile/edit')}
-          title="РОЗКЛАД РОБОТИ"
+          title={localizeButtons.titles.working_schedule}
           appearance={ButtonAppearance.PRIMARY}
           testId="general"
           style={{ width: '100%', padding: '8px 18px' }}
@@ -311,7 +321,7 @@ const Schedule = () => {
       </ScheduleContainer>
       <FormStyled onSubmit={handleSubmit(onSubmit)}>
         <TimeAndDateContainer>
-          <SectionTitle>Дата та час послуги</SectionTitle>
+          <SectionTitle>{localizeButtons.titles.date_and_time}</SectionTitle>
           <Input
             testId="selected-time"
             value={(selectedDay && format(selectedDay, 'dd/MM/yyyy')) ?? ''}
@@ -333,36 +343,58 @@ const Schedule = () => {
           </InputsBeginEnd>
         </TimeAndDateContainer>
         <div>
-          Вид послуги
+          {localizeButtons.titles.services}
           <Services />
         </div>
+        <LocaleButtonsContainerStyled>
+          <h3>{localizeButtons.titles.choseCity}</h3>
+          <LocaleButtonsList>
+            {Object.entries(localizeButtons.localization).map(
+              ([key, value]) => (
+                <LocaleButtonsListItem
+                  key={key}
+                  $isActive={key === selectedKey}
+                >
+                  <button type="button" onClick={() => handleClick(key)}>
+                    {value}
+                  </button>
+                </LocaleButtonsListItem>
+              ),
+            )}
+          </LocaleButtonsList>
+          <div>
+            {selectedKey === 'club' && (
+              <SearchWork
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+                isFetching={isFetching}
+                searchResults={localSearchResults}
+                setSelectedProfile={handleSelectProfile}
+                selectedProfile={selectedProfile}
+                view={true}
+                label={localizeButtons.titles.gym_search}
+                handler={addressHandler}
+                isOpen={isOpenAddress}
+                contentRef={contentsRef}
+                height={height}
+                title={localizeButtons.titles.chosePlace}
+                setIsCityOpen={setIsCityOpen}
+                setIsClubOpen={setIsClubOpen}
+                setSearchTerm={debouncedSearch}
+              />
+            )}
+            {selectedKey === 'locale' && <Map />}
+          </div>
+        </LocaleButtonsContainerStyled>
 
-        <MergedAddressSearchWidget
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-          isFetching={isFetching}
-          searchResults={localSearchResults}
-          setSelectedProfile={handleSelectProfile}
-          selectedProfile={selectedProfile}
-          view={true}
-          label="Пошук клубів"
-          handler={addressHandler}
-          isOpen={isOpenAddress}
-          contentRef={contentsRef}
-          height={height}
-          title={'Оберіть місце проведення'}
-          setIsCityOpen={setIsCityOpen}
-          setIsClubOpen={setIsClubOpen}
-          setSearchTerm={debouncedSearch}
-        />
-
-        <Map />
-        <Button
-          type="button"
-          testId="add"
-          title="Додати години"
-          onClick={addNewScheduleEntry}
-        />
+        <CustomButtonContainer>
+          <Button
+            type="button"
+            testId="add"
+            title={localizeButtons.titles.add_hours}
+            onClick={addNewScheduleEntry}
+          />
+        </CustomButtonContainer>
 
         {savedSchedule.length > 0 && (
           <ScheduleCard
@@ -370,7 +402,7 @@ const Schedule = () => {
             setSavedSchedule={setSavedSchedule}
           />
         )}
-        <GeneralsBtn t={t} />
+        <GeneralsBtn t={t} navigateTo="/profile/edit" />
       </FormStyled>
     </Container>
   );

@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 import 'leaflet-control-geocoder';
 import L from 'leaflet';
-import { MapContainer, MapWrapper, Title } from './Map.styled';
+import { MapContainer, MapWrapper, Title, TitleOne } from './Map.styled';
 
 const Map = () => {
   useEffect(() => {
@@ -19,21 +19,20 @@ const Map = () => {
 
     const geocoder = L.Control.geocoder({
       defaultMarkGeocode: true,
-    }).on('markgeocode', function (e) {
+    }).on('markgeocode', function (e: any) {
       const { lat, lng } = e.geocode.center;
       map.setView([lat, lng], 13);
     });
 
     geocoder.addTo(map);
 
-    // Спостерігач DOM, щоб змінити placeholder, коли input з’явиться
     const observer = new MutationObserver(() => {
       const input = document.querySelector(
         '.leaflet-control-geocoder-form input',
       );
       if (input) {
         input.placeholder = 'Введіть адресу...';
-        observer.disconnect(); // зупиняємо спостерігач
+        observer.disconnect();
       }
     });
 
@@ -42,7 +41,6 @@ const Map = () => {
       subtree: true,
     });
 
-    // Геолокація
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -59,7 +57,8 @@ const Map = () => {
 
   return (
     <MapWrapper>
-      <Title>Або виберіть місце на карті</Title>
+      <TitleOne>Введіть адресу</TitleOne>
+      <Title>Обрати на карті</Title>
       <MapContainer id="map" />
     </MapWrapper>
   );

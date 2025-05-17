@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { InputsSection } from '../EditGeneral/EditGeneral.styled';
 import { SelectedItem, SelectedItems } from '../Selection/Selection.styled';
 import { CitySpan, WorksWrapper } from './SearchWork.styled';
-import { MergedProps } from '../Schedule/types/schedule';
-import { AddressWrapper } from '@/pages/RegisterPage/components/AddressWidget/styles';
-import GroupTitle from '@/pages/RegisterPage/components/GroupTitle/GroupTitle';
+import {
+  MergedProps,
+  Profile,
+  SearchWorkProfile,
+} from '../Schedule/types/schedule';
 import { Controller, useFormContext } from 'react-hook-form';
-import { RegisterFormData } from '@/types';
 import CitySelect from '@/pages/RegisterPage/components/CitySelect';
 import { cityOptions } from '@/pages/RegisterPage/tempData';
 import Select, { StylesConfig } from 'react-select';
@@ -27,7 +28,7 @@ export type OptionType = {
   };
 };
 
-const MergedAddressSearchWidget: FC<MergedProps> = ({
+const SearchWork: FC<MergedProps> = ({
   handler,
   isOpen,
   title,
@@ -133,9 +134,11 @@ const MergedAddressSearchWidget: FC<MergedProps> = ({
     }),
   };
 
-  const { control, watch } = useFormContext<RegisterFormData>();
+  console.log(selectedProfile);
+  const { control, watch } = useFormContext<Profile>();
 
   const watchedCity = watch('city');
+  console.log(watchedCity);
 
   const [city, setCity] = useState<string>('');
 
@@ -145,7 +148,7 @@ const MergedAddressSearchWidget: FC<MergedProps> = ({
       typeof watchedCity === 'object' &&
       'value' in watchedCity
     ) {
-      setCity(watchedCity.value);
+      setCity(watchedCity);
     } else if (typeof watchedCity === 'string') {
       setCity(watchedCity);
     }
@@ -155,7 +158,7 @@ const MergedAddressSearchWidget: FC<MergedProps> = ({
     { city, role: 'adminClub' },
     { skip: !city },
   );
-  console.log(cards);
+
   useEffect(() => {
     if (searchResults?.profiles && searchResults.profiles.length > 0) {
       setIsClubOpen?.(true);
@@ -225,49 +228,42 @@ const MergedAddressSearchWidget: FC<MergedProps> = ({
                   ) {
                     return searchResults.profiles.map(profile => ({
                       label: `${profile.firstName} ${profile.lastName}`,
-                      value: profile._id,
-                      _id: profile._id,
+                      id: profile._id,
                       firstName: profile.firstName,
                       lastName: profile.lastName,
                       avatar: profile.avatar,
-                      description: {
-                        address: profile.description?.address,
-                        city: profile.description?.city,
-                      },
+                      address: profile.description?.address,
+                      city: profile.description?.city,
                     }));
                   } else if (cards?.data?.data && cards.data.data.length > 0) {
-                    return cards.data.data.map(card => ({
+                    return cards.data.data.map((card: SearchWorkProfile) => ({
                       label: `${card.firstName} ${card.lastName}`,
-                      value: card._id,
-                      _id: card._id,
+                      id: card._id,
                       firstName: card.firstName,
                       lastName: card.lastName,
                       avatar: card.avatar,
-                      description: {
-                        address: card.description?.address,
-                        city: card.description?.city,
-                      },
+                      address: card.description?.address,
+                      city: card.description?.city,
                     }));
                   }
                   return [];
                 };
+                console.log(clubOptions());
                 return (
                   <Select
                     {...field}
                     options={clubOptions()}
-                    value={
-                      clubOptions().find(
-                        option => option.value === selectedProfile?.id,
-                      ) || null
-                    }
+                    value={clubOptions().filter((option: Profile) =>
+                      selectedProfile?.some(p => p.id === option.id),
+                    )}
                     onChange={selectedOption => {
                       if (selectedOption) {
                         setSelectedProfile({
-                          id: selectedOption._id,
+                          id: selectedOption.id,
                           firstName: selectedOption.firstName,
                           lastName: selectedOption.lastName,
-                          address: selectedOption.description.address,
-                          city: selectedOption.description.city,
+                          address: selectedOption.address,
+                          city: selectedOption.city,
                           avatar: selectedOption.avatar,
                         });
                         field.onChange(selectedOption.value);
@@ -294,4 +290,4 @@ const MergedAddressSearchWidget: FC<MergedProps> = ({
   );
 };
 
-export default MergedAddressSearchWidget;
+export default SearchWork;

@@ -46,14 +46,15 @@ export const MapContainer = styled.div`
     .leaflet-control-geocoder-form {
       display: block;
       background-color: transparent;
+      margin-top: 24px;
     }
 
     input {
-      border: 1px solid #ccc;
+      border: 1px solid rgba(183, 183, 185, 1);
       width: 100%;
       visibility: visible;
       background-color: transparent;
-      color: #fff;
+      color: rgba(183, 183, 185, 1);
       border-radius: 4px;
     }
     button {
@@ -88,7 +89,18 @@ export const MapContainer = styled.div`
 export const Title = styled.h4`
   position: absolute;
   z-index: 999999;
-  top: 46px;
+  top: 70px;
   text-align: center;
   margin: 0;
+  color: rgba(248, 247, 244, 1);
+  font-size: 16px;
+  font-weight: 500;
+`;
+export const TitleOne = styled.h4`
+  position: absolute;
+  z-index: 999999;
+  top: -10px;
+  text-align: center;
+  margin: 0;
+  color: rgba(248, 247, 244, 1);
 `;

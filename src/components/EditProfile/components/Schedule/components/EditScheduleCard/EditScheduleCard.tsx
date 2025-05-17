@@ -1,61 +1,65 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
+  ButtonsContainerForEdit,
   Container,
   FormStyled,
   InputsBeginEnd,
+  LocaleButtonsList,
   ScheduleContainer,
   TimeAndDateContainer,
 } from '../../Schedule.styled';
-import GeneralsBtn from '../../../GeneralsBtn/GeneralsBtn';
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
-import SearchWork from '../../../SearchWork/SearchWork';
-import { format, getDay, parse, startOfWeek } from 'date-fns';
+import { format } from 'date-fns';
 import { SectionTitle } from '../../../EditGeneral/EditGeneral.styled';
-import Calendar from '../Calendar/Calendar';
 import { WorkoutPlan } from '@/types/userProfile';
 import { useForm } from 'react-hook-form';
 import { Profile, ScheduleEntry, SearchResults } from '../../types/schedule';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
 import { debounce } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@/hooks/hooks';
-import { useAddScheduleMutation } from '@/redux/schedule/scheduleApi';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import {
+  useGetScheduleQuery,
+  useUpdateScheduleMutation,
+} from '@/redux/schedule/scheduleApi';
 import { useNavigate } from 'react-router-dom';
-import { dateFnsLocalizer, View } from 'react-big-calendar';
 import { uk } from 'date-fns/locale';
-
-const locales = {
-  uk: uk,
-};
+import {
+  LocaleButtonsContainerStyled,
+  LocaleButtonsListItem,
+} from '../../Schedule.styled';
+import localizeButtons from '../../../../data/all-buttons.json';
+import Map from '../Map/Map';
+import ScheduleCard from '../ScheduleCard/ScheduleCard';
+import SearchWork from '../../../SearchWork/SearchWork';
+import { setScheduleId } from '@/redux/globalsStates/globalsStates';
 
 const EditScheduleCard = () => {
-  const localizer = useMemo(
-    () =>
-      dateFnsLocalizer({
-        format,
-        parse,
-        startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
-        getDay,
-        locales,
-      }),
-    [],
-  );
+  const dispatch = useAppDispatch();
 
-  const userProfile = useAppSelector(state => state.globalsStates.editId);
-  console.log(userProfile);
-  const [addSchedule] = useAddScheduleMutation();
+  const [updateSchedule] = useUpdateScheduleMutation();
   const navigate = useNavigate();
-  const [view, setView] = useState<View>('week');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedProfile, setSelectedProfile] = useState<Profile[]>([]);
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [beginTime, setBeginTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
-  // const [savedSchedule, setSavedSchedule] = useState<ScheduleEntry[]>([]);
-  const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
+  const [savedSchedule, setSavedSchedule] = useState<ScheduleEntry[]>([]);
   const [localSearchResults, setLocalSearchResults] =
     useState<SearchResults | null>(null);
+  const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
+  const [height, setHeight] = useState<string>('0px');
+
+  const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
+  const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
+  const [selectedKey, setSelectedKey] = useState('club');
 
   const { t } = useTranslation();
 
@@ -66,7 +70,7 @@ const EditScheduleCard = () => {
       }, 300),
     [],
   );
-
+  console.log(selectedDay);
   const { data: searchResults, isFetching } = useGetByNameQuery(
     {
       name: debouncedSearchTerm,
@@ -76,6 +80,43 @@ const EditScheduleCard = () => {
       skip: !debouncedSearchTerm,
     },
   );
+
+  const handleClick = (key: string) => {
+    setSelectedKey(key);
+  };
+  const contentsRef = useRef<HTMLDivElement>(null);
+
+  const updateHeight = useCallback(() => {
+    if (contentsRef.current) {
+      const scrollHeight = contentsRef.current.scrollHeight;
+      setHeight(`${scrollHeight}px`);
+    }
+  }, []);
+
+  const { editId } = useAppSelector(state => state.globalsStates);
+  useEffect(() => {
+    const storedId = localStorage.getItem('editId');
+    if (storedId) {
+      dispatch(setScheduleId(storedId));
+    }
+  }, [dispatch]);
+  console.log('editId:', editId);
+
+  const { data: card, isLoading } = useGetScheduleQuery(editId);
+
+  console.log(card);
+
+  useEffect(() => {
+    if (isOpenAddress) {
+      if (!isCityOpen && !isClubOpen) {
+        setHeight('110px');
+      } else {
+        updateHeight();
+      }
+    } else {
+      setHeight('0px');
+    }
+  }, [isOpenAddress, isCityOpen, isClubOpen, updateHeight]);
 
   useEffect(() => {
     if (!debouncedSearchTerm) {
@@ -97,12 +138,7 @@ const EditScheduleCard = () => {
   };
 
   const handleSelectProfile = (profile: Profile) => {
-    setSelectedProfile((prevProfiles: Profile[]) => {
-      if (prevProfiles.some(p => p.id === profile.id)) {
-        return prevProfiles;
-      }
-      return [...prevProfiles, profile];
-    });
+    setSelectedProfile([profile]);
   };
 
   const handleBeginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,56 +148,58 @@ const EditScheduleCard = () => {
   const handleEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEndTime(e.target.value);
   };
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = new Date(e.target.value);
+    setSelectedDay(isNaN(date.getTime()) ? null : date);
+  };
 
-  const { register, handleSubmit } = useForm<WorkoutPlan>({
+  const { handleSubmit } = useForm<WorkoutPlan>({
     defaultValues: {},
     shouldUnregister: false,
   });
 
-  const convertScheduleToBackendFormat = () => {
-    return backendSchedule.map(entry => {
-      const start = new Date(entry.day);
-      const [startHour, startMin] = entry.begin.split(':');
-      start.setHours(Number(startHour), Number(startMin));
-      const end = new Date(entry.day);
-      const [endHour, endMin] = entry.end.split(':');
-      end.setHours(Number(endHour), Number(endMin));
+  useEffect(() => {
+    if (!card || !card.date?.startTime || !card.date?.endTime) return;
 
-      return {
-        date: {
-          startTime: start,
-          endTime: end,
-        },
-        selection: {
-          selectedType: `${entry.profile.firstName} ${entry.profile.lastName}`,
-          city: entry.profile.city || '',
-          address: entry.profile.address || '',
-          avatar: entry.profile.avatar || '',
-        },
-        selectedGym: `${entry.profile.firstName} ${entry.profile.lastName}`,
-      };
-    });
-  };
-
-  const onSubmit = async () => {
     try {
-      const backendReadySchedule = convertScheduleToBackendFormat();
+      const startDate = new Date(card.date.startTime);
+      const endDate = new Date(card.date.endTime);
 
-      await addSchedule(backendReadySchedule).unwrap();
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        console.warn('Invalid date from backend:', card.date);
+        return;
+      }
+
+      const transformed = {
+        day: startDate,
+        begin: format(startDate, 'HH:mm'),
+        end: format(endDate, 'HH:mm'),
+        _id: card._id,
+        profile: {
+          firstName: card.selectedGym,
+          lastName: '',
+          address: card.selection.address,
+          city: card.selection.city,
+          avatar: card.selection.avatar,
+          id: card._id || 'default-id',
+        },
+        weekday: format(startDate, 'EEEE', { locale: uk }),
+        monthShort: format(startDate, 'MMM', { locale: uk }),
+      };
+      if (card) {
+        setSelectedProfile([transformed.profile] as any);
+      }
+
+      setSavedSchedule([transformed]);
+      setBeginTime(format(startDate, 'HH:mm'));
+      setEndTime(format(endDate, 'HH:mm'));
+      setSelectedDay(startDate);
     } catch (error) {
-      console.error('Update failed:', error);
+      console.error('Failed to parse date:', error);
     }
-  };
-  const preventViewChange = () => true;
+  }, [card]);
 
-  const handleDrillDown = (date: Date) => {
-    setSelectedDay(date);
-  };
-  const handleNavigate = (date: Date) => {
-    setSelectedDay(date);
-  };
-
-  const addNewScheduleEntry = () => {
+  const convertScheduleToBackendFormat = () => {
     if (
       !selectedDay ||
       !beginTime ||
@@ -172,24 +210,52 @@ const EditScheduleCard = () => {
       return;
     }
 
-    const weekday = format(selectedDay, 'EEEE', { locale: uk });
-    const monthShort = format(selectedDay, 'MMM', { locale: uk });
-
-    const newEntry = {
+    const entry = {
       day: selectedDay,
       begin: beginTime,
       end: endTime,
       profile: selectedProfile[0],
-      weekday,
-      monthShort,
     };
 
-    setBackendSchedule(prev => [...prev, newEntry]);
-    // setSavedSchedule(prev => [...prev, newEntry]);
-    setBeginTime('');
-    setEndTime('');
-    setSelectedProfile([]);
-    setSearchTerm('');
+    const start = new Date(entry.day);
+    const [startHour, startMin] = entry.begin.split(':');
+    start.setHours(Number(startHour), Number(startMin));
+
+    const end = new Date(entry.day);
+    const [endHour, endMin] = entry.end.split(':');
+    end.setHours(Number(endHour), Number(endMin));
+
+    return {
+      date: {
+        startTime: start,
+        endTime: end,
+      },
+      selection: {
+        selectedType: `${entry.profile.firstName} ${entry.profile.lastName}`,
+        city: entry.profile.city || '',
+        address: entry.profile.address || '',
+        avatar: entry.profile.avatar || '',
+      },
+      selectedGym: `${entry.profile.firstName} ${entry.profile.lastName}`,
+    };
+  };
+
+  const onSubmit = async () => {
+    try {
+      const backendReadySchedule = convertScheduleToBackendFormat();
+
+      await updateSchedule({
+        workoutPlans: backendReadySchedule,
+        id: editId,
+      }).unwrap();
+    } catch (error) {
+      console.error('Update failed:', error);
+    }
+    navigate('/profile/edit/schedule');
+  };
+
+  const addressHandler = () => {
+    setIsOpenAddress(prev => !prev);
   };
 
   return (
@@ -209,14 +275,9 @@ const EditScheduleCard = () => {
             <Icon name={IconName.ARROW_LEFT} styles={{ color: 'white' }} />
           }
         />
-        <Calendar
-          handleNavigate={handleNavigate}
-          localizer={localizer}
-          selectedDay={selectedDay}
-          view={view}
-          setView={setView}
-          handleDrillDown={handleDrillDown}
-          preventViewChange={preventViewChange}
+        <ScheduleCard
+          savedSchedule={savedSchedule}
+          setSavedSchedule={setSavedSchedule}
         />
       </ScheduleContainer>
       <FormStyled onSubmit={handleSubmit(onSubmit)}>
@@ -224,7 +285,9 @@ const EditScheduleCard = () => {
           <SectionTitle>Дата та час послуги</SectionTitle>
           <Input
             testId="selected-time"
-            value={(selectedDay && format(selectedDay, 'dd/MM/yyyy')) ?? ''}
+            type="date"
+            value={(selectedDay && format(selectedDay, 'yyyy-MM-dd')) ?? ''}
+            onChange={handleDateChange}
             containerStyles={{ marginBottom: '8px' }}
           />
           <InputsBeginEnd>
@@ -247,26 +310,88 @@ const EditScheduleCard = () => {
           </InputsBeginEnd>
         </TimeAndDateContainer>
 
-        <SearchWork
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-          isFetching={isFetching}
-          searchResults={localSearchResults}
-          setSelectedProfile={handleSelectProfile}
-          selectedProfile={selectedProfile}
-          title={'Обрати клуб'}
-          view={true}
-          label="Пошук клубів"
-        />
+        <LocaleButtonsContainerStyled>
+          <h3>Оберіть місце проведення</h3>
+          <LocaleButtonsList>
+            {Object.entries(localizeButtons.localization).map(
+              ([key, value]) => (
+                <LocaleButtonsListItem
+                  key={key}
+                  $isActive={key === selectedKey}
+                >
+                  <button type="button" onClick={() => handleClick(key)}>
+                    {value}
+                  </button>
+                </LocaleButtonsListItem>
+              ),
+            )}
+          </LocaleButtonsList>
+          <div>
+            {selectedKey === 'club' && (
+              <SearchWork
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+                isFetching={isFetching}
+                searchResults={localSearchResults}
+                setSelectedProfile={handleSelectProfile}
+                selectedProfile={selectedProfile}
+                view={true}
+                label="Пошук клубів"
+                handler={addressHandler}
+                isOpen={isOpenAddress}
+                contentRef={contentsRef}
+                height={height}
+                title={'Оберіть місце проведення'}
+                setIsCityOpen={setIsCityOpen}
+                setIsClubOpen={setIsClubOpen}
+                setSearchTerm={debouncedSearch}
+              />
+            )}
+            {selectedKey === 'locale' && <Map />}
+          </div>
+        </LocaleButtonsContainerStyled>
 
-        <Button
-          type="button"
-          testId="add"
-          title="Додати години"
-          onClick={addNewScheduleEntry}
-        />
-
-        <GeneralsBtn t={t} />
+        <ButtonsContainerForEdit>
+          <Button
+            type="submit"
+            title={t('account_page.save')}
+            appearance={ButtonAppearance.SECONDARY}
+            testId="save"
+            styles={{
+              width: '100%',
+              padding: '8px 18px',
+              fontWeight: 500,
+              fontSize: 16,
+              color: 'rgba(28, 27, 32, 1)',
+              backgroundColor: 'rgba(183, 183, 185, 1)',
+            }}
+            prependChild={
+              <Icon
+                styles={{
+                  color: 'currentColor',
+                  fill: 'transparent',
+                  marginRight: '8px',
+                }}
+                width="24"
+                name={IconName.CHECK_CONTAINED}
+              />
+            }
+          />
+          <Button
+            type="button"
+            title={t('account_page.back')}
+            appearance={ButtonAppearance.UNDERLINED}
+            testId="back"
+            onClick={() => navigate('/profile/edit/schedule')}
+            styles={{
+              width: '100%',
+              padding: '8px 18px',
+              fontWeight: 500,
+              fontSize: 16,
+              color: '#F8F7F4',
+            }}
+          />
+        </ButtonsContainerForEdit>
       </FormStyled>
     </Container>
   );

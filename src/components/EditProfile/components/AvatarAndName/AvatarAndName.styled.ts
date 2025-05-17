@@ -14,3 +14,10 @@ export const AvatarImg = styled.div`
     border-radius: 0;
   }
 `;
+export const FirstLatter = styled.div`
+  width: 96px;
+  height: 96px;
+  text-align: center;
+  border: 1px solid blue;
+  border-radius: 100%;
+`;

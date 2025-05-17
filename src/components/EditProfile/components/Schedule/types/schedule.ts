@@ -2,6 +2,7 @@ import React, { Ref } from 'react';
 
 export interface Profile {
   id: string;
+  value?: string;
   firstName: string;
   lastName: string;
   address?: string;
@@ -20,6 +21,16 @@ export interface SearchResults {
       city?: string;
     };
   }[];
+}
+export interface SearchWorkProfile {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  avatar?: string;
+  description: {
+    address?: string;
+    city?: string;
+  };
 }
 
 export type ScheduleEntry = {

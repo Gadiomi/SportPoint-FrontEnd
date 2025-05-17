@@ -1,6 +1,13 @@
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
 import { useUpdateUserProfileMutation } from '@/redux/user/userApi';
-import React, { FC, useEffect, useState, useMemo } from 'react';
+import React, {
+  FC,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -33,10 +40,10 @@ import {
   setText,
 } from '@/redux/user/editProfileSlice';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
-import SearchWork from '../SearchWork/SearchWork';
 import AvatarAndName from '../AvatarAndName/AvatarAndName';
 import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
 import BigLoader from '@/components/BigLoader/BigLoader';
+import SearchWork from '../SearchWork/SearchWork';
 
 const EditGeneral: FC = () => {
   const navigate = useNavigate();
@@ -53,7 +60,6 @@ const EditGeneral: FC = () => {
     selectedAvatar,
     certificates,
   } = useAppSelector(state => state.editProfile);
-
   const [updateUserProfile] = useUpdateUserProfileMutation();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -67,6 +73,34 @@ const EditGeneral: FC = () => {
       city?: string;
     }[]
   >([]);
+  const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
+  const [height, setHeight] = useState<string>('0px');
+  const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
+  const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
+  const contentsRef = useRef<HTMLDivElement>(null);
+
+  const updateHeight = useCallback(() => {
+    if (contentsRef.current) {
+      const scrollHeight = contentsRef.current.scrollHeight;
+      setHeight(`${scrollHeight}px`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpenAddress) {
+      if (!isCityOpen && !isClubOpen) {
+        setHeight('110px');
+      } else {
+        updateHeight();
+      }
+    } else {
+      setHeight('0px');
+    }
+  }, [isOpenAddress, isCityOpen, isClubOpen, updateHeight]);
+
+  const addressHandler = () => {
+    setIsOpenAddress(prev => !prev);
+  };
 
   const debouncedSearch = useMemo(
     () =>
@@ -372,6 +406,13 @@ const EditGeneral: FC = () => {
             selectedProfile={selectedProfile}
             title={'Спортивні клуби, де ви працюєте'}
             view={false}
+            height={height}
+            setIsCityOpen={setIsCityOpen}
+            setIsClubOpen={setIsClubOpen}
+            setSearchTerm={debouncedSearch}
+            isOpen={isOpenAddress}
+            handler={addressHandler}
+            contentRef={contentsRef}
           />
           <Certificates
             handleCertificatesChange={handleCertificatesChange}
@@ -384,7 +425,7 @@ const EditGeneral: FC = () => {
             setText={setText}
           />
         </GeneralForm>
-        <GeneralsBtn t={t} />
+        <GeneralsBtn t={t} navigateTo="/profile/edit" />
       </form>
     </Container>
   );
