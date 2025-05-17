@@ -38,7 +38,6 @@ export const ClubCard: FC<Props> = ({ clubData }) => {
   return (
     <ClubCardBox>
       <ClubImage image={avatar}>
-        {' '}
         {!avatar && <ClubInitial>{firstName?.charAt(0)}</ClubInitial>}
       </ClubImage>
       <HeartButton>
