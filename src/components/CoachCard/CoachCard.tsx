@@ -46,7 +46,7 @@ const CoachCard: FC<Props> = ({ coachData, refetchD }) => {
   const {
     data: userData,
     isSuccess,
-    refetch,
+    // refetch,
   } = useGetUserProfileQuery(undefined);
   console.log(' - userData -> ', userData?.userProfile?.favorite);
   useEffect(() => {
