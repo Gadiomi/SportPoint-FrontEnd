@@ -104,8 +104,6 @@ const EditScheduleCard = () => {
 
   const { data: card, isLoading } = useGetScheduleQuery(editId);
 
-  console.log(card);
-
   useEffect(() => {
     if (isOpenAddress) {
       if (!isCityOpen && !isClubOpen) {
@@ -135,10 +133,6 @@ const EditScheduleCard = () => {
     } else {
       debouncedSearch(value);
     }
-  };
-
-  const handleSelectProfile = (profile: Profile) => {
-    setSelectedProfile([profile]);
   };
 
   const handleBeginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -333,7 +327,7 @@ const EditScheduleCard = () => {
                 handleSearchChange={handleSearchChange}
                 isFetching={isFetching}
                 searchResults={localSearchResults}
-                setSelectedProfile={handleSelectProfile}
+                setSelectedProfile={setSelectedProfile}
                 selectedProfile={selectedProfile}
                 view={true}
                 label="Пошук клубів"

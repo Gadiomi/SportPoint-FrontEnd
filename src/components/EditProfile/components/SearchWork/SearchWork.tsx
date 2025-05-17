@@ -133,12 +133,19 @@ const SearchWork: FC<MergedProps> = ({
       margin: theme.pxs.x0,
     }),
   };
+  const handleSelectProfile = (profile: Profile | null) => {
+    if (!profile) return;
 
-  console.log(selectedProfile);
+    setSelectedProfile(prevProfiles => {
+      if (prevProfiles.some(p => p.id === profile.id)) {
+        return prevProfiles;
+      }
+      return [...prevProfiles, profile];
+    });
+  };
   const { control, watch } = useFormContext<Profile>();
 
   const watchedCity = watch('city');
-  console.log(watchedCity);
 
   const [city, setCity] = useState<string>('');
 
@@ -170,11 +177,21 @@ const SearchWork: FC<MergedProps> = ({
       setIsClubOpen?.(true);
     }
   }, [searchResults, setIsClubOpen]);
+
+  const handleRemoveProfile = (idToRemove: string) => {
+    const updated = selectedProfile?.filter(p => p.id !== idToRemove);
+
+    setSelectedProfile(updated);
+  };
+
   return (
     <WorksWrapper>
       {selectedProfile &&
-        selectedProfile.map(work => (
-          <SelectedItems key={work.id}>
+        selectedProfile.map((work, index) => (
+          <SelectedItems
+            key={work.id || index}
+            onClick={() => handleRemoveProfile(work.id)}
+          >
             <SelectedItem>
               {work.firstName}
               <span> {work.lastName}</span>
@@ -248,7 +265,6 @@ const SearchWork: FC<MergedProps> = ({
                   }
                   return [];
                 };
-                console.log(clubOptions());
                 return (
                   <Select
                     {...field}
@@ -258,7 +274,7 @@ const SearchWork: FC<MergedProps> = ({
                     )}
                     onChange={selectedOption => {
                       if (selectedOption) {
-                        setSelectedProfile({
+                        handleSelectProfile({
                           id: selectedOption.id,
                           firstName: selectedOption.firstName,
                           lastName: selectedOption.lastName,

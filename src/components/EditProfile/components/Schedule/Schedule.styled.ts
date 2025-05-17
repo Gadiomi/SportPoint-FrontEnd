@@ -161,7 +161,14 @@ export const StyledCalendar = styled(Calendar)<{ view: string }>`
     display: none;
   }
 `;
+
 export const TimeAndDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const ServicesContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;

@@ -49,24 +49,8 @@ export interface MergedProps {
   isFetching: boolean;
   view: boolean;
   searchResults?: SearchResults | null;
-  setSelectedProfile: (profile: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    address?: string;
-    city?: string;
-    avatar?: string;
-  }) => void;
-  selectedProfile?:
-    | {
-        id: string;
-        firstName: string;
-        lastName: string;
-        address?: string;
-        city?: string;
-        avatar?: string;
-      }[]
-    | null;
+  setSelectedProfile: React.Dispatch<React.SetStateAction<Profile[]>>;
+  selectedProfile: Profile[];
   label?: string;
   setIsCityOpen?: (isOpen: boolean) => void;
   height: string;

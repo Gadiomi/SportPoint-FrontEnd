@@ -6,6 +6,6 @@
   { "name": "РОЗКЛАД РОБОТИ", "icon": "CALENDAR", "route": "edit/schedule" },
   { "name": "ПОСЛУГИ", "icon": "SERVICES", "route": "edit/servers" },
 
-  { "name": "ЗАГАЛЬНЕ", "icon": "ACCOUNT", "route": "edit/general" },
+  { "name": "РЕДАГУВАТИ ПРОФІЛЬ", "icon": "ACCOUNT", "route": "edit/general" },
   { "name": "ЗМІНИТИ ПАРОЛЬ", "icon": "ID", "route": "change-password" }
 ]

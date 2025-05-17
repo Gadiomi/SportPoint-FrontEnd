@@ -16,6 +16,14 @@ export const scheduleApi = createApi({
       },
       providesTags: ['Schedule'],
     }),
+    getAllSchedules: builder.query({
+      query: () => ({
+        url: `/workoutPlan`,
+        method: 'GET',
+      }),
+
+      providesTags: ['Schedule'],
+    }),
     addSchedule: builder.mutation({
       query: workoutPlans => ({
         url: '/workoutPlan',
@@ -44,4 +52,5 @@ export const {
   useDeleteScheduleMutation,
   useUpdateScheduleMutation,
   useGetScheduleQuery,
+  useGetAllSchedulesQuery,
 } = scheduleApi;

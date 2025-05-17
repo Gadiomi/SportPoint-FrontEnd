@@ -91,7 +91,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
             src={
               entry.profile.avatar
                 ? entry.profile.avatar
-                : '/public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
+                : '/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
             }
             alt="avatar"
           />

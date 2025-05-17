@@ -15,9 +15,14 @@ export const AvatarImg = styled.div`
   }
 `;
 export const FirstLatter = styled.div`
-  width: 96px;
-  height: 96px;
+  width: 120px;
+  height: 120px;
   text-align: center;
   border: 1px solid blue;
   border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  background-color: #ed772f;
 `;
