@@ -18,7 +18,7 @@ export const ClubsList: React.FC = () => {
   const [searchParams] = useSearchParams();
   const abilityFromUrl = searchParams.get('abilities') || '';
   const [filters, setFilters] = useState<FilterParams>({
-    address: '',
+    city: '',
     minPrice: null,
     maxPrice: null,
     abilities: abilityFromUrl,
@@ -36,6 +36,7 @@ export const ClubsList: React.FC = () => {
     setCurrentPage(1);
   };
 
+  console.log('first', data);
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
       {error ? <Loading>{t('home_page.error')}</Loading> : null}

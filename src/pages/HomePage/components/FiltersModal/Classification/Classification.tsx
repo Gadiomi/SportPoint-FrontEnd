@@ -24,12 +24,12 @@ export const Classification: React.FC<ClassificationProps> = ({
   const { t } = useTranslation();
   const options = useMemo(
     () => [
-      { value: 'stretching', label: t('filters.stretching') },
-      { value: 'cardio', label: t('filters.cardio') },
-      { value: 'yoga', label: t('filters.yoga') },
-      { value: 'crossfit', label: t('filters.crossfit') },
+      { value: 'стрейчинг', label: t('filters.stretching') },
+      { value: 'кардіо', label: t('filters.cardio') },
+      { value: 'йога', label: t('filters.yoga') },
+      { value: 'кросфіт', label: t('filters.crossfit') },
       { value: 'TRX', label: t('filters.trx') },
-      { value: 'fitness', label: t('filters.fitness') },
+      { value: 'фітнес', label: t('filters.fitness') },
     ],
     [],
   );

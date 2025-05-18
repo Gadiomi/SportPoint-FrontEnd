@@ -66,7 +66,7 @@ export interface ClubData {
 }
 
 export interface DescriptionClub {
-  address: string;
+  city: string;
   abilities: string[];
   experience?: string;
   schedule?: ScheduleClub[];
@@ -80,7 +80,7 @@ export interface ScheduleClub {
 
 /* Filters data */
 export interface FilterParams {
-  address?: string;
+  city?: string;
   minPrice?: number | null;
   maxPrice?: number | null;
   abilities?: string;
