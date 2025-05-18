@@ -1,6 +1,10 @@
 import { Calendar } from 'react-big-calendar';
 import styled from 'styled-components';
 
+interface LocaleButtonsListItemProps {
+  $isActive: boolean;
+}
+
 export const Container = styled.div`
   padding: 0 12px;
   background-color: transparent;
@@ -157,7 +161,14 @@ export const StyledCalendar = styled(Calendar)<{ view: string }>`
     display: none;
   }
 `;
+
 export const TimeAndDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const ServicesContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -173,7 +184,7 @@ export const FormStyled = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
 `;
 
 export const DayCell = styled.div<{ isSelected?: boolean }>`
@@ -187,4 +198,64 @@ export const DayCell = styled.div<{ isSelected?: boolean }>`
 
 export const CustomContainer = styled.div`
   position: relative;
+`;
+
+export const CustomButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  &::after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background-color: rgba(183, 183, 185, 1);
+  }
+`;
+
+export const LocaleButtonsContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export const LocaleButtonsList = styled.ul`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 16px;
+`;
+
+export const LocaleButtonsListItem = styled.li<LocaleButtonsListItemProps>`
+  border: 1px solid rgba(41, 68, 135, 1);
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 60px;
+  padding: 4px 0;
+  background-color: ${({ $isActive }) =>
+    $isActive ? 'rgba(41, 68, 135, 1)' : 'transparent'};
+
+  transition: all linear 250ms;
+
+  &:hover {
+    background-color: ${({ $isActive }) =>
+      $isActive ? 'rgba(41, 68, 135, 0.6)' : 'transparent'};
+    border: 1px solid rgba(41, 68, 135, 0.6);
+  }
+
+  button {
+    color: ${({ $isActive }) =>
+      $isActive ? 'rgba(248, 247, 244, 1)' : 'rgba(183, 183, 185, 1)'};
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+export const ButtonsContainerForEdit = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;

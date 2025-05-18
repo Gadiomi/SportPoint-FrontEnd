@@ -1,13 +1,19 @@
 import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
 import { useUpdateUserProfileMutation } from '@/redux/user/userApi';
-import React, { FC, useEffect, useState, useMemo } from 'react';
+import React, {
+  FC,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Selection from '../Selection/Selection';
 import { UserProfile } from '@/types/userProfile';
 import sports from '../../data/sports.json';
-import cities from '../../data/cities.json';
 import socials from '../../data/socials.json';
 import { debounce, toNumber } from 'lodash';
 import {
@@ -33,12 +39,19 @@ import {
   setText,
 } from '@/redux/user/editProfileSlice';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
-import SearchWork from '../SearchWork/SearchWork';
 import AvatarAndName from '../AvatarAndName/AvatarAndName';
 import GeneralsBtn from '../GeneralsBtn/GeneralsBtn';
 import BigLoader from '@/components/BigLoader/BigLoader';
+import SearchWork from '../SearchWork/SearchWork';
+import { cityOptions } from '@/pages/RegisterPage/tempData';
+import { Profile } from '../Schedule/types/schedule';
+import Select from 'react-select';
+import { getCustomStyles } from '../Schedule/customStyle';
+import { useTheme } from 'styled-components';
 
 const EditGeneral: FC = () => {
+  const theme = useTheme();
+
   const navigate = useNavigate();
   const { t } = useTranslation();
   const userProfile = useAppSelector(state => state.user.user);
@@ -53,20 +66,39 @@ const EditGeneral: FC = () => {
     selectedAvatar,
     certificates,
   } = useAppSelector(state => state.editProfile);
-
   const [updateUserProfile] = useUpdateUserProfileMutation();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('');
-  const [selectedProfile, setSelectedProfile] = useState<
-    {
-      id: string;
-      firstName: string;
-      lastName: string;
-      address?: string;
-      city?: string;
-    }[]
-  >([]);
+  const [selectedProfile, setSelectedProfile] = useState<Profile[]>([]);
+  const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
+  const [height, setHeight] = useState<string>('0px');
+  const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
+  const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
+  const contentsRef = useRef<HTMLDivElement>(null);
+
+  const updateHeight = useCallback(() => {
+    if (contentsRef.current) {
+      const scrollHeight = contentsRef.current.scrollHeight;
+      setHeight(`${scrollHeight}px`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpenAddress) {
+      if (!isCityOpen && !isClubOpen) {
+        setHeight('110px');
+      } else {
+        updateHeight();
+      }
+    } else {
+      setHeight('0px');
+    }
+  }, [isOpenAddress, isCityOpen, isClubOpen, updateHeight]);
+
+  const addressHandler = () => {
+    setIsOpenAddress(prev => !prev);
+  };
 
   const debouncedSearch = useMemo(
     () =>
@@ -158,21 +190,6 @@ const EditGeneral: FC = () => {
       dispatch(setAvatar(file));
       dispatch(setSelectedAvatar(URL.createObjectURL(file)));
     }
-  };
-
-  const handleSelectProfile = (profile: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    address?: string;
-    city?: string;
-  }) => {
-    setSelectedProfile(prevProfiles => {
-      if (prevProfiles.some(p => p.id === profile.id)) {
-        return prevProfiles;
-      }
-      return [...prevProfiles, profile];
-    });
   };
 
   const onSubmit = async (formData: UserProfile) => {
@@ -272,23 +289,23 @@ const EditGeneral: FC = () => {
         <GeneralForm>
           <SelectedContainer>
             <Label htmlFor="description.address">Місто</Label>
-            <SelectStyled
-              id="description.address"
-              name="description.address"
-              value={selectedCity || userProfile?.description.address}
-              onChange={e => dispatch(setSelectedCity(e.target.value))}
-            >
-              <option value="" disabled>
-                {selectedCity ||
-                  userProfile?.description.address ||
-                  'Оберіть місто'}
-              </option>
-              {cities.map((city, index) => (
-                <option key={index} value={city}>
-                  {city}
-                </option>
-              ))}
-            </SelectStyled>
+
+            <Select
+              styles={getCustomStyles(theme)}
+              options={cityOptions.map(hall => ({
+                value: hall.value,
+                label: hall.label,
+              }))}
+              onChange={option =>
+                dispatch(setSelectedCity(option ? option.value : ''))
+              }
+              value={
+                cityOptions.find(c => c.value === selectedCity)
+                  ? { value: selectedCity, label: selectedCity }
+                  : null
+              }
+              placeholder={userProfile?.description.address || 'Обрати залу'}
+            />
           </SelectedContainer>
           <InputsSection>
             <SectionTitle>Загальна інформація</SectionTitle>
@@ -368,10 +385,17 @@ const EditGeneral: FC = () => {
             handleSearchChange={handleSearchChange}
             isFetching={isFetching}
             searchResults={searchResults}
-            setSelectedProfile={handleSelectProfile}
+            setSelectedProfile={setSelectedProfile}
             selectedProfile={selectedProfile}
             title={'Спортивні клуби, де ви працюєте'}
             view={false}
+            height={height}
+            setIsCityOpen={setIsCityOpen}
+            setIsClubOpen={setIsClubOpen}
+            setSearchTerm={debouncedSearch}
+            isOpen={isOpenAddress}
+            handler={addressHandler}
+            contentRef={contentsRef}
           />
           <Certificates
             handleCertificatesChange={handleCertificatesChange}
@@ -384,7 +408,7 @@ const EditGeneral: FC = () => {
             setText={setText}
           />
         </GeneralForm>
-        <GeneralsBtn t={t} />
+        <GeneralsBtn t={t} navigateTo="/profile/edit" />
       </form>
     </Container>
   );

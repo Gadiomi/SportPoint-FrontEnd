@@ -9,9 +9,10 @@ const CitySelect: FC<CitySelectProps> = ({
   placeholder,
   onMenuOpen,
   onMenuClose,
+  onInputChange,
 }) => {
   const [selectedValue, setSelectedValue] = useState<OptionType | null>(null);
-
+  console.log(options);
   useEffect(() => {
     const currentValue =
       options.find(
@@ -125,6 +126,7 @@ const CitySelect: FC<CitySelectProps> = ({
       styles={customStyles}
       menuPortalTarget={null}
       menuPosition="absolute"
+      onInputChange={onInputChange}
     />
   );
 };

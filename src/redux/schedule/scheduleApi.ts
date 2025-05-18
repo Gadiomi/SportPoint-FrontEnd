@@ -6,10 +6,35 @@ export const scheduleApi = createApi({
   baseQuery: axiosBaseQuery(),
   tagTypes: ['Schedule'],
   endpoints: builder => ({
+    getSchedule: builder.query({
+      query: editId => ({
+        url: `/workoutPlan/${editId}`,
+        method: 'GET',
+      }),
+      transformResponse: response => {
+        return response.data?.[0];
+      },
+      providesTags: ['Schedule'],
+    }),
+    getAllSchedules: builder.query({
+      query: () => ({
+        url: `/workoutPlan`,
+        method: 'GET',
+      }),
+
+      providesTags: ['Schedule'],
+    }),
     addSchedule: builder.mutation({
       query: workoutPlans => ({
         url: '/workoutPlan',
         method: 'POST',
+        data: workoutPlans,
+      }),
+    }),
+    updateSchedule: builder.mutation({
+      query: ({ workoutPlans, id }) => ({
+        url: `/workoutPlan/${id}`,
+        method: 'PATCH',
         data: workoutPlans,
       }),
     }),
@@ -22,5 +47,10 @@ export const scheduleApi = createApi({
   }),
 });
 
-export const { useAddScheduleMutation, useDeleteScheduleMutation } =
-  scheduleApi;
+export const {
+  useAddScheduleMutation,
+  useDeleteScheduleMutation,
+  useUpdateScheduleMutation,
+  useGetScheduleQuery,
+  useGetAllSchedulesQuery,
+} = scheduleApi;
