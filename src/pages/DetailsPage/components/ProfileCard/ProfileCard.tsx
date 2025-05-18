@@ -69,7 +69,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const hideWorkingHours =
       path.includes('trainer') || path.includes('account-trainer');
     setShowWorkingHours(!hideWorkingHours);
-
   }, [location.pathname]);
 
   const getYearWord = (num: number): string => {

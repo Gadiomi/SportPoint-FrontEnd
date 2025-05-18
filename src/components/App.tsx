@@ -18,7 +18,6 @@ import ReviewsPage from '../pages/ReviewsPage/ReviewsPage';
 import EditScheduleCard from './EditProfile/components/Schedule/components/EditScheduleCard/EditScheduleCard';
 import BigLoader from './BigLoader/BigLoader';
 
-
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
 const Register = lazy(() => import('../pages/RegisterPage/RegisterPage'));
