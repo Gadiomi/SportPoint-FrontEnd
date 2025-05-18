@@ -51,7 +51,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   const theme = useTheme();
   const reduxUserId = useAppSelector(state => state.user.user?.userCommentId);
   console.log('reduxUserId', reduxUserId);
-  const userCommentId = review.userCommentId || '68051125a3b591135617fdbf'; //reduxUserId
+  const userCommentId = review.userCommentId || reduxUserId;
   // const userCommentId = useAppSelector((state) => state.user.user?.userCommentId);
   // const [userCommentId, setuserCommentId] = useState(review.userCommentId);
   // console.log('userCommentId', userCommentId);

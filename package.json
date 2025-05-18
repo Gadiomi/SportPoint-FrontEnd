@@ -12,6 +12,8 @@
     "prepare": "husky install || true"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^4.1.2",
     "@reduxjs/toolkit": "^2.6.0",
     "@shadcn/ui": "^0.0.4",
