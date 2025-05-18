@@ -59,11 +59,11 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
   if (!isFiltersModalOpen) return null;
 
   const cityOptions = [
-    { value: 'kyiv', label: t('filters.kyiv') },
-    { value: 'lviv', label: t('filters.lviv') },
-    { value: 'odesa', label: t('filters.odesa') },
-    { value: 'kharkiv', label: t('filters.kharkiv') },
-    { value: 'uzhhorod', label: t('filters.uzhhorod') },
+    { value: 'Київ', label: t('filters.kyiv') },
+    { value: 'Львів', label: t('filters.lviv') },
+    { value: 'Одеса', label: t('filters.odesa') },
+    { value: 'Харків', label: t('filters.kharkiv') },
+    { value: 'Ужгород', label: t('filters.uzhhorod') },
   ];
 
   const handleClose = () => {
@@ -74,7 +74,7 @@ export const FiltersModal: React.FC<PropsFiltersModal> = ({
     setPriceRange({ from, to });
   };
   const filters = {
-    address: select?.value || undefined,
+    city: select?.value || undefined,
     minPrice: priceRange.from || 0,
     maxPrice: priceRange.to || 0,
     abilities: classification.length > 0 ? classification.join(',') : undefined,

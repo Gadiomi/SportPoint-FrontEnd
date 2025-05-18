@@ -282,6 +282,7 @@ export const Summary = styled.div`
 export const CountReviews = styled.p`
   font-size: 12px;
   text-align: end;
+  margin-right: 16px;
   color: ${({ theme }) => theme.color.secWhite};
 `;
 

@@ -4,9 +4,10 @@ import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 interface GeneralsBtnProps {
   t: (key: string) => string;
+  navigateTo: string;
 }
 
-const GeneralsBtn: FC<GeneralsBtnProps> = ({ t }) => {
+const GeneralsBtn: FC<GeneralsBtnProps> = ({ t, navigateTo }) => {
   const navigate = useNavigate();
 
   return (
@@ -14,28 +15,26 @@ const GeneralsBtn: FC<GeneralsBtnProps> = ({ t }) => {
       <Button
         type="button"
         title={t('account_page.back')}
-        appearance={ButtonAppearance.SECONDARY}
+        appearance={ButtonAppearance.PRIMARY}
         testId="back"
-        onClick={() => navigate('/profile')}
+        onClick={() => navigate(navigateTo)}
         styles={{
           width: '50%',
           padding: '8px 18px',
           fontWeight: 500,
           fontSize: 16,
-          color: '#B7B7B9',
         }}
       />
       <Button
         type="submit"
         title={t('account_page.save')}
-        appearance={ButtonAppearance.SECONDARY}
+        appearance={ButtonAppearance.BORDER}
         testId="save"
         styles={{
           width: '50%',
           padding: '8px 18px',
           fontWeight: 500,
           fontSize: 16,
-          color: '#B7B7B9',
         }}
         prependChild={
           <Icon

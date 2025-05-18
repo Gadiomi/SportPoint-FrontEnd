@@ -12,17 +12,17 @@ export const SwiperNav: React.FC = () => {
     {
       name: t('filters.pool'),
       image: '/assets/images/homePage/pool.png',
-      sportType: 'pool',
+      sportType: 'Басейн',
     },
     {
       name: t('filters.yoga'),
       image: '/assets/images/homePage/yoga.png',
-      sportType: 'yoga',
+      sportType: 'Йога',
     },
     {
-      name: t('filters.stretching'),
+      name: t('filters.pilates'),
       image: '/assets/images/homePage/stretch.png',
-      sportType: 'stretching',
+      sportType: 'Пілатес',
     },
     { name: 'TRX', image: '/assets/images/baseClub.png', sportType: 'TRX' },
   ];

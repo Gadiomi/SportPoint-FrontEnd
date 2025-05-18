@@ -11,7 +11,13 @@ import MainLayout from './NavBar/MainLayout';
 import Schedule from './EditProfile/components/Schedule/Schedule';
 import LayoutEdit from './EditProfile/components/LayoutEdit/LayoutEdit';
 import EditAllGeneral from './EditProfile/components/EditAllGeneral/EditAllGeneral';
+
+import ReviewStats from './ReviewItem/ReviewStats';
+import ReviewsPage from '../pages/ReviewsPage/ReviewsPage';
+
 import EditScheduleCard from './EditProfile/components/Schedule/components/EditScheduleCard/EditScheduleCard';
+import BigLoader from './BigLoader/BigLoader';
+
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -38,7 +44,8 @@ const Helper = lazy(() => import('../pages/HelperPage/HelperPage'));
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<BigLoader isLoading={true} />}>
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -46,6 +53,7 @@ function App() {
           <Route path="/trainers" element={<TrainersPage />} />
           <Route path="trainers/trainer/:id" element={<TrainerPage />} />
           <Route path="/clubs" element={<ClubsPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
           <Route path="clubs/club/:id" element={<Club />} />
           <Route path="/register" element={<Register />} />
           <Route path={PublicRouteName.LOGIN} element={<LogIn />} />
@@ -78,6 +86,9 @@ function App() {
         </Route>
         {/* </Route> */}
         <Route path="/helper" element={<Helper />} /> {/* TEMP!!! */}
+        <Route path="/cards/:id" element={<ReviewStats />} />
+        <Route path="/reviews/coach/:coachClubId" element={<ReviewsPage />} />
+        <Route path="/reviews/club/:coachClubId" element={<Reviews />} />
       </Routes>
       <ToastProvider />
     </Suspense>

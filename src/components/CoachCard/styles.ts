@@ -56,6 +56,10 @@ export const NameBlock = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 4px;
+
+  & div {
+    width: fit-content;
+  }
 `;
 
 export const ConditionsBlock = styled.div`

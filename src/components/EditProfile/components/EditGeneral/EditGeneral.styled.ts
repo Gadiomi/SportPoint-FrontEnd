@@ -67,6 +67,10 @@ export const SelectStyled = styled.select`
   &::-ms-expand {
     display: none;
   }
+  option {
+    width: 200px;
+    background-color: blue;
+  }
 `;
 
 export const InputsSection = styled.div.withConfig({

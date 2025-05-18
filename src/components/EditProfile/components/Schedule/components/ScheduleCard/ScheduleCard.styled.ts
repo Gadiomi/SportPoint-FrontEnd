@@ -56,4 +56,25 @@ export const GymStyle = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   gap: 12px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    svg {
+      transition: stroke linear 250ms;
+    }
+
+    &:hover svg {
+      stroke: #ed772f;
+    }
+
+    &:hover span {
+      color: #ed772f;
+    }
+  }
 `;

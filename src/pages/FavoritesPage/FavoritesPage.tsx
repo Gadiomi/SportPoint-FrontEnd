@@ -34,6 +34,7 @@ const coachsData1: ICoachData[] = [
         description: 'yoga',
       },
     },
+    sport: ['Йога', 'Фітнес'],
   },
 ];
 
@@ -92,7 +93,7 @@ const filters = {
 // --- / - ---
 // --- /TEMP!!! ---
 
-const itemsPerPage = 2;
+const itemsPerPage = 3;
 
 const FavoritesPage = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -208,7 +209,11 @@ const FavoritesPage = () => {
                     ? coachsData
                         .slice(0, (coachPageNumber + 1) * itemsPerPage)
                         .map(coach => (
-                          <CoachCard key={coach._id} coachData={coach} />
+                          <CoachCard
+                            key={coach._id}
+                            coachData={coach}
+                            refetchD={refetch}
+                          />
                         ))
                     : clubsData
                         .slice(

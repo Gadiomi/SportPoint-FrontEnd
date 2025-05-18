@@ -78,6 +78,7 @@ const LogInPage: FC = () => {
           });
         }
         localStorage.setItem('userEmail', data.email);
+        localStorage.setItem('userRole', currentRole);
         reset();
         dispatch(setIsLogin(true));
         setIsIncorrectData(false);

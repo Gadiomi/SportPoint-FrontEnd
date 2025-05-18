@@ -8,9 +8,6 @@ interface ILoginState {
 
 const loadLoginState = (): boolean => {
   if (typeof window !== 'undefined') {
-    // const token = Cookies.get(CookiesKey.TOKEN);
-    // const refreshToken = Cookies.get(CookiesKey.REFRESH_TOKEN);
-    // console.log(' - token: ', token, ', refreshToken: ', refreshToken);
     const tokenFront = Cookies.get(CookiesKey.TOKEN_F);
     const refreshTokenFront = Cookies.get(CookiesKey.REFRESH_TOKEN_F);
     // console.log('tokenFront:', tokenFront, ' refreshTokenFront:', refreshTokenFront);
