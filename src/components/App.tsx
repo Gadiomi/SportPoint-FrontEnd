@@ -16,6 +16,7 @@ import ReviewStats from './ReviewItem/ReviewStats';
 import ReviewsPage from '../pages/ReviewsPage/ReviewsPage';
 
 import EditScheduleCard from './EditProfile/components/Schedule/components/EditScheduleCard/EditScheduleCard';
+import BigLoader from './BigLoader/BigLoader';
 
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
@@ -43,7 +44,8 @@ const Helper = lazy(() => import('../pages/HelperPage/HelperPage'));
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<BigLoader isLoading={true} />}>
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />

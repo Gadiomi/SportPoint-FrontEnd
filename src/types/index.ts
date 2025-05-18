@@ -27,6 +27,7 @@ export interface ICoachData {
   countReview: number;
   rating: number;
   description: TCoachDescription;
+  sport: string[];
 }
 
 export interface IClubData {
