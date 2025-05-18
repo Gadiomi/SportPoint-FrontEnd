@@ -33,14 +33,13 @@ export const TrainersList: React.FC = () => {
     setFilters(newFilters);
     setCurrentPage(1);
   };
-
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
-      {error ? <Loading>{t('home_page.error')}</Loading> : null}
       {isLoading ? (
         <Loading>{t('home_page.loading')}...</Loading>
       ) : (
         <>
+          {error ? <Loading>{t('home_page.error')}</Loading> : null}
           <StyledButtonBack
             onClick={() => navigate(`/`)}
             testId="coachsBack"

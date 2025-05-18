@@ -1,6 +1,6 @@
 export { Icon, IconName } from './Icon';
 export { Button, ButtonAppearance } from './Button';
-export { Modal } from './modal/Modal';
+export { Modal } from './Modal/Modal';
 export {
   Title,
   Subtitle,
