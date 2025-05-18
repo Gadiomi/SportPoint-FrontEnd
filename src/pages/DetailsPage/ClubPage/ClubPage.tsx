@@ -10,16 +10,15 @@ import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
-import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
-import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
+// import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+// import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
 import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import CoachCard from '@/components/CoachCard/CoachCard';
-import { ICoachData } from '@/types';
-// import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
+// import OurCoachCard from '../components/OurCoachCard/OurCoachCard'; *видалити картку
 import { Contacts } from '../../../components/Footer/Contacts';
-import Cookies from 'js-cookie';
+
 import { StyledProfileCard } from './styles';
 
 const ClubPage: FC = () => {
@@ -30,9 +29,6 @@ const ClubPage: FC = () => {
   const { data, isLoading, error } = useGetCurrentCardIdQuery(id!, {
     skip: !id,
   });
-
-  const userId = Cookies.get('userId');
-  console.log('userId:', userId);
 
   console.log('Отримані дані з бекенду:', data);
 
@@ -54,7 +50,7 @@ const ClubPage: FC = () => {
   const { social_links, price, schedule, city, address } =
     adminClubData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
 
   const title = isLogin
     ? 'Введіть дані, і адміністратор з вами зв’яжеться'
@@ -111,7 +107,7 @@ const ClubPage: FC = () => {
           />
         )}
         {images && images.length > 0 && <GalleryCard images={images} />}
-        <OurHallsCard />
+        {/* <OurHallsCard /> */}
         {price && price.length > 0 && (
           <PriceCard
             prices={price}
@@ -119,20 +115,9 @@ const ClubPage: FC = () => {
             defaultImage="/assets/images/DetailsPage/Subscription_no_photo.png"
           />
         )}
-        {schedule && schedule.length > 0 && (
+        {/* {schedule && schedule.length > 0 && (
           <WorkingHoursCard schedules={schedule || []} />
-        )}
-        {/* <OurCoachCard
-          iconNames={[IconName.STAR_DEFAULT]}
-          rating={coachTest.rating}
-          counts={[countReview ?? 0]}
-          avatar={coachTest.avatar}
-          firstName={coachTest.firstName}
-          lastName={coachTest.lastName}
-          // sport={sport || []}
-          sport={coachTest.sport}
-          price={coachTest.price}
-        /> */}
+        )} */}
         {Array.isArray(adminClubData?.coaches) &&
           adminClubData.coaches.map((coach: ICoachData) => (
             <CoachCard key={coach._id} coachData={coach} />
