@@ -1,0 +1,15 @@
+{
+  "localization": {
+    "club": "Клуб",
+    "locale": "Локація"
+  },
+  "titles": {
+    "choseCity": "Оберіть місце проведення",
+    "services": " Вид послуги",
+    "date_and_time": "Дата та час послуги",
+    "working_schedule": "РОЗКЛАД РОБОТИ",
+    "gym_search": "Пошук клубів",
+    "chosePlace": "Оберіть місце проведення",
+    "add_hours": "Додати години"
+  }
+}

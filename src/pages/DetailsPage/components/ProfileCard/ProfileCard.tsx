@@ -48,6 +48,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [avatarError, setAvatarError] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
   const [showEditButton, setShowEditButton] = useState(true);
+  const [showWorkingHours, setShowWorkingHours] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
 
@@ -64,6 +65,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const showEdit =
       path.includes('profile') || path.includes('account-admin-club');
     setShowEditButton(showEdit);
+
+    const hideWorkingHours =
+      path.includes('trainer') || path.includes('account-trainer');
+    setShowWorkingHours(!hideWorkingHours);
   }, [location.pathname]);
 
   const getYearWord = (num: number): string => {
@@ -159,6 +164,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <h3 style={fonts.nameDetails}>{firstName} </h3>
         <h3 style={fonts.nameDetails}>{lastName} </h3>
       </div>
+      {showWorkingHours && (
+        <p
+          style={{
+            ...fonts.popUps,
+            color: theme.color.secWhite,
+          }}
+        >
+          24/7
+        </p>
+      )}
 
       <div
         style={{

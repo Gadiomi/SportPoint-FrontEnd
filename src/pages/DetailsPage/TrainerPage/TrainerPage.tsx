@@ -10,7 +10,7 @@ import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
-import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+// import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
@@ -55,7 +55,7 @@ const TrainerPage: FC = () => {
   const { social_links, price, schedule, experience, city, age, short_desc } =
     coachData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
 
   const title = isLogin
     ? 'Введіть дані, і тренер з вами зв’яжеться'
@@ -138,9 +138,9 @@ const TrainerPage: FC = () => {
             defaultImage="/assets/images/DetailsPage/Services_no_photo.png"
           />
         )}
-        {schedule && schedule.length > 0 && (
+        {/* {schedule && schedule.length > 0 && (
           <WorkingHoursCard schedules={schedule || []} />
-        )}
+        )} */}
 
         {coachData?.club && coachData.club.length > 0 && (
           <WorksInCard

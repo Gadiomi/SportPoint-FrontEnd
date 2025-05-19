@@ -7,12 +7,14 @@ import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
-import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
-import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
+// import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+// import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
 import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
-import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
+import CoachCard from '@/components/CoachCard/CoachCard';
+import { ICoachData } from '@/types';
+// import OurCoachCard from '../components/OurCoachCard/OurCoachCard'; *видалити картку
 import { Contacts } from '../../../components/Footer/Contacts';
 
 import { StyledProfileCard } from './styles';
@@ -54,7 +56,7 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
   const { social_links, price, schedule, city, address } =
     adminClubData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
 
   const title = '';
 
@@ -107,7 +109,7 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
         />
       )}
       {images && images.length > 0 && <GalleryCard images={images} />}
-      <OurHallsCard />
+      {/* <OurHallsCard /> */}
       {price && price.length > 0 && (
         <PriceCard
           prices={price}
@@ -115,10 +117,10 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
           defaultImage="/assets/images/DetailsPage/Subscription_no_photo.png"
         />
       )}
-      {schedule && schedule.length > 0 && (
+      {/* {schedule && schedule.length > 0 && (
         <WorkingHoursCard schedules={schedule || []} />
-      )}
-      <OurCoachCard
+      )} */}
+      {/* <OurCoachCard
         iconNames={[IconName.STAR_DEFAULT]}
         rating={coachTest.rating}
         counts={[countReview ?? 0]}
@@ -126,7 +128,11 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
         firstName={coachTest.firstName}
         lastName={coachTest.lastName}
         price={coachTest.price}
-      />
+      /> */}
+      {Array.isArray(adminClubData?.coaches) &&
+        adminClubData.coaches.map((coach: ICoachData) => (
+          <CoachCard key={coach._id} coachData={coach} />
+        ))}
       <LocationCard />
 
       <ReviewDetailsCard

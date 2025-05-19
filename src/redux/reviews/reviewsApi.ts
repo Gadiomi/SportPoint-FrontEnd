@@ -1,6 +1,4 @@
 import { axiosInstance } from '@/redux/auth/axios';
-import { useDispatch } from 'react-redux';
-import { setReviewReply } from '@/redux/reviews/reviewSlice';
 
 // Отримати всі відгуки про конкретного користувача (userCommentId)
 export const fetchReviewsByUserCommentId = async (userCommentId: string) => {

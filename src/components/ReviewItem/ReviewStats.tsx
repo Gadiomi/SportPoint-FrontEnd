@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useGetUserProfileQuery } from '@/redux/user/userApi';
 import { useAppSelector } from '@/redux/reviews/reviewsSelector';
 import {
   fetchReviewsByUserCommentId,
   fetchAllUsers,
   replyToReview,
+  fetchUserById,
 } from '@/redux/reviews/reviewsApi';
 import FeedbackSection from '@/components/ReviewItem/FeedbackSection';
 import styled from 'styled-components';
@@ -15,6 +17,7 @@ import ReviewActions from '@/components/ReviewItem/ReviewActions';
 import StyledHr from '../StyledHr/StyledHr';
 import AverageRating from './AverageRating';
 import ReplyModal from './ReplyModal';
+import AuthPromptModal from './AuthPromptModal';
 import { Icon, IconName } from '@/kit';
 import { useTheme } from 'styled-components';
 import { ContainerButtonMore, ButtonMore } from '@/pages/ReviewsPage/styles';
@@ -30,8 +33,6 @@ import {
   RatingContainer,
   SportList,
   SportTag,
-  Loading,
-  ErrorText,
   StyledDate,
   Div,
   ReplyContainer,
@@ -75,7 +76,9 @@ const ReviewStats: React.FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const translate: (key: string, options?: Record<string, any>) => string = t;
+  // const { data} = useGetUserProfileQuery(undefined);
   const user = useAppSelector(state => state.user.user);
+  // console.log('userStats',user)
   const currentUser = user;
   // console.log('ReviewStat', user);
   const location = useLocation();
@@ -91,10 +94,10 @@ const ReviewStats: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [firstComment, setFirstComment] = useState<any>(null);
   const [trainerData, setTrainerData] = useState<any>(null);
   const [authorProfiles, setAuthorProfiles] = useState<Record<string, any>>({});
-  //  const [firstComment, setFirstComment] = useState<CommentData | null>(null);
   const [allComments, setAllComments] = useState<CommentData[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [replyModalData, setReplyModalData] = useState<{
@@ -104,26 +107,50 @@ const ReviewStats: React.FC = () => {
   } | null>(null);
 
   const reviewsToShow = showAll ? allComments : allComments.slice(0, 2);
-  // const reviews = useSelector((state: RootState) => state.reviews.reviews);
-  // console.log(reviews);
+  const { id: userId } = useParams();
+  // console.log('id: userCommentId', userId);
 
   const fetchReviews = async () => {
-    const isTrainerOrClub = user?.role === 'trainer' || user?.role === 'club';
+    const isTrainerOrClub =
+      user?.role === 'coach' || user?.role === 'adminClub';
     const userCommentId = isTrainerOrClub
       ? user?.userId
       : user?.user_comments?.[0]?.userCommentId;
-    // console.log(userCommentId);
-    if (!userCommentId) {
-      console.error('Не знайдено userCommentId');
+
+    const effectiveUserId = userId || user?.userId;
+    console.log('effectiveUserId', effectiveUserId);
+
+    if (!effectiveUserId) {
+      console.error('Не знайдено userId і немає авторизованого користувача');
       return;
     }
+
     try {
-      const response = await fetchReviewsByUserCommentId(userCommentId);
-      const commentsArray = Array.isArray(response.data)
-        ? response.data
-        : [response.data];
+      let commentsArray: CommentData[] = [];
+
+      if (!user) {
+        // Неавторизований користувач → отримаємо масив відгуків
+        const response = await fetchUserById(effectiveUserId);
+        console.log('userComments:', response.data?.userComments);
+        const comments = response.data?.userComments;
+        if (Array.isArray(comments)) {
+          commentsArray = comments;
+        } else if (comments) {
+          commentsArray = [comments];
+        }
+      } else {
+        // Авторизований → отримаємо масив відгуків
+        if (!userCommentId) {
+          console.error('Не знайдено userCommentId');
+          return;
+        }
+        const response = await fetchReviewsByUserCommentId(userCommentId);
+        commentsArray = Array.isArray(response.data)
+          ? response.data
+          : [response.data];
+      }
+
       const reversedComments = [...commentsArray].reverse();
-      console.log('reversedComments', reversedComments);
 
       const withAverages = reversedComments.map(comment => {
         const ratings = comment.ratings || {};
@@ -139,50 +166,49 @@ const ReviewStats: React.FC = () => {
       const uniqueOwnerIds = Array.from(
         new Set(withAverages.map(c => c.owner)),
       );
-      // console.log('uniqueOwnerIds',uniqueOwnerIds);
 
       const allUsers = await fetchAllUsers();
       const profilesMap: Record<string, any> = {};
-
       uniqueOwnerIds.forEach(ownerId => {
-        // const reviewedUserId = firstComment?.trainer || firstComment?.club;
         const user = allUsers.find((u: User) => u.userId === ownerId);
         if (user) profilesMap[ownerId] = user;
-        // console.log('user', user);
       });
 
-      setAllComments(withAverages);
-      setAuthorProfiles(profilesMap);
-      setFirstComment(reversedComments[0]);
+      const allRatings = withAverages.flatMap(
+        comment =>
+          Object.values(comment.ratings || {}).filter(
+            r => typeof r === 'number',
+          ) as number[],
+      );
 
-      setTrainerData({
-        userRole: response.role || '',
-        sport: response.sport || [],
-      });
+      const total = allRatings.reduce((sum, r) => sum + r, 0);
+      const avg = allRatings.length ? total / allRatings.length : 0;
 
-      // Ініціалізація об'єкта підрахунку оцінок
-      const ratingsCount = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-      let total = 0;
-      let sum = 0;
-
-      // Перебір всіх коментарів і підрахунок оцінок
-      commentsArray.forEach((data: CommentData) => {
-        if (data.ratings) {
-          Object.entries(data.ratings).forEach(([_, rating]) => {
-            if (typeof rating === 'number' && rating >= 1 && rating <= 5) {
-              ratingsCount[rating as keyof typeof ratingsCount] += 1;
-              sum += rating;
-              total += 1;
-            }
-          });
+      const ratingCounts: { [key: number]: number } = {
+        5: 0,
+        4: 0,
+        3: 0,
+        2: 0,
+        1: 0,
+      };
+      allRatings.forEach(r => {
+        const rounded = Math.round(r);
+        if (ratingCounts[rounded] !== undefined) {
+          ratingCounts[rounded]++;
         }
       });
 
-      setRatings(ratingsCount);
-      setTotalReviews(commentsArray.length);
-      setAverageRating(total > 0 ? sum / total : 0);
-    } catch (error) {
-      setError(translate('account_page.error_loading'));
+      const totalReviewsCount = withAverages.length;
+
+      setAllComments(withAverages);
+      setAuthorProfiles(profilesMap);
+      setFirstComment(withAverages[0]);
+      setRatings(ratingCounts);
+      setAverageRating(avg);
+      setTotalReviews(totalReviewsCount);
+    } catch (err) {
+      console.error('Помилка при завантаженні відгуків:', err);
+      setError('Не вдалося завантажити відгуки');
     } finally {
       setLoading(false);
     }
@@ -251,8 +277,14 @@ const ReviewStats: React.FC = () => {
     }
   };
 
-  // if (loading) return <Loading>Завантаження...</Loading>;
-  // if (error) return <ErrorText>{error}</ErrorText>;
+  const handleClick = () => {
+    console.log('Кнопка залишити відгук натиснута');
+    if (!user) {
+      setShowAuthModal(true);
+    } else {
+      setIsEditing(true);
+    }
+  };
 
   const maxRatingCount = Math.max(...Object.values(ratings), 1); // щоб уникнути ділення на 0
   const targetId = firstComment?.trainer || firstComment?.club || '';
@@ -282,8 +314,8 @@ const ReviewStats: React.FC = () => {
               />
             </div>
           </RatingContainer>
-          <div onClick={() => setIsEditing(true)}>
-            {isClientProfile && (
+          <div onClick={handleClick}>
+            {location.pathname === '/profile/edit/reviews' && (
               <ReviewHeader
                 title={translate('account_page.leave_review')}
                 leftIcon={IconName.Icon_message_chat_01}
@@ -293,6 +325,9 @@ const ReviewStats: React.FC = () => {
               />
             )}
           </div>
+          {showAuthModal && (
+            <AuthPromptModal onClose={() => setShowAuthModal(false)} />
+          )}
         </>
       )}
       {/* Карточки всіх відгуків */}
@@ -397,7 +432,7 @@ const ReviewStats: React.FC = () => {
                   </StyledDate>
                 </>
               )}
-              {!isClientProfile && (
+              {location.pathname === '/profile/edit/reviews' && (
                 <ReviewActions
                   reviewId={comment._id}
                   userCommentId={user?.userId || ''}

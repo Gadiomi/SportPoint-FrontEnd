@@ -1,18 +1,28 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Button, ButtonAppearance, Icon, IconName, Input, Modal } from '@/kit';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { Button, ButtonAppearance, Icon, IconName, Input } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { View, dateFnsLocalizer } from 'react-big-calendar';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {
   Container,
+  CustomButtonContainer,
   FormStyled,
   InputsBeginEnd,
+  LocaleButtonsContainerStyled,
+  LocaleButtonsList,
+  LocaleButtonsListItem,
   ScheduleContainer,
+  ServicesContainer,
   TimeAndDateContainer,
 } from './Schedule.styled';
 import { useAppSelector } from '@/hooks/hooks';
-import SearchWork from '../SearchWork/SearchWork';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
 import { debounce } from 'lodash';
 import { WorkoutPlan } from '@/types/userProfile';
@@ -22,15 +32,39 @@ import { useForm } from 'react-hook-form';
 import { SectionTitle } from '../EditGeneral/EditGeneral.styled';
 import { parse, startOfWeek, getDay, format } from 'date-fns';
 import { uk } from 'date-fns/locale';
-import { useAddScheduleMutation } from '@/redux/schedule/scheduleApi';
+import {
+  useAddScheduleMutation,
+  useGetAllSchedulesQuery,
+} from '@/redux/schedule/scheduleApi';
 import ScheduleCard from './components/ScheduleCard/ScheduleCard';
 import { Profile, ScheduleEntry, SearchResults } from './types/schedule';
 import Calendar from './components/Calendar/Calendar';
 import Services from './components/Services/Services';
 import TimeInput from './components/TimeInput/TimeInput';
-
+import Map from './components/Map/Map';
+import localizeButtons from '../../data/all-buttons.json';
+import SearchWork from '../SearchWork/SearchWork';
+import halls from '../../data/halls.json';
+import Select from 'react-select';
+import { getCustomStyles } from './customStyle';
+import { useTheme } from 'styled-components';
+import { Label } from '../Selection/Selection.styled';
 const locales = {
   uk: uk,
+};
+
+type ScheduleItem = {
+  _id: string;
+  date: {
+    startTime: string;
+    endTime: string;
+  };
+  selectedGym: string;
+  selection: {
+    address: string;
+    city: string;
+    avatar: string;
+  };
 };
 
 const Schedule = () => {
@@ -46,6 +80,8 @@ const Schedule = () => {
     [],
   );
 
+  const theme = useTheme();
+
   const userProfile = useAppSelector(state => state.user.user);
   const [addSchedule] = useAddScheduleMutation();
   const navigate = useNavigate();
@@ -60,10 +96,43 @@ const Schedule = () => {
   const [backendSchedule, setBackendSchedule] = useState<ScheduleEntry[]>([]);
   const [localSearchResults, setLocalSearchResults] =
     useState<SearchResults | null>(null);
+  const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
+  const [height, setHeight] = useState<string>('0px');
+  const [selectedHall, setSelectedHall] = useState<string | null>('');
+
+  const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
+  const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
+  const [selectedKey, setSelectedKey] = useState('club');
+
+  const handleClick = (key: string) => {
+    setSelectedKey(key);
+  };
+  const contentsRef = useRef<HTMLDivElement>(null);
+
+  const updateHeight = useCallback(() => {
+    if (contentsRef.current) {
+      const scrollHeight = contentsRef.current.scrollHeight;
+      setHeight(`${scrollHeight}px`);
+    }
+  }, []);
+
+  const { data: schedules } = useGetAllSchedulesQuery(undefined);
 
   useEffect(() => {
-    if (userProfile?.description.schedule) {
-      const transformed = userProfile.description.schedule.map(item => ({
+    if (isOpenAddress) {
+      if (!isCityOpen && !isClubOpen) {
+        setHeight('110px');
+      } else {
+        updateHeight();
+      }
+    } else {
+      setHeight('0px');
+    }
+  }, [isOpenAddress, isCityOpen, isClubOpen, updateHeight]);
+
+  useEffect(() => {
+    if (schedules?.data?.data) {
+      const transformed = schedules?.data?.data.map((item: ScheduleItem) => ({
         day: new Date(item.date.startTime),
         begin: format(new Date(item.date.startTime), 'HH:mm'),
         end: format(new Date(item.date.endTime), 'HH:mm'),
@@ -94,7 +163,7 @@ const Schedule = () => {
           prev.map(e => getDateWithoutTime(new Date(e.day))),
         );
 
-        const filtered = transformed.filter(e => {
+        const filtered = transformed.filter((e: any) => {
           const entryProfile = e.profile;
           if (!entryProfile.id) {
             entryProfile.id = 'default-id';
@@ -106,7 +175,7 @@ const Schedule = () => {
         return [...filtered, ...prev];
       });
     }
-  }, [userProfile]);
+  }, [schedules]);
 
   const { t } = useTranslation();
 
@@ -147,15 +216,6 @@ const Schedule = () => {
     }
   };
 
-  const handleSelectProfile = (profile: Profile) => {
-    setSelectedProfile((prevProfiles: Profile[]) => {
-      if (prevProfiles.some(p => p.id === profile.id)) {
-        return prevProfiles;
-      }
-      return [...prevProfiles, profile];
-    });
-  };
-
   const handleBeginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBeginTime(e.target.value);
   };
@@ -164,7 +224,7 @@ const Schedule = () => {
     setEndTime(e.target.value);
   };
 
-  const { register, handleSubmit } = useForm<WorkoutPlan>({
+  const { handleSubmit } = useForm<WorkoutPlan>({
     defaultValues: {},
     shouldUnregister: false,
   });
@@ -184,7 +244,7 @@ const Schedule = () => {
           endTime: end,
         },
         selection: {
-          selectedType: `${entry.profile.firstName} ${entry.profile.lastName}`,
+          selectedType: selectedHall,
           city: entry.profile.city || '',
           address: entry.profile.address || '',
           avatar: entry.profile.avatar || '',
@@ -203,6 +263,7 @@ const Schedule = () => {
       console.error('Update failed:', error);
     }
   };
+
   const preventViewChange = () => true;
 
   const handleDrillDown = (date: Date) => {
@@ -243,12 +304,21 @@ const Schedule = () => {
     setSearchTerm('');
   };
 
+  const addressHandler = () => {
+    setIsOpenAddress(prev => !prev);
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = new Date(e.target.value);
+    setSelectedDay(isNaN(date.getTime()) ? null : date);
+  };
+
   return (
     <Container>
       <ScheduleContainer>
         <Button
           onClick={() => navigate('/profile/edit')}
-          title="РОЗКЛАД РОБОТИ"
+          title={localizeButtons.titles.working_schedule}
           appearance={ButtonAppearance.PRIMARY}
           testId="general"
           style={{ width: '100%', padding: '8px 18px' }}
@@ -274,10 +344,12 @@ const Schedule = () => {
       </ScheduleContainer>
       <FormStyled onSubmit={handleSubmit(onSubmit)}>
         <TimeAndDateContainer>
-          <SectionTitle>Дата та час послуги</SectionTitle>
+          <SectionTitle>{localizeButtons.titles.date_and_time}</SectionTitle>
           <Input
             testId="selected-time"
-            value={(selectedDay && format(selectedDay, 'dd/MM/yyyy')) ?? ''}
+            type="date"
+            value={(selectedDay && format(selectedDay, 'yyyy-MM-dd')) ?? ''}
+            onChange={handleDateChange}
             containerStyles={{ marginBottom: '8px' }}
           />
           <InputsBeginEnd>
@@ -295,28 +367,74 @@ const Schedule = () => {
             />
           </InputsBeginEnd>
         </TimeAndDateContainer>
-        <div>
-          Вид послуги
+        <ServicesContainer>
+          <SectionTitle> {localizeButtons.titles.services}</SectionTitle>
           <Services />
-        </div>
-        <SearchWork
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-          isFetching={isFetching}
-          searchResults={localSearchResults}
-          setSelectedProfile={handleSelectProfile}
-          selectedProfile={selectedProfile}
-          title={'Обрати клуб'}
-          view={true}
-          label="Пошук клубів"
-        />
-
-        <Button
-          type="button"
-          testId="add"
-          title="Додати години"
-          onClick={addNewScheduleEntry}
-        />
+        </ServicesContainer>
+        <LocaleButtonsContainerStyled>
+          <h3>{localizeButtons.titles.choseCity}</h3>
+          <LocaleButtonsList>
+            {Object.entries(localizeButtons.localization).map(
+              ([key, value]) => (
+                <LocaleButtonsListItem
+                  key={key}
+                  $isActive={key === selectedKey}
+                >
+                  <button type="button" onClick={() => handleClick(key)}>
+                    {value}
+                  </button>
+                </LocaleButtonsListItem>
+              ),
+            )}
+          </LocaleButtonsList>
+          <div>
+            {selectedKey === 'club' && (
+              <SearchWork
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+                isFetching={isFetching}
+                searchResults={localSearchResults}
+                setSelectedProfile={setSelectedProfile}
+                selectedProfile={selectedProfile}
+                view={true}
+                label={localizeButtons.titles.gym_search}
+                handler={addressHandler}
+                isOpen={isOpenAddress}
+                contentRef={contentsRef}
+                height={height}
+                title={localizeButtons.titles.chosePlace}
+                setIsCityOpen={setIsCityOpen}
+                setIsClubOpen={setIsClubOpen}
+                setSearchTerm={debouncedSearch}
+              />
+            )}
+            {selectedKey === 'locale' && <Map />}
+            <div>
+              <Label htmlFor="description.address">Обрати залу</Label>
+              <Select
+                styles={getCustomStyles(theme)}
+                options={halls.map(hall => ({ value: hall, label: hall }))}
+                onChange={option =>
+                  setSelectedHall(option ? option.value : null)
+                }
+                value={
+                  halls.find(h => h === selectedHall)
+                    ? { value: selectedHall, label: selectedHall }
+                    : null
+                }
+                placeholder={userProfile?.description.address || 'Обрати залу'}
+              />
+            </div>
+          </div>
+        </LocaleButtonsContainerStyled>
+        <CustomButtonContainer>
+          <Button
+            type="button"
+            testId="add"
+            title={localizeButtons.titles.add_hours}
+            onClick={addNewScheduleEntry}
+          />
+        </CustomButtonContainer>
 
         {savedSchedule.length > 0 && (
           <ScheduleCard
@@ -324,7 +442,7 @@ const Schedule = () => {
             setSavedSchedule={setSavedSchedule}
           />
         )}
-        <GeneralsBtn t={t} />
+        <GeneralsBtn t={t} navigateTo="/profile/edit" />
       </FormStyled>
     </Container>
   );

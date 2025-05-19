@@ -3,7 +3,7 @@ import { AccountName, NameTitle } from '../../EditProfiles.style';
 import { AvatarName, HiddenInput } from '../EditGeneral/EditGeneral.styled';
 import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
 import { UserProfile } from '@/types/userProfile';
-import { AvatarImg } from './AvatarAndName.styled';
+import { AvatarImg, FirstLatter } from './AvatarAndName.styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface AvatarAndNameProps {
@@ -25,15 +25,17 @@ const AvatarAndName: React.FC<AvatarAndNameProps> = ({
   return (
     <AccountName>
       <AvatarName>
-        <AvatarImg>
-          <img
-            src={
-              selectedAvatar ||
-              '/public/assets/images/png-transparent-neon-silver-pic-miscellaneous-cdr-angle-thumbnail.png'
-            }
-            alt="avatar"
-          />
-        </AvatarImg>
+        {selectedAvatar ? (
+          <AvatarImg>
+            <img src={selectedAvatar} alt="avatar" />
+          </AvatarImg>
+        ) : (
+          <FirstLatter>
+            {userProfile?.firstName
+              ? userProfile?.firstName.charAt(0).toUpperCase()
+              : ''}
+          </FirstLatter>
+        )}
         <NameTitle>
           {userProfile?.firstName && userProfile?.lastName
             ? `${userProfile.firstName} ${userProfile.lastName}`

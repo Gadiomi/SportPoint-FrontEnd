@@ -39,11 +39,11 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
     }
   };
 
-  const finalTitle =
-    title ??
-    (userRole === 'сustomer'
+  const finalTitle = title
+    ? translate(title)
+    : userRole === 'сustomer'
       ? translate('account_page.reviews')
-      : translate('details_page.reviews'));
+      : translate('details_page.reviews');
   return (
     <ReviewHeaderContainer>
       <Header>

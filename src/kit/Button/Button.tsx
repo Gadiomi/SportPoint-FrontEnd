@@ -50,41 +50,48 @@ const ButtonStyled = styled.button<{
     [ButtonAppearance.PRIMARY]: theme.color.mainOrange,
     [ButtonAppearance.UNDERLINED]: 'transparent',
     [ButtonAppearance.SECONDARY]: theme.color.background,
+    [ButtonAppearance.BORDER]: 'transparent',
   };
   const color = {
     [ButtonAppearance.PRIMARY]: theme.color.mainWhite,
     [ButtonAppearance.UNDERLINED]: theme.color.mainOrange,
     [ButtonAppearance.SECONDARY]: theme.color.mainWhite,
+    [ButtonAppearance.BORDER]: '#F8F7F4',
   };
 
   const textDecoration = {
     [ButtonAppearance.PRIMARY]: 'none',
     [ButtonAppearance.UNDERLINED]: 'underline',
     [ButtonAppearance.SECONDARY]: 'none',
+    [ButtonAppearance.BORDER]: 'none',
   };
 
   const border = {
     [ButtonAppearance.PRIMARY]: '0.5px solid transparent',
     [ButtonAppearance.UNDERLINED]: '0.5px solid transparent',
     [ButtonAppearance.SECONDARY]: `0.5px solid ${theme.color.darkGray}`,
+    [ButtonAppearance.BORDER]: '1px solid rgba(237, 119, 47, 1)',
   };
 
   const colorHover = {
     [ButtonAppearance.PRIMARY]: theme.color.mainWhite,
     [ButtonAppearance.UNDERLINED]: 'rgba(189, 81, 14, 1)',
     [ButtonAppearance.SECONDARY]: theme.color.mainWhite,
+    [ButtonAppearance.BORDER]: ' rgba(237, 119, 47, 1)',
   };
 
   const backgroundHover = {
     [ButtonAppearance.PRIMARY]: 'rgba(189, 81, 14, 1)',
     [ButtonAppearance.UNDERLINED]: 'transparent',
     [ButtonAppearance.SECONDARY]: theme.color.mainOrange,
+    [ButtonAppearance.BORDER]: 'transparent',
   };
 
   const borderHover = {
     [ButtonAppearance.PRIMARY]: '0.5px solid transparent',
     [ButtonAppearance.UNDERLINED]: '0.5px solid transparent',
     [ButtonAppearance.SECONDARY]: '0.5px solid transparent',
+    [ButtonAppearance.BORDER]: '1px solid rgba(237, 119, 47, 1)',
   };
 
   const transitionElements = ['background-color', 'color'];
