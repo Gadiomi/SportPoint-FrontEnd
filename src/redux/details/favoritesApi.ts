@@ -14,12 +14,16 @@ export const favoritesApi = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: 'Favorites', id }],
     }),
+    // getFavorites: builder.query<any, { role: 'coach' | 'adminClub' }>({
     getFavorites: builder.query<any, { role: string }>({
       query: ({ role }) => ({
         url: `/favorites?role=${role}`,
         method: 'GET',
       }),
-      providesTags: ['Favorites'],
+      // providesTags: ['Favorites'],
+      providesTags: (result, error, { role }) => [
+        { type: 'Favorites', id: role },
+      ],
     }),
     removeFromFavorites: builder.mutation<any, { id: string }>({
       query: ({ id }) => ({

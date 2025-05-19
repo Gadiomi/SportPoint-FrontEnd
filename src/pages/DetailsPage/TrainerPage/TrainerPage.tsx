@@ -29,7 +29,6 @@ const TrainerPage: FC = () => {
     skip: !id,
   });
 
-
   if (isLoading) {
     return <div>Завантаження...</div>;
   }
