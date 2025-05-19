@@ -7,7 +7,7 @@ import { fixEnding } from '@/helpers/fixEnding';
 import { fonts } from '@/theme/fonts';
 import {
   useAddToFavoritesMutation,
-  useGetFavoritesQuery,
+  // useGetFavoritesQuery,
   useRemoveFromFavoritesMutation,
 } from '@/redux/details/favoritesApi';
 import {
@@ -24,7 +24,7 @@ import { useGetUserProfileQuery } from '@/redux/user/userApi';
 
 type Props = {
   coachData: ICoachData;
-  refetchD?: () => void;
+  refetchFavorites?: () => void;
 };
 
 interface IFavoriteListInfo {
@@ -35,7 +35,7 @@ interface IFavoriteListInfo {
 
 const NO_IMAGE = 'assets/svg/no_image.svg'; //TEMP!!!
 
-const CoachCard: FC<Props> = ({ coachData, refetchD }) => {
+const CoachCard: FC<Props> = ({ coachData, refetchFavorites }) => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem('userRole');
   const [addToFavorites] = useAddToFavoritesMutation();
@@ -46,9 +46,13 @@ const CoachCard: FC<Props> = ({ coachData, refetchD }) => {
   const {
     data: userData,
     isSuccess,
-    // refetch,
+    refetch: refechUserProfile,
   } = useGetUserProfileQuery(undefined);
-  console.log(' - userData -> ', userData?.userProfile?.favorite);
+  // console.log(' - userData -> ', userData?.userProfile?.favorite);
+  useEffect(() => {
+    refechUserProfile();
+  }, []);
+
   useEffect(() => {
     if (isSuccess && userData?.userProfile?.favorite.length > 0) {
       const favoriteList: IFavoriteListInfo[] = userData?.userProfile?.favorite;
@@ -62,7 +66,7 @@ const CoachCard: FC<Props> = ({ coachData, refetchD }) => {
   // });
   // console.log('favoritesData: ', favoritesData);
   // --- / - ---
-  console.log('userRole: ', userRole, ', coachData._id: ', coachData._id);
+  // console.log('userRole: ', userRole, ', coachData._id: ', coachData._id);
 
   const handlerFavorite = async () => {
     if (!userRole || !coachData._id) return;
@@ -77,7 +81,8 @@ const CoachCard: FC<Props> = ({ coachData, refetchD }) => {
         }).unwrap();
       }
       console.log(' - response -> ', response);
-      refetchD && (await refetchD());
+      refetchFavorites && (await refetchFavorites());
+      refechUserProfile();
     } catch (error) {
       console.error('Помилка при додаванні/видаленні з обраного:', error);
     }

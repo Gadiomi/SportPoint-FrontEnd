@@ -13,7 +13,7 @@ import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import CoachCard from '@/components/CoachCard/CoachCard';
-import {ICoachData } from '@/types';
+import { ICoachData } from '@/types';
 // import OurCoachCard from '../components/OurCoachCard/OurCoachCard'; *видалити картку
 import { Contacts } from '../../../components/Footer/Contacts';
 
@@ -109,7 +109,7 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
         />
       )}
       {images && images.length > 0 && <GalleryCard images={images} />}
-      {/* <OurHallsCard /> */} 
+      {/* <OurHallsCard /> */}
       {price && price.length > 0 && (
         <PriceCard
           prices={price}
@@ -130,9 +130,9 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
         price={coachTest.price}
       /> */}
       {Array.isArray(adminClubData?.coaches) &&
-                adminClubData.coaches.map((coach: ICoachData) => (
-                  <CoachCard key={coach._id} coachData={coach} />
-                ))}
+        adminClubData.coaches.map((coach: ICoachData) => (
+          <CoachCard key={coach._id} coachData={coach} />
+        ))}
       <LocationCard />
 
       <ReviewDetailsCard

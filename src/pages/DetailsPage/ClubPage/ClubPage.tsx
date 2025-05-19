@@ -16,7 +16,8 @@ import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import CoachCard from '@/components/CoachCard/CoachCard';
-// import OurCoachCard from '../components/OurCoachCard/OurCoachCard'; *видалити картку
+import { ICoachData } from '@/types';
+// import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
 import { Contacts } from '../../../components/Footer/Contacts';
 
 import { StyledProfileCard } from './styles';
