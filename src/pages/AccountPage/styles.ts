@@ -65,15 +65,15 @@ export const AccountName = styled.div<{ $paddingTop?: string }>`
   }
 `;
 
-export const AccountButton = styled(Button)`
-  width: 100%;
-  height: 40px;
-  & p {
-    flex-grow: 1;
-    text-align: left;
-    line-height: 24px;
-  }
-`;
+// export const AccountButton = styled(Button)`
+//   width: 100%;
+//   height: 40px;
+//   & p {
+//     flex-grow: 1;
+//     text-align: left;
+//     line-height: 24px;
+//   }
+// `;
 
 export const SportButtonsContainer = styled.div`
   display: flex;

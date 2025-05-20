@@ -14,7 +14,7 @@ import {
   SportButton,
   SportButtonsContainer,
 } from './styles';
-import ProfileButton from './ProfileButton';
+import ProfileButton from '../../components/ProfileButton/ProfileButton';
 import BackSaveButtons from './BackSaveButtons';
 import BigLoader from '@/components/BigLoader/BigLoader';
 

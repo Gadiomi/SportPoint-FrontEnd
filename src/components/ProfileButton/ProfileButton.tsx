@@ -3,22 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ButtonAppearance, Icon, IconName } from '@/kit';
 import { useTranslation } from 'react-i18next';
 import { AccountButton } from './styles';
+import { ThisIconName } from './buttonInfo';
 
 type Props = {
   title: string;
   arrowDirection?: string;
-};
-
-type TIconName = {
-  [ttl: string]: IconName;
-};
-
-const ThisIconName: TIconName = {
-  general: IconName.ACCOUNT,
-  change_password: IconName.ID,
-  reviews: IconName.MASSAGE_TYPING,
-  favorites: IconName.HEART_NONE,
-  online_appointment: IconName.SCHEDULE,
 };
 
 const ProfileButton: FC<Props> = ({ title, arrowDirection = 'right' }) => {

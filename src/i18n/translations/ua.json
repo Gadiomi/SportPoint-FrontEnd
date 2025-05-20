@@ -107,7 +107,12 @@
     "conditions-and-facilities": "Умови та зручності",
     "staff-work": "Робота персоналу",
     "accessibility-and-convenience": "Доступність та зручність",
-    "additional-services": "Додаткоі послуги"
+    "additional-services": "Додаткоі послуги",
+    "chat": "ЧАТ",
+    "class-schedule": "РОЗКЛАД ЗАНЯТЬ",
+    "coaches-work-schedule": "РОЗКЛАД РОБОТИ ТРЕНЕРІВ",
+    "club-reviews": "ВІДГУКИ КЛУБУ",
+    "statistics": "СТАТИСТИКА"
   },
   "register_page": {
     "title": "Створити акаунт",

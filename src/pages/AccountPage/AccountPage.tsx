@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetUserProfileQuery } from '@/redux/user/userApi';
 import DeleteAccountBlock from '@/components/DeleteAccountBlock/DeleteAccountBlock';
 import Line from '@/kit/Line/Line';
-import ProfileButton from './ProfileButton';
+import ProfileButton from '../../components/ProfileButton/ProfileButton';
 import { AccountCont, AccountName, AccountWrapper } from './styles';
 
 const AccountPage: FC = () => {
