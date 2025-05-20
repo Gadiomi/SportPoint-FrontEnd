@@ -4,7 +4,7 @@ import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
 import { Container, Section } from '@/components/ContainerAndSection';
 import CoachCard from '../../components/CoachCard/CoachCard';
 import ClubCard from './ClubCard/ClubCard';
-import ProfileButton from '../AccountPage/ProfileButton';
+import ProfileButton from '../../components/ProfileButton/ProfileButton';
 import BigLoader from '@/components/BigLoader/BigLoader';
 import { useGetFavoritesQuery } from '@/redux/details/favoritesApi';
 import { IClubData, ICoachData } from '../../types';

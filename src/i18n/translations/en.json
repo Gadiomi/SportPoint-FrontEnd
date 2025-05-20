@@ -98,7 +98,12 @@
     "conditions-and-facilities": "Conditions and facilities",
     "staff-work": "Staff work",
     "accessibility-and-convenience": "Accessibility and convenience",
-    "additional-services": "Additional services"
+    "additional-services": "Additional services",
+    "chat": "CHAT",
+    "class-schedule": "CLASS SCHEDULE",
+    "coaches-work-schedule": "COACHES' WORK SCHEDULE",
+    "club-reviews": "CLUB REVIEWS",
+    "statistics": "STATISTICS"
   },
   "register_page": {
     "title": "Create an Account",
