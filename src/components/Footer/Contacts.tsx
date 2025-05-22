@@ -21,7 +21,7 @@ export const Contacts: React.FC = () => {
         iconStyles={{
           color: theme.color.mainOrange,
         }}
-        title={t('details_page.contacts_text')}
+        title={t('contacts')}
         boxStyle={{ marginBottom: theme.pxs.x6 }}
       />
       <EmailBox>
