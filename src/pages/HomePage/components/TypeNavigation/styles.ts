@@ -6,6 +6,7 @@ export const LinkList = styled.ul(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.pxs.x2,
   marginBottom: theme.pxs.x10_5,
+  marginTop: theme.pxs.x10_5,
   width: '100%',
 }));
 
@@ -61,4 +62,8 @@ export const SportName = styled.div(({ theme }) => ({
   textAlign: 'center',
   bottom: '50%',
   color: theme.color.white,
+}));
+export const TextHome = styled.p(({ theme }) => ({
+  ...theme.fonts.mainButton,
+  color: theme.color.disabled,
 }));
