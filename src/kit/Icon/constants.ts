@@ -61,4 +61,7 @@ export enum IconName {
   Icon_share = 'icon-Icon2',
   SORT_VERTICAL_02 = 'sort-vertical-02',
   SORT_VERTICAL_021 = 'sort-vertical-021',
+
+  CHAT = 'icon-chat',
+  FILTERS = 'icon-filters',
 }

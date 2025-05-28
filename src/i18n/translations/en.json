@@ -4,6 +4,8 @@
   "signup": "Sign Up",
   "chosen": "CHOSEN",
   "coachs": "Coachs",
+  "chat": "Chat",
+  "main": "Main",
   "clubs-list": "Sports clubs",
   "clubs": "Clubs",
   "profile": "Profile",
@@ -13,6 +15,7 @@
   "loading": "Loading...",
   "resultBack": "Search results",
   "ediet-review": "РЕДАГУВАТИ ВІДГУК",
+  "contacts": "FOLLOW US",
   "gym": "Gym",
   "uah": "uah",
   "login_page": {
@@ -125,7 +128,10 @@
     "restore": "Restore"
   },
   "home_page": {
-    "homeDescr": "Discover the best sports clubs and professional trainers in your area.",
+    "homeDescr1": "Find professional trainers and the best sports clubs in your city.",
+    "homeDescr2": "Do you dream of a healthy body, or do you want to find an activity that you like? Or maybe you already have a favorite sport? Choose what you love!",
+    "homeDescr3": "Choose what you love!",
+    "step": "TAKE A STEP",
     "motivation": "BE SPORTY",
     "loading": "Loading",
     "reviews": "reviews",

@@ -26,14 +26,15 @@ const NavBar = () => {
   const { isLogin } = useAppSelector(state => state.setLogin);
 
   const navItems = [
-    { to: '/trainers', icon: IconName.TRAINER, descr: t('coachs') },
-    { to: '/clubs', icon: IconName.CLUB, descr: t('clubs-list') },
+    { to: '/', icon: IconName.CLUB, descr: t('main') },
+    { to: '/search', icon: IconName.SEARCH, descr: t('nav_bar.search') },
+
     {
       to: '/profile',
       icon: IconName.ACCOUNT,
       descr: t('profile'),
     },
-    { to: '/search', icon: IconName.SEARCH, descr: t('nav_bar.search') },
+    { to: '/', icon: IconName.CHAT, descr: t('chat') },
     { to: '/menu', icon: IconName.MENU, descr: t('nav_bar.menu') },
   ];
 
@@ -127,6 +128,9 @@ const NavBar = () => {
                         name={icon}
                         size={24}
                         styles={{
+                          stroke: isActive
+                            ? theme.color.mainOrange
+                            : theme.color.white,
                           color: isActive
                             ? theme.color.mainOrange
                             : theme.color.white,
