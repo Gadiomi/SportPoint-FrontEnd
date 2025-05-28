@@ -7,6 +7,7 @@ import { IconName } from '@/kit';
 import { ButtonAppearance } from '@/kit';
 import ButtonProfileIcon from '../ButtonProfileIcon/ButtonProfileIcon';
 import EditButton from '../../components/EditButton/EditButton';
+import ButtonReserve from '../ButtonReserve/ButtonReserve';
 import ModalNotAnAuthorizedUser from '../ModalNotAnAuthorizedUser/ModalNotAnAuthorizedUser';
 import { useFavorites } from '@/hooks/useFavorites';
 
@@ -48,6 +49,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [avatarError, setAvatarError] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
   const [showEditButton, setShowEditButton] = useState(true);
+  const [showButtonReserve, setShowButtonReserve] = useState(true);
   const [showWorkingHours, setShowWorkingHours] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -65,12 +67,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const showEdit =
       path.includes('profile') || path.includes('account-admin-club');
     setShowEditButton(showEdit);
+    const showButtonReserve = path.includes('trainer') || path.includes('club');
+    setShowButtonReserve(showButtonReserve);
 
     const hideWorkingHours =
-      path.includes('trainer') || path.includes('account-trainer');
+      path.includes('trainer') ||
+      path.includes('account-trainer') ||
+      (path.includes('profile') && role === 'coach');
     setShowWorkingHours(!hideWorkingHours);
-
-  }, [location.pathname]);
+  }, [location.pathname, role]);
 
   const getYearWord = (num: number): string => {
     const lastDigit = num % 10;
@@ -132,8 +137,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       >
         {showButtons && (
           <ButtonProfileIcon
-            iconName={IconName.MASSAGE_TYPING}
-            text={t('details_page.comment')}
+            iconName={IconName.ICON_CHAT}
+            text={t('details_page.chat')}
             onClick={openCommentModal}
           />
         )}
@@ -214,6 +219,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         ))}
       </Sport>
       {showEditButton && <EditButton _id={_id} role={role} />}
+      {showButtonReserve && <ButtonReserve _id={_id} role={role} />}
       {isModalOpen && (
         <ModalNotAnAuthorizedUser
           isOpen={isModalOpen}

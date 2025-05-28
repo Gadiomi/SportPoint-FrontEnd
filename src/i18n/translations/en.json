@@ -40,8 +40,11 @@
     "login_facebook": "Login with Facebook"
   },
   "details_page": {
+    "back_button": "BACK",
     "edit_button": "Profile settings",
-    "contacts_text": "CONTACTS",
+    "reserve_button": "Reserve",
+    "social_networks": "SOCIAL NETWORKS",
+    "follow_us": "FOLLOW US",
     "subscription": "SUBSCRIPTION",
     "services": "SERVICES",
     "gallery": "GALLERY",
@@ -56,6 +59,7 @@
     "respond": "Respond",
     "reply-to-review": "Reply to review",
     "comment": "Comment",
+    "chat": "Chat",
     "choose": "Choose",
     "get_in_touch": "Get in touch",
     "read_more": "Read more",
