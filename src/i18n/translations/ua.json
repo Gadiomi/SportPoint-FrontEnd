@@ -115,7 +115,11 @@
     "class-schedule": "РОЗКЛАД ЗАНЯТЬ",
     "coaches-work-schedule": "РОЗКЛАД РОБОТИ ТРЕНЕРІВ",
     "club-reviews": "ВІДГУКИ КЛУБУ",
-    "statistics": "СТАТИСТИКА"
+    "statistics": "СТАТИСТИКА",
+    "firstName": "Ім’я",
+    "lastName": "Прізвище",
+    "phone": "Номер телефону",
+    "birth": "Дата народження"
   },
   "register_page": {
     "title": "Створити акаунт",
