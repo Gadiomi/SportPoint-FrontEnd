@@ -106,7 +106,11 @@
     "class-schedule": "CLASS SCHEDULE",
     "coaches-work-schedule": "COACHES' WORK SCHEDULE",
     "club-reviews": "CLUB REVIEWS",
-    "statistics": "STATISTICS"
+    "statistics": "STATISTICS",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "birth": "Date of birth"
   },
   "register_page": {
     "title": "Create an Account",

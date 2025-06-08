@@ -41,7 +41,6 @@ export const AccountName = styled.div<{ $paddingTop?: string }>`
   align-items: center;
   padding-top: ${({ $paddingTop }) => $paddingTop ?? '13px'};
   padding-bottom: 16px;
-  border-bottom: 1px solid #b7b7b9;
   & img {
     width: 134px;
     height: 134px;
@@ -173,6 +172,15 @@ export const GeneralInFormWrapper = styled.div`
 `;
 
 export const GeneralSports = styled.p`
+  padding-top: 32px;
+  font-weight: 400;
+  padding-bottom: 8px;
+`;
+export const SelectTitle = styled.p`
+  padding-bottom: 8px;
+  font-weight: 400;
+`;
+export const ContactInfo = styled.p`
   padding-top: 32px;
   font-weight: 400;
 `;
