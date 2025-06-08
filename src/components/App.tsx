@@ -17,6 +17,8 @@ import ReviewsPage from '../pages/ReviewsPage/ReviewsPage';
 
 import EditScheduleCard from './EditProfile/components/Schedule/components/EditScheduleCard/EditScheduleCard';
 import BigLoader from './BigLoader/BigLoader';
+import Services from './EditProfile/components/Services/Services';
+import AddService from './EditProfile/components/Services/components/AddService/AddService';
 
 const Home = lazy(() => import('../pages/HomePage/HomePage'));
 const LogIn = lazy(() => import('../pages/LogInPage/LogInPage'));
@@ -75,6 +77,8 @@ function App() {
               ></Route>
               <Route path="schedule" element={<Schedule />}></Route>
               <Route path="general" element={<EditAllGeneral />} />
+              <Route path="servers" element={<Services />} />
+              <Route path="add-servers" element={<AddService />} />
             </Route>
             <Route path="reviews" element={<Reviews />} />
             <Route

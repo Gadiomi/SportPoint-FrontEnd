@@ -28,11 +28,11 @@ const CitySelect: FC<CitySelectProps> = ({
       ...base,
       outline: 'none',
       boxShadow: 'none',
-      backgroundColor: theme.color.background,
-      border: `1px solid ${theme.color.secWhite}`,
+      backgroundColor: '#303030',
+      border: '0.50px solid #ed772f',
       color: theme.color.white,
       borderRadius: state.menuIsOpen ? '6px 6px 0 0' : '6px',
-      padding: theme.pxs.x1,
+      padding: '12px 16px',
       fontSize: '14px',
 
       '&:hover': {

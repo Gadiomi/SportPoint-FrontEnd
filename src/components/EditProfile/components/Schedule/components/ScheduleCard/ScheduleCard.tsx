@@ -49,6 +49,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
     }
   };
 
+  console.log(savedSchedule);
+
   const renderScheduleItem = (entry: ScheduleEntry, index?: number) => {
     const validDate =
       entry.day && !isNaN(new Date(entry.day).getTime())
@@ -56,7 +58,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
         : null;
 
     return (
-      <ListItem key={index ?? entry._id}>
+      <ListItem key={index}>
         <TitleAndButtons>
           <TimeAndDateStyle>
             <div>
@@ -70,21 +72,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
               {entry.begin} - {entry.end}
             </AccentSpan>
           </TimeAndDateStyle>
-          {!isEditPage && (
-            <ButtonsContainer>
-              <button type="button" onClick={() => handleEdit(entry._id ?? '')}>
-                <Icon name={IconName.EDIT} width="20px" />
-                <ButtonsHiddenText>Edit</ButtonsHiddenText>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDelete(entry._id ?? '')}
-              >
-                <Icon name={IconName.DELETE} width="20px" />
-                <ButtonsHiddenText>Delete</ButtonsHiddenText>
-              </button>
-            </ButtonsContainer>
-          )}
         </TitleAndButtons>
         <GymStyle>
           <img
@@ -98,7 +85,22 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
           <span>
             {entry.profile.firstName} {entry.profile.lastName}
           </span>
+          <span>
+            {entry.profile.firstName} {entry.profile.lastName}
+          </span>
         </GymStyle>
+        {!isEditPage && (
+          <ButtonsContainer>
+            <button type="button" onClick={() => handleEdit(entry._id ?? '')}>
+              <Icon name={IconName.EDIT} width="20px" />
+              <ButtonsHiddenText>Edit</ButtonsHiddenText>
+            </button>
+            <button type="button" onClick={() => handleDelete(entry._id ?? '')}>
+              <Icon name={IconName.DELETE} width="20px" />
+              <ButtonsHiddenText>Delete</ButtonsHiddenText>
+            </button>
+          </ButtonsContainer>
+        )}
       </ListItem>
     );
   };

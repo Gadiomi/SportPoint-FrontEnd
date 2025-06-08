@@ -31,6 +31,7 @@ export const ServicesSelect = styled(Select)`
 export const ServicesSelectContainer = styled.div`
   position: relative;
   z-index: 1;
+  height: 48px;
 
   svg {
     width: 24px;

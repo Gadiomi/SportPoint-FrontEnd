@@ -15,12 +15,14 @@ import {
   CustomButtonContainer,
   FormStyled,
   InputsBeginEnd,
+  LocaleButtonsAndTitleContainerStyled,
   LocaleButtonsContainerStyled,
   LocaleButtonsList,
   LocaleButtonsListItem,
   ScheduleContainer,
   ServicesContainer,
   TimeAndDateContainer,
+  WorkChooseContainer,
 } from './Schedule.styled';
 import { useAppSelector } from '@/hooks/hooks';
 import { useGetByNameQuery } from '@/redux/searchByName/searchByNameApi';
@@ -64,6 +66,8 @@ type ScheduleItem = {
     address: string;
     city: string;
     avatar: string;
+    selectedType?: string;
+    serviceName?: string;
   };
 };
 
@@ -121,7 +125,7 @@ const Schedule = () => {
   useEffect(() => {
     if (isOpenAddress) {
       if (!isCityOpen && !isClubOpen) {
-        setHeight('110px');
+        setHeight('auto');
       } else {
         updateHeight();
       }
@@ -144,6 +148,8 @@ const Schedule = () => {
           city: item.selection.city,
           avatar: item.selection.avatar,
           id: item._id || 'default-id',
+          service: item.selection.serviceName || '',
+          hall: item.selection.selectedType || '',
         },
         weekday: format(new Date(item.date.startTime), 'EEEE', { locale: uk }),
         monthShort: format(new Date(item.date.startTime), 'MMM', {
@@ -248,6 +254,7 @@ const Schedule = () => {
           city: entry.profile.city || '',
           address: entry.profile.address || '',
           avatar: entry.profile.avatar || '',
+          serviceName: entry.profile.service || '',
         },
         selectedGym: `${entry.profile.firstName} ${entry.profile.lastName}`,
       };
@@ -350,7 +357,7 @@ const Schedule = () => {
             type="date"
             value={(selectedDay && format(selectedDay, 'yyyy-MM-dd')) ?? ''}
             onChange={handleDateChange}
-            containerStyles={{ marginBottom: '8px' }}
+            containerStyles={{ marginBottom: '8px', padding: '4px 0px' }}
           />
           <InputsBeginEnd>
             <TimeInput
@@ -372,22 +379,24 @@ const Schedule = () => {
           <Services />
         </ServicesContainer>
         <LocaleButtonsContainerStyled>
-          <h3>{localizeButtons.titles.choseCity}</h3>
-          <LocaleButtonsList>
-            {Object.entries(localizeButtons.localization).map(
-              ([key, value]) => (
-                <LocaleButtonsListItem
-                  key={key}
-                  $isActive={key === selectedKey}
-                >
-                  <button type="button" onClick={() => handleClick(key)}>
-                    {value}
-                  </button>
-                </LocaleButtonsListItem>
-              ),
-            )}
-          </LocaleButtonsList>
-          <div>
+          <LocaleButtonsAndTitleContainerStyled>
+            <h3>{localizeButtons.titles.choseCity}</h3>
+            <LocaleButtonsList>
+              {Object.entries(localizeButtons.localization).map(
+                ([key, value]) => (
+                  <LocaleButtonsListItem
+                    key={key}
+                    $isActive={key === selectedKey}
+                  >
+                    <button type="button" onClick={() => handleClick(key)}>
+                      {value}
+                    </button>
+                  </LocaleButtonsListItem>
+                ),
+              )}
+            </LocaleButtonsList>
+          </LocaleButtonsAndTitleContainerStyled>
+          <WorkChooseContainer>
             {selectedKey === 'club' && (
               <SearchWork
                 searchTerm={searchTerm}
@@ -422,10 +431,10 @@ const Schedule = () => {
                     ? { value: selectedHall, label: selectedHall }
                     : null
                 }
-                placeholder={userProfile?.description.address || 'Обрати залу'}
+                placeholder="Обрати залу"
               />
             </div>
-          </div>
+          </WorkChooseContainer>
         </LocaleButtonsContainerStyled>
         <CustomButtonContainer>
           <Button
@@ -433,6 +442,7 @@ const Schedule = () => {
             testId="add"
             title={localizeButtons.titles.add_hours}
             onClick={addNewScheduleEntry}
+            styles={{ height: '44px', fontSize: '16px', fontWeight: '600' }}
           />
         </CustomButtonContainer>
 

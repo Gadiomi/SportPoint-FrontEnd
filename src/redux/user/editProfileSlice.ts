@@ -9,6 +9,8 @@ interface EditProfileState {
   avatar: File | null;
   selectedAvatar: string | null;
   certificates: File[];
+  serviceImg: File | null;
+  selectedServiceImg: string | null;
 }
 
 const initialState: EditProfileState = {
@@ -20,6 +22,8 @@ const initialState: EditProfileState = {
   avatar: null,
   selectedAvatar: null,
   certificates: [],
+  serviceImg: null,
+  selectedServiceImg: '/assets/images/DetailsPage/Services_no_photo.png',
 };
 
 const editProfileSlice = createSlice({
@@ -54,6 +58,12 @@ const editProfileSlice = createSlice({
       state.certificates = [...state.certificates, ...action.payload];
     },
     resetEditProfile: () => initialState,
+    setServiceImg: (state, action: PayloadAction<File | null>) => {
+      state.serviceImg = action.payload;
+    },
+    setSelectedServiceImg: (state, action: PayloadAction<string | null>) => {
+      state.selectedServiceImg = action.payload;
+    },
   },
 });
 
@@ -67,6 +77,8 @@ export const {
   setSelectedAvatar,
   addCertificates,
   resetEditProfile,
+  setServiceImg,
+  setSelectedServiceImg,
 } = editProfileSlice.actions;
 
 export const editProfileReducer = editProfileSlice.reducer;

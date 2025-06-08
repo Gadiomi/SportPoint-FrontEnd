@@ -13,7 +13,7 @@ import { cityOptions } from '@/pages/RegisterPage/tempData';
 import Select, { StylesConfig } from 'react-select';
 import { useTheme } from 'styled-components';
 import { useGetCardsQuery } from '@/redux/cards/cardApi';
-import AddressWidget from '@/pages/RegisterPage/components/AddressWidget/AddressWidget';
+import WorkWrapper from '../Schedule/components/WorkWrapper/WorkWrapper';
 
 export type OptionType = {
   label: string;
@@ -51,11 +51,11 @@ const SearchWork: FC<MergedProps> = ({
       ...base,
       outline: 'none',
       boxShadow: 'none',
-      backgroundColor: theme.color.background,
-      border: `1px solid ${theme.color.secWhite}`,
+      backgroundColor: '#303030',
+      border: '0.50px solid #ed772f',
       color: theme.color.white,
       borderRadius: state.menuIsOpen ? '6px 6px 0 0' : '6px',
-      padding: theme.pxs.x1,
+      padding: '12px 16px',
       fontSize: '14px',
 
       '&:hover': {
@@ -203,12 +203,13 @@ const SearchWork: FC<MergedProps> = ({
           </SelectedItems>
         ))}
 
-      <AddressWidget
+      <WorkWrapper
         handler={handler}
         isOpen={isOpen}
         contentRef={contentRef}
         height={height}
         title={title}
+        $marginBottom={'0px'}
       >
         <Controller
           name="city"
@@ -301,7 +302,7 @@ const SearchWork: FC<MergedProps> = ({
             <div>Нічого не знайдено</div>
           )}
         </InputsSection>
-      </AddressWidget>
+      </WorkWrapper>
     </WorksWrapper>
   );
 };

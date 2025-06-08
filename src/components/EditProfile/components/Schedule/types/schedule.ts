@@ -8,6 +8,8 @@ export interface Profile {
   address?: string;
   city?: string;
   avatar?: string;
+  hall?: string;
+  service?: string;
 }
 
 export interface SearchResults {

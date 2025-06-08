@@ -4,7 +4,7 @@ import { AvatarName, HiddenInput } from '../EditGeneral/EditGeneral.styled';
 import { Button, ButtonAppearance, Icon, IconName } from '@/kit';
 import { UserProfile } from '@/types/userProfile';
 import { AvatarImg, FirstLatter } from './AvatarAndName.styled';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface AvatarAndNameProps {
   selectedAvatar: string | null;

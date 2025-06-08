@@ -6,7 +6,7 @@ export const List = styled.ul`
   gap: 16px;
   padding-bottom: 32px;
 
-  li:nth-of-type(2n + 3):not(:last-child) {
+  li:nth-of-type(3n + 2):not(:last-child) {
     margin-bottom: 16px;
     display: flex;
     flex-direction: column;
@@ -17,7 +17,7 @@ export const List = styled.ul`
       display: block;
       width: 100%;
       height: 0.5px;
-      background-color: rgba(183, 183, 185, 0.6);
+      background-color: rgba(183, 183, 185, 0.4);
     }
   }
 `;

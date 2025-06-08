@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   testId: string;
-  value: string;
+  value: string | number;
   errorMessage?: string;
   label?: ReactNode;
   appendChild?: React.ReactNode;
@@ -38,7 +38,9 @@ export function Input({
       disabled={disabled}
       style={containerStyles}
       $isFocused={isFocused}
-      $hasValue={value.length > 0}
+      $hasValue={
+        !!(typeof value === 'string' ? value.length : value.toString().length)
+      }
       $invalid={invalid}
     >
       <InputField
@@ -69,7 +71,11 @@ export function Input({
         <PlaceholderLabel
           style={labelStyles}
           $isFocused={isFocused || Boolean(errorMessage)}
-          $hasValue={value.length > 0}
+          $hasValue={
+            !!(typeof value === 'string'
+              ? value.length
+              : value.toString().length)
+          }
         >
           {label}
         </PlaceholderLabel>

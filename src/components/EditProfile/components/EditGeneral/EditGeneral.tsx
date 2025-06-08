@@ -19,7 +19,6 @@ import { debounce, toNumber } from 'lodash';
 import {
   Container,
   GeneralForm,
-  SelectStyled,
   SelectedContainer,
   InputsSection,
   SectionTitle,

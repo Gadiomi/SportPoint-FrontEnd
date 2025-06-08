@@ -12,16 +12,13 @@ export const getCustomStyles = (
     ...base,
     outline: 'none',
     boxShadow: 'none',
-    backgroundColor: theme.color.background,
-    border: `1px solid ${theme.color.secWhite}`,
-    color: theme.color.white,
-    borderRadius: state.menuIsOpen ? '6px 6px 0 0' : '6px',
-    padding: theme.pxs.x1,
+    backgroundColor: '#303030',
+    border: ' 0.50px solid #ed772f',
+    color: '#f8f7f4',
+    height: '48px',
+    borderRadius: state.menuIsOpen ? '6px 6px 0 0' : '8px',
+    padding: '10px 16px',
     fontSize: '14px',
-
-    '&:hover': {
-      border: `1px solid ${theme.color.secWhite}`,
-    },
   }),
   valueContainer: base => ({
     ...base,
@@ -29,7 +26,7 @@ export const getCustomStyles = (
   }),
   input: base => ({
     ...base,
-    color: theme.color.mainWhite,
+    color: '#f8f7f4',
   }),
   indicatorsContainer: base => ({
     ...base,
@@ -68,7 +65,7 @@ export const getCustomStyles = (
   }),
   option: base => ({
     ...base,
-    color: theme.color.background,
+    color: '#f8f7f4',
     backgroundColor: theme.color.white,
     padding: theme.pxs.x2,
     cursor: 'pointer',
@@ -86,10 +83,18 @@ export const getCustomStyles = (
   }),
   singleValue: base => ({
     ...base,
-    color: theme.color.white,
+    color: '#f8f7f4',
     padding: theme.pxs.x0,
     margin: theme.pxs.x0,
   }),
+  placeholder(base, props) {
+    return {
+      ...base,
+      color: '#f8f7f4',
+      fontSize: '14px',
+      fontWeight: '400',
+    };
+  },
 });
 
 import Select from 'react-select';

@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from '../auth/axios';
 
 export type Service = {
-  _id: string;
+  _id?: string;
   name: string;
   description?: string;
   amount?: number;
@@ -29,7 +29,24 @@ export const coachServicesApi = createApi({
         method: 'GET',
       }),
     }),
+    postCoachServices: builder.mutation<any, FormData>({
+      query: formData => ({
+        url: `/services`,
+        method: 'POST',
+        data: formData,
+      }),
+    }),
+    deleteCoachServices: builder.mutation<any, string>({
+      query: id => ({
+        url: `/services/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetCoachServicesQuery } = coachServicesApi;
+export const {
+  useGetCoachServicesQuery,
+  usePostCoachServicesMutation,
+  useDeleteCoachServicesMutation,
+} = coachServicesApi;

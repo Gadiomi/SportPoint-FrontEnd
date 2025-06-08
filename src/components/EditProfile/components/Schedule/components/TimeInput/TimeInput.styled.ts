@@ -9,11 +9,12 @@ export const Label = styled.label`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 8px;
+  left: 9px;
   display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgba(183, 183, 185, 1);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.375;
+  color: #b7b7b9;
   margin-bottom: 0.25rem;
 `;
 
@@ -23,12 +24,15 @@ export const InputWrapper = styled.div`
 
 export const StyledInput = styled.input`
   width: 100%;
-  padding: 0.5rem 0.75rem 0.5rem 3rem;
+  padding: 12px 8px;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   background-color: transparent;
   color: white;
   outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &::-webkit-calendar-picker-indicator {
     display: none;
@@ -46,7 +50,7 @@ export const StyledInput = styled.input`
 
 export const IconWrapper = styled.div`
   position: absolute;
-  right: 8px;
+  right: 8.5px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;

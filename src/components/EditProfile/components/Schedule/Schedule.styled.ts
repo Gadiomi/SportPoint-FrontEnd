@@ -205,35 +205,54 @@ export const CustomButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  padding-top: 32px;
   &::after {
     content: '';
     width: 100%;
     height: 1px;
-    background-color: rgba(183, 183, 185, 1);
+    background-color: rgba(183, 183, 185, 0.4);
   }
 `;
 
 export const LocaleButtonsContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
+`;
+
+export const LocaleButtonsAndTitleContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 export const LocaleButtonsList = styled.ul`
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 16px;
+  height: 52px;
+  background-color: #303030;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 0 4px;
+
+  li:nth-of-type(1) {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+  li:nth-of-type(2) {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
 `;
 
 export const LocaleButtonsListItem = styled.li<LocaleButtonsListItemProps>`
-  border: 1px solid rgba(41, 68, 135, 1);
   width: 50%;
+  height: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 60px;
   padding: 4px 0;
   background-color: ${({ $isActive }) =>
     $isActive ? 'rgba(41, 68, 135, 1)' : 'transparent'};
@@ -243,7 +262,6 @@ export const LocaleButtonsListItem = styled.li<LocaleButtonsListItemProps>`
   &:hover {
     background-color: ${({ $isActive }) =>
       $isActive ? 'rgba(41, 68, 135, 0.6)' : 'transparent'};
-    border: 1px solid rgba(41, 68, 135, 0.6);
   }
 
   button {
@@ -251,6 +269,8 @@ export const LocaleButtonsListItem = styled.li<LocaleButtonsListItemProps>`
       $isActive ? 'rgba(248, 247, 244, 1)' : 'rgba(183, 183, 185, 1)'};
     width: 100%;
     height: 100%;
+    font-weight: 800;
+    font-size: 16px;
   }
 `;
 
@@ -258,4 +278,10 @@ export const ButtonsContainerForEdit = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+`;
+
+export const WorkChooseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 `;

@@ -18,16 +18,16 @@ const Services = () => {
         styles={{
           control: base => ({
             ...base,
-            backgroundColor: 'transparent',
             color: 'white',
-            borderRadius: '6px',
-            border: '1px solid #ccc',
+            borderRadius: '8px',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingRight: '8px',
-            minHeight: '40px',
+            padding: '0 12px',
+            minHeight: '48px',
+            backgroundColor: '#303030',
+            border: '0.50px solid #ed772f',
           }),
           dropdownIndicator: (base, state) => ({
             ...base,
@@ -59,7 +59,14 @@ const Services = () => {
             color: state.isSelected ? 'white' : 'black',
             padding: '8px 15px',
           }),
+          placeholder: provided => ({
+            ...provided,
+            color: '#f8f7f4',
+            fontSize: '14px',
+            fontWeight: '400',
+          }),
         }}
+        placeholder="Вид послуги"
       />
     </ServicesSelectContainer>
   );
