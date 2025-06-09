@@ -198,5 +198,9 @@
 <path stroke="#F8F7F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13.4415 6.62732H22M13.4415 11.4421H19.5547M13.4415 16.2569H17.1094M5.80564 18V6M5.80564 6L2 9.33172M5.80564 6L9.7566 9.33172"></path>
 
 </symbol>
+
+<symbol id="icon-share" viewBox="0 0 33 32">
+<path stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="2.6667" d="M28.667 15.278l-12.8-8.479v4.8c-11.2 2.4-11.2 13.6-11.2 13.6s4.8-6.4 11.2-5.6v4.96l12.8-9.281z"></path>
+</symbol>
 </defs>
 </svg>

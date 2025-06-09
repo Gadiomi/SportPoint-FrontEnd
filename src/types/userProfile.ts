@@ -18,7 +18,7 @@ export interface WorkoutPlan {
   selection: SelectionSchema;
   selectedGym: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   _id: string;
 }
 
@@ -59,6 +59,7 @@ export interface UserProfile {
   sport?: string[];
   work_list?: string[];
   user_comments?: {
+    _id?: string;
     adminReply?: string;
     average?: number;
     comment?: string;

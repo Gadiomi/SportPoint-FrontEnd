@@ -15,6 +15,7 @@ import { Button, Icon, IconName, Modal } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { setIsLogin } from '@/redux/auth/loginSlice';
+import { logout } from '@/redux/auth/loginSlice';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
@@ -122,11 +123,12 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                   width: '100%',
                 }}
                 onClick={() => {
-                  Cookies.remove(CookiesKey.TOKEN, { path: '/' });
-                  Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '/' });
-                  Cookies.remove(CookiesKey.TOKEN_F, { path: '/' });
-                  Cookies.remove(CookiesKey.REFRESH_TOKEN_F, { path: '/' });
-                  dispatch(setIsLogin(false));
+                  // Cookies.remove(CookiesKey.TOKEN, { path: '/' });
+                  // Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '/' });
+                  // Cookies.remove(CookiesKey.TOKEN_F, { path: '/' });
+                  // Cookies.remove(CookiesKey.REFRESH_TOKEN_F, { path: '/' });
+                  dispatch(logout());
+                  // dispatch(setIsLogin(false));
                   navigate('/');
                   onClose();
                 }}
