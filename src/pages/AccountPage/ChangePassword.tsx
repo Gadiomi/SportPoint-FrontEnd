@@ -11,7 +11,7 @@ import {
   ModalOverlay,
   RestoreCont,
 } from './styles';
-import ProfileButton from './ProfileButton';
+import ProfileButton from '../../components/ProfileButton/ProfileButton';
 import BackSaveButtons from './BackSaveButtons';
 import EyeForPassword from '@/components/EyeForPassword/EyeForPassword';
 import MessageModal from '@/components/MessageModal/MessageModal';

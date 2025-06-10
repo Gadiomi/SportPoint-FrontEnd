@@ -1,18 +1,22 @@
+import { Roles } from '@/constants';
+
 export interface Review {
   id: string;
   userCommentId: string;
+  owner?: string;
   name: string;
   surname: string;
   avatar: string;
   comment: string;
+  adminReply?: string;
   sport?: string[];
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   rating: number;
-  likes: number;
-  dislikes: number;
-  isFirstReview: boolean;
-  userRole: 'customer' | 'coach' | 'adminClub';
+  likes?: number;
+  dislikes?: number;
+  isFirstReview?: boolean;
+  userRole: Roles;
   averageRating: number;
   totalReviews: number;
   ratings?: {

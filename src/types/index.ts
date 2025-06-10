@@ -57,7 +57,7 @@ export interface RegisterFormData {
 /* AdminClub List */
 
 export interface ClubData {
-  _id: number;
+  _id: string;
   firstName: string;
   avatar: string;
   description: DescriptionClub;
@@ -100,4 +100,11 @@ export type SearchResultParams = SearchResultCoach | SearchResultClub;
 
 export interface SearchResponse {
   profiles: SearchResultParams[];
+}
+
+/*FAVOURITES */
+export interface IFavoriteListInfo {
+  userId: string;
+  role: string;
+  _id: string;
 }

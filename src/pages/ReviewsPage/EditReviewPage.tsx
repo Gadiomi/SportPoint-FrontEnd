@@ -50,7 +50,6 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   const translate: (key: string, options?: Record<string, any>) => string = t;
   const theme = useTheme();
   const reduxUserId = useAppSelector(state => state.user.user?.userCommentId);
-  console.log('reduxUserId', reduxUserId);
   const userCommentId = review.userCommentId || reduxUserId;
   // const userCommentId = useAppSelector((state) => state.user.user?.userCommentId);
   // const [userCommentId, setuserCommentId] = useState(review.userCommentId);
@@ -153,7 +152,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
         alert('Користувача не знайдено. Увійдіть у систему ще раз.');
         return;
       }
-      await saveReview(reviewId, comment, ratings, userCommentId, targetType);
+      await saveReview(reviewId, comment, ratings, userCommentId);
 
       const newAverage = calculateAverage(mappedRatings);
       setAverageRating(newAverage);

@@ -36,14 +36,13 @@ export const ClubsList: React.FC = () => {
     setCurrentPage(1);
   };
 
-  console.log('first', data);
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
-      {error ? <Loading>{t('home_page.error')}</Loading> : null}
       {isLoading ? (
         <Loading>{t('home_page.loading')}...</Loading>
       ) : (
         <>
+          {error ? <Loading>{t('home_page.error')}</Loading> : null}
           <StyledButtonBack
             onClick={() => navigate(`/`)}
             testId="clubsBack"
