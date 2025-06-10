@@ -28,8 +28,20 @@ const loginSlice = createSlice({
     setIsLogin: (state, action: PayloadAction<boolean>) => {
       state.isLogin = action.payload;
     },
+    logout: state => {
+      state.isLogin = false;
+
+      // Очистка куків
+      Cookies.remove(CookiesKey.TOKEN, { path: '/' });
+      Cookies.remove(CookiesKey.REFRESH_TOKEN, { path: '/' });
+      Cookies.remove(CookiesKey.TOKEN_F, { path: '/' });
+      Cookies.remove(CookiesKey.REFRESH_TOKEN_F, { path: '/' });
+
+      // Очистка localStorage
+      localStorage.removeItem('isLogin');
+    },
   },
 });
 
-export const { setIsLogin } = loginSlice.actions;
+export const { setIsLogin, logout } = loginSlice.actions;
 export const loginReducer = loginSlice.reducer;

@@ -1,6 +1,6 @@
 export { Icon, IconName } from './Icon';
 export { Button, ButtonAppearance } from './Button';
-export { Modal } from './Modal/Modal';
+export { Modal } from './modal/Modal';
 export {
   Title,
   Subtitle,
@@ -23,3 +23,4 @@ export {
 export { Input } from './Input/Input';
 export { Loader } from './Loader';
 export { Tabs } from './Tabs';
+export { formatDate } from './formatDate/formatDate';

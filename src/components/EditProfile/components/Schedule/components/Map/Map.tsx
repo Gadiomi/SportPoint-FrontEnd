@@ -7,8 +7,11 @@ import { MapContainer, MapWrapper, Title, TitleOne } from './Map.styled';
 
 const Map = () => {
   useEffect(() => {
-    if (L.DomUtil.get('map')?._leaflet_id != null) {
-      L.DomUtil.get('map')._leaflet_id = null;
+    const mapContainer = L.DomUtil.get('map') as HTMLElement & {
+      _leaflet_id?: string | null;
+    };
+    if (mapContainer?._leaflet_id != null) {
+      mapContainer._leaflet_id = null;
     }
 
     const map = L.map('map').setView([50.4501, 30.5234], 13);
@@ -17,6 +20,7 @@ const Map = () => {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(map);
 
+    // @ts-ignore
     const geocoder = L.Control.geocoder({
       defaultMarkGeocode: true,
     }).on('markgeocode', function (e: any) {
@@ -29,7 +33,7 @@ const Map = () => {
     const observer = new MutationObserver(() => {
       const input = document.querySelector(
         '.leaflet-control-geocoder-form input',
-      );
+      ) as HTMLInputElement;
       if (input) {
         input.placeholder = 'Введіть адресу...';
         observer.disconnect();

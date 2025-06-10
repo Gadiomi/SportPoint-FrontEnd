@@ -1,9 +1,11 @@
 import React from 'react';
+import { useAppSelector } from '@/redux/reviews/reviewsSelector';
 import { ReviewHeaderContainer, Header } from './styles';
 import { Icon, IconName } from '@/kit';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IconDiv } from './styles';
+import { Roles } from '@/constants';
 
 type ReviewHeaderProps = {
   title?: string;
@@ -13,7 +15,7 @@ type ReviewHeaderProps = {
   rightIconStyles?: React.CSSProperties;
   onClick?: () => void;
   onCancel?: () => void;
-  userRole?: string;
+  role?: Roles;
 };
 
 const ReviewHeader: React.FC<ReviewHeaderProps> = ({
@@ -23,11 +25,15 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
   rightIcon = IconName.ARROW_LEFT,
   leftIconStyles = {},
   rightIconStyles = {},
-  userRole,
+  role,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const translate: (key: string, options?: Record<string, any>) => string = t;
+  const user = useAppSelector(state => state.user.user);
+  const currentUser = user;
+
+  // console.log(currentUser?.role);
 
   const handleRightIconClick = () => {
     if (rightIcon === IconName.ARROW_LEFT) {
@@ -41,7 +47,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
 
   const finalTitle = title
     ? translate(title)
-    : userRole === 'сustomer'
+    : currentUser?.role === Roles.CUSTOMER
       ? translate('account_page.reviews')
       : translate('details_page.reviews');
   return (
