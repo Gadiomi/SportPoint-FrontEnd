@@ -8,7 +8,6 @@ import {
   Descr,
   ButtonBox,
   LangButton,
-  Question,
 } from './styles';
 import { NavBox } from '../styles';
 import { Button, Icon, IconName, Modal } from '@/kit';
@@ -19,6 +18,7 @@ import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
+import { FavModalIsLogin } from '@/components/FavModalIsLogin/FavModalIsLogin';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -149,31 +149,10 @@ const MobileMenu: FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         </MenuWrapper>
       </NavBox>
       {isFavModalOpen && (
-        <Modal
-          isOpen={isFavModalOpen}
-          type={t('nav_bar.modalFav')}
-          onClose={handleCloseModal}
-        >
-          <Question>{t('nav_bar.questLogIn')}</Question>
-          <ButtonBox>
-            <LangButton
-              onClick={() => {
-                navigate('/login');
-                onClose();
-              }}
-            >
-              {t('details_page.yes')}
-            </LangButton>
-            <LangButton
-              onClick={() => {
-                handleCloseModal();
-                onClose();
-              }}
-            >
-              {t('details_page.no')}
-            </LangButton>
-          </ButtonBox>
-        </Modal>
+        <FavModalIsLogin
+          isFavModalOpen={isFavModalOpen}
+          setIsFavModalOpen={setIsFavModalOpen}
+        />
       )}
       {isLangModalOpen && (
         <Modal

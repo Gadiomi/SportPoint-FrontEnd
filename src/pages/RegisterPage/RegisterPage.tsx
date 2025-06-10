@@ -122,6 +122,7 @@ const RegisterPage = () => {
         lastName: data.second_name.trim(),
         city: data.city,
         address: data.address,
+        // sport: data.sport,
         sport: JSON.stringify(data.sport),
         // sport: data.sport?.join(),
       }),
