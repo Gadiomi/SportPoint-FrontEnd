@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container } from '../../../../components/ContainerAndSection';
-import { Icon, IconName, Light, Title } from '@/kit';
+import { Icon, IconName, Title } from '@/kit';
 import { useTheme } from 'styled-components';
-import { LinkItem, LinkList, StyledLink } from './styles';
+import { LinkItem, LinkList, StyledLink, TextHome } from './styles';
 import { TitleBox } from '@/kit/TitleBox';
 
 import { SwiperNav } from './SwiperNav';
@@ -19,6 +19,15 @@ export const TypeNavigation: React.FC = () => {
         paddingBottom: '122px',
       }}
     >
+      <TitleBox
+        iconStyles={{
+          color: theme.color.mainOrange,
+        }}
+        title={t('home_page.step')}
+        boxStyle={{ marginBottom: theme.pxs.x2 }}
+      />
+      <TextHome>{t('home_page.homeDescr1')}</TextHome>
+
       <LinkList>
         <LinkItem>
           <StyledLink
@@ -50,8 +59,9 @@ export const TypeNavigation: React.FC = () => {
         title={t('home_page.motivation')}
         boxStyle={{ marginBottom: theme.pxs.x2 }}
       />
-      <Light>{t('home_page.homeDescr')}</Light>
+      <TextHome>{t('home_page.homeDescr2')}</TextHome>
 
+      <TextHome>{t('home_page.homeDescr3')}</TextHome>
       <SwiperNav />
     </Container>
   );

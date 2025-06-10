@@ -36,7 +36,6 @@ export const ClubsList: React.FC = () => {
     setCurrentPage(1);
   };
 
-  console.log('first', data);
   return (
     <Container styles={{ alignItems: 'flex-end', padding: '16px 0px' }}>
       {isLoading ? (
