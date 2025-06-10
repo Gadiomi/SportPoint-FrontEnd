@@ -68,7 +68,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
               />
               {!isAdminClubPage && !isClubPage && (
                 <SpanCounts style={fonts.spanDetails}>
-                  {labels[index] === 'Досвід'
+                  {labels[index] === 'Досвід роботи'
                     ? `${counts[index]} ${getYearWord(Number(counts[index]))}`
                     : String(counts[index])}
                 </SpanCounts>

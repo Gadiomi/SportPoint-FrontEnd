@@ -43,8 +43,11 @@
     "login_facebook": "Увійти через Facebook"
   },
   "details_page": {
+    "back_button": "НАЗАД",
     "edit_button": "Налаштування профілю",
-    "contacts_text": "КОНТАКТИ",
+    "reserve_button": "Забронювати",
+    "social_networks": "СОЦІАЛЬНІ МЕРЕЖІ",
+    "follow_us": "СЛІДКУЙ ЗА НАМИ",
     "subscription": "АБОНЕМЕНТ",
     "services": "ПОСЛУГИ",
     "gallery": "ГАЛЕРЕЯ",
@@ -60,6 +63,7 @@
     "reply-to-review": "Відповісти на відгук",
     "edit-reply": "Редагувати відповідь",
     "comment": "Коментувати",
+    "chat": "Чат",
     "choose": "Обрати",
     "get_in_touch": "Зв'язатись",
     "read_more": "Читати далі",
