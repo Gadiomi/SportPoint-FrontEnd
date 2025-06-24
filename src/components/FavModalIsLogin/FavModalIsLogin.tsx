@@ -23,7 +23,7 @@ export const FavModalIsLogin: FC<FavModalIsLoginProps> = ({
       type={t('nav_bar.modalFav')}
       onClose={closeFavModal}
     >
-      <Question>{t('nav_bar.questLogIn')}</Question>
+      <Question>{t('questLogIn')}</Question>
       <ButtonBox>
         <LangButton
           onClick={() => {

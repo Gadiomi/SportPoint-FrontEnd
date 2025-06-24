@@ -23,6 +23,7 @@ const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const { isLogin } = useAppSelector(state => state.setLogin);
 
   const navItems = [
@@ -34,7 +35,7 @@ const NavBar = () => {
       icon: IconName.ACCOUNT,
       descr: t('profile'),
     },
-    { to: '/', icon: IconName.CHAT, descr: t('chat') },
+    { to: '/profile/chats', icon: IconName.CHAT, descr: t('chat') },
     { to: '/menu', icon: IconName.MENU, descr: t('nav_bar.menu') },
   ];
 
@@ -61,7 +62,17 @@ const NavBar = () => {
       openProfileModal();
     }
   };
+  const openLimitedModal = () => {
+    setIsChatModalOpen(true);
+  };
 
+  const handleChatClick = () => {
+    if (isLogin) {
+      navigate('/profile/chats');
+    } else {
+      openLimitedModal();
+    }
+  };
   const toggleSearch = () => {
     setIsOpen(false);
     setIsSearchOpen(prev => !prev);
@@ -69,6 +80,7 @@ const NavBar = () => {
 
   const closeMenu = () => setIsOpen(false);
   const closeSearch = () => setIsSearchOpen(false);
+  const closeChatModal = () => setIsChatModalOpen(false);
   const closeProfileModal = () => setIsProfileModalOpen(false);
   return (
     <>
@@ -82,7 +94,8 @@ const NavBar = () => {
               const isButton =
                 icon === IconName.MENU ||
                 icon === IconName.SEARCH ||
-                icon === IconName.ACCOUNT;
+                icon === IconName.ACCOUNT ||
+                icon === IconName.CHAT;
 
               const isHighlighted =
                 (icon === IconName.MENU && isOpen) ||
@@ -100,6 +113,7 @@ const NavBar = () => {
                         else if (icon === IconName.MENU) toggleMenu();
                         else if (icon === IconName.ACCOUNT)
                           handleProfileClick();
+                        else if (icon === IconName.CHAT) handleChatClick();
                       }}
                       style={{ background: 'none', border: 'none' }}
                     >
@@ -159,7 +173,7 @@ const NavBar = () => {
           type={t('nav_bar.modalAuth')}
           onClose={closeProfileModal}
         >
-          <Question>{t('nav_bar.questLogIn')}</Question>
+          <Question>{t('questLogIn')}</Question>
           <ButtonBox>
             <LangButton
               onClick={() => {
@@ -173,6 +187,33 @@ const NavBar = () => {
               onClick={() => {
                 closeMenu();
                 closeProfileModal();
+              }}
+            >
+              {t('details_page.no')}
+            </LangButton>
+          </ButtonBox>
+        </Modal>
+      )}
+      {isChatModalOpen && (
+        <Modal
+          isOpen={isChatModalOpen}
+          type={t('limitedPage')}
+          onClose={closeChatModal}
+        >
+          <Question>{t('questLogIn')}</Question>
+          <ButtonBox>
+            <LangButton
+              onClick={() => {
+                navigate('/login');
+                closeChatModal();
+              }}
+            >
+              {t('details_page.yes')}
+            </LangButton>
+            <LangButton
+              onClick={() => {
+                closeMenu();
+                closeChatModal();
               }}
             >
               {t('details_page.no')}

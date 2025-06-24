@@ -7,10 +7,12 @@ const colorsLight = {
   darkGray: '#494949',
   secWhite: '#B7B7B9',
   white: '#F8F7F4',
+  black: '#1c1b20',
   writing: '#C78719',
   success: '#7EA511',
   error: '#C74719',
   disabled: '#b7b7b9',
+  pressButton: '#bd510e',
 };
 
 const colorsDark = {
@@ -22,10 +24,12 @@ const colorsDark = {
   darkGray: '#494949',
   secWhite: '#B7B7B9',
   white: '#F8F7F4',
+  black: '#1c1b20',
   writing: '#C78719',
   success: '#7EA511',
   error: '#C74719',
   disabled: '#b7b7b9',
+  pressButton: '#bd510e',
 };
 
 export { colorsLight, colorsDark };
