@@ -10,7 +10,7 @@ import {
   StyledDate,
   Div,
 } from './styles';
-import { Icon, IconName } from '@/kit';
+import { Icon, IconName, formatDate } from '@/kit';
 import styled from 'styled-components';
 
 interface Review {
@@ -19,7 +19,7 @@ interface Review {
   surname: string;
   avatar: string | null;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   comment: string;
   rating: number;
   userRole: 'customer' | 'coach' | 'adminClub';
@@ -56,6 +56,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   };
 
   const reviewDateToShow = review.updatedAt || review.createdAt;
+  console.log(review.surname);
 
   return (
     <Div key={review.id}>
@@ -63,9 +64,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
         <Avatar src={getAvatar(review.avatar, review.name, review.userRole)} />
         <div>
           <Name>
-            {review.name && review.surname
-              ? `${review.name} ${review.surname}`
-              : 'Анонімний користувач'}
+            {`${review.name} ${review.surname ? `${review.surname}` : ''}`}
           </Name>
 
           <Stars>
@@ -85,19 +84,9 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
             ))}
           </Stars>
         </div>
-        <StyledDate>
-          {' '}
-          {reviewDateToShow
-            ? new Date(reviewDateToShow).toLocaleDateString('en-US', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-              })
-            : ''}
-        </StyledDate>
+        <StyledDate>{formatDate(reviewDateToShow)}</StyledDate>
       </UserInfo>
       <Comment>{review.comment}</Comment>
-      <Footer></Footer>
     </Div>
   );
 };

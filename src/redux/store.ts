@@ -13,7 +13,7 @@ import { cardIdApi } from './details/cardIdApi';
 import { favoritesApi } from './details/favoritesApi';
 import { loginReducer } from './auth/loginSlice';
 import { searchApi } from './search/searchApi';
-import reviewReducer from './reviews/reviewSlice';
+// import reviewReducer from './reviews/reviewSlice';
 import { globalsStatesReducer } from './globalsStates/globalsStates';
 import { coachServicesApi } from './coachServices/coachServicesApi';
 
@@ -34,7 +34,7 @@ export const store = configureStore({
     [favoritesApi.reducerPath]: favoritesApi.reducer,
     globalsStates: globalsStatesReducer,
     setLogin: loginReducer,
-    reviews: reviewReducer,
+    // reviews: reviewReducer,
     [coachServicesApi.reducerPath]: coachServicesApi.reducer,
   },
   middleware: getDefaultMiddleware =>

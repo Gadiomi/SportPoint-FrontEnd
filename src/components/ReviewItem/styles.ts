@@ -72,6 +72,8 @@ export const Avatar = styled.img`
   border-radius: 50%;
   width: 48px;
   height: 48px;
+  object-fit: cover;
+  flex-shrink: 0;
 `;
 
 export const Name = styled.div`
@@ -99,7 +101,7 @@ export const Comment = styled.p`
 export const Footer = styled.div`
   justify-content: space-between;
   font-size: 12px;
-  color: ${props => props.theme.secWhite};
+  color: ${props => props.theme.color.secWhite};
 `;
 
 export const Feedback = styled.span`

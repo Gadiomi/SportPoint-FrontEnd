@@ -32,7 +32,7 @@ export enum IconName {
   LOCATION = 'icon-location',
   SETTINGS = 'icon-settings',
   ALERT_CIRCLE = 'icon-alert-circle',
-  SEARCH = 'icon-search',
+  // SEARCH = 'icon-search',
   ARROW_RIGHT = 'icon-arrow-right',
   EDIT_CONTAINED = 'icon-edit-contained',
   TRASH = 'icon-trash',
@@ -61,6 +61,7 @@ export enum IconName {
   Icon_share = 'icon-Icon2',
   SORT_VERTICAL_02 = 'sort-vertical-02',
   SORT_VERTICAL_021 = 'sort-vertical-021',
+  Icon_share2 = 'icon-share',
   CHAT = 'icon-chat',
   FILTERS = 'icon-filters',
 }
