@@ -102,7 +102,7 @@ const TrainerPage: FC = () => {
             _id={_id}
             role={role}
             isLogin={isLogin}
-            iconNames={[IconName.ICON_CHAT, IconName.HEART_NONE]}
+            iconNames={[IconName.CHAT, IconName.HEART_NONE]}
             firstName={firstName}
             lastName={lastName}
             avatar={avatar}
@@ -154,8 +154,7 @@ const TrainerPage: FC = () => {
 
         {coachData?.club && coachData.club.length > 0 && (
           <WorksInCard
-            _id={_id}
-            role={role}
+            role="adminClub"
             isLogin={isLogin}
             rating={rating}
             counts={[countReview ?? 0]}

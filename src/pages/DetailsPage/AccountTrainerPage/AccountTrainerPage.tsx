@@ -9,7 +9,7 @@ import ReviewCard from '../components/ReviewCard/ReviewCard';
 import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
-// import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
@@ -101,7 +101,7 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
           _id={_id}
           role={role}
           isLogin={isLogin}
-          iconNames={[IconName.ICON_CHAT, IconName.HEART_NONE]}
+          iconNames={[IconName.CHAT, IconName.HEART_NONE]}
           firstName={firstName}
           lastName={lastName}
           avatar={avatar}
@@ -147,14 +147,13 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
         />
       )}
 
-      {/* {schedule && schedule.length > 0 && (
+      {schedule && schedule.length > 0 && (
         <WorkingHoursCard schedules={schedule || []} />
-      )} */}
+      )}
 
       {coachData?.club && coachData.club.length > 0 && (
         <WorksInCard
-          _id={_id}
-          role={role}
+          role="adminClub"
           isLogin={isLogin}
           rating={rating}
           counts={[countReview ?? 0]}

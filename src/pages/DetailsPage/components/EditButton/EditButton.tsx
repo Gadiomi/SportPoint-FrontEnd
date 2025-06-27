@@ -18,8 +18,6 @@ const EditButton: React.FC<EditButtonProps> = ({ _id, role }) => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  console.log('ID', _id);
-
   const handleClick = () => {
     console.log('Кнопку натиснуто!');
     console.log('ID тренера або клубу:', _id);

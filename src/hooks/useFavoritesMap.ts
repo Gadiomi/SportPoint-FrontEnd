@@ -19,6 +19,7 @@ export const useFavoritesMap = ({
   const [favoritesMap, setFavoritesMap] = useState<Record<string, boolean>>({});
   const [addToFavorites] = useAddToFavoritesMutation();
   const [removeFromFavorites] = useRemoveFromFavoritesMutation();
+
   const { data: favoritesData, refetch } = useGetFavoritesQuery(
     { role },
     { skip: !isLogin },
@@ -31,6 +32,10 @@ export const useFavoritesMap = ({
   }, [isLogin, refetch]);
 
   useEffect(() => {
+    console.log('💥 FULL favoritesData:', favoritesData);
+  }, [favoritesData]);
+
+  useEffect(() => {
     if (
       !favoritesData?.data ||
       !Array.isArray(favoritesData.data) ||
@@ -38,23 +43,13 @@ export const useFavoritesMap = ({
     )
       return;
 
-    const favoriteUserIds = new Set(
-      favoritesData.data
-        .filter((fav: any) => fav.userId)
-        .map((fav: any) => fav.userId.toString()),
-    );
-
     const map: Record<string, boolean> = {};
     ids.forEach(id => {
-      map[id] = favoriteUserIds.has(id);
+      map[id] = favoritesData.data.some((fav: any) => fav._id === id);
     });
-
-    console.log('🗺️ Створена favoritesMap:', map);
 
     setFavoritesMap(map);
   }, [favoritesData?.data, ids]);
-
-  console.log('favoritesMap:', ids);
 
   const toggleFavorite = async (id: string) => {
     if (!isLogin) return;
@@ -65,12 +60,13 @@ export const useFavoritesMap = ({
         await addToFavorites({ id, data: { role } }).unwrap();
         setFavoritesMap(prev => ({ ...prev, [id]: true }));
         console.log(`Успішно додано до улюблених: id = ${id}`);
+        await refetch();
       } else {
-        console.log('Видаляємо обране з id:', id);
         console.log(`Видаляємо з улюблених: id = ${id}`);
         await removeFromFavorites({ id }).unwrap();
         setFavoritesMap(prev => ({ ...prev, [id]: false }));
         console.log(`Успішно видалено з улюблених: id = ${id}`);
+        await refetch();
       }
     } catch (err: any) {
       console.error('Помилка при додаванні/видаленні улюбленого:', err);
