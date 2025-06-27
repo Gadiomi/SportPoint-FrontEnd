@@ -32,7 +32,7 @@ export enum IconName {
   LOCATION = 'icon-location',
   SETTINGS = 'icon-settings',
   ALERT_CIRCLE = 'icon-alert-circle',
-  // SEARCH = 'icon-search',
+  SEARCH = 'icon-search',
   ARROW_RIGHT = 'icon-arrow-right',
   EDIT_CONTAINED = 'icon-edit-contained',
   TRASH = 'icon-trash',
