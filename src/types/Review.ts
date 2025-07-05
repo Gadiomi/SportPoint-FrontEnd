@@ -9,6 +9,7 @@ export interface Review {
   avatar: string;
   comment: string;
   adminReply?: string;
+  recommend?: string;
   sport?: string[];
   createdAt: string;
   updatedAt?: string;

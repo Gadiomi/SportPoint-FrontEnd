@@ -17,16 +17,18 @@ interface ReportModalProps {
   onSubmit: (reason: string) => void;
 }
 
-const reportOptions = [
-  "Коментар не відповідає дійсності і наносить негативний урон для моєї кар'єри",
-  'Коментар носить 18+ характер',
-  'Я не мав/мала співпрацю з цим клієнтом',
-  'Інша причина',
+const reportOptionKeys = [
+  'report.reason1',
+  'report.reason2',
+  'report.reason3',
+  'report.reason4',
 ];
 
 const ReportModal: React.FC<ReportModalProps> = ({ onClose, onSubmit }) => {
   const { t } = useTranslation();
   const translate: (key: string, options?: Record<string, any>) => string = t;
+
+  const reportOptions = reportOptionKeys.map(key => translate(key));
 
   const [selectedReason, setSelectedReason] = useState('');
   const [customReason, setCustomReason] = useState('');
@@ -97,7 +99,10 @@ const ReportModal: React.FC<ReportModalProps> = ({ onClose, onSubmit }) => {
           }
         >
           <>
-            <Icon name={IconName.Icon_share} styles={{ color: '#1C1B20' }} />
+            <Icon
+              name={IconName.BACK_ARROW}
+              styles={{ width: 24, height: 24 }}
+            />
             {translate('account_page.send-complaint')}
           </>
         </SubmitButton>

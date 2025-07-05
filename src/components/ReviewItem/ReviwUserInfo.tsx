@@ -38,7 +38,6 @@ const UserInfo: React.FC<UserInfoProps> = ({
     role === 'coach' ? 'Тренер' : role === 'adminClub' ? 'Клуб' : 'Користувач';
 
   const fullName = `${firstName} ${lastName}`;
-  console.log('sport', sport);
 
   // Створення ініціалів
   const initials = fullName
