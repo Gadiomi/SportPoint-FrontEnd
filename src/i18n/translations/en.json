@@ -103,7 +103,12 @@
     "class-schedule": "CLASS SCHEDULE",
     "coaches-work-schedule": "COACHES' WORK SCHEDULE",
     "club-reviews": "CLUB REVIEWS",
-    "statistics": "STATISTICS"
+    "statistics": "STATISTICS",
+    "add-coaches": "ADD COACHES",
+    "add-coaches-to-gims": "ADD COACHES TO GYMS",
+    "add-club-services": "ADD CLUB SERVICES",
+    "payment-method": "PAYMENT METHOD",
+    "edit-profile": "EDIT PROFILE"
   },
   "register_page": {
     "title": "Create an Account",

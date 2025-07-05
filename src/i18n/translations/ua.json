@@ -112,7 +112,12 @@
     "class-schedule": "РОЗКЛАД ЗАНЯТЬ",
     "coaches-work-schedule": "РОЗКЛАД РОБОТИ ТРЕНЕРІВ",
     "club-reviews": "ВІДГУКИ КЛУБУ",
-    "statistics": "СТАТИСТИКА"
+    "statistics": "СТАТИСТИКА",
+    "add-coaches": "ДОДАТИ ТРЕНЕРІВ",
+    "add-coaches-to-gims": "ДОДАТИ ТРЕНЕРІВ ДО ЗАЛ",
+    "add-club-services": "ДОДАТИ ПОСЛУГИ КЛУБУ",
+    "payment-method": "СПОСІБ ОПЛАТИ",
+    "edit-profile": "РЕДАГУВАТИ ПРОФІЛЬ"
   },
   "register_page": {
     "title": "Створити акаунт",

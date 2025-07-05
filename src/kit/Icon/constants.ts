@@ -50,7 +50,6 @@ export enum IconName {
   DELETE = 'icon-delete',
   SCHEDULE = 'icon-schedule',
   DOWN_ANGLE_QUOTE = 'icon-angle-down',
-
   SERVICES = 'icon-services',
   STATISTICS = 'icon-statistics',
   CALENDAR = 'icon-calendar',
@@ -61,4 +60,7 @@ export enum IconName {
   Icon_share = 'icon-Icon2',
   SORT_VERTICAL_02 = 'sort-vertical-02',
   SORT_VERTICAL_021 = 'sort-vertical-021',
+  CHAT = 'icon-chat',
+  CLASS_SCHEDULE = 'class-schedule',
+  PAYMENT_METHOD = 'payment-method',
 }

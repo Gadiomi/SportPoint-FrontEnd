@@ -15,10 +15,17 @@ const ProfileButton: FC<Props> = ({ title, arrowDirection = 'right' }) => {
   const navigate = useNavigate();
 
   const correctedTitle = (ttl: string) => {
-    return ttl.includes('-') ? ttl.replace('-', '_') : ttl;
+    return ttl.includes('-') ? ttl.replaceAll('-', '_') : ttl;
   };
 
-  // console.log('ThisIconName -> ', ThisIconName[correctedTitle(title)]);
+  // console.log(
+  //   '-title: ',
+  //   title,
+  //   ' - ',
+  //   correctedTitle(title),
+  //   ' ThisIconName -> ',
+  //   ThisIconName[correctedTitle(title)],
+  // );
 
   return (
     <AccountButton

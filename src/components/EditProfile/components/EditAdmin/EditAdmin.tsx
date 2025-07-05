@@ -38,12 +38,12 @@ const EditAdmin = () => {
         <ProfileButton title={'club-reviews'} />
         <ProfileButton title={'statistics'} />
         <Line $top={'16px'} $bottom={'16px'} />
-        <ProfileButton title={''} />
-        <ProfileButton title={''} />
-        <ProfileButton title={''} />
+        <ProfileButton title={'add-coaches'} />
+        <ProfileButton title={'add-coaches-to-gims'} />
+        <ProfileButton title={'add-club-services'} />
         <Line $top={'16px'} $bottom={'16px'} />
-        <ProfileButton title={''} />
-        <ProfileButton title={''} />
+        <ProfileButton title={'payment-method'} />
+        <ProfileButton title={'edit-profile'} />
         {/* <ProfileButton title={''} />
         <Line $top={'16px'} $bottom={'16px'} />
         <ProfileButton title={'favorites'} />

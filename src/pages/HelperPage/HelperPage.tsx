@@ -13,7 +13,7 @@ const HelperPage = () => {
         <h2>Icons {`(name={IconName. ...)`}</h2>
         <IconList>
           {iconNameList.map(item => (
-            <IconBlock>
+            <IconBlock key={item[0]}>
               <Icon
                 styles={{
                   color: 'currentColor',
