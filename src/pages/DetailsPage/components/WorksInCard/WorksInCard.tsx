@@ -60,7 +60,10 @@ const WorksInCard: React.FC<WorksInCardProps> = ({
     }
   };
 
-  const ids = useMemo(() => clubs.map(club => club.id), [clubs]);
+  const ids = useMemo(
+    () => clubs.map(club => club.id).filter(Boolean),
+    [clubs],
+  );
 
   const { favoritesMap, toggleFavorite } = useFavoritesMap({
     ids,
@@ -117,7 +120,7 @@ const WorksInCard: React.FC<WorksInCardProps> = ({
                     color: '#EC4033',
                   }}
                   iconName={
-                    favoritesMap[club.id]
+                    favoritesMap[club.id] === true
                       ? IconName.HEART_FILL
                       : IconName.HEART_NONE
                   }

@@ -8,15 +8,19 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
   AccountName,
+  ContactInfo,
   GeneralInFormWrapper,
   GeneralSports,
   GeneralWrapper,
+  SelectTitle,
   SportButton,
   SportButtonsContainer,
 } from './styles';
 import ProfileButton from '../../components/ProfileButton/ProfileButton';
 import BackSaveButtons from './BackSaveButtons';
 import BigLoader from '@/components/BigLoader/BigLoader';
+// import Select from 'node_modules/react-select/dist/declarations/src/Select';
+import Select, { StylesConfig } from 'react-select';
 
 interface UserProfileFormData {
   avatar: string | File;
@@ -35,6 +39,89 @@ const General: FC = () => {
   const { data: userData, isLoading } = useGetUserProfileQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
+
+  type OptionType = {
+    value: string;
+    label: string;
+  };
+
+  const cityOptions: OptionType[] = [
+    { value: 'kyiv', label: 'Київ' },
+    { value: 'odesa', label: 'Одеса' },
+    { value: 'dnipro', label: 'Дніпро' },
+    { value: 'lviv', label: 'Львів' },
+  ];
+
+  const customStyles: StylesConfig<OptionType, false> = {
+    control: provided => ({
+      ...provided,
+      backgroundColor: 'transparent',
+      border: '0.5px solid rgba(183, 183, 185, 1)',
+      borderRadius: '6px',
+      boxShadow: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      maxHeight: '37px',
+      '&:hover': {
+        border: '0.5px solid rgba(183, 183, 185, 1)',
+      },
+    }),
+    valueContainer: provided => ({
+      ...provided,
+      padding: '0 8px',
+      display: 'flex',
+      alignItems: 'center',
+      height: '100%',
+      width: '304px',
+    }),
+    singleValue: provided => ({
+      ...provided,
+      color: 'rgba(183, 183, 185, 1)',
+      display: 'flex',
+      alignItems: 'center',
+      marginTop: '4px',
+    }),
+    menu: provided => ({
+      ...provided,
+      backgroundColor: 'rgba(28, 27, 32, 1)',
+      border: '0.5px solid rgba(183, 183, 185, 1)',
+      boxShadow: 'none',
+      margin: '0',
+    }),
+    indicatorsContainer: provided => ({
+      ...provided,
+      width: '37px',
+      maxHeight: '37px',
+    }),
+    indicatorSeparator: () => ({
+      display: 'none',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused
+        ? 'rgba(183, 183, 185, 0.2)'
+        : 'transparent',
+      color: ' rgba(183, 183, 185, 1)',
+      cursor: 'pointer',
+    }),
+    input: provided => ({
+      ...provided,
+      position: 'absolute',
+      width: '1px',
+      height: '1px',
+      padding: 0,
+      margin: 0,
+      border: 'none',
+      clip: 'rect(0 0 0 0)',
+      overflow: 'hidden',
+    }),
+  };
+
+  const [selectedCity, setSelectedCity] = useState(cityOptions[0]);
+
+  const handleChange = (selectedOption: OptionType | any) => {
+    setSelectedCity(selectedOption);
+  };
 
   const email = localStorage.getItem('userEmail');
 
@@ -199,23 +286,33 @@ const General: FC = () => {
           onChange={handleFileChange}
         />
       </AccountName>
+      <SelectTitle>Місто</SelectTitle>
+      <Select<OptionType>
+        options={cityOptions}
+        styles={customStyles}
+        value={selectedCity}
+        onChange={handleChange}
+        isSearchable={false}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <GeneralInFormWrapper>
+          <ContactInfo>Загальна інформація</ContactInfo>
           <Input
             testId="firstName"
-            label="First Name"
+            label={t(`account_page.firstName`)}
             value={watch('firstName') || ''}
             {...register('firstName')}
             onChange={e => setValue('firstName', e.target.value)}
           />
           <Input
             testId="lastName"
-            label="Last Name"
+            label={t(`account_page.lastName`)}
             value={watch('lastName') || ''}
             {...register('lastName')}
             onChange={e => setValue('lastName', e.target.value)}
           />
+          <ContactInfo>Контактна інформація</ContactInfo>
           <Input
             testId="email"
             label="Email"
@@ -225,14 +322,14 @@ const General: FC = () => {
           />
           <Input
             testId="phone"
-            label="Phone"
+            label={t(`account_page.phone`)}
             value={watch('description.phone') || ''}
             {...register('description.phone')}
             onChange={e => setValue('description.phone', e.target.value)}
           />
           <Input
             testId="age"
-            label="Age"
+            label={t(`account_page.birth`)}
             value={watch('description.age') || ''}
             {...register('description.age')}
             onChange={e => setValue('description.age', e.target.value)}

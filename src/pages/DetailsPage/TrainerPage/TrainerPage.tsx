@@ -6,6 +6,7 @@ import { useAppSelector } from '@/hooks/hooks';
 import { useTranslation } from 'react-i18next';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
+import ButtonBack from '../components/ButtonBack/ButtonBack';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
@@ -52,10 +53,17 @@ const TrainerPage: FC = () => {
     certificates,
   } = coachData || {};
 
-  const { social_links, price, schedule, experience, city, age, short_desc } =
-    coachData?.description || {};
+  const {
+    social_links,
+    subscriptions,
+    schedule,
+    experience,
+    city,
+    age,
+    short_desc,
+  } = coachData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
   const title = isLogin
     ? 'Введіть дані, і тренер з вами зв’яжеться'
@@ -88,12 +96,13 @@ const TrainerPage: FC = () => {
     <Section>
       <Container>
         <Logo />
+        <ButtonBack t={t} />
         <StyledProfileCard>
           <ProfileCard
             _id={_id}
             role={role}
             isLogin={isLogin}
-            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
+            iconNames={[IconName.ICON_CHAT, IconName.HEART_NONE]}
             firstName={firstName}
             lastName={lastName}
             avatar={avatar}
@@ -131,13 +140,14 @@ const TrainerPage: FC = () => {
             title={title}
           />
         )}
-        {price && price.length > 0 && (
+        {subscriptions && subscriptions.length > 0 && (
           <PriceCard
-            prices={price}
+            subscriptions={subscriptions}
             titleKey="details_page.services"
             defaultImage="/assets/images/DetailsPage/Services_no_photo.png"
           />
         )}
+
         {/* {schedule && schedule.length > 0 && (
           <WorkingHoursCard schedules={schedule || []} />
         )} */}

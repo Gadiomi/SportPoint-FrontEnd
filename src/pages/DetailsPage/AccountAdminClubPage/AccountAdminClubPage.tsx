@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
+import { useTranslation } from 'react-i18next';
 import { IconName } from '@/kit';
 import { useAppSelector } from '@/hooks/hooks';
+import ButtonBack from '../components/ButtonBack/ButtonBack';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
@@ -24,6 +26,7 @@ interface AdminClubProps {
 }
 
 const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
+  const { t } = useTranslation();
   console.log('ID:', id);
   const { isLogin } = useAppSelector(state => state.setLogin);
   console.log(' Користувач залогінився', isLogin);
@@ -53,10 +56,10 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
   const { _id, role, firstName, avatar, countReview, rating, images } =
     adminClubData || {};
 
-  const { social_links, price, schedule, city, address } =
+  const { social_links, subscriptions, schedule, city, address } =
     adminClubData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
   const title = '';
 
@@ -78,12 +81,13 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
 
   return (
     <>
+      <ButtonBack t={t} />
       <StyledProfileCard>
         <ProfileCard
           _id={_id}
           role={role}
           isLogin={isLogin}
-          iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
+          iconNames={[IconName.ICON_CHAT, IconName.HEART_NONE]}
           firstName={firstName}
           avatar={avatar}
           city={city}
@@ -110,9 +114,9 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
       )}
       {images && images.length > 0 && <GalleryCard images={images} />}
       {/* <OurHallsCard /> */}
-      {price && price.length > 0 && (
+      {subscriptions && subscriptions.length > 0 && (
         <PriceCard
-          prices={price}
+          subscriptions={subscriptions}
           titleKey="details_page.subscription"
           defaultImage="/assets/images/DetailsPage/Subscription_no_photo.png"
         />

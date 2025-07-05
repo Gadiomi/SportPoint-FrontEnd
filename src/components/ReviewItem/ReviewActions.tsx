@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Review } from '@/types/Review';
 import { useTranslation } from 'react-i18next';
 import { reportReview } from '@/redux/reviews/reviewsApi';
 import { Icon, IconName } from '@/kit';
@@ -8,12 +9,13 @@ import ReportMoal from './ReportModal';
 interface ReviewActionsProps {
   reviewId: string;
   userCommentId: string;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string, adminReply?: string) => void;
   onEdit?: () => void;
   onReply?: () => void;
   userRole: string;
-  isFirstReview: boolean;
+  isFirstReview?: boolean;
   adminReply?: string;
+  isReply?: boolean;
   firstName?: string;
   lastName?: string;
   rating?: number;
@@ -30,6 +32,7 @@ const ReviewActions: React.FC<ReviewActionsProps> = ({
   ownerId,
   currentUserId,
   userRole,
+  isReply,
   adminReply = '',
 }) => {
   const { t } = useTranslation();
@@ -37,6 +40,7 @@ const ReviewActions: React.FC<ReviewActionsProps> = ({
   const [isReportOpen, setReportOpen] = useState(false);
 
   const isOwner = currentUserId === ownerId;
+
   // Власник або якщо є adminReply → можна редагувати і видаляти
   const canEditAndDelete = isOwner || !!adminReply;
   const actionIcon = canEditAndDelete
@@ -57,7 +61,7 @@ const ReviewActions: React.FC<ReviewActionsProps> = ({
   const handleReport = () => setReportOpen(true);
   const submitReport = async (reason: string) => {
     try {
-      await reportReview(reviewId);
+      await reportReview({ reviewId, reason });
       alert('Скарга надіслана!');
     } catch {
       alert('Не вдалося надіслати скаргу');
@@ -68,7 +72,11 @@ const ReviewActions: React.FC<ReviewActionsProps> = ({
     <>
       <ButtonGroup>
         {canEditAndDelete ? (
-          <DeleteButton onClick={() => onDelete?.(reviewId)}>
+          <DeleteButton
+            onClick={() => {
+              onDelete?.(reviewId, adminReply);
+            }}
+          >
             {translate('account_page.delete-btn')}
           </DeleteButton>
         ) : (

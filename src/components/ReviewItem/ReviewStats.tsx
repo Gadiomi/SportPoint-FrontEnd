@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useGetUserProfileQuery } from '@/redux/user/userApi';
 import { useAppSelector } from '@/redux/reviews/reviewsSelector';
 import {
-  fetchReviewsByUserCommentId,
+  fetchReviewsAboutUser,
   fetchAllUsers,
   replyToReview,
   fetchUserById,
 } from '@/redux/reviews/reviewsApi';
+import { Roles } from '@/constants';
+import { useDeleteComment } from '@/hooks/useDeleteComment';
+import { useUpdateReview } from '@/hooks/useUpdateReview';
 import FeedbackSection from '@/components/ReviewItem/FeedbackSection';
 import styled from 'styled-components';
 import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
@@ -18,6 +20,7 @@ import StyledHr from '../StyledHr/StyledHr';
 import AverageRating from './AverageRating';
 import ReplyModal from './ReplyModal';
 import AuthPromptModal from './AuthPromptModal';
+import { formatDate } from '@/kit/formatDate/formatDate';
 import { Icon, IconName } from '@/kit';
 import { useTheme } from 'styled-components';
 import { ContainerButtonMore, ButtonMore } from '@/pages/ReviewsPage/styles';
@@ -45,7 +48,11 @@ interface User {
   avatar?: string;
   firstName?: string;
   lastName?: string;
-  role?: string;
+  createdAt?: string;
+  sport?: [];
+  rating: number;
+  role?: Roles;
+  _id?: string;
 }
 
 interface CommentData {
@@ -76,11 +83,9 @@ const ReviewStats: React.FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const translate: (key: string, options?: Record<string, any>) => string = t;
-  // const { data} = useGetUserProfileQuery(undefined);
   const user = useAppSelector(state => state.user.user);
-  // console.log('userStats',user)
   const currentUser = user;
-  // console.log('ReviewStat', user);
+  console.log('ReviewStatUser', user?.userId);
   const location = useLocation();
   const [ratings, setRatings] = useState<{ [key: number]: number }>({
     5: 0,
@@ -96,7 +101,10 @@ const ReviewStats: React.FC = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [firstComment, setFirstComment] = useState<any>(null);
-  const [trainerData, setTrainerData] = useState<any>(null);
+  const [targetUserData, setTargetUserData] = useState<User | null>(null);
+  console.log('setTargetUserData', targetUserData?.role);
+  // const [trainerData, setTrainerData] = useState<any>(null);
+  // console.log(trainerData);
   const [authorProfiles, setAuthorProfiles] = useState<Record<string, any>>({});
   const [allComments, setAllComments] = useState<CommentData[]>([]);
   const [showAll, setShowAll] = useState(false);
@@ -110,41 +118,43 @@ const ReviewStats: React.FC = () => {
   const { id: userId } = useParams();
   // console.log('id: userCommentId', userId);
 
+  // Використання хука для видалення відгуків
+  const { handleDeleteReview, error: deleteError } = useDeleteComment();
+
   const fetchReviews = async () => {
-    const isTrainerOrClub =
-      user?.role === 'coach' || user?.role === 'adminClub';
-    const userCommentId = isTrainerOrClub
-      ? user?.userId
-      : user?.user_comments?.[0]?.userCommentId;
-
-    const effectiveUserId = userId || user?.userId;
-    console.log('effectiveUserId', effectiveUserId);
-
-    if (!effectiveUserId) {
-      console.error('Не знайдено userId і немає авторизованого користувача');
-      return;
-    }
-
     try {
+      const isTrainerOrClub =
+        user?.role === 'coach' || user?.role === 'adminClub';
+      const userCommentId = isTrainerOrClub
+        ? user?.userId
+        : user?.user_comments?.[0]?.userCommentId;
+
+      const isProfilePage = location.pathname === '/profile';
+      const isEditPage = location.pathname === '/profile/edit/reviews';
+
+      const isViewingOwnProfile = userId === user?.userId;
+      const isNotProfileOrEdit = !isProfilePage && !isEditPage;
+
       let commentsArray: CommentData[] = [];
 
-      if (!user) {
-        // Неавторизований користувач → отримаємо масив відгуків
-        const response = await fetchUserById(effectiveUserId);
-        console.log('userComments:', response.data?.userComments);
+      if (!isViewingOwnProfile && userId && isNotProfileOrEdit) {
+        // Гостьова сторінка перегляду відгуків іншого користувача
+        const response = await fetchUserById(userId); //запит на картку
+        console.log('responseState', response);
         const comments = response.data?.userComments;
+        setTargetUserData(response.data.data);
         if (Array.isArray(comments)) {
           commentsArray = comments;
         } else if (comments) {
           commentsArray = [comments];
         }
       } else {
-        // Авторизований → отримаємо масив відгуків
-        if (!userCommentId) {
+        // Звичайна сторінка профілю (авторизований)
+        if (!user?.userId) {
           console.error('Не знайдено userCommentId');
           return;
         }
-        const response = await fetchReviewsByUserCommentId(userCommentId);
+        const response = await fetchReviewsAboutUser(user?.userId);
         commentsArray = Array.isArray(response.data)
           ? response.data
           : [response.data];
@@ -215,8 +225,26 @@ const ReviewStats: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchReviews();
+    let isMounted = true;
+
+    const safeFetch = async () => {
+      await fetchReviews();
+      if (!isMounted) return;
+      // Сюди можна додати додаткове оновлення стану, якщо потрібно
+    };
+
+    safeFetch();
+
+    return () => {
+      isMounted = false;
+      setAllComments([]);
+    };
   }, [user?.userId]);
+
+  const { handleReviewUpdate } = useUpdateReview({
+    fetchReviews,
+    setIsEditing,
+  });
 
   const handleFeedback = (id: string, type: 'like' | 'dislike') => {
     setAllComments(prev =>
@@ -239,6 +267,14 @@ const ReviewStats: React.FC = () => {
       isOpen: true,
       author,
       comment,
+    });
+  };
+
+  const handleEditReply = (comment: CommentData, author: User) => {
+    setReplyModalData({
+      isOpen: true,
+      comment,
+      author,
     });
   };
 
@@ -278,17 +314,15 @@ const ReviewStats: React.FC = () => {
   };
 
   const handleClick = () => {
-    console.log('Кнопка залишити відгук натиснута');
-    if (!user) {
+    if (!currentUser) {
       setShowAuthModal(true);
-    } else {
-      setIsEditing(true);
+      return;
     }
+    setIsEditing(true);
   };
 
   const maxRatingCount = Math.max(...Object.values(ratings), 1); // щоб уникнути ділення на 0
-  const targetId = firstComment?.trainer || firstComment?.club || '';
-  const isClientProfile = user?.role === 'customer';
+  const targetId = firstComment?.coach || firstComment?.admiClub || '';
 
   return (
     <div>
@@ -315,15 +349,13 @@ const ReviewStats: React.FC = () => {
             </div>
           </RatingContainer>
           <div onClick={handleClick}>
-            {location.pathname === '/profile/edit/reviews' && (
-              <ReviewHeader
-                title={translate('account_page.leave_review')}
-                leftIcon={IconName.Icon_message_chat_01}
-                rightIcon={IconName.ARROW_CORNER}
-                leftIconStyles={{ opacity: 0 }}
-                rightIconStyles={{ width: '32px', height: '32px' }}
-              />
-            )}
+            <ReviewHeader
+              title={translate('account_page.leave_review')}
+              leftIcon={IconName.Icon_message_chat_01}
+              rightIcon={IconName.ARROW_CORNER}
+              leftIconStyles={{ opacity: 0 }}
+              rightIconStyles={{ width: '32px', height: '32px' }}
+            />
           </div>
           {showAuthModal && (
             <AuthPromptModal onClose={() => setShowAuthModal(false)} />
@@ -334,7 +366,6 @@ const ReviewStats: React.FC = () => {
       <>
         {reviewsToShow.map((comment, index) => {
           const author = authorProfiles[comment.owner];
-          // console.log('author',author);
           const avatarSrc =
             author?.avatar ||
             '../../../public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg';
@@ -366,16 +397,7 @@ const ReviewStats: React.FC = () => {
                   </Stars>
                 </Div>
                 <StyledDate>
-                  {' '}
-                  {comment.createdAt || comment.updatedAt
-                    ? new Date(
-                        comment.createdAt ?? comment.updatedAt!,
-                      ).toLocaleDateString('en-US', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      })
-                    : ''}
+                  {formatDate(comment.createdAt, comment.updatedAt)}
                 </StyledDate>
               </UserInfo>
               <CommentText>{comment.comment}</CommentText>
@@ -394,6 +416,7 @@ const ReviewStats: React.FC = () => {
                   <UserInfo>
                     <Avatar
                       src={
+                        targetUserData?.avatar ||
                         currentUser?.avatar ||
                         '../../../public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
                       }
@@ -401,16 +424,22 @@ const ReviewStats: React.FC = () => {
                     <Div>
                       <NameIcon>
                         <Name>
-                          {currentUser?.firstName} {currentUser?.lastName}
+                          {targetUserData?.firstName || currentUser?.firstName}{' '}
+                          {targetUserData?.lastName || currentUser?.lastName}
                         </Name>
                         <Icon name={IconName.Icon_ICON} size={12} />
                       </NameIcon>
                       {/* Блок з видами спорту */}
                       <SportList>
-                        {currentUser?.role === 'adminClub' ? (
+                        {targetUserData?.role &&
+                        currentUser?.role === Roles.ADMIN_CLUB ? (
                           <Badge>{translate('account_page.sports-club')}</Badge>
                         ) : (
-                          currentUser?.sport?.map(sport => (
+                          (
+                            targetUserData?.sport ||
+                            currentUser?.sport ||
+                            []
+                          ).map(sport => (
                             <SportTag key={sport}>{sport}</SportTag>
                           ))
                         )}
@@ -418,18 +447,7 @@ const ReviewStats: React.FC = () => {
                     </Div>
                   </UserInfo>
                   <ReplyContainer>{comment.adminReply}</ReplyContainer>
-                  <StyledDate>
-                    {comment.updatedAt
-                      ? new Date(comment.updatedAt).toLocaleDateString(
-                          'en-US',
-                          {
-                            day: '2-digit',
-                            month: 'short',
-                            year: 'numeric',
-                          },
-                        )
-                      : 'Дата не вказана'}
-                  </StyledDate>
+                  <StyledDate>{formatDate(comment.updatedAt)}</StyledDate>
                 </>
               )}
               {location.pathname === '/profile/edit/reviews' && (
@@ -443,6 +461,8 @@ const ReviewStats: React.FC = () => {
                   currentUserId={currentUser?.userId ?? ''}
                   ownerId={comment.owner}
                   onReply={() => handleOpenReplyModal(comment)}
+                  onDelete={handleDeleteReview}
+                  onEdit={() => handleEditReply(comment, author)}
                 />
               )}
             </ReviewCard>
@@ -459,27 +479,23 @@ const ReviewStats: React.FC = () => {
       </>
 
       {/* Якщо isEditing true, відображаємо сторінку редагування */}
-      {isEditing && firstComment && trainerData && (
+      {isEditing && targetUserData && (
         <EditReviewPage
           review={{
-            id: firstComment._id,
-            userCommentId: trainerData.userCommentId,
-            name: trainerData.name || '',
-            surname: trainerData.surname || '',
-            avatar: trainerData.avatar || '',
-            userRole: trainerData.userRole,
-            sport: trainerData.sport || [],
-            comment: firstComment.text || '',
-            createdAt: firstComment.createdAt,
-            updatedAt: firstComment.updatedAt,
+            id: targetUserData._id || '',
+            userCommentId: targetUserData.userId || '',
+            name: targetUserData.firstName || '',
+            surname: targetUserData.lastName || '',
+            avatar: targetUserData.avatar || '',
+            userRole: targetUserData.role as Roles,
+            sport: targetUserData.sport || [],
+            comment: firstComment?.text ?? '', // додано
+            createdAt: targetUserData.createdAt || '',
             averageRating,
             totalReviews,
             targetId,
 
-            rating: firstComment.rating ?? 0,
-            likes: firstComment.likes ?? 0,
-            dislikes: firstComment.dislikes ?? 0,
-            isFirstReview: firstComment.isFirstReview ?? false,
+            rating: targetUserData.rating ?? 0,
           }}
           onCancel={() => setIsEditing(false)} // Кнопка для скасування редагування
           onSave={fetchReviews}
@@ -491,6 +507,7 @@ const ReviewStats: React.FC = () => {
           isOpen={replyModalData.isOpen}
           onClose={handleCloseReplyModal}
           onSubmit={handleReplySubmit}
+          _id={replyModalData.author?._id || ''}
           avatar={
             replyModalData.author?.avatar ||
             '../../../public/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
@@ -499,6 +516,7 @@ const ReviewStats: React.FC = () => {
           lastName={replyModalData.author?.lastName || ''}
           rating={replyModalData.comment.average || 0}
           createdAt={replyModalData.comment.createdAt || ''}
+          commentId={replyModalData.comment._id}
         />
       )}
     </div>

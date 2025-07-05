@@ -4,6 +4,8 @@
   "signup": "Sign Up",
   "chosen": "CHOSEN",
   "coachs": "Coachs",
+  "chat": "Chat",
+  "main": "Main",
   "clubs-list": "Sports clubs",
   "clubs": "Clubs",
   "profile": "Profile",
@@ -13,6 +15,7 @@
   "loading": "Loading...",
   "resultBack": "Search results",
   "ediet-review": "РЕДАГУВАТИ ВІДГУК",
+  "contacts": "FOLLOW US",
   "gym": "Gym",
   "uah": "uah",
   "login_page": {
@@ -40,8 +43,11 @@
     "login_facebook": "Login with Facebook"
   },
   "details_page": {
+    "back_button": "BACK",
     "edit_button": "Profile settings",
-    "contacts_text": "CONTACTS",
+    "reserve_button": "Reserve",
+    "social_networks": "SOCIAL NETWORKS",
+    "follow_us": "FOLLOW US",
     "subscription": "SUBSCRIPTION",
     "services": "SERVICES",
     "gallery": "GALLERY",
@@ -55,7 +61,9 @@
     "complain": "Complain",
     "respond": "Respond",
     "reply-to-review": "Reply to review",
+    "edit-reply": "Edit reply",
     "comment": "Comment",
+    "chat": "Chat",
     "choose": "Choose",
     "get_in_touch": "Get in touch",
     "read_more": "Read more",
@@ -108,7 +116,11 @@
     "add-coaches-to-gims": "ADD COACHES TO GYMS",
     "add-club-services": "ADD CLUB SERVICES",
     "payment-method": "PAYMENT METHOD",
-    "edit-profile": "EDIT PROFILE"
+    "edit-profile": "EDIT PROFILE",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "birth": "Date of birth"
   },
   "register_page": {
     "title": "Create an Account",
@@ -130,7 +142,10 @@
     "restore": "Restore"
   },
   "home_page": {
-    "homeDescr": "Discover the best sports clubs and professional trainers in your area.",
+    "homeDescr1": "Find professional trainers and the best sports clubs in your city.",
+    "homeDescr2": "Do you dream of a healthy body, or do you want to find an activity that you like? Or maybe you already have a favorite sport? Choose what you love!",
+    "homeDescr3": "Choose what you love!",
+    "step": "TAKE A STEP",
     "motivation": "BE SPORTY",
     "loading": "Loading",
     "reviews": "reviews",

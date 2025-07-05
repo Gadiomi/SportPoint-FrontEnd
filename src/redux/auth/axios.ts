@@ -50,7 +50,7 @@ const refreshAccessToken = async () => {
 axiosInstance.interceptors.request.use(
   config => {
     const token = Cookies.get(CookiesKey.TOKEN);
-    console.log('Token перед запитом:', token);
+    // console.log('Token перед запитом:', token);
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }

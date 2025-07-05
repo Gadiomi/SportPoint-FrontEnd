@@ -84,6 +84,11 @@
 <symbol id="icon-message-typing" viewBox="0 0 32 32">
 <path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" stroke="currentColor" d="M9.999 16.113v-0.113M15.999 16.113v-0.113M21.998 16.113v-0.113M27.998 16c0 1.725-0.364 3.365-1.019 4.847l1.022 7.151-6.128-1.532c-1.736 0.976-3.739 1.533-5.873 1.533-6.627 0-11.999-5.373-11.999-12s5.372-12 11.999-12c6.627 0 11.999 5.373 11.999 12z"></path>
 </symbol>
+
+<symbol id="icon-chat" viewBox="0 0 32 32">
+<path fill="none" stroke="#f8f7f4" style="stroke: var(--color1, #f8f7f4)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" d="M6.666 14.667c0-5.891 4.775-10.667 10.666-10.667s10.666 4.776 10.666 10.667c0 1.533-0.324 2.991-0.906 4.309l0.908 6.357-5.447-1.362c-1.543 0.868-3.324 1.363-5.221 1.363M4.001 21.333c0 0.958 0.202 1.869 0.566 2.693l-0.567 3.973 3.404-0.851c0.964 0.543 2.077 0.852 3.263 0.852 3.681 0 6.666-2.985 6.666-6.667s-2.984-6.667-6.666-6.667c-3.681 0-6.665 2.985-6.665 6.667z"></path>
+</symbol>
+
 <symbol id="icon-arrow-corner" viewBox="0 0 32 32">
 <path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" stroke="currentColor" d="M9.333 22.667l13.333-13.333M9.333 9.333h13.333v13.333"></path>
 </symbol>
@@ -204,6 +209,15 @@
 </symbol>
 <symbol id="payment-method" viewBox="0 0 24 24">
 <path stroke="#F8F7F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M2.99993 9.29995H20.9999M4.80039 5.1001H19.2C20.5255 5.1001 21.6 6.17377 21.6 7.49923L21.6003 16.5011C21.6003 17.8266 20.5258 18.9001 19.2003 18.9001L4.80062 18.8999C3.47518 18.8999 2.40069 17.8254 2.40065 16.5L2.40039 7.50016C2.40035 6.17465 3.47488 5.1001 4.80039 5.1001z"></path>
+</symbol>
+<symbol id="icon-share" viewBox="0 0 33 32">
+<path stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="2.6667" d="M28.667 15.278l-12.8-8.479v4.8c-11.2 2.4-11.2 13.6-11.2 13.6s4.8-6.4 11.2-5.6v4.96l12.8-9.281z"></path>
+</symbol>
+<symbol id="icon-chat" viewBox="0 0 32 32">
+<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" d="M6.666 14.667c0-5.891 4.775-10.667 10.666-10.667s10.666 4.776 10.666 10.667c0 1.533-0.324 2.991-0.906 4.309l0.908 6.357-5.447-1.362c-1.543 0.868-3.324 1.363-5.221 1.363M4.001 21.333c0 0.958 0.202 1.869 0.566 2.693l-0.567 3.973 3.404-0.851c0.964 0.543 2.077 0.852 3.263 0.852 3.681 0 6.666-2.985 6.666-6.667s-2.984-6.667-6.666-6.667c-3.681 0-6.665 2.985-6.665 6.667z"></path>
+</symbol>
+<symbol id="icon-filters" viewBox="0 0 32 32">
+<path fill="none" stroke="#f8f7f4" style="stroke: var(--color1, #f8f7f4)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" d="M8.615 16h14.769M5.333 9.333h21.333M13.538 22.667h4.923"></path>
 </symbol>
 </defs>
 </svg>
