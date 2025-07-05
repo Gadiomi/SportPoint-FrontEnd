@@ -6,7 +6,6 @@ import {
   Name,
   Stars,
   Comment,
-  Footer,
   StyledDate,
   Div,
 } from './styles';
@@ -56,7 +55,6 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   };
 
   const reviewDateToShow = review.updatedAt || review.createdAt;
-  console.log(review.surname);
 
   return (
     <Div key={review.id}>

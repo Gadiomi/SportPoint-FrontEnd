@@ -204,7 +204,7 @@
 
 </symbol>
 <symbol id="icon-share" viewBox="0 0 33 32">
-<path stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="2.6667" d="M28.667 15.278l-12.8-8.479v4.8c-11.2 2.4-11.2 13.6-11.2 13.6s4.8-6.4 11.2-5.6v4.96l12.8-9.281z"></path>
+<path  fill="none" stroke="currentColor" stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="2.6667" d="M28.667 15.278l-12.8-8.479v4.8c-11.2 2.4-11.2 13.6-11.2 13.6s4.8-6.4 11.2-5.6v4.96l12.8-9.281z"></path>
 </symbol>
 <symbol id="icon-chat" viewBox="0 0 32 32">
 <path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" d="M6.666 14.667c0-5.891 4.775-10.667 10.666-10.667s10.666 4.776 10.666 10.667c0 1.533-0.324 2.991-0.906 4.309l0.908 6.357-5.447-1.362c-1.543 0.868-3.324 1.363-5.221 1.363M4.001 21.333c0 0.958 0.202 1.869 0.566 2.693l-0.567 3.973 3.404-0.851c0.964 0.543 2.077 0.852 3.263 0.852 3.681 0 6.666-2.985 6.666-6.667s-2.984-6.667-6.666-6.667c-3.681 0-6.665 2.985-6.665 6.667z"></path>
@@ -212,5 +212,6 @@
 <symbol id="icon-filters" viewBox="0 0 32 32">
 <path fill="none" stroke="#f8f7f4" style="stroke: var(--color1, #f8f7f4)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" d="M8.615 16h14.769M5.333 9.333h21.333M13.538 22.667h4.923"></path>
 </symbol>
+
 </defs>
 </svg>

@@ -52,6 +52,7 @@ export const saveReview = async (
     cleanliness: number;
   },
   userCommentId: string,
+  recommend?: string,
   adminReply?: string,
 ) => {
   const isNewReview = !reviewId;
@@ -70,6 +71,7 @@ export const saveReview = async (
     userCommentId,
     comment,
     ratings: backendRatings,
+    recommend,
   };
 
   console.log('Data to send:', dataToSend);
@@ -160,4 +162,28 @@ export const fetchReviewsByOwner = async (ownerId: string) => {
   if (!ownerId) throw new Error("ID користувача обов'язковий");
   const { data } = await axiosInstance.get(`/reviews/owner/${ownerId}`);
   return data;
+};
+
+// export const postFeedback = async (
+//   cardId: string,
+//   useful: 'yes' | 'no',
+// ) => {
+//   const response = await axiosInstance.patch(
+//     `/reviews/${cardId}/usefulness`,
+//           useful
+//     );
+//   return response.data;
+// };
+
+export const postFeedback = async (cardId: string, useful: 'yes' | 'no') => {
+  try {
+    const response = await axiosInstance.patch(
+      `/reviews/${cardId}/usefulness`,
+      { useful },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('[Feedback Error]', error);
+    throw error;
+  }
 };

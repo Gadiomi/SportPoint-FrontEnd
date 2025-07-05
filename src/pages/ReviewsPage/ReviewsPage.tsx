@@ -55,7 +55,6 @@ const ReviewsPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isCreatingReview, setIsCreatingReview] = useState(false);
   const [currentReview, setCurrentReview] = useState<Review | null>(null);
-  console.log('currentReview', currentReview);
   const [selectedTab, setSelectedTab] = useState<'coach' | 'adminClub'>(
     'adminClub',
   );
@@ -67,13 +66,13 @@ const ReviewsPage = () => {
 
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
-  console.log('Trainer ID in ReviewsPage:', id);
+  // console.log('Trainer ID in ReviewsPage:', id);
 
   const isMyReviewsPage = location.pathname === '/profile/edit/reviews';
   const isCoachOrClubPage =
     location.pathname.startsWith('/trainers/trainer/') ||
     location.pathname.startsWith('/clubs/club/');
-  console.log('isCoachOrClubPage', isCoachOrClubPage);
+  // console.log('isCoachOrClubPage', isCoachOrClubPage);
 
   // Використання хука для видалення відгуків
   const { handleDeleteReview, error: deleteError } =
@@ -92,7 +91,7 @@ const ReviewsPage = () => {
         setReviews(reviewsData);
       } else if (isCoachOrClubPage) {
         setReviews([]);
-        console.log('Отримані відгуки:2', reviewsData);
+        // console.log('Отримані відгуки:2', reviewsData);
       }
       if (!Array.isArray(reviewsData)) {
         throw new Error('Некоректний формат даних від сервера');
@@ -112,8 +111,8 @@ const ReviewsPage = () => {
             avatar: userProfile.avatar ?? '',
             sport: userProfile.sport ?? '',
             comment: item.comment ?? '',
-            createdAt: item.createdAt ?? '',
-            updatedAt: item.updatedAt ?? '',
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
             rating: Math.round(item.average || 0),
             likes: 0,
             dislikes: 0,

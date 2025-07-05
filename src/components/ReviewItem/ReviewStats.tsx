@@ -7,6 +7,7 @@ import {
   fetchAllUsers,
   replyToReview,
   fetchUserById,
+  postFeedback,
 } from '@/redux/reviews/reviewsApi';
 import { Roles } from '@/constants';
 import { useDeleteComment } from '@/hooks/useDeleteComment';
@@ -55,6 +56,12 @@ interface User {
   _id?: string;
 }
 
+interface UsefulnessEntry {
+  user: string;
+  useful: 'yes' | 'no';
+  _id?: string;
+}
+
 interface CommentData {
   _id: string;
   average: number;
@@ -70,8 +77,10 @@ interface CommentData {
   createdAt?: string;
   updatedAt?: string;
   rating?: number;
-  likes?: number;
-  dislikes?: number;
+  description?: string;
+  usefulness: UsefulnessEntry[];
+  yes: number;
+  no: number;
   isFirstReview?: boolean;
 }
 
@@ -102,9 +111,6 @@ const ReviewStats: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [firstComment, setFirstComment] = useState<any>(null);
   const [targetUserData, setTargetUserData] = useState<User | null>(null);
-  console.log('setTargetUserData', targetUserData?.role);
-  // const [trainerData, setTrainerData] = useState<any>(null);
-  // console.log(trainerData);
   const [authorProfiles, setAuthorProfiles] = useState<Record<string, any>>({});
   const [allComments, setAllComments] = useState<CommentData[]>([]);
   const [showAll, setShowAll] = useState(false);
@@ -159,7 +165,7 @@ const ReviewStats: React.FC = () => {
           ? response.data
           : [response.data];
       }
-
+      console.log('commentsArray', commentsArray);
       const reversedComments = [...commentsArray].reverse();
 
       const withAverages = reversedComments.map(comment => {
@@ -230,7 +236,6 @@ const ReviewStats: React.FC = () => {
     const safeFetch = async () => {
       await fetchReviews();
       if (!isMounted) return;
-      // Сюди можна додати додаткове оновлення стану, якщо потрібно
     };
 
     safeFetch();
@@ -246,19 +251,51 @@ const ReviewStats: React.FC = () => {
     setIsEditing,
   });
 
-  const handleFeedback = (id: string, type: 'like' | 'dislike') => {
+  const handleFeedback = async (cardId: string, useful: 'yes' | 'no') => {
+    console.log('cardId', cardId);
+    if (!userId) {
+      console.error('Користувач не авторизований');
+      return;
+    }
+
+    // 🟢 1. Оптимістичне оновлення
     setAllComments(prev =>
-      prev.map(allComments =>
-        allComments._id === id
-          ? {
-              ...allComments,
-              likes: type === 'like' ? (allComments.likes === 1 ? 0 : 1) : 0,
-              dislikes:
-                type === 'dislike' ? (allComments.dislikes === 1 ? 0 : 1) : 0,
-            }
-          : allComments,
-      ),
+      prev.map(card => {
+        if (card._id !== cardId) return card;
+        const newYes = useful === 'yes' ? card.yes + 1 : card.yes;
+        const newNo = useful === 'no' ? card.no + 1 : card.no;
+
+        return {
+          ...card,
+          yes: newYes,
+          no: newNo,
+          usefulness: [...card.usefulness, { user: userId, useful }],
+        };
+      }),
     );
+    try {
+      // 🟢 2. Відправляємо запит на бекенд
+      await postFeedback(cardId, useful);
+    } catch (err) {
+      console.error('Помилка фідбеку:', err);
+
+      // 🔁 Rollback (опційно, якщо запит не вдався)
+      setAllComments(prev =>
+        prev.map(card => {
+          if (card._id !== cardId) return card;
+
+          const newYes = useful === 'yes' ? card.yes - 1 : card.yes;
+          const newNo = useful === 'no' ? card.no - 1 : card.no;
+
+          return {
+            ...card,
+            yes: newYes,
+            no: newNo,
+            usefulness: card.usefulness.filter(u => u.user !== userId),
+          };
+        }),
+      );
+    }
   };
 
   const handleOpenReplyModal = (comment: CommentData) => {
@@ -404,8 +441,8 @@ const ReviewStats: React.FC = () => {
               {location.pathname !== '/profile/edit/reviews' && (
                 <FeedbackSection
                   reviewId={comment._id}
-                  likes={comment.likes ?? 0}
-                  dislikes={comment.dislikes ?? 0}
+                  yes={comment.yes ?? 0}
+                  no={comment.no ?? 0}
                   onLike={handleFeedback}
                   onDislike={handleFeedback}
                 />

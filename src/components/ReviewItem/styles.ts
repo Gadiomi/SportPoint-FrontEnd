@@ -456,7 +456,7 @@ export const SubmitButton = styled.button<{ disabled?: boolean }>`
   border: none;
   border-radius: 6px;
   background: ${({ disabled }) => (disabled ? '#B7B7B9' : '#ED772F')};
-  color: ${({ theme }) => theme.color.background};
+  color: ${({ theme }) => theme.color.mainWhite};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
 `;
 
