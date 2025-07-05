@@ -87,7 +87,7 @@ const AdminClubPage: FC<AdminClubProps> = ({ id }) => {
           _id={_id}
           role={role}
           isLogin={isLogin}
-          iconNames={[IconName.ICON_CHAT, IconName.HEART_NONE]}
+          iconNames={[IconName.CHAT, IconName.HEART_NONE]}
           firstName={firstName}
           avatar={avatar}
           city={city}

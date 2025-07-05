@@ -137,7 +137,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       >
         {showButtons && (
           <ButtonProfileIcon
-            iconName={IconName.ICON_CHAT}
+            iconName={IconName.CHAT}
             text={t('details_page.chat')}
             onClick={openCommentModal}
           />
