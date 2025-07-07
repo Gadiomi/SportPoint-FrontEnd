@@ -208,7 +208,8 @@
     "reason1": "The comment is false and harms my career",
     "reason2": "The comment is of an 18+ nature",
     "reason3": "I did not have any cooperation with this client",
-    "reason4": "Other reason"},
+    "reason4": "Other reason"
+  },
   "chat_page": {
     "change": "Change",
     "headerTitle": "Chats",
@@ -226,11 +227,5 @@
     "reasonThree": "I have not had any cooperation with this client.",
     "reasonFour": "Another reason",
     "whatHappened": "What happened?..."
-  },
-  "report": {
-    "reason1": "The comment is false and harms my career",
-    "reason2": "The comment is of an 18+ nature",
-    "reason3": "I did not have any cooperation with this client",
-    "reason4": "Other reason"
   }
 }
