@@ -4,7 +4,7 @@ import styled, { CSSObject } from 'styled-components';
 import { ButtonAppearance } from './constants';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  title: string;
+  title?: string;
   appendChild?: React.ReactNode;
   prependChild?: React.ReactNode;
   testId: string;

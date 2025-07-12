@@ -17,6 +17,8 @@
   "ediet-review": "РЕДАГУВАТИ ВІДГУК",
   "contacts": "FOLLOW US",
   "gym": "Gym",
+  "limitedPage": "This page is only available to registered users.",
+  "questLogIn": "Would you like to log in?",
   "uah": "uah",
   "login_page": {
     "title": "Log in to account",
@@ -199,7 +201,7 @@
     "lang": "Change the language",
     "modalFav": "Only authorized users can view `Favorites`",
     "modalAuth": "Only authorized users can have their own profile.",
-    "questLogIn": "Would you like to log in?",
+
     "chooseLang": "Choose your preferred language"
   },
   "report": {
@@ -207,5 +209,23 @@
     "reason2": "The comment is of an 18+ nature",
     "reason3": "I did not have any cooperation with this client",
     "reason4": "Other reason"
+  },
+  "chat_page": {
+    "change": "Change",
+    "headerTitle": "Chats",
+    "allChats": "All chats",
+    "fromCoach": "From coaches",
+    "fromClub": "From clubs",
+    "archive": "Chat archive",
+    "blocked": "Blocked users",
+    "book": "Book Session",
+    "complaint": "Report User",
+    "block": "Block User",
+    "please": "Please indicate the reason for the complaint",
+    "reasonOne": "The comment is untrue and is damaging to my career.",
+    "reasonTwo": "The comment is 18+ in nature.",
+    "reasonThree": "I have not had any cooperation with this client.",
+    "reasonFour": "Another reason",
+    "whatHappened": "What happened?..."
   }
 }

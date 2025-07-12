@@ -37,6 +37,10 @@ const Reviews = lazy(() => import('../pages/ReviewsPage/ReviewsPage'));
 const ResultSearch = lazy(
   () => import('../pages/ResultSearchPage/ResultSearchPage'),
 );
+const ChatsPage = lazy(() => import('../pages/ChatPage/ChatPage'));
+const ChatPage = lazy(
+  () => import('../pages/ChatPage/components/ChatPlace/ChatPlace'),
+);
 // --- TEMP! ---
 const Helper = lazy(() => import('../pages/HelperPage/HelperPage'));
 // --- TEMP! ---
@@ -81,6 +85,8 @@ function App() {
               path={PublicRouteName.CHANGEPASSWORD}
               element={<ChangePassword />}
             />
+            <Route path="chats" element={<ChatsPage />} />
+            <Route path="chats/chat" element={<ChatPage />} />
           </Route>
         </Route>
         {/* </Route> */}

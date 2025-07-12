@@ -81,8 +81,14 @@ const SearchModal: FC<SearchModalProps> = ({ isOpen, onClose }) => {
             containerStyles={{
               borderColor: theme.color.white,
               color: theme.color.white,
+
+              borderRadius: theme.pxs.x2,
             }}
-            inputStyles={{ color: theme.color.white }}
+            inputStyles={{
+              color: theme.color.white,
+              paddingTop: theme.pxs.x2_5,
+              paddingBottom: theme.pxs.x2_5,
+            }}
             labelStyles={{ color: theme.color.white }}
           />
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import { CookiesKey } from '@/constants';
@@ -13,6 +13,11 @@ const AccountLayout = () => {
   const methods = useForm();
   const navigate = useNavigate();
   const { isLogin } = useAppSelector(state => state.setLogin);
+  const location = useLocation();
+  const hideLogo =
+    location.pathname === '/profile/chats' ||
+    location.pathname === '/profile/chats/chat';
+
   // --- - ---
   useEffect(() => {
     const tokenFront = Cookies.get(CookiesKey.TOKEN_F);
@@ -33,12 +38,18 @@ const AccountLayout = () => {
   // --- / - ---
   return (
     <ProfileProvider methods={methods}>
-      <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
+      {hideLogo ? (
         <Container>
-          <Logo />
           <Outlet />
         </Container>
-      </Section>
+      ) : (
+        <Section styles={{ fontFamily: `${FontFamily}`, minHeight: '100vh' }}>
+          <Container>
+            <Logo />
+            <Outlet />
+          </Container>
+        </Section>
+      )}
     </ProfileProvider>
   );
 };

@@ -65,4 +65,7 @@ export enum IconName {
   BACK_ARROW = 'icon-share',
   CHAT = 'icon-chat',
   FILTERS = 'icon-filters',
+  SLIDERS = 'icon-sliders',
+  BLOCKUSER = 'icon-blockuser',
+  MESSAGE = 'icon-comment',
 }
