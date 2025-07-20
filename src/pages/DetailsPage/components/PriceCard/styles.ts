@@ -23,6 +23,7 @@ export const PriceDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: ${({ theme }) => `${theme.pxs.x2}px`};
+  align-items: center;
   border-radius: ${({ theme }) => `${theme.pxs.x1_5}px`};
   background-color: rgba(41, 68, 135, 1);
   box-shadow: 0 0 10px rgba(43, 54, 149, 0.9);

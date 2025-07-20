@@ -8,6 +8,50 @@ export const Star = styled.div`
 export const Div = styled.div`
   width: 100%;
 `;
+
+export const RadioButtonGroup = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 8px;
+  margin-bottom: 24px;
+`;
+
+export const RadioLabel = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: ${({ theme }) => theme.color.white};
+  font-size: 1rem;
+`;
+
+export const HiddenRadio = styled.input.attrs({ type: 'radio' })`
+  display: none;
+`;
+
+export const CustomRadio = styled.span<{ selected: boolean }>`
+  width: 20px;
+  height: 20px;
+  border: 2px solid
+    ${({ theme, selected }) =>
+      selected ? theme.color.white : theme.color.secWhite};
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: ${({ theme, selected }) =>
+      selected ? theme.color.white : 'transparent'};
+  }
+`;
+
 //-----------------**********МОДАЛКА****************
 
 export const ModalOverlay = styled.div`
@@ -59,7 +103,8 @@ export const RatingRow = styled.div`
 
 export const Label = styled.span`
   color: white;
-  font-size: 14px;
+  font-size: 16px;
+  margin-bottom: 10px;
 `;
 
 export const HeaderEdit = styled.div`

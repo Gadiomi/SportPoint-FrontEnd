@@ -1,28 +1,31 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
+import { useTranslation } from 'react-i18next';
 import { IconName } from '@/kit';
 import { useAppSelector } from '@/hooks/hooks';
 import { Container, Section } from '@/components/ContainerAndSection';
 import { Logo } from '@/components/Logo/Logo';
+import ButtonBack from '../components/ButtonBack/ButtonBack';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import GalleryCard from '../components/GalleryCard/GalleryCard';
 import PriceCard from '../components/PriceCard/PriceCard';
-// import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 // import OurHallsCard from '../components/OurHallsCard/OurHallsCard';
 import LocationCard from '../components/LocationCard/LocationCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
 import HrButton from '../components/StyledHrButton/StyledHrButton';
 import CoachCard from '@/components/CoachCard/CoachCard';
-import { ICoachData } from '@/types';
-// import OurCoachCard from '../components/OurCoachCard/OurCoachCard';
+import { ICoachData } from '../../../types/index';
+// import OurCoachCard from '../components/OurCoachCard/OurCoachCard'; *видалити картку
 import { Contacts } from '../../../components/Footer/Contacts';
 
 import { StyledProfileCard } from './styles';
 
 const ClubPage: FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
   const { isLogin } = useAppSelector(state => state.setLogin);
   console.log(' Користувач залогінився', isLogin);
@@ -48,10 +51,10 @@ const ClubPage: FC = () => {
   const { _id, role, firstName, avatar, countReview, rating, images } =
     adminClubData || {};
 
-  const { social_links, price, schedule, city, address } =
+  const { social_links, price, subscriptions, schedule, city, address } =
     adminClubData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
   const title = isLogin
     ? 'Введіть дані, і адміністратор з вами зв’яжеться'
@@ -77,12 +80,13 @@ const ClubPage: FC = () => {
     <Section>
       <Container>
         <Logo />
+        <ButtonBack t={t} />
         <StyledProfileCard>
           <ProfileCard
             _id={_id}
             role={role}
             isLogin={isLogin}
-            iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
+            iconNames={[IconName.CHAT, IconName.HEART_NONE]}
             firstName={firstName}
             avatar={avatar}
             city={city}
@@ -100,6 +104,9 @@ const ClubPage: FC = () => {
           ]}
           labels={['Відгуки', 'Зали', 'Рейтинг']}
         />
+        {schedule && schedule.length > 0 && (
+          <WorkingHoursCard schedules={schedule || []} />
+        )}
         {social_links && social_links.length > 0 && (
           <SocialLinks
             socialLinks={social_links || []}
@@ -109,16 +116,14 @@ const ClubPage: FC = () => {
         )}
         {images && images.length > 0 && <GalleryCard images={images} />}
         {/* <OurHallsCard /> */}
-        {price && price.length > 0 && (
+        {subscriptions && subscriptions.length > 0 && (
           <PriceCard
-            prices={price}
+            subscriptions={subscriptions}
             titleKey="details_page.subscription"
             defaultImage="/assets/images/DetailsPage/Subscription_no_photo.png"
           />
         )}
-        {/* {schedule && schedule.length > 0 && (
-          <WorkingHoursCard schedules={schedule || []} />
-        )} */}
+
         {Array.isArray(adminClubData?.coaches) &&
           adminClubData.coaches.map((coach: ICoachData) => (
             <CoachCard key={coach._id} coachData={coach} />

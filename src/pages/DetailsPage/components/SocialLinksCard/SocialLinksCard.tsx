@@ -45,7 +45,7 @@ const SocialLinks: React.FC<{
   }
   return (
     <StyledSocialLinksCard>
-      <TitleContainer titleKey="details_page.contacts_text" />
+      <TitleContainer titleKey="details_page.social_networks" />
       <ImgContainer>
         {socialLinks.map(link => {
           const iconSrc = socialIconsMap[link.name.toLowerCase()];

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
 import { fonts } from '@/theme/fonts';
+import { Icon, IconName } from '@/kit';
 import StyledHr from '../../../../components/StyledHr/StyledHr';
 import TitleContainer from '../TitleContainer/TitleContainer';
 import {
@@ -15,7 +16,7 @@ import {
   RatePerHour,
 } from './styles';
 
-interface Price {
+interface Subscriptions {
   _id: string;
   name: string;
   amount: string;
@@ -24,41 +25,43 @@ interface Price {
 }
 
 interface PriceCardProps {
-  prices: Price[];
+  // prices: Price[];
+  subscriptions: Subscriptions[];
   titleKey: string;
   defaultImage?: string;
 }
 
 const PriceCard: React.FC<PriceCardProps> = ({
-  prices,
+  // prices,
+  subscriptions,
   titleKey,
   defaultImage,
 }) => {
   const theme = useTheme();
-  if (!prices || prices.length === 0) {
+  if (!subscriptions || subscriptions.length === 0) {
     return <div>Ціни не доступні</div>;
   }
 
-  console.log('Prices from backend:', prices);
+  console.log('Prices from backend:', subscriptions);
 
   return (
     <StyledPriceCard>
       <TitleContainer titleKey={titleKey} />
       <PriceContainer>
-        {prices.map((price, index) => {
-          if (!price || !price.name || !price.amount) {
+        {subscriptions.map((subscription, index) => {
+          if (!subscription || !subscription.name || !subscription.amount) {
             return null;
           }
           return (
-            <PriceDiv key={price._id || index}>
+            <PriceDiv key={subscription._id || index}>
               <PricePhoto
-                src={price.image ? price.image : defaultImage}
-                alt={price.name}
+                src={subscription.image ? subscription.image : defaultImage}
+                alt={subscription.name}
                 style={fonts.priceName}
               />
               <PriceWrapper>
                 <PriceName style={fonts.secondManrope}>
-                  {price.name || 'Не вказано'}
+                  {subscription.name || 'Не вказано'}
                 </PriceName>
                 <PriceAmountContainer>
                   <PriceAmount
@@ -67,7 +70,7 @@ const PriceCard: React.FC<PriceCardProps> = ({
                       color: theme.color.secWhite,
                     }}
                   >
-                    {price.amount || '-'}
+                    {subscription.amount || '-'}
                     <RatePerHour
                       style={{
                         ...fonts.descriptionCard,
@@ -80,12 +83,19 @@ const PriceCard: React.FC<PriceCardProps> = ({
                   </PriceAmount>
                 </PriceAmountContainer>
               </PriceWrapper>
-
               {/* <PriceDescription
                   style={{ ...fonts.priceName, color: theme.color.secWhite }}
                 >
                   {price.description || ''}
                 </PriceDescription> */}
+              <Icon
+                styles={{
+                  color: 'currentColor',
+                  fill: 'transparent',
+                  flexShrink: '0',
+                }}
+                name={IconName.ARROW_CORNER}
+              />
             </PriceDiv>
           );
         })}

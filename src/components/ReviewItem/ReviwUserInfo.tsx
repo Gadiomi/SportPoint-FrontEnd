@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { formatDate } from '@/kit';
 import { Avatar, Name } from '@/components/ReviewItem/styles';
 import {
   UserInfoEdit,
@@ -37,7 +38,6 @@ const UserInfo: React.FC<UserInfoProps> = ({
     role === 'coach' ? 'Тренер' : role === 'adminClub' ? 'Клуб' : 'Користувач';
 
   const fullName = `${firstName} ${lastName}`;
-  console.log('sport', sport);
 
   // Створення ініціалів
   const initials = fullName
@@ -78,15 +78,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
           sport && <Badge>{sport}</Badge>
         )}
       </div>
-      <StyledDate>
-        {reviewDateToShow
-          ? new Date(reviewDateToShow).toLocaleDateString('en-US', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-            })
-          : ''}
-      </StyledDate>
+      <StyledDate>{formatDate(reviewDateToShow)}</StyledDate>
     </UserInfoEdit>
   );
 };

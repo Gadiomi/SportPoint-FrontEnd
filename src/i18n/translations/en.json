@@ -4,6 +4,8 @@
   "signup": "Sign Up",
   "chosen": "CHOSEN",
   "coachs": "Coachs",
+  "chat": "Chat",
+  "main": "Main",
   "clubs-list": "Sports clubs",
   "clubs": "Clubs",
   "profile": "Profile",
@@ -13,7 +15,10 @@
   "loading": "Loading...",
   "resultBack": "Search results",
   "ediet-review": "РЕДАГУВАТИ ВІДГУК",
+  "contacts": "FOLLOW US",
   "gym": "Gym",
+  "limitedPage": "This page is only available to registered users.",
+  "questLogIn": "Would you like to log in?",
   "uah": "uah",
   "login_page": {
     "title": "Log in to account",
@@ -40,8 +45,11 @@
     "login_facebook": "Login with Facebook"
   },
   "details_page": {
+    "back_button": "BACK",
     "edit_button": "Profile settings",
-    "contacts_text": "CONTACTS",
+    "reserve_button": "Reserve",
+    "social_networks": "SOCIAL NETWORKS",
+    "follow_us": "FOLLOW US",
     "subscription": "SUBSCRIPTION",
     "services": "SERVICES",
     "gallery": "GALLERY",
@@ -55,7 +63,9 @@
     "complain": "Complain",
     "respond": "Respond",
     "reply-to-review": "Reply to review",
+    "edit-reply": "Edit reply",
     "comment": "Comment",
+    "chat": "Chat",
     "choose": "Choose",
     "get_in_touch": "Get in touch",
     "read_more": "Read more",
@@ -103,7 +113,15 @@
     "class-schedule": "CLASS SCHEDULE",
     "coaches-work-schedule": "COACHES' WORK SCHEDULE",
     "club-reviews": "CLUB REVIEWS",
-    "statistics": "STATISTICS"
+    "statistics": "STATISTICS",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "birth": "Date of birth",
+    "recommend-coach-question": "Would you recommend the trainer to others?",
+    "recommend-club-question": "Would you recommend the club to others?",
+    "yes": "Yes",
+    "no": "No"
   },
   "register_page": {
     "title": "Create an Account",
@@ -125,7 +143,10 @@
     "restore": "Restore"
   },
   "home_page": {
-    "homeDescr": "Discover the best sports clubs and professional trainers in your area.",
+    "homeDescr1": "Find professional trainers and the best sports clubs in your city.",
+    "homeDescr2": "Do you dream of a healthy body, or do you want to find an activity that you like? Or maybe you already have a favorite sport? Choose what you love!",
+    "homeDescr3": "Choose what you love!",
+    "step": "TAKE A STEP",
     "motivation": "BE SPORTY",
     "loading": "Loading",
     "reviews": "reviews",
@@ -180,7 +201,31 @@
     "lang": "Change the language",
     "modalFav": "Only authorized users can view `Favorites`",
     "modalAuth": "Only authorized users can have their own profile.",
-    "questLogIn": "Would you like to log in?",
+
     "chooseLang": "Choose your preferred language"
+  },
+  "report": {
+    "reason1": "The comment is false and harms my career",
+    "reason2": "The comment is of an 18+ nature",
+    "reason3": "I did not have any cooperation with this client",
+    "reason4": "Other reason"
+  },
+  "chat_page": {
+    "change": "Change",
+    "headerTitle": "Chats",
+    "allChats": "All chats",
+    "fromCoach": "From coaches",
+    "fromClub": "From clubs",
+    "archive": "Chat archive",
+    "blocked": "Blocked users",
+    "book": "Book Session",
+    "complaint": "Report User",
+    "block": "Block User",
+    "please": "Please indicate the reason for the complaint",
+    "reasonOne": "The comment is untrue and is damaging to my career.",
+    "reasonTwo": "The comment is 18+ in nature.",
+    "reasonThree": "I have not had any cooperation with this client.",
+    "reasonFour": "Another reason",
+    "whatHappened": "What happened?..."
   }
 }

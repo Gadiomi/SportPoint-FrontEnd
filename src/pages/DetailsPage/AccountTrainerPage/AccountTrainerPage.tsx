@@ -3,12 +3,13 @@ import { useGetCurrentCardIdQuery } from '../../../redux/details/cardIdApi';
 import { useTranslation } from 'react-i18next';
 import { IconName } from '@/kit';
 import { useAppSelector } from '@/hooks/hooks';
+import ButtonBack from '../components/ButtonBack/ButtonBack';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import ReviewCard from '../components/ReviewCard/ReviewCard';
 import ShortDescriptionCard from '../components/ShortDescriptionCard/ShortDescriptionCard';
 import SocialLinks from '../components/SocialLinksCard/SocialLinksCard';
 import PriceCard from '../components/PriceCard/PriceCard';
-// import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
+import WorkingHoursCard from '../components/WorkingHoursCard/WorkingHoursCard';
 import WorksInCard from '../components/WorksInCard/WorksInCard';
 import CertificatesCard from '../components/CertificatesCard/CertificatesCard';
 import ReviewDetailsCard from '../components/ReviewDetailsCard/ReviewDetailsCard';
@@ -55,10 +56,17 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
     certificates,
   } = coachData || {};
 
-  const { social_links, price, schedule, experience, city, age, short_desc } =
-    coachData?.description || {};
+  const {
+    social_links,
+    subscriptions,
+    schedule,
+    experience,
+    city,
+    age,
+    short_desc,
+  } = coachData?.description || {};
 
-  const roundedRating = rating ? parseFloat(rating.toFixed(2)) : 0;
+  const roundedRating = rating ? parseFloat(rating.toFixed(1)) : 0;
 
   const token = Cookies.get(CookiesKey.TOKEN);
   console.log('Token:', token);
@@ -87,12 +95,13 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
 
   return (
     <>
+      <ButtonBack t={t} />
       <StyledProfileCard>
         <ProfileCard
           _id={_id}
           role={role}
           isLogin={isLogin}
-          iconNames={[IconName.MASSAGE_TYPING, IconName.HEART_NONE]}
+          iconNames={[IconName.CHAT, IconName.HEART_NONE]}
           firstName={firstName}
           lastName={lastName}
           avatar={avatar}
@@ -112,7 +121,7 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
           !isNaN(numericExperience) ? numericExperience : 0,
           roundedRating,
         ]}
-        labels={['Відгуки', 'Досвід', 'Рейтинг']}
+        labels={['Відгуки', 'Досвід роботи', 'Рейтинг']}
       />
       {short_desc && (
         <ShortDescriptionCard
@@ -130,21 +139,21 @@ const AccountTrainerPage: FC<AccountTrainerProps> = ({ id }) => {
           title={title}
         />
       )}
-      {price && price.length > 0 && (
+      {subscriptions && subscriptions.length > 0 && (
         <PriceCard
-          prices={price}
+          subscriptions={subscriptions}
           titleKey="details_page.services"
           defaultImage="/assets/images/DetailsPage/Services_no_photo.png"
         />
       )}
-      {/* {schedule && schedule.length > 0 && (
+
+      {schedule && schedule.length > 0 && (
         <WorkingHoursCard schedules={schedule || []} />
-      )} */}
+      )}
 
       {coachData?.club && coachData.club.length > 0 && (
         <WorksInCard
-          _id={_id}
-          role={role}
+          role="adminClub"
           isLogin={isLogin}
           rating={rating}
           counts={[countReview ?? 0]}

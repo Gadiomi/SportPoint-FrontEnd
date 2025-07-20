@@ -30,6 +30,7 @@ const ButtonProfileIcon: React.FC<ButtonProfileIconProps> = ({
         flexDirection: 'column',
         alignItems: 'center',
         gap: `${theme.pxs.x2}px`,
+        width: 'auto',
       }}
     >
       <Button

@@ -7,7 +7,6 @@ import UserInfo from '@/components/ReviewItem/ReviwUserInfo';
 import ReviewHeader from '@/components/ReviewItem/ReviewHeader';
 import StyledHr from '@/components/StyledHr/StyledHr';
 import { IconName, Icon } from '@/kit';
-import styled from 'styled-components';
 import { useTheme } from 'styled-components';
 import {
   HeaderEdit,
@@ -25,6 +24,10 @@ import {
   ModalOverlay,
   ModalContent,
   RatingLabels,
+  RadioButtonGroup,
+  RadioLabel,
+  HiddenRadio,
+  CustomRadio,
 } from './styles';
 import { DeleteButton } from '@/components/ReviewItem/styles';
 
@@ -35,10 +38,10 @@ interface EditReviewPageProps {
   onSave?: (updatedReview: Review) => void;
 }
 const mapBackendRatings = (backendRatings: any) => ({
-  attitude: backendRatings.clientService || 0,
-  service: backendRatings.serviceQuality || 0,
-  price: backendRatings.priceQuality || 0,
-  cleanliness: backendRatings.cleanliness || 0,
+  attitude: Number(backendRatings.clientService || 0),
+  service: Number(backendRatings.serviceQuality || 0),
+  price: Number(backendRatings.priceQuality || 0),
+  cleanliness: Number(backendRatings.cleanliness || 0),
 });
 
 const EditReviewPage: React.FC<EditReviewPageProps> = ({
@@ -50,42 +53,33 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
   const translate: (key: string, options?: Record<string, any>) => string = t;
   const theme = useTheme();
   const reduxUserId = useAppSelector(state => state.user.user?.userCommentId);
-  console.log('reduxUserId', reduxUserId);
   const userCommentId = review.userCommentId || reduxUserId;
-  // const userCommentId = useAppSelector((state) => state.user.user?.userCommentId);
-  // const [userCommentId, setuserCommentId] = useState(review.userCommentId);
-  // console.log('userCommentId', userCommentId);
   const [comment, setComment] = useState(review?.comment || '');
-  const [ratings, setRatings] = useState({
-    attitude: review?.ratings?.cleanliness || 0,
-    service: review?.ratings?.clientService || 0,
-    price: review?.ratings?.priceQuality || 0,
-    cleanliness: review?.ratings?.serviceQuality || 0,
-  });
+  const [recommend, setRecommend] = useState<string>(review.recommend || '');
+  // const [ratings, setRatings] = useState({
+  //   attitude: review?.ratings?.cleanliness || 0,
+  //   service: review?.ratings?.clientService || 0,
+  //   price: review?.ratings?.priceQuality || 0,
+  //   cleanliness: review?.ratings?.serviceQuality || 0,
+  // });
   // const [ratings, setRatings] = useState(() =>
   //   review.ratings
   //     ? mapBackendRatings(review.ratings)
   //     : {
-  //         attitude: 0,
+  //         attitude:0,
   //         service: 0,
   //         price: 0,
   //         cleanliness: 0,
   //       },
   // );
+  const [ratings, setRatings] = useState({
+    attitude: 0,
+    service: 0,
+    price: 0,
+    cleanliness: 0,
+  });
 
-  //   // Debug: перевірка чи приходять рейтинги
-  // useEffect(() => {
-  //   console.log('review.ratings', review.ratings);
-  // }, [review.ratings]);
-
-  // // 🔄 Оновлення рейтингу при зміні review
-  // useEffect(() => {
-  //   if (review?.ratings) {
-  //     setRatings(mapBackendRatings(review.ratings));
-  //   }
-  // }, [review]);
-
-  console.log('review:', review);
+  console.log('ratings state:', ratings);
 
   // Стан для перевірки змін у формі
   const [isEdited, setIsEdited] = useState(false);
@@ -96,25 +90,69 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
     if (review?.ratings) {
       const mapped = mapBackendRatings(review.ratings);
       setRatings(mapped);
-      const avg = calculateAverage(mapped);
-      setAverageRating(avg);
+      setAverageRating(calculateAverage(mapped));
     }
     setComment(review.comment || '');
     setHasComment(!!review.comment);
-  }, [review]);
+    setRecommend(review.recommend || '');
+  }, [review.id]);
+
+  //   useEffect(() => {
+  //     if (
+  //     review &&
+  //     review?.ratings &&
+  //     typeof review.ratings.clientService === 'number'
+  //   ) {
+  //     const mapped = mapBackendRatings(review.ratings);
+  //     console.log('🟢 MAPPED RATINGS:', mapped); // ← дивимося тут
+  //     setRatings(mapped);
+  //     setAverageRating(calculateAverage(mapped));
+  //   }
+  // }, [review.id]);
+
+  // useEffect(() => {
+  // const allRatingsExist =
+  //   review?.ratings &&
+  //   Object.values(review.ratings).some(r => r > 0);
+
+  // if (allRatingsExist) {
+  //   const mapped = mapBackendRatings(review.ratings);
+  //   console.log('🟢 MAPPED RATINGS:', mapped);
+  //   setRatings(mapped);
+  //   setAverageRating(calculateAverage(mapped));
+  // }
+  //   setComment(review.comment || '');
+  //   setHasComment(!!review.comment);
+  // }, [review.rating]);
 
   // Визначаємо, чи відбулися зміни
+  // useEffect(() => {
+  //   const initialRatings = {
+  //     attitude: review?.ratings?.cleanliness || 0,
+  //     service: review?.ratings?.clientService || 0,
+  //     price: review?.ratings?.priceQuality || 0,
+  //     cleanliness: review?.ratings?.serviceQuality || 0,
+  //   };
+  // });
+
+  // useEffect(() => {
+  // const avg = calculateAverage(ratings);
+  // setAverageRating(avg);
+  // }, [ratings]);
+
   useEffect(() => {
-    const initialRatings = {
-      attitude: review?.ratings?.cleanliness || 0,
-      service: review?.ratings?.clientService || 0,
-      price: review?.ratings?.priceQuality || 0,
-      cleanliness: review?.ratings?.serviceQuality || 0,
-    };
+    const initialRatings = review.ratings
+      ? mapBackendRatings(review.ratings)
+      : {
+          attitude: 0,
+          service: 0,
+          price: 0,
+          cleanliness: 0,
+        };
+
     const hasRatingChanged =
       JSON.stringify(ratings) !== JSON.stringify(initialRatings);
     const hasCommentChanged = comment !== review.comment;
-
     setIsEdited(hasRatingChanged || hasCommentChanged);
   }, [comment, ratings, review]);
 
@@ -139,7 +177,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
       const isEditing = !!review.comment;
       const reviewId = isEditing ? review.id : null;
 
-      const targetType = review.userRole === 'coach' ? 'trainer' : 'club';
+      // const targetType = review.userRole === 'coach' ? 'trainer' : 'club';
 
       const mappedRatings = {
         clientService: ratings.attitude,
@@ -153,7 +191,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
         alert('Користувача не знайдено. Увійдіть у систему ще раз.');
         return;
       }
-      await saveReview(reviewId, comment, ratings, userCommentId, targetType);
+      await saveReview(reviewId, comment, ratings, userCommentId, recommend);
 
       const newAverage = calculateAverage(mappedRatings);
       setAverageRating(newAverage);
@@ -163,6 +201,7 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
           ...review,
           comment,
           ratings: mappedRatings,
+          recommend,
           updatedAt: new Date().toISOString(),
           averageRating: newAverage,
         };
@@ -176,11 +215,11 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (averageRating) {
-      setAverageRating(averageRating);
-    }
-  }, [averageRating]);
+  // useEffect(() => {
+  //   if (averageRating) {
+  //     setAverageRating(averageRating);
+  //   }
+  // }, [averageRating]);
 
   const ratingLabels =
     review.userRole === 'coach'
@@ -323,6 +362,38 @@ const EditReviewPage: React.FC<EditReviewPageProps> = ({
               </RatingRow>
             ))}
           </RatingSection>
+
+          <>
+            <Label>
+              {review.userRole === 'coach'
+                ? translate('account_page.recommend-coach-question')
+                : translate('account_page.recommend-club-question')}
+            </Label>
+
+            <RadioButtonGroup>
+              <RadioLabel>
+                <HiddenRadio
+                  name="recommend"
+                  value="yes"
+                  checked={recommend === 'yes'}
+                  onChange={() => setRecommend('yes')}
+                />
+                <CustomRadio selected={recommend === 'yes'} />
+                {translate('account_page.yes')}
+              </RadioLabel>
+
+              <RadioLabel>
+                <HiddenRadio
+                  name="recommend"
+                  value="no"
+                  checked={recommend === 'no'}
+                  onChange={() => setRecommend('no')}
+                />
+                <CustomRadio selected={recommend === 'no'} />
+                {translate('account_page.no')}
+              </RadioLabel>
+            </RadioButtonGroup>
+          </>
           <span>{translate('account_page.leave-review-optional')}</span>
           <TextArea
             placeholder={translate('account_page.your-review')}

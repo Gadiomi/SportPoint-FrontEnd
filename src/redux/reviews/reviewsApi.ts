@@ -1,9 +1,8 @@
 import { axiosInstance } from '@/redux/auth/axios';
 
-// Отримати всі відгуки про конкретного користувача (userCommentId)
-export const fetchReviewsByUserCommentId = async (userCommentId: string) => {
+export const fetchReviewsAboutUser = async (userId: string) => {
   try {
-    const { data } = await axiosInstance.get(`/reviews/user/${userCommentId}`);
+    const { data } = await axiosInstance.get(`/reviews/user/${userId}`);
     return data;
   } catch (error) {
     console.error('Помилка при завантаженні відгуків про користувача:', error);
@@ -53,13 +52,12 @@ export const saveReview = async (
     cleanliness: number;
   },
   userCommentId: string,
-  targetId: string,
-  // userCommentId: string,
+  recommend?: string,
+  adminReply?: string,
 ) => {
   const isNewReview = !reviewId;
   const method = isNewReview ? 'post' : 'patch';
   const url = isNewReview ? '/reviews' : `/reviews/${reviewId}`;
-  console.log(url);
 
   const backendRatings = {
     clientService: ratings.attitude,
@@ -73,6 +71,7 @@ export const saveReview = async (
     userCommentId,
     comment,
     ratings: backendRatings,
+    recommend,
   };
 
   console.log('Data to send:', dataToSend);
@@ -87,20 +86,37 @@ export const saveReview = async (
     withCredentials: true,
   });
 
+  // Якщо є adminReply і це редагування — відправляємо окремий запит
+  if (!isNewReview && adminReply !== undefined) {
+    console.log('Updating adminReply...');
+    await axiosInstance.patch(
+      `/reviews/${reviewId}/reply/update`,
+      { adminReply },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      },
+    );
+  }
+
   return data;
 };
 
-// Надіслати скаргу на відгук
-export const reportReview = async (reviewId: string) => {
-  const { data } = await axiosInstance.post(`/${reviewId}/report`, {
-    reviewId,
+export const reportReview = async ({
+  reviewId,
+  reason,
+}: {
+  reviewId: string;
+  reason: string;
+}) => {
+  const { data } = await axiosInstance.post(`/reviews/${reviewId}/report`, {
+    reason,
   });
   return data;
 };
 
 // Надіслати відповідь на відгук
 export const replyToReview = async (reviewId: string, adminReply: string) => {
-  // const dispatch = useDispatch();
   console.log('replyToReview викликано з:', reviewId, adminReply);
   try {
     const response = await axiosInstance.patch(`/reviews/${reviewId}/reply`, {
@@ -118,15 +134,27 @@ export const replyToReview = async (reviewId: string, adminReply: string) => {
   }
 };
 
-// Видалити відгук
-export const deleteReview = async (reviewId: string) => {
+// Видалити відгук або відповідь до відгуку
+export const deleteReview = async (reviewId: string, isReply = false) => {
   try {
-    const { data } = await axiosInstance.delete(`/reviews/${reviewId}`);
+    const url = isReply
+      ? `/reviews/${reviewId}/reply/delete`
+      : `/reviews/${reviewId}`;
+    console.log('Delete request to:', url);
+    const { data } = await axiosInstance.delete(url);
     return data; // Повертаємо дані відповіді від сервера, якщо потрібно
   } catch (error) {
-    console.error('Помилка при видаленні відгуку:', error);
+    console.error('Помилка при видаленні:', error);
     throw error;
   }
+};
+
+// Видалення та редагування відповіді до відгуку
+export const updateAdminReply = async (id: string, reply: string) => {
+  const response = await axiosInstance.patch(`reviews/${id}/reply/update`, {
+    reply,
+  });
+  return response.data;
 };
 
 // Отримати всі відгуки авторизованого користувача (через токен)
@@ -134,4 +162,28 @@ export const fetchReviewsByOwner = async (ownerId: string) => {
   if (!ownerId) throw new Error("ID користувача обов'язковий");
   const { data } = await axiosInstance.get(`/reviews/owner/${ownerId}`);
   return data;
+};
+
+// export const postFeedback = async (
+//   cardId: string,
+//   useful: 'yes' | 'no',
+// ) => {
+//   const response = await axiosInstance.patch(
+//     `/reviews/${cardId}/usefulness`,
+//           useful
+//     );
+//   return response.data;
+// };
+
+export const postFeedback = async (cardId: string, useful: 'yes' | 'no') => {
+  try {
+    const response = await axiosInstance.patch(
+      `/reviews/${cardId}/usefulness`,
+      { useful },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('[Feedback Error]', error);
+    throw error;
+  }
 };
