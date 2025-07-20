@@ -24,10 +24,6 @@ export const SelectedService = styled.select`
   }
 `;
 
-export const ServicesSelect = styled(Select)`
-  display: flex;
-`;
-
 export const ServicesSelectContainer = styled.div`
   position: relative;
   z-index: 1;

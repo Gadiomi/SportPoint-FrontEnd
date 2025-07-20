@@ -56,36 +56,28 @@ export const getCustomStyles = (
   }),
   menu: base => ({
     ...base,
-    backgroundColor: theme.color.background,
+    backgroundColor: '#323232',
     borderRadius: '0 0 6px 6px',
     marginTop: '-1px',
     padding: theme.pxs.x2,
-    border: `1px solid ${theme.color.secWhite}`,
+    border: `1px solid #ed772f`,
     borderTop: 'none',
   }),
-  option: base => ({
-    ...base,
-    color: '#f8f7f4',
-    backgroundColor: theme.color.white,
-    padding: theme.pxs.x2,
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected ? ' #294487' : 'transparent',
+    color: state.isSelected ? '#ED772F' : '#F8F7F4',
+    padding: '8px 15px',
+    borderRadius: '8px',
+    textTransform: 'capitalize',
     cursor: 'pointer',
-    ':first-of-type': {
-      borderTopLeftRadius: '5px',
-      borderTopRightRadius: '5px',
-    },
-    ':last-of-type': {
-      borderBottomLeftRadius: '5px',
-      borderBottomRightRadius: '5px',
-    },
-    ':not(:last-of-type)': {
-      borderBottom: `1px solid ${theme.color.secWhite}`,
-    },
   }),
   singleValue: base => ({
     ...base,
     color: '#f8f7f4',
     padding: theme.pxs.x0,
     margin: theme.pxs.x0,
+    textTransform: 'capitalize',
   }),
   placeholder(base, props) {
     return {

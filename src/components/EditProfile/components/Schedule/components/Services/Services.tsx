@@ -1,18 +1,34 @@
 import { useGetCoachServicesQuery } from '@/redux/coachServices/coachServicesApi';
-import { ServicesSelect, ServicesSelectContainer } from './Services.styled';
+import { ServicesSelectContainer } from './Services.styled';
+import Select, { SingleValue } from 'react-select';
+import React from 'react';
+interface ServiceOption {
+  label?: string;
+}
 
-const Services = () => {
+interface ServicesProps {
+  selectedService: SingleValue<ServiceOption>;
+  setSelectedService: React.Dispatch<
+    React.SetStateAction<SingleValue<ServiceOption>>
+  >;
+}
+const Services = ({ selectedService, setSelectedService }: ServicesProps) => {
   const { data: servicesResponse } = useGetCoachServicesQuery();
   const services = servicesResponse?.data.data ?? [];
 
-  const options = services.map(service => ({
-    value: service._id,
-    label: service.name,
+  const options: ServiceOption[] = services.map(service => ({
+    value: service?._id,
+    label: service?.name,
   }));
 
+  const handleChange = (newValue: SingleValue<ServiceOption>) => {
+    setSelectedService(newValue);
+  };
   return (
     <ServicesSelectContainer>
-      <ServicesSelect
+      <Select<ServiceOption, false>
+        value={selectedService}
+        onChange={handleChange}
         options={options}
         menuPortalTarget={typeof window !== 'undefined' ? document.body : null}
         styles={{
@@ -26,8 +42,13 @@ const Services = () => {
             justifyContent: 'space-between',
             padding: '0 12px',
             minHeight: '48px',
-            backgroundColor: '#303030',
+            backgroundColor: '#323232',
             border: '0.50px solid #ed772f',
+          }),
+          singleValue: (provided: any) => ({
+            ...provided,
+            color: '#F8F7F4',
+            fontWeight: '500',
           }),
           dropdownIndicator: (base, state) => ({
             ...base,
@@ -48,6 +69,7 @@ const Services = () => {
             backgroundColor: '#1f2937',
             color: 'white',
             zIndex: 10,
+            padding: '8px',
           }),
           menuPortal: base => ({
             ...base,
@@ -55,13 +77,15 @@ const Services = () => {
           }),
           option: (provided, state) => ({
             ...provided,
-            backgroundColor: state.isSelected ? '#4CAF50' : '#ccc',
-            color: state.isSelected ? 'white' : 'black',
+            backgroundColor: state.isSelected ? ' #294487' : 'transparent',
+            color: state.isSelected ? '#ED772F' : '#F8F7F4',
             padding: '8px 15px',
+            borderRadius: '8px',
+            margin: '16px 0',
           }),
           placeholder: provided => ({
             ...provided,
-            color: '#f8f7f4',
+            color: 'white',
             fontSize: '14px',
             fontWeight: '400',
           }),

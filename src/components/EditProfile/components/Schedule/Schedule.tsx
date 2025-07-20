@@ -47,13 +47,17 @@ import Map from './components/Map/Map';
 import localizeButtons from '../../data/all-buttons.json';
 import SearchWork from '../SearchWork/SearchWork';
 import halls from '../../data/halls.json';
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 import { getCustomStyles } from './customStyle';
 import { useTheme } from 'styled-components';
 import { Label } from '../Selection/Selection.styled';
 const locales = {
   uk: uk,
 };
+
+interface ServiceOption {
+  label?: string;
+}
 
 type ScheduleItem = {
   _id: string;
@@ -103,6 +107,8 @@ const Schedule = () => {
   const [isOpenAddress, setIsOpenAddress] = useState<boolean>(false);
   const [height, setHeight] = useState<string>('0px');
   const [selectedHall, setSelectedHall] = useState<string | null>('');
+  const [selectedService, setSelectedService] =
+    useState<SingleValue<ServiceOption>>(null);
 
   const [isCityOpen, setIsCityOpen] = useState<boolean>(false);
   const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
@@ -121,7 +127,7 @@ const Schedule = () => {
   }, []);
 
   const { data: schedules } = useGetAllSchedulesQuery(undefined);
-
+  console.log(selectedService);
   useEffect(() => {
     if (isOpenAddress) {
       if (!isCityOpen && !isClubOpen) {
@@ -148,10 +154,10 @@ const Schedule = () => {
           city: item.selection.city,
           avatar: item.selection.avatar,
           id: item._id || 'default-id',
-          service: item.selection.serviceName || '',
-          hall: item.selection.selectedType || '',
+          service: item.selection.serviceName,
+          hall: item.selection.selectedType,
         },
-        weekday: format(new Date(item.date.startTime), 'EEEE', { locale: uk }),
+        weekday: format(new Date(item.date.startTime), 'EEE', { locale: uk }),
         monthShort: format(new Date(item.date.startTime), 'MMM', {
           locale: uk,
         }),
@@ -234,6 +240,7 @@ const Schedule = () => {
     defaultValues: {},
     shouldUnregister: false,
   });
+  console.log(backendSchedule);
 
   const convertScheduleToBackendFormat = () => {
     return backendSchedule.map(entry => {
@@ -250,11 +257,11 @@ const Schedule = () => {
           endTime: end,
         },
         selection: {
-          selectedType: selectedHall,
+          selectedType: selectedHall?.toLowerCase(),
           city: entry.profile.city || '',
           address: entry.profile.address || '',
           avatar: entry.profile.avatar || '',
-          serviceName: entry.profile.service || '',
+          serviceName: selectedService?.label || '',
         },
         selectedGym: `${entry.profile.firstName} ${entry.profile.lastName}`,
       };
@@ -264,7 +271,6 @@ const Schedule = () => {
   const onSubmit = async () => {
     try {
       const backendReadySchedule = convertScheduleToBackendFormat();
-
       await addSchedule(backendReadySchedule).unwrap();
     } catch (error) {
       console.error('Update failed:', error);
@@ -291,14 +297,18 @@ const Schedule = () => {
       return;
     }
 
-    const weekday = format(selectedDay, 'EEEE', { locale: uk });
+    const weekday = format(selectedDay, 'ee', { locale: uk });
     const monthShort = format(selectedDay, 'MMM', { locale: uk });
 
     const newEntry = {
       day: selectedDay,
       begin: beginTime,
       end: endTime,
-      profile: selectedProfile[0],
+      profile: {
+        ...selectedProfile[0],
+        service: selectedService?.label ?? undefined,
+        hall: selectedHall?.toLocaleLowerCase() ?? undefined,
+      },
       weekday,
       monthShort,
     };
@@ -376,7 +386,10 @@ const Schedule = () => {
         </TimeAndDateContainer>
         <ServicesContainer>
           <SectionTitle> {localizeButtons.titles.services}</SectionTitle>
-          <Services />
+          <Services
+            selectedService={selectedService}
+            setSelectedService={setSelectedService}
+          />
         </ServicesContainer>
         <LocaleButtonsContainerStyled>
           <LocaleButtonsAndTitleContainerStyled>

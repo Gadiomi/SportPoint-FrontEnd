@@ -1,13 +1,17 @@
 import React from 'react';
 import { format } from 'date-fns';
 import {
-  AccentSpan,
   ButtonsContainer,
+  DateAndMonthContainer,
+  GymAndButtonsContainer,
+  GymNameAndPlaceStyle,
   GymStyle,
   List,
   ListItem,
+  ServiceStyle,
   TimeAndDateStyle,
-  TitleAndButtons,
+  TitleDate,
+  WeekDay,
 } from './ScheduleCard.styled';
 import { Icon, IconName } from '@/kit';
 import { ButtonsHiddenText } from '../CustomHeader/CustomHeader.styled';
@@ -16,6 +20,7 @@ import { ScheduleEntry } from '../../types/schedule';
 import { useAppDispatch } from '@/hooks/hooks';
 import { setScheduleId } from '@/redux/globalsStates/globalsStates';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getDuration } from '@/helpers/getDuration';
 
 export interface ScheduleCardProps {
   savedSchedule: ScheduleEntry[] | ScheduleEntry | undefined;
@@ -56,51 +61,50 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
       entry.day && !isNaN(new Date(entry.day).getTime())
         ? new Date(entry.day)
         : null;
+    console.log(entry);
 
     return (
       <ListItem key={index}>
-        <TitleAndButtons>
+        <TitleDate>
           <TimeAndDateStyle>
             <div>
-              <span>{entry.weekday},</span>
-              <span>
-                {entry.monthShort}
-                {validDate ? format(validDate, 'dd') : 'N/A'}
-              </span>
+              <WeekDay>{entry.weekday}</WeekDay>
+              <DateAndMonthContainer>
+                <span> {validDate ? format(validDate, 'dd') : 'N/A'}</span>
+                <span>{entry.monthShort}</span>
+              </DateAndMonthContainer>
             </div>
-            <AccentSpan>
-              {entry.begin} - {entry.end}
-            </AccentSpan>
           </TimeAndDateStyle>
-        </TitleAndButtons>
-        <GymStyle>
-          <img
-            src={
-              entry.profile.avatar
-                ? entry.profile.avatar
-                : '/assets/images/pngtree-default-red-avatar-png-image_5939361.jpg'
-            }
-            alt="avatar"
-          />
-          <span>
-            {entry.profile.firstName} {entry.profile.lastName}
-          </span>
-          <span>
-            {entry.profile.firstName} {entry.profile.lastName}
-          </span>
-        </GymStyle>
-        {!isEditPage && (
-          <ButtonsContainer>
-            <button type="button" onClick={() => handleEdit(entry._id ?? '')}>
-              <Icon name={IconName.EDIT} width="20px" />
-              <ButtonsHiddenText>Edit</ButtonsHiddenText>
-            </button>
-            <button type="button" onClick={() => handleDelete(entry._id ?? '')}>
-              <Icon name={IconName.DELETE} width="20px" />
-              <ButtonsHiddenText>Delete</ButtonsHiddenText>
-            </button>
-          </ButtonsContainer>
-        )}
+        </TitleDate>
+        <GymAndButtonsContainer>
+          <GymStyle>
+            <ServiceStyle>{entry.profile.service}</ServiceStyle>
+            <ServiceStyle>
+              {entry.begin} - {entry.end}
+              <span> {getDuration(entry.begin, entry.end)}</span>
+            </ServiceStyle>
+            <div>
+              <GymNameAndPlaceStyle>
+                {entry.profile.firstName} <span>{entry.profile.hall}</span>
+              </GymNameAndPlaceStyle>
+            </div>
+          </GymStyle>
+          {!isEditPage && (
+            <ButtonsContainer>
+              <button type="button" onClick={() => handleEdit(entry._id ?? '')}>
+                <Icon name={IconName.EDIT} width="20px" />
+                <ButtonsHiddenText>Edit</ButtonsHiddenText>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(entry._id ?? '')}
+              >
+                <Icon name={IconName.DELETE} width="20px" />
+                <ButtonsHiddenText>Delete</ButtonsHiddenText>
+              </button>
+            </ButtonsContainer>
+          )}
+        </GymAndButtonsContainer>
       </ListItem>
     );
   };
